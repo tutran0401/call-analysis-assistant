@@ -42,7 +42,7 @@ class RuleVerdictEngineTest {
     @Test
     void classifiesARealSuccessfulCallAsSuccessWithNoQualityFlag() {
         String callId = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
-        CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
+        CallTimeline timeline = buildTimeline(Path.of("sample-data", "success", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
 
         RuleVerdictResult result = engine.evaluate(timeline, metrics);
@@ -57,7 +57,7 @@ class RuleVerdictEngineTest {
     @Test
     void classifiesARealPreInviteRejectionAsFailWithSignalingFailure() {
         String callId = "1B009D42-49CD-479E-B26C-3A2994AEB720";
-        CallTimeline timeline = buildTimeline(Path.of("fail", callId), callId);
+        CallTimeline timeline = buildTimeline(Path.of("sample-data", "fail", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
 
         RuleVerdictResult result = engine.evaluate(timeline, metrics);
@@ -72,7 +72,7 @@ class RuleVerdictEngineTest {
         // một dạng lỗi thật khác với việc 1B009D42 bị từ chối sau INVITE ở trên,
         // cả hai đều đúng khi fallback về SIGNALING_FAILURE vì không có evidence ICE nào.
         String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
-        CallTimeline timeline = buildTimeline(Path.of("fail", callId), callId);
+        CallTimeline timeline = buildTimeline(Path.of("sample-data", "fail", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
 
         RuleVerdictResult result = engine.evaluate(timeline, metrics);
@@ -88,7 +88,7 @@ class RuleVerdictEngineTest {
         // vẫn từ chối kết luận SUCCESS chỉ dựa vào signaling, đúng theo kịch bản
         // "UNKNOWN do thiếu file" trong acceptance criteria, dùng data thật (không phải giả lập).
         String callId = "6A7CE985-4A1A-44D1-84B1-DBB0B0B90448";
-        CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
+        CallTimeline timeline = buildTimeline(Path.of("sample-data", "success", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
 
         RuleVerdictResult result = engine.evaluate(timeline, metrics);
@@ -100,7 +100,7 @@ class RuleVerdictEngineTest {
     @Test
     void classifiesARealSuccessWithOneMissingEndCallLogAsMediumConfidence() {
         String callId = "C8CF631E-0C6B-46E4-92E7-280E7B6A5394";
-        CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
+        CallTimeline timeline = buildTimeline(Path.of("sample-data", "success", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
 
         RuleVerdictResult result = engine.evaluate(timeline, metrics);

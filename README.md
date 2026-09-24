@@ -31,13 +31,13 @@ truy cập được tại http://localhost:5601 khi cả 2 container đã chạy
 
 ```bash
 # Phân tích 1 cuộc gọi, lấy signaling từ Elasticsearch
-java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar analyze success/DE7DD314-F432-45CB-BCB4-AE9103CC0919
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar analyze sample-data/success/DE7DD314-F432-45CB-BCB4-AE9103CC0919
 
 # Phân tích 1 cuộc gọi, đọc trực tiếp signaling.json thay vì query ES
-java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar analyze fail/1B009D42-49CD-479E-B26C-3A2994AEB720 --from-file
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar analyze sample-data/fail/1B009D42-49CD-479E-B26C-3A2994AEB720 --from-file
 
 # Phân tích toàn bộ cuộc gọi trong 1 hoặc nhiều thư mục gốc (đáp ứng yêu cầu "demo tối thiểu 5 cuộc gọi" của Sprint 1)
-java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar demo success fail for_test
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar demo sample-data/success sample-data/fail sample-data/for_test
 ```
 
 Mỗi cuộc gọi in ra report theo đúng bố cục cố định ở `PROJECT_SPEC.md` mục 4.5, kèm theo
@@ -51,12 +51,12 @@ mvn test
 ```
 
 Toàn bộ test cho parser, timeline, metrics, evidence/rule-verdict và report-schema đều
-chạy trên data mẫu thật trong `fail/`, `success/`, `for_test/` — nhiều giá trị kỳ vọng
+chạy trên data mẫu thật trong `sample-data/fail/`, `sample-data/success/`, `sample-data/for_test/` — nhiều giá trị kỳ vọng
 (thời lượng, số lần gửi lại, MOS/packet-loss/RTT/jitter) được **tính tay** trực tiếp từ
 5 cuộc gọi thật khác nhau (đúng yêu cầu ở mục 5.1), chứ không chỉ so khớp với chính output
 của code.
 
-**Đã kiểm chứng trên toàn bộ data mẫu** (`demo success fail for_test`, cả 20 cuộc gọi,
+**Đã kiểm chứng trên toàn bộ data mẫu** (`demo sample-data/success sample-data/fail sample-data/for_test`, cả 20 cuộc gọi,
 qua pipeline có ES thật): 0 cảnh báo parser trên mọi file — **parse sạch 100%** (vượt xa
 mục tiêu ≥90%) — với 8 verdict `SUCCESS`, 6 `FAIL`, 6 `UNKNOWN`; mỗi `UNKNOWN` đều có lý
 do thiếu dữ liệu cụ thể trong report, và không có exception nào trong suốt quá trình chạy.
@@ -79,6 +79,10 @@ docs/
   verdict-issue-taxonomy.md
   sensitive-data-inventory.md
   ai-provider-proposal.md
+sample-data/    Data mẫu do mentor cung cấp (không chỉnh sửa nội dung)
+  success/      7 cuộc gọi thành công
+  fail/         6 cuộc gọi thất bại
+  for_test/     7 cuộc gọi chưa gắn nhãn, dùng để tự kiểm chứng
 ```
 
 ## Giới hạn đã biết (Known Limitations) — Sprint 1

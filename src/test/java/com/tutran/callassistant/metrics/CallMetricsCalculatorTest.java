@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.within;
 class CallMetricsCalculatorTest {
 
     private static final String CALL_ID = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
-    private static final Path CALL_DIR = Path.of("success", CALL_ID);
+    private static final Path CALL_DIR = Path.of("sample-data", "success", CALL_ID);
 
     private final CallMetricsCalculator calculator = new CallMetricsCalculator();
 
@@ -125,7 +125,7 @@ class CallMetricsCalculatorTest {
     @Test
     void computesSignalingDerivedMetricsForASecondRealCallWithNoEndCallLogsAtAll() {
         String callId = "6A7CE985-4A1A-44D1-84B1-DBB0B0B90448";
-        Path callDir = Path.of("success", callId);
+        Path callDir = Path.of("sample-data", "success", callId);
         List<CanonicalEvent> events = new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events();
         CallTimeline timeline = new TimelineBuilder().build(callId, events);
 
@@ -142,7 +142,7 @@ class CallMetricsCalculatorTest {
     @Test
     void computesSignalingDerivedMetricsForAThirdRealCallWithASingleEndCallLog() {
         String callId = "C8CF631E-0C6B-46E4-92E7-280E7B6A5394";
-        Path callDir = Path.of("success", callId);
+        Path callDir = Path.of("sample-data", "success", callId);
         List<CanonicalEvent> events = new ArrayList<>();
         events.addAll(new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events());
         events.addAll(new EndCallLogParser().parse(callDir.resolve("caller_endcall.log"), callId).events());
@@ -163,7 +163,7 @@ class CallMetricsCalculatorTest {
         // trước khi kịp gửi INVITE (một dạng lỗi khác với việc 1B009D42 bị từ chối sau
         // INVITE, đã kiểm tra ở RuleVerdictEngineTest).
         String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
-        Path callDir = Path.of("fail", callId);
+        Path callDir = Path.of("sample-data", "fail", callId);
         List<CanonicalEvent> events = new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events();
         CallTimeline timeline = new TimelineBuilder().build(callId, events);
 

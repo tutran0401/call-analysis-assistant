@@ -38,7 +38,7 @@ class ReportBuilderTest {
     @Test
     void buildsAValidReportForARealSuccessfulCall() {
         String callId = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
-        Report report = buildReportFor(Path.of("success", callId), callId);
+        Report report = buildReportFor(Path.of("sample-data", "success", callId), callId);
 
         assertThat(report.callId()).isEqualTo(callId);
         assertThat(report.verdict()).isEqualTo("SUCCESS");
@@ -54,7 +54,7 @@ class ReportBuilderTest {
     @Test
     void everyMetricNameAppearsAtMostOnce() {
         String callId = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
-        Report report = buildReportFor(Path.of("success", callId), callId);
+        Report report = buildReportFor(Path.of("sample-data", "success", callId), callId);
 
         List<String> names = report.metrics().stream().map(MetricRow::name).toList();
         assertThat(names).doesNotHaveDuplicates();

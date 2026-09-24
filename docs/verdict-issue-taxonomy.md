@@ -104,7 +104,7 @@ việc tường minh của Sprint 3 (mục 7.1 T1).
 Số hiệu schema `#HN` trong end-call log (xem `sample.md`) **không phải** một định danh cố
 định: đúng một schema logic (ví dụ "call summary", hay bản ghi periodic quality stats
 ~150 field) lại xuất hiện dưới các số *khác nhau* giữa log của caller và callee trong
-**cùng một cuộc gọi mẫu** (`success/DE7DD314-F432-45CB-BCB4-AE9103CC0919`). Vì vậy
+**cùng một cuộc gọi mẫu** (`sample-data/success/DE7DD314-F432-45CB-BCB4-AE9103CC0919`). Vì vậy
 `EndCallLogParser` và `EndCallSchemaClassifier` phân loại từng header theo **tên các
 field mà nó khai báo**, chứ không bao giờ theo số hiệu — cùng nguyên tắc "nhận diện theo
 nội dung, không theo tên/số có thể thay đổi" đã dùng để nhận diện loại file.

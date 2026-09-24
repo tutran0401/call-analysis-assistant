@@ -1,8 +1,8 @@
 # Sensitive Data Inventory & Data Classification Policy (T9)
 
 Mở rộng bảng khởi điểm ở PROJECT_SPEC.md mục 5.2 với các field thực sự phát hiện được
-trong lúc xây dựng parser Sprint 1, bằng cách rà soát data mẫu thật trong `fail/`,
-`success/`, `for_test/`. Chưa có sanitizer nào được cài đặt (việc đó thuộc Sprint 2, mục
+trong lúc xây dựng parser Sprint 1, bằng cách rà soát data mẫu thật trong `sample-data/fail/`,
+`sample-data/success/`, `sample-data/for_test/`. Chưa có sanitizer nào được cài đặt (việc đó thuộc Sprint 2, mục
 6.2) — đây chỉ là bản kiểm kê (inventory) mà sanitizer sau này sẽ phải tuân theo. Sprint 1
 chưa gửi gì sang AI provider nên chưa có nguy cơ rò rỉ, nhưng các parser đã trích các
 field này vào `CanonicalEvent.attributes()`, nên chính sách dưới đây sẽ là cơ sở để

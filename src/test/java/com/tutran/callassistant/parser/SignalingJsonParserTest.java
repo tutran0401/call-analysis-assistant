@@ -20,7 +20,7 @@ class SignalingJsonParserTest {
 
     @Test
     void parsesRealSampleSignalingExport() {
-        Path file = Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "signaling.json");
+        Path file = Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "signaling.json");
 
         ParseResult result = parser.parse(file, null);
 

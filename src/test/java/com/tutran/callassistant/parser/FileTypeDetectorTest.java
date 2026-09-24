@@ -13,25 +13,25 @@ class FileTypeDetectorTest {
 
     @Test
     void detectsRealSignalingExport() {
-        assertThat(FileTypeDetector.detect(Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "signaling.json")))
+        assertThat(FileTypeDetector.detect(Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "signaling.json")))
                 .isEqualTo(LogFileType.SIGNALING_EXPORT);
     }
 
     @Test
     void detectsRealEndCallLog() {
-        assertThat(FileTypeDetector.detect(Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_endcall.log")))
+        assertThat(FileTypeDetector.detect(Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_endcall.log")))
                 .isEqualTo(LogFileType.END_CALL);
     }
 
     @Test
     void detectsRealWebRtcLogFormat1() {
-        assertThat(FileTypeDetector.detect(Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_webrtc.log")))
+        assertThat(FileTypeDetector.detect(Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_webrtc.log")))
                 .isEqualTo(LogFileType.WEBRTC);
     }
 
     @Test
     void detectsRealWebRtcLogFormat2() {
-        assertThat(FileTypeDetector.detect(Path.of("fail", "703100CF-5742-467E-9E0E-34E45F60FF58", "caller_webrtc.log")))
+        assertThat(FileTypeDetector.detect(Path.of("sample-data", "fail", "703100CF-5742-467E-9E0E-34E45F60FF58", "caller_webrtc.log")))
                 .isEqualTo(LogFileType.WEBRTC);
     }
 

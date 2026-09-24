@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EndCallLogParserTest {
 
     private static final Path SAMPLE_FILE =
-            Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_endcall.log");
+            Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_endcall.log");
 
     private final EndCallLogParser parser = new EndCallLogParser();
 

@@ -19,7 +19,7 @@ class CallLogDirectoryLoaderTest {
         // success/EE129C8F.../ có cả "callee_webrtc.log" lẫn 1 file đặt sai tên bên cạnh
         // "calleer_webrtc.log" - cả hai đều phải nhận diện đúng là nội dung WEBRTC của
         // bên CALLEE, và signaling.json phải bị bỏ qua (xử lý qua ES thay vào đó).
-        Path dir = Path.of("success", "EE129C8F-EAD0-4302-AB68-920D32F8B8B7");
+        Path dir = Path.of("sample-data", "success", "EE129C8F-EAD0-4302-AB68-920D32F8B8B7");
 
         ParseResult result = loader.loadClientLogs(dir, "EE129C8F-EAD0-4302-AB68-920D32F8B8B7");
 
@@ -52,7 +52,7 @@ class CallLogDirectoryLoaderTest {
         // suy ra từ nội dung (xem EndCallLogParserTest để có test chính thức). End-call
         // log thật ghi CALL_SUMMARY 2 lần mỗi bên (lúc bắt đầu và lúc kết thúc) - cả 2
         // dòng đều phải mang đúng cùng một leg.
-        Path dir = Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919");
+        Path dir = Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919");
 
         ParseResult result = loader.loadClientLogs(dir, "DE7DD314-F432-45CB-BCB4-AE9103CC0919");
 
