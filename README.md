@@ -80,6 +80,7 @@ docs/
   sensitive-data-inventory.md
   ai-provider-proposal.md
 sample-data/    Data mẫu do mentor cung cấp (không chỉnh sửa nội dung)
+  sample.md     Đặc tả định dạng log (WebRTC + 9 schema #H1-#H9 của end-call log)
   success/      7 cuộc gọi thành công
   fail/         6 cuộc gọi thất bại
   for_test/     7 cuộc gọi chưa gắn nhãn, dùng để tự kiểm chứng

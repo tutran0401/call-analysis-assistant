@@ -10,7 +10,7 @@ class EndCallSchemaClassifierTest {
 
     @Test
     void classifiesBySchemaContentNotByNumericLabel() {
-        // Cùng tập field như #H1..#H9 trong sample.md, nhưng nhãn số hoàn toàn không liên
+        // Cùng tập field như #H1..#H9 trong sample-data/sample.md, nhưng nhãn số hoàn toàn không liên
         // quan đến việc phân loại - file mẫu thật dùng lại đúng các tập field này dưới
         // những số #HN khác nhau (xem Javadoc của EndCallLogParser), nên ở đây chỉ nội
         // dung mới quan trọng.
