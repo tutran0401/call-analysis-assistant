@@ -18,25 +18,22 @@ import java.util.Map;
 /**
  * Parses the TSV "End Call log" format documented in {@code sample.md}: 9 header rows
  * ({@code #H1}..{@code #H9}), each declaring the column schema for a record "type" that
- * data rows reference by a leading numeric tag (1-9). Columns 1-2 of every data row are
- * always the type tag and an epoch-millis timestamp; column 3 is a free-text category
- * label (e.g. "log_detail", "send_cmd"); columns 4+ are the schema-specific fields named
- * by the matching header (whose own first 3 tokens - "#HN", "#ts", "#tag" - are markers,
- * not data columns).
+ * data rows reference by a leading numeric tag. Columns 1-2 of every data row are always
+ * the type tag and an epoch-millis timestamp; column 3 is a free-text category label
+ * (e.g. "log_detail", "send_cmd"); columns 4+ are the schema-specific fields named by the
+ * matching header (whose own first 3 tokens - "#HN", "#ts", "#tag" - are markers, not data
+ * columns).
+ *
+ * <p><b>Important:</b> the {@code N} in {@code #HN} is NOT a stable, semantic schema id -
+ * comparing real sample files shows the same logical schema (e.g. "call summary", or the
+ * ~150-field periodic quality stats record) shows up under a different {@code #HN} number
+ * in different files. It appears to be assigned by registration order within that upload,
+ * not a fixed convention. This parser therefore classifies each header's *meaning* by the
+ * distinctive field names it declares (mirroring the file-type detection principle used
+ * elsewhere: identify by content, never by a name/number that can vary) and only uses the
+ * numeric tag to look up the right column layout within one file.
  */
 public final class EndCallLogParser {
-
-    private static final Map<Integer, String> SCHEMA_NAMES = Map.of(
-            1, "CALL_SUMMARY",
-            2, "LOG_MESSAGE",
-            3, "SIGNALING_CMD",
-            4, "QOS",
-            5, "SIGNAL",
-            6, "LOCAL_CANDIDATE",
-            7, "PERIODIC_STATS",
-            8, "INIT_CONFIG",
-            9, "END_CALL_SUMMARY"
-    );
 
     public ParseResult parse(Path file, String callId) {
         List<String> lines;
@@ -67,13 +64,16 @@ public final class EndCallLogParser {
             dataRowLineNumbers.add(lineNo);
         }
 
-        Leg leg = inferLeg(dataRows, headerFieldsBySchema, file);
+        Map<Integer, String> schemaTypeById = new LinkedHashMap<>();
+        headerFieldsBySchema.forEach((id, fields) -> schemaTypeById.put(id, EndCallSchemaClassifier.classify(fields)));
+
+        Leg leg = inferLeg(dataRows, headerFieldsBySchema, schemaTypeById, file);
 
         for (int i = 0; i < dataRows.size(); i++) {
             String[] cols = dataRows.get(i);
             int rowLineNo = dataRowLineNumbers.get(i);
             try {
-                CanonicalEvent event = toEvent(cols, headerFieldsBySchema, callId, leg, file, rowLineNo);
+                CanonicalEvent event = toEvent(cols, headerFieldsBySchema, schemaTypeById, callId, leg, file, rowLineNo);
                 if (event != null) {
                     events.add(event);
                 }
@@ -99,7 +99,7 @@ public final class EndCallLogParser {
     }
 
     private CanonicalEvent toEvent(String[] cols, Map<Integer, List<String>> headerFieldsBySchema,
-                                    String callId, Leg leg, Path file, int lineNo) {
+                                    Map<Integer, String> schemaTypeById, String callId, Leg leg, Path file, int lineNo) {
         if (cols.length < 2) {
             throw new IllegalArgumentException("row has fewer than 2 columns");
         }
@@ -123,7 +123,7 @@ public final class EndCallLogParser {
             }
         }
 
-        String eventType = SCHEMA_NAMES.getOrDefault(schemaId, "UNKNOWN_SCHEMA_" + schemaId);
+        String eventType = schemaTypeById.getOrDefault(schemaId, "UNKNOWN_SCHEMA_" + schemaId);
         String rawLine = String.join("\t", cols);
 
         return new CanonicalEvent(
@@ -142,24 +142,28 @@ public final class EndCallLogParser {
     }
 
     /**
-     * The type-1 (CALL_SUMMARY) row carries an explicit {@code role} field
-     * ("caller"/"callee") - that is the authoritative signal. Only when no such row is
-     * present do we fall back to the filename, since the file is otherwise entirely
-     * about one leg.
+     * The CALL_SUMMARY row carries an explicit {@code role} field ("caller"/"callee") -
+     * that is the authoritative signal. Only when no such row is present do we fall back
+     * to the filename, since the file is otherwise entirely about one leg.
      */
-    private Leg inferLeg(List<String[]> dataRows, Map<Integer, List<String>> headerFieldsBySchema, Path file) {
-        List<String> h1Fields = headerFieldsBySchema.get(1);
-        if (h1Fields != null) {
-            int roleIndex = h1Fields.indexOf("role");
-            if (roleIndex >= 0) {
-                for (String[] cols : dataRows) {
-                    if (cols.length > 0 && "1".equals(cols[0].trim())) {
-                        int colIndex = 3 + roleIndex;
-                        if (colIndex < cols.length) {
-                            Leg leg = legFromText(cols[colIndex]);
-                            if (leg != Leg.UNKNOWN) {
-                                return leg;
-                            }
+    private Leg inferLeg(List<String[]> dataRows, Map<Integer, List<String>> headerFieldsBySchema,
+                          Map<Integer, String> schemaTypeById, Path file) {
+        for (Map.Entry<Integer, String> entry : schemaTypeById.entrySet()) {
+            if (!"CALL_SUMMARY".equals(entry.getValue())) {
+                continue;
+            }
+            int schemaId = entry.getKey();
+            int roleIndex = headerFieldsBySchema.get(schemaId).indexOf("role");
+            if (roleIndex < 0) {
+                continue;
+            }
+            for (String[] cols : dataRows) {
+                if (cols.length > 0 && String.valueOf(schemaId).equals(cols[0].trim())) {
+                    int colIndex = 3 + roleIndex;
+                    if (colIndex < cols.length) {
+                        Leg leg = legFromText(cols[colIndex]);
+                        if (leg != Leg.UNKNOWN) {
+                            return leg;
                         }
                     }
                 }
