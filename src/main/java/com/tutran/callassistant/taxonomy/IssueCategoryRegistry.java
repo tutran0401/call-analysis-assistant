@@ -59,9 +59,13 @@ public final class IssueCategoryRegistry {
                             + "allocation/relay error on the client side.",
                     List.of("WebRTC log reports a TURN allocation/relay/socket error"),
                     List.of("WebRTC log (TURN_ERROR events)"),
-                    "A WebRTC log event's message mentions 'turn' together with 'error' or 'fail'",
-                    "Out of scope per PROJECT_SPEC.md §9: this only flags a client-observed TURN error, it does "
-                            + "not diagnose TURN server congestion or capacity."
+                    "Not auto-detected by the Sprint 1 rule engine: free-text keyword matching for TURN errors "
+                            + "was tried and dropped after it flagged routine, self-recovering per-candidate TURN "
+                            + "protocol responses (e.g. the standard long-term-credential challenge) as failures "
+                            + "on clean SUCCESS calls. Currently folds into ICE_FAILURE/SIGNALING_FAILURE instead; "
+                            + "a reliable detector is Known Limitations work for a later sprint.",
+                    "Out of scope per PROJECT_SPEC.md §9 to diagnose TURN server congestion or capacity even once "
+                            + "client-observed TURN errors are detected reliably."
             ),
             IssueCategory.SIGNALING_FAILURE, new IssueCategoryDefinition(
                     IssueCategory.SIGNALING_FAILURE,

@@ -89,29 +89,28 @@ public final class RuleVerdictEngine {
                                             List<String> dataLimitations) {
         List<CanonicalEvent> webrtcEvents = timeline.forSource(EventSource.WEBRTC);
 
-        Optional<CanonicalEvent> turnError = webrtcEvents.stream()
-                .filter(e -> "TURN_ERROR".equals(e.eventType())).findFirst();
+        // Only the engine's own terminal ICE state callback is trusted here - free-text
+        // keyword matching for "turn"/"ice" + "error"/"fail" was tried and dropped (see
+        // WebRtcLogParser's classify() javadoc): it flagged routine, self-recovering
+        // per-candidate TURN protocol noise as failures even on clean SUCCESS calls, so a
+        // dedicated, reliable TURN_FAILURE detector is deferred past Sprint 1 (see
+        // IssueCategoryRegistry's known ambiguity note for ICE_FAILURE/TURN_FAILURE).
         Optional<CanonicalEvent> iceFailure = webrtcEvents.stream()
-                .filter(e -> "ICE_ERROR".equals(e.eventType())
-                        || ("ICE_CONNECTION_STATE_CHANGE".equals(e.eventType())
-                                && matchesFailureKeyword(e.attribute("message"))))
+                .filter(e -> "ICE_CONNECTION_STATE_CHANGE".equals(e.eventType())
+                        && matchesFailureKeyword(e.attribute("message")))
                 .findFirst();
 
         IssueCategory category;
         String summary;
-        if (turnError.isPresent()) {
-            category = IssueCategory.TURN_FAILURE;
-            evidenceEngine.add(turnError.get(), "WebRTC log reports a TURN-related error");
-            summary = "Call failed to establish: a TURN error was observed in the WebRTC log.";
-        } else if (iceFailure.isPresent()) {
+        if (iceFailure.isPresent()) {
             category = IssueCategory.ICE_FAILURE;
             evidenceEngine.add(iceFailure.get(), "WebRTC log reports an ICE connection failure");
             summary = "Call failed to establish: ICE connectivity failed in the WebRTC log.";
         } else {
             category = IssueCategory.SIGNALING_FAILURE;
             summary = "Call failed to establish: no OK_ACK_OK (confirmed) event was observed at the "
-                    + "signaling layer, and no media-layer (ICE/TURN) failure evidence was found, so the "
-                    + "call is attributed to a signaling-layer failure.";
+                    + "signaling layer, and no ICE connection failure evidence was found, so the call is "
+                    + "attributed to a signaling-layer failure.";
         }
 
         return new RuleVerdictResult(Verdict.FAIL, false, category, summary, evidenceEngine.all(), dataLimitations);
