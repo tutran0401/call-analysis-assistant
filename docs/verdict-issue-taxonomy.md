@@ -1,109 +1,110 @@
 # Verdict & Issue Taxonomy (T5)
 
-This is the human-readable mirror of `com.tutran.callassistant.taxonomy` — the code is
-the source of truth (`IssueCategoryRegistry`); this document exists so the taxonomy can
-be reviewed without reading Java. Keep the two in sync.
+Đây là bản đọc-hiểu-được-bằng-tiếng-Việt của package `com.tutran.callassistant.taxonomy`
+— code (`IssueCategoryRegistry`) mới là nguồn chân lý; tài liệu này tồn tại để có thể
+review taxonomy mà không cần đọc Java. Khi sửa 1 bên thì nhớ đồng bộ bên còn lại.
 
-## Verdict (PROJECT_SPEC.md §4.1)
+## Verdict (PROJECT_SPEC.md mục 4.1)
 
-| Verdict | Criteria checked by `RuleVerdictEngine` |
+| Verdict | Tiêu chí `RuleVerdictEngine` kiểm tra |
 | --- | --- |
-| `UNKNOWN` | No signaling data at all; or end-call logs missing for **both** legs; or the call appears connected (`OK_ACK_OK` observed) but no `BYE` was ever found (most likely truncated/incomplete data, not a real ongoing call) |
-| `FAIL` | Signaling data exists and at least one leg's end-call log exists, but no `OK_ACK_OK` (confirmed) event was ever observed |
-| `SUCCESS` | `OK_ACK_OK` observed and later followed by `BYE` — optionally flagged with a quality issue (see below) |
+| `UNKNOWN` | Không có signaling data nào cả; hoặc thiếu end-call log ở **cả hai** bên; hoặc cuộc gọi có vẻ đã kết nối (thấy `OK_ACK_OK`) nhưng chưa từng thấy `BYE` (nhiều khả năng do data bị cắt/thiếu, không phải cuộc gọi thật đang diễn ra) |
+| `FAIL` | Có signaling data và ít nhất một bên có end-call log, nhưng chưa từng quan sát được sự kiện `OK_ACK_OK` (đã xác nhận kết nối) |
+| `SUCCESS` | Đã thấy `OK_ACK_OK` và sau đó có `BYE` — có thể kèm cờ chất lượng kém (xem bên dưới) |
 
-Quality flag (`SUCCESS` only) is raised when **either leg** breaches a threshold, checked
-in this order (first match wins):
+Cờ chất lượng (chỉ áp dụng cho `SUCCESS`) được gắn khi **một trong hai bên** vượt ngưỡng,
+kiểm tra theo thứ tự sau (khớp điều kiện nào trước thì dùng điều kiện đó):
 
 1. `audio.packetLostPercent > 5.0%` → `NETWORK_PACKET_LOSS`
-2. `audio.jitter > 30.0ms` OR `transport.currentRttMs > 300.0ms` → `NETWORK_DELAY_JITTER`
-3. `audio.audioMos < 3.5` (and neither of the above fired) → `UNKNOWN` (quality is clearly
-   poor, but no specific network metric explains why)
+2. `audio.jitter > 30.0ms` HOẶC `transport.currentRttMs > 300.0ms` → `NETWORK_DELAY_JITTER`
+3. `audio.audioMos < 3.5` (và không rơi vào 2 điều kiện trên) → `UNKNOWN` (chất lượng rõ
+   ràng kém, nhưng không có chỉ số mạng cụ thể nào giải thích được lý do)
 
-These thresholds are a documented Sprint 1 baseline, not calibrated against ground
-truth (none shipped with the sample data) — tightening them is explicit Sprint 3 work
-(§7.1 T1).
+Các ngưỡng này là baseline của Sprint 1, đã ghi rõ trong tài liệu, **chưa được hiệu chỉnh
+theo ground truth** (data mẫu không kèm ground truth) — việc tinh chỉnh ngưỡng là công
+việc tường minh của Sprint 3 (mục 7.1 T1).
 
-## Issue Category (PROJECT_SPEC.md §4.2)
+## Issue Category (PROJECT_SPEC.md mục 4.2)
 
-Applies to `FAIL` calls and to `SUCCESS` calls with a quality flag.
+Áp dụng cho cuộc gọi `FAIL` và cuộc gọi `SUCCESS` có cờ chất lượng kém.
 
 ### NETWORK_PACKET_LOSS
 
-- **Definition**: call connects and stays connected, but quality degrades from lost
-  packets — not a connection-setup failure.
-- **Symptoms**: high `audio.packetLostPercent`; low `audio.audioMos`.
-- **Required evidence**: end-call log periodic stats.
-- **Detection**: `audio.packetLostPercent > 5%` OR `audio.audioMos < 3.5` for either leg.
-- **Known ambiguity**: co-occurs with jitter/RTT issues; without those fields we can't
-  always tell which is primary.
+- **Định nghĩa**: cuộc gọi kết nối được và duy trì kết nối, nhưng chất lượng giảm do mất
+  gói tin — không phải lỗi thiết lập kết nối.
+- **Triệu chứng**: `audio.packetLostPercent` cao; `audio.audioMos` thấp.
+- **Evidence cần có**: periodic stats trong end-call log.
+- **Điều kiện phát hiện**: `audio.packetLostPercent > 5%` HOẶC `audio.audioMos < 3.5` ở
+  một trong hai bên.
+- **Điểm mơ hồ đã biết**: thường đi kèm với vấn đề jitter/RTT; nếu thiếu các field đó thì
+  không phải lúc nào cũng phân biệt được đâu là nguyên nhân chính.
 
 ### NETWORK_DELAY_JITTER
 
-- **Definition**: quality degrades from delay/jitter rather than outright loss.
-- **Symptoms**: high `audio.jitter`; high `transport.currentRttMs`.
-- **Required evidence**: end-call log periodic stats.
-- **Detection**: `audio.jitter > 30ms` OR `transport.currentRttMs > 300ms`.
-- **Known ambiguity**: RTT/jitter fields aren't always present (device/version
-  dependent); when absent, this can't be distinguished from `NETWORK_PACKET_LOSS` and
-  the report must say so rather than guess.
+- **Định nghĩa**: chất lượng giảm do độ trễ/jitter chứ không phải do mất gói trực tiếp.
+- **Triệu chứng**: `audio.jitter` cao; `transport.currentRttMs` cao.
+- **Evidence cần có**: periodic stats trong end-call log.
+- **Điều kiện phát hiện**: `audio.jitter > 30ms` HOẶC `transport.currentRttMs > 300ms`.
+- **Điểm mơ hồ đã biết**: field RTT/jitter không phải lúc nào cũng có (tuỳ thiết bị/phiên
+  bản); khi thiếu thì không thể phân biệt với `NETWORK_PACKET_LOSS`, và report phải nêu
+  rõ điều này thay vì đoán bừa.
 
 ### ICE_FAILURE
 
-- **Definition**: media connection never established because ICE connectivity checks
-  failed.
-- **Symptoms**: WebRTC log's `onIceConnectionChange` reaches `FAILED`/`DISCONNECTED`;
-  end-call state timeline never reaches `CONFIRMED`.
-- **Required evidence**: WebRTC log `ICE_CONNECTION_STATE_CHANGE` event; end-call state
-  timeline.
-- **Detection**: an `ICE_CONNECTION_STATE_CHANGE` event whose message mentions
+- **Định nghĩa**: không thiết lập được kết nối media vì quá trình kiểm tra kết nối ICE
+  thất bại.
+- **Triệu chứng**: `onIceConnectionChange` trong WebRTC log chuyển sang `FAILED`/
+  `DISCONNECTED`; state timeline của end-call log không bao giờ đạt `CONFIRMED`.
+- **Evidence cần có**: sự kiện `ICE_CONNECTION_STATE_CHANGE` trong WebRTC log; state
+  timeline của end-call log.
+- **Điều kiện phát hiện**: có sự kiện `ICE_CONNECTION_STATE_CHANGE` với message nhắc đến
   `FAILED`/`DISCONNECTED`.
-- **Known ambiguity**: hard to separate from `TURN_FAILURE` without per-candidate-pair
-  detail — see below.
+- **Điểm mơ hồ đã biết**: khó tách biệt với `TURN_FAILURE` nếu thiếu chi tiết theo từng
+  candidate pair — xem thêm bên dưới.
 
 ### TURN_FAILURE
 
-- **Definition**: media connection could not be established (or degraded) because of a
-  client-observed TURN allocation/relay error.
-- **Not auto-detected in Sprint 1.** An early version pattern-matched free text for
-  "turn" + "error"/"fail", but that flagged routine, self-recovering per-candidate TURN
-  protocol responses as failures — confirmed on a real, clean `SUCCESS` call where it
-  produced 26/16 false positives (the standard long-term-credential challenge and
-  permission-negotiation retries that simply get abandoned in favor of a working
-  candidate pair). Currently folds into `ICE_FAILURE` (via the reliable terminal ICE
-  state) or `SIGNALING_FAILURE`. A real detector — likely needing per-candidate-pair
-  state tracking, not single-line keyword matching — is Known Limitations work.
-- **Out of scope regardless** (PROJECT_SPEC.md §9): diagnosing TURN server congestion
-  or capacity, even once client-observed errors are detected reliably.
+- **Định nghĩa**: không thiết lập được (hoặc bị suy giảm) kết nối media do lỗi
+  allocation/relay của TURN quan sát được từ phía client.
+- **Chưa tự động phát hiện được trong Sprint 1.** Phiên bản đầu tiên so khớp từ khóa tự
+  do "turn" + "error"/"fail", nhưng cách này báo nhầm các phản hồi giao thức TURN bình
+  thường, tự phục hồi được thành lỗi thật — đã xác nhận trên một cuộc gọi `SUCCESS` thật,
+  sạch, ra tới 26/16 false positive (đây là bước "thách thức" (challenge) tiêu chuẩn của
+  cơ chế credential dài hạn, và các lần thử lại xin quyền (permission) đơn giản bị bỏ để
+  chuyển sang candidate pair khác đang hoạt động tốt). Hiện tại lỗi này được gộp vào
+  `ICE_FAILURE` (qua trạng thái kết thúc ICE đáng tin cậy) hoặc `SIGNALING_FAILURE`. Một
+  bộ phát hiện TURN thật sự — có lẽ cần theo dõi trạng thái theo từng candidate pair chứ
+  không phải so khớp từ khóa từng dòng — được để lại làm Known Limitations.
+- **Dù sao cũng ngoài phạm vi** (PROJECT_SPEC.md mục 9): chẩn đoán nghẽn/quá tải TURN
+  server, kể cả khi đã phát hiện được lỗi TURN phía client một cách đáng tin cậy.
 
 ### SIGNALING_FAILURE
 
-- **Definition**: call could not be established because of a signaling-layer problem:
-  timeouts, excessive retransmits, or the callee session not being found.
-- **Symptoms**: repeated INVITE/BYE retransmits; "No sessions found" in the end-call
-  log; non-zero `callErrorCode` with the call ending before `CONFIRMED`.
-- **Required evidence**: signaling log retries/timeouts; end-call log state
-  timeline/log_detail.
-- **Detection**: this is the Sprint 1 rule engine's **default FAIL category** whenever
-  no `OK_ACK_OK` was observed and no ICE failure evidence was found — i.e. the call
-  never got far enough for a media-layer problem to even be possible yet.
-- **Known ambiguity**: a non-zero `callErrorCode` can reflect a legitimate user action
-  (busy, declined) rather than a system failure — e.g. the real sample call
-  `1B009D42-49CD-479E-B26C-3A2994AEB720` was rejected with `callErrorCode: 428`
-  ("Người này hiện chưa thể nhận cuộc gọi") before ever sending an INVITE. Evidence
-  must be read in context, not treated as proof of a technical fault.
+- **Định nghĩa**: cuộc gọi không thiết lập được do vấn đề ở tầng signaling: timeout, gửi
+  lại quá nhiều lần, hoặc không tìm thấy session của callee.
+- **Triệu chứng**: gửi lại INVITE/BYE nhiều lần; "No sessions found" trong end-call log;
+  `callErrorCode` khác 0 và cuộc gọi kết thúc trước khi đạt `CONFIRMED`.
+- **Evidence cần có**: log retry/timeout ở signaling log; state timeline/log_detail của
+  end-call log.
+- **Điều kiện phát hiện**: đây là **category FAIL mặc định** của rule engine Sprint 1 khi
+  chưa từng thấy `OK_ACK_OK` và không có evidence lỗi ICE — tức cuộc gọi chưa đi đủ xa để
+  có thể xảy ra vấn đề ở tầng media.
+- **Điểm mơ hồ đã biết**: `callErrorCode` khác 0 có thể chỉ phản ánh hành động hợp lệ của
+  người dùng (bận, từ chối) chứ không phải lỗi hệ thống — ví dụ cuộc gọi mẫu thật
+  `1B009D42-49CD-479E-B26C-3A2994AEB720` bị từ chối với `callErrorCode: 428` ("Người này
+  hiện chưa thể nhận cuộc gọi") ngay trước khi kịp gửi INVITE. Evidence cần được đọc theo
+  ngữ cảnh, không nên coi là bằng chứng lỗi kỹ thuật.
 
 ### UNKNOWN
 
-- Not enough evidence was available to attribute the issue to a specific category.
+- Không đủ evidence để gán vào một category cụ thể.
 
-## A real data quirk that shaped this design
+## Một điểm bất thường trong data thật đã ảnh hưởng đến thiết kế này
 
-The end-call log's numeric `#HN` schema tag (see `sample.md`) is **not** a stable
-identifier: the exact same logical schema (e.g. "call summary", or the ~150-field
-periodic quality-stats record) appears under a *different* number in the caller vs.
-callee log of the very same sample call
-(`success/DE7DD314-F432-45CB-BCB4-AE9103CC0919`). `EndCallLogParser` and
-`EndCallSchemaClassifier` therefore classify each header by the field names it
-declares, never by its number — the same "identify by content, not by a name/number
-that can vary" principle used for file-type detection.
+Số hiệu schema `#HN` trong end-call log (xem `sample.md`) **không phải** một định danh cố
+định: đúng một schema logic (ví dụ "call summary", hay bản ghi periodic quality stats
+~150 field) lại xuất hiện dưới các số *khác nhau* giữa log của caller và callee trong
+**cùng một cuộc gọi mẫu** (`success/DE7DD314-F432-45CB-BCB4-AE9103CC0919`). Vì vậy
+`EndCallLogParser` và `EndCallSchemaClassifier` phân loại từng header theo **tên các
+field mà nó khai báo**, chứ không bao giờ theo số hiệu — cùng nguyên tắc "nhận diện theo
+nội dung, không theo tên/số có thể thay đổi" đã dùng để nhận diện loại file.

@@ -1,50 +1,50 @@
 # AI Provider Proposal (T10)
 
-**Status: draft, pending Mentor approval (due end of Sprint 1, PROJECT_SPEC.md §1.4).**
-This compares two options that run from a personal machine, per §5.1 T10's requirement.
-Nothing here is used yet — Sprint 1 has no AI in the pipeline at all (§3.2/§3.3); this
-proposal only sets up what Sprint 2's AI Analysis Engine will call.
+**Trạng thái: bản nháp, đang chờ Mentor duyệt (hạn cuối Sprint 1, PROJECT_SPEC.md mục 1.4).**
+Tài liệu này so sánh 2 phương án có thể chạy được từ máy cá nhân, theo đúng yêu cầu ở mục
+5.1 T10. Sprint 1 chưa có AI nào trong pipeline cả (mục 3.2/3.3); đề xuất này chỉ chuẩn
+bị trước cho những gì AI Analysis Engine của Sprint 2 sẽ gọi tới.
 
-## What the AI actually needs to do (from §3.2/§6.1 T5)
+## AI thực sự cần làm gì (theo mục 3.2 / mục 6.1 T5)
 
-Input: intent/focus (from Request Parser) + timeline + evidence + computed metrics +
-taxonomy — never raw log lines (see `docs/sensitive-data-inventory.md`'s last section).
-Output: a structured object matching `report-schema-v1.json`'s AI-filled fields
-(`verdict` suggestion, `qualityFlag`, `issueCategory`, `summary`, `evidenceIds`,
-`analysis`, `suggestions`) that Guardrails then checks against the rule baseline. So the
-two properties that matter most for provider choice are: **reliable structured/JSON
-output** (Guardrails needs to parse it deterministically) and **acceptable latency** for
-an interactive web UI (Sprint 2 §6.5 measures P50/P95 end-to-end).
+Input: intent/focus (từ Request Parser) + timeline + evidence + chỉ số đã tính + taxonomy
+— **không bao giờ** là log gốc (xem phần cuối của `docs/sensitive-data-inventory.md`).
+Output: một object có cấu trúc khớp với các field mà AI cần điền trong `report-schema-v1.json`
+(gợi ý `verdict`, `qualityFlag`, `issueCategory`, `summary`, `evidenceIds`, `analysis`,
+`suggestions`), sau đó Guardrails sẽ đối chiếu với rule baseline. Vì vậy 2 tiêu chí quan
+trọng nhất khi chọn provider là: **structured/JSON output đáng tin cậy** (Guardrails cần
+parse được một cách xác định) và **latency chấp nhận được** cho một web UI tương tác
+(Sprint 2 mục 6.5 đo P50/P95 end-to-end).
 
-## Option A: Cloud API (Anthropic Claude, e.g. Haiku or Sonnet)
+## Phương án A: Cloud API (Anthropic Claude, ví dụ Haiku hoặc Sonnet)
 
-| Criterion | Assessment |
+| Tiêu chí | Đánh giá |
 | --- | --- |
-| Data sent after sanitize | Only the sanitized timeline/evidence/metrics JSON (§6.2) leaves the machine, over TLS to Anthropic's API. No raw log lines, no `SECRET`-classified fields ever leave the sanitizer. |
-| Cost | Pay-per-token. A single call's sanitized context (timeline + evidence + metrics, not raw logs) is small — low hundreds to low thousands of tokens — so per-analysis cost is a small fraction of a cent to a few cents depending on model tier. Needs a real API key and budget; free-tier/trial credits may cover Sprint 2-3 development volume. |
-| Latency | Typically ~1-3s for a small-to-medium structured-output request on a fast model tier; consistent regardless of the developer's own machine's CPU/GPU. |
-| Structured output support | Strong: supports constrained/tool-based structured output and JSON mode, which maps directly onto validating against `report-schema-v1.json` in Guardrails. |
-| Other | Requires an internet connection and an API key (cost/secrets management); nothing runs "outside the team's systems" since it's a public API call, which is allowed per §1.3 (only *team-internal* systems are off-limits) but should still be called out explicitly to the Mentor as an external network dependency. |
+| Dữ liệu gửi đi sau khi sanitize | Chỉ JSON đã sanitize (timeline/evidence/metrics, mục 6.2) rời khỏi máy, qua TLS tới API của Anthropic. Không có log gốc, không có field mức `SECRET` nào rời khỏi sanitizer. |
+| Chi phí | Trả theo token. Context đã sanitize cho một cuộc gọi (timeline + evidence + metrics, không phải log gốc) khá nhỏ — vài trăm đến vài nghìn token — nên chi phí mỗi lần phân tích chỉ vài phần nghìn đến vài xu tuỳ tier model. Cần có API key và ngân sách thật; free-tier/trial credit có thể đủ dùng cho khối lượng phát triển Sprint 2-3. |
+| Latency | Thường khoảng 1-3s cho một request structured-output cỡ nhỏ-trung bình ở tier model nhanh; ổn định, không phụ thuộc CPU/GPU máy cá nhân của người phát triển. |
+| Hỗ trợ structured output | Mạnh: hỗ trợ structured output dạng constrained/tool-based và JSON mode, khớp trực tiếp với việc validate theo `report-schema-v1.json` ở Guardrails. |
+| Khác | Cần kết nối internet và API key (phải quản lý chi phí/secret); không chạy "ngoài hệ thống của team" theo đúng nghĩa vì đây là gọi API công khai — được phép theo mục 1.3 (chỉ cấm hệ thống *nội bộ team*), nhưng vẫn nên nói rõ với Mentor đây là một phụ thuộc mạng bên ngoài. |
 
-## Option B: Local model via Ollama (e.g. Llama 3.1 8B Instruct or Qwen2.5 7B Instruct)
+## Phương án B: Model chạy local qua Ollama (ví dụ Llama 3.1 8B Instruct hoặc Qwen2.5 7B Instruct)
 
-| Criterion | Assessment |
+| Tiêu chí | Đánh giá |
 | --- | --- |
-| Data sent after sanitize | Nothing leaves the machine at all — strongest possible answer to "AI chỉ nhận minimum necessary context" and to input/output leakage risk, since there's no network hop to begin with. |
-| Cost | Free to run (open-weight model, no per-token billing); only cost is local compute/electricity and disk space for the model weights (a few GB). |
-| Latency | Highly dependent on the developer's own hardware. On a CPU-only laptop, expect noticeably higher latency than the cloud option (seconds to tens of seconds per request) and lower throughput for the repeated-run consistency benchmark (§6.5 "chạy 5 lần × 3 cách hỏi"); a machine with a capable GPU narrows this gap substantially. Needs to be measured on the actual dev machine before committing. |
-| Structured output support | Weaker and more model-dependent: smaller open models are less reliable at strictly following a JSON schema without extra scaffolding (e.g. grammar-constrained decoding via Ollama's `format: json` option, or a stricter prompt + retry loop in Guardrails). More Sprint 2 engineering effort to get Guardrails' "invalid → reject/fallback" path exercised reliably. |
-| Other | Fully offline-capable once the model is pulled, which is convenient for demoing without network dependency; but repeated consistency benchmarking (§6.5) will take materially longer wall-clock time in Sprint 2-3 if latency is high. |
+| Dữ liệu gửi đi sau khi sanitize | Không có gì rời khỏi máy cả — câu trả lời mạnh nhất có thể cho yêu cầu "AI chỉ nhận minimum necessary context" và cho rủi ro rò rỉ dữ liệu input/output, vì ngay từ đầu đã không có bước gửi qua mạng. |
+| Chi phí | Chạy miễn phí (model open-weight, không tính phí theo token); chi phí duy nhất là compute/điện của máy cá nhân và dung lượng ổ đĩa để lưu model (vài GB). |
+| Latency | Phụ thuộc rất nhiều vào phần cứng của người phát triển. Trên laptop chỉ chạy CPU, latency sẽ cao hơn rõ rệt so với phương án cloud (vài giây đến vài chục giây mỗi request) và throughput thấp hơn khi chạy benchmark tính nhất quán (mục 6.5, "chạy 5 lần × 3 cách hỏi"); máy có GPU đủ mạnh sẽ thu hẹp khoảng cách này đáng kể. Cần đo thực tế trên máy dev trước khi chốt. |
+| Hỗ trợ structured output | Yếu hơn và phụ thuộc nhiều vào model: các model mở nhỏ ít đáng tin cậy hơn khi phải tuân thủ chặt JSON schema nếu không có thêm cơ chế hỗ trợ (ví dụ dùng tuỳ chọn `format: json` của Ollama để ràng buộc theo grammar, hoặc prompt chặt hơn + vòng lặp retry ở Guardrails). Sprint 2 sẽ tốn nhiều công sức hơn để đường xử lý "invalid → reject/fallback" của Guardrails chạy ổn định. |
+| Khác | Chạy offline hoàn toàn được sau khi đã tải model về, tiện khi demo mà không cần mạng; nhưng benchmark tính nhất quán lặp lại (mục 6.5) sẽ tốn nhiều thời gian thực tế hơn đáng kể ở Sprint 2-3 nếu latency cao. |
 
-## Recommendation (draft — confirm against your own machine's specs before submitting)
+## Đề xuất (bản nháp — hãy tự kiểm tra lại với cấu hình máy của bạn trước khi nộp)
 
-Lead with **Option A (cloud API)** for Sprint 2 development speed and structured-output
-reliability, since Guardrails' correctness depends on the AI actually returning
-parseable, schema-valid JSON consistently — that's the harder problem to solve with a
-small local model on unknown hardware. Keep **Option B (local model)** documented as the
-fallback/offline story and revisit it in the "So sánh cách dựng context" stretch task
-(§6.1 T11) if cost or connectivity becomes a real constraint.
+Ưu tiên **Phương án A (cloud API)** để phát triển Sprint 2 nhanh hơn và có structured
+output đáng tin cậy hơn, vì độ đúng của Guardrails phụ thuộc vào việc AI thực sự trả về
+JSON hợp lệ theo schema một cách nhất quán — đây là bài toán khó hơn nếu dùng model local
+nhỏ trên phần cứng chưa biết trước. Giữ **Phương án B (model local)** như phương án dự
+phòng/chạy offline, và quay lại xem xét ở task stretch "So sánh cách dựng context"
+(mục 6.1 T11) nếu chi phí hoặc kết nối mạng trở thành ràng buộc thực sự.
 
-**Before finalizing:** confirm your actual API budget/key access for Option A, and if
-you want to keep Option B live, do a quick manual latency check with your own GPU/CPU
-before writing that number into this table as fact rather than an estimate.
+**Trước khi chốt:** hãy xác nhận ngân sách/quyền truy cập API thật cho Phương án A, và
+nếu muốn giữ Phương án B, hãy đo thử latency thật trên GPU/CPU của bạn trước khi ghi con
+số đó vào bảng như một sự thật thay vì một ước tính.

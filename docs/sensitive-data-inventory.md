@@ -1,56 +1,55 @@
-# Sensitive Data Inventory & Classification Policy (T9)
+# Sensitive Data Inventory & Data Classification Policy (T9)
 
-Expands PROJECT_SPEC.md §5.2's starter table with fields actually found while building
-the Sprint 1 parsers, by scanning the real sample data in `fail/`, `success/`,
-`for_test/`. No sanitizer is implemented yet (Sprint 2, §6.2) — this is the inventory
-that sanitizer will enforce. Nothing in Sprint 1 is sent to an AI provider, so there is
-no leakage surface yet, but the parsers already extract these fields into
-`CanonicalEvent.attributes()`, so the policy below tells Sprint 2 what to mask/drop
-before anything reaches an LLM.
+Mở rộng bảng khởi điểm ở PROJECT_SPEC.md mục 5.2 với các field thực sự phát hiện được
+trong lúc xây dựng parser Sprint 1, bằng cách rà soát data mẫu thật trong `fail/`,
+`success/`, `for_test/`. Chưa có sanitizer nào được cài đặt (việc đó thuộc Sprint 2, mục
+6.2) — đây chỉ là bản kiểm kê (inventory) mà sanitizer sau này sẽ phải tuân theo. Sprint 1
+chưa gửi gì sang AI provider nên chưa có nguy cơ rò rỉ, nhưng các parser đã trích các
+field này vào `CanonicalEvent.attributes()`, nên chính sách dưới đây sẽ là cơ sở để
+Sprint 2 biết cần mask/drop gì trước khi dữ liệu đến được LLM.
 
-Classification levels: `PUBLIC`, `INTERNAL`, `SENSITIVE`, `SECRET` (per §5.2).
+Các mức phân loại: `PUBLIC`, `INTERNAL`, `SENSITIVE`, `SECRET` (theo mục 5.2).
 
-## From the mentor-provided starter table
+## Từ bảng khởi điểm mentor cung cấp
 
-| Field | Classification | Policy | Where observed |
+| Field | Phân loại | Chính sách | Quan sát được ở đâu |
 | --- | --- | --- | --- |
-| Packet loss, RTT, jitter, MOS, call duration | Internal | Allow | End-call log periodic stats / call summary |
+| Packet loss, RTT, jitter, MOS, call duration | Internal | Allow | Periodic stats / call summary trong end-call log |
 | ISP / ASN / country | Internal | Allow | Signaling events (`isp`, `asn`, `countryCode`) |
-| Phone number, email | Sensitive | Mask | Not observed in the sample data itself, but must still be masked if present in future data |
-| Client IP address | Sensitive | Mask | WebRTC/end-call ICE candidate fields (`transport.localCandidate.ip`, `transport.remoteCandidate.ip`, raw `candidate:` SDP lines), device network descriptors (`pdp_ip0:100.81.44.x/32:Cellular` — partially pre-masked by the client itself in some fields, but **not** in the ICE candidate IPs, which are full addresses) |
-| User ID (incl. internal), Device ID | Sensitive | Pseudonymize | `appUserId`, `callUserId`, `partnerAppUserId`, `partnerCallUserId` (end-call log, signaling events); `deviceId` (embedded in end-call log `log_detail` JSON blobs) |
-| Session ID, csid | Sensitive | Pseudonymize if needed to correlate | `sessionId`, `csid`, `requestId` (end-call log + signaling events) |
-| JWT, Authorization Header, API Key, TURN credential | Secret | Drop | No auth headers observed in these client-side logs; TURN credentials are present (see below) |
-| Private infra detail (pod name, internal host, TURN server IP) | Internal/Sensitive | Minimize | TURN server URLs in `iceServers.urls` (embedded config JSON), e.g. `turn:14.238.152.70:3478` |
+| Số điện thoại, email | Sensitive | Mask | Không thấy trong data mẫu hiện tại, nhưng vẫn phải mask nếu xuất hiện trong data sau này |
+| Địa chỉ IP của client | Sensitive | Mask | Các field ICE candidate trong WebRTC/end-call log (`transport.localCandidate.ip`, `transport.remoteCandidate.ip`, dòng SDP `candidate:` gốc), mô tả network của thiết bị (`pdp_ip0:100.81.44.x/32:Cellular` — bản thân client đã tự che một phần octet ở một số field, nhưng **không** che ở các IP trong ICE candidate, những IP này là địa chỉ đầy đủ) |
+| User ID (kể cả ID nội bộ), Device ID | Sensitive | Pseudonymize | `appUserId`, `callUserId`, `partnerAppUserId`, `partnerCallUserId` (end-call log, signaling events); `deviceId` (nằm trong khối JSON `log_detail` của end-call log) |
+| Session ID, csid | Sensitive | Pseudonymize nếu cần correlate | `sessionId`, `csid`, `requestId` (end-call log + signaling events) |
+| JWT, Authorization Header, API Key, TURN credential | Secret | Drop | Không thấy auth header trong các log phía client này; TURN credential thì có (xem bên dưới) |
+| Chi tiết hạ tầng nội bộ (tên pod, host nội bộ, IP TURN server) | Internal/Sensitive | Minimize | URL TURN server trong `iceServers.urls` (nằm trong khối JSON config), ví dụ `turn:14.238.152.70:3478` |
 
-## Additional fields found while building the Sprint 1 parsers
+## Các field bổ sung phát hiện được trong lúc xây parser Sprint 1
 
-| Field | Classification | Policy | Where observed |
+| Field | Phân loại | Chính sách | Quan sát được ở đâu |
 | --- | --- | --- | --- |
-| SDP ICE ufrag/pwd (`a=ice-ufrag`, `a=ice-pwd`) | Secret | Drop | End-call log `SIGNALING_CMD` rows' embedded SDP offer/answer JSON |
-| DTLS fingerprint (`a=fingerprint:sha-256 ...`) | Secret | Drop | Same embedded SDP blobs |
-| `turnSessionInfo` / `turnLoggingId` | Sensitive | Pseudonymize | Embedded `rtcConfig` JSON in end-call log `log_detail` rows. Note: the client **already partially masks** `turnSessionInfo` itself in the sample data (e.g. `"DE7D****************************0919"`) — the sanitizer must not assume every field needing masking is still in the clear by the time it reaches us. |
-| Vietnamese user-facing error text (`callErrorMsg`, `callError`) | Internal | Allow | End-call log `recv_cmd` rows, e.g. `"Người này hiện chưa thể nhận cuộc gọi"`. Free text but describes call state, not personal data — kept Internal unless a future sample embeds identifying info in it. |
-| `callErrorCode` | Internal | Allow | Same rows. A numeric status code, not sensitive by itself. |
-| Raw SDP body (`sdpOffer`/`sdpAnswer`) as a whole | Sensitive | Minimize | Contains ICE ufrag/pwd, DTLS fingerprint and candidate IPs together — treat the whole blob as sensitive-until-scrubbed rather than trying to regex out only the known-bad substrings. |
-| Log message free text (`msg`, `message` in `LOG_MESSAGE`/`SIGNAL` rows) | Internal | Minimize | Can embed IDs or config values inline (e.g. `deviceId=...` appears inside a `log_detail` message string) — treat as needing the same scrubbing as structured fields, not just the structured fields themselves. |
+| ICE ufrag/pwd trong SDP (`a=ice-ufrag`, `a=ice-pwd`) | Secret | Drop | Khối SDP offer/answer (JSON) nhúng trong các dòng `SIGNALING_CMD` của end-call log |
+| DTLS fingerprint (`a=fingerprint:sha-256 ...`) | Secret | Drop | Cùng khối SDP nói trên |
+| `turnSessionInfo` / `turnLoggingId` | Sensitive | Pseudonymize | Nằm trong JSON `rtcConfig` nhúng ở các dòng `log_detail` của end-call log. Lưu ý: bản thân client **đã tự che một phần** `turnSessionInfo` trong data mẫu (ví dụ `"DE7D****************************0919"`) — sanitizer không được giả định rằng mọi field cần mask vẫn còn ở dạng rõ (plain) khi đến tay mình. |
+| Nội dung lỗi hiển thị cho người dùng bằng tiếng Việt (`callErrorMsg`, `callError`) | Internal | Allow | Các dòng `recv_cmd` của end-call log, ví dụ `"Người này hiện chưa thể nhận cuộc gọi"`. Là văn bản tự do nhưng mô tả trạng thái cuộc gọi, không phải dữ liệu cá nhân — giữ mức Internal trừ khi data sau này chèn thông tin định danh vào đây. |
+| `callErrorCode` | Internal | Allow | Cùng các dòng trên. Là mã trạng thái dạng số, bản thân không nhạy cảm. |
+| Toàn bộ nội dung SDP (`sdpOffer`/`sdpAnswer`) | Sensitive | Minimize | Chứa cả ICE ufrag/pwd, DTLS fingerprint và IP candidate cùng một chỗ — nên coi cả khối này là nhạy cảm cho đến khi được làm sạch, thay vì chỉ regex ra từng phần đã biết là xấu. |
+| Văn bản tự do trong log message (`msg`, `message` ở các dòng `LOG_MESSAGE`/`SIGNAL`) | Internal | Minimize | Có thể chứa ID hoặc giá trị config chèn ngay trong câu (ví dụ `deviceId=...` xuất hiện ngay trong message của `log_detail`) — cần được làm sạch giống như các field có cấu trúc, không chỉ làm sạch riêng các field có cấu trúc. |
 
-## Classification summary by data type
+## Tóm tắt phân loại theo loại dữ liệu
 
-| Classification | Meaning here | Examples |
+| Phân loại | Ý nghĩa trong dự án này | Ví dụ |
 | --- | --- | --- |
-| `PUBLIC` | Safe to show/log anywhere | (none identified yet in this dataset — everything client-side carries at least device/user context) |
-| `INTERNAL` | Safe within the team/system, not sent raw to an external AI provider without review | Metrics, ISP/ASN/country, error codes/messages |
-| `SENSITIVE` | Must be masked or pseudonymized before leaving the system | User/device/session IDs, client IPs, TURN server addresses |
-| `SECRET` | Must be dropped entirely, never logged or sent anywhere | ICE ufrag/pwd, DTLS fingerprints, any TURN long-term credential |
+| `PUBLIC` | An toàn để hiển thị/ghi log ở bất kỳ đâu | (chưa xác định được loại nào trong data này — mọi thứ phía client đều mang ít nhất context về thiết bị/người dùng) |
+| `INTERNAL` | An toàn trong nội bộ team/hệ thống, không gửi thô ra AI provider bên ngoài nếu chưa review | Metrics, ISP/ASN/country, mã lỗi/thông báo lỗi |
+| `SENSITIVE` | Bắt buộc phải mask hoặc pseudonymize trước khi ra khỏi hệ thống | ID người dùng/thiết bị/session, IP của client, địa chỉ TURN server |
+| `SECRET` | Bắt buộc drop hoàn toàn, không bao giờ log hay gửi đi đâu cả | ICE ufrag/pwd, DTLS fingerprint, mọi credential dài hạn của TURN |
 
-## Implication for Sprint 2's Input Sanitizer
+## Ý nghĩa đối với Input Sanitizer của Sprint 2
 
-The AI Analysis Engine's input (per §3.3, "AI chỉ nhận minimum necessary context") should
-be built from `CallTimeline`/`CallMetrics`/`Evidence` — which already summarize events
-into a small attribute set — rather than from raw `rawLine`/`rawEvent` strings, since
-those raw strings are exactly where the embedded SDP/JSON blobs (and therefore the
-`SECRET`-classified fields above) live. The sanitizer still needs to scrub the
-`SENSITIVE`/`INTERNAL` fields that do get forwarded (IDs, IPs), but keeping raw log
-lines out of the AI context entirely removes the biggest leakage surface by
-construction.
+Input cho AI Analysis Engine (theo mục 3.3, "AI chỉ nhận minimum necessary context") nên
+được dựng từ `CallTimeline`/`CallMetrics`/`Evidence` — vốn đã tóm tắt sự kiện thành một
+tập attribute nhỏ gọn — thay vì từ chuỗi `rawLine`/`rawEvent` gốc, vì chính các chuỗi gốc
+đó là nơi chứa các khối SDP/JSON nhúng (và do đó chứa cả các field mức `SECRET` ở trên).
+Sanitizer vẫn cần làm sạch các field `SENSITIVE`/`INTERNAL` được chuyển tiếp (ID, IP),
+nhưng việc giữ log gốc nằm ngoài context gửi cho AI ngay từ đầu đã loại bỏ được phần lớn
+nguy cơ rò rỉ dữ liệu, đơn giản vì cấu trúc thiết kế đã như vậy.
