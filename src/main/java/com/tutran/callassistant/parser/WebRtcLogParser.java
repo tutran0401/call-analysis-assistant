@@ -104,18 +104,21 @@ public final class WebRtcLogParser {
     }
 
     private static String classify(String message) {
+        // Deliberately narrow: only the engine's own controlled-vocabulary callback names
+        // are trusted (onIceConnectionChange/onConnectionChange/onIceCandidate). An
+        // earlier version also pattern-matched free text containing "turn"/"ice" plus
+        // "error"/"fail" - that produced false positives (e.g. "TURN create permission
+        // error response, code=400" and the code=401 long-term-credential challenge are
+        // both routine per-candidate protocol noise, observed dozens of times even in a
+        // clean, high-quality SUCCESS call) and was removed rather than special-cased
+        // further; a real terminal media failure is what ICE_CONNECTION_STATE_CHANGE with
+        // a FAILED/DISCONNECTED message already captures reliably.
         String lower = message.toLowerCase();
         if (lower.contains("iceconnectionchange")) {
             return "ICE_CONNECTION_STATE_CHANGE";
         }
         if (lower.contains("onconnectionchange")) {
             return "PEER_CONNECTION_STATE_CHANGE";
-        }
-        if (lower.contains("turn") && (lower.contains("error") || lower.contains("fail"))) {
-            return "TURN_ERROR";
-        }
-        if (lower.contains("ice") && (lower.contains("error") || lower.contains("fail"))) {
-            return "ICE_ERROR";
         }
         if (lower.contains("icecandidate") || lower.contains("addice")) {
             return "ICE_CANDIDATE";

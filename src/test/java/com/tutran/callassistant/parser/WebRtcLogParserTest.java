@@ -67,19 +67,42 @@ class WebRtcLogParserTest {
     }
 
     @Test
-    void classifiesIceAndTurnRelatedMessages(@TempDir Path tempDir) throws IOException {
+    void classifiesEngineCallbacksByTheirControlledVocabularyName(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("classify.log");
         Files.writeString(file, String.join("\n",
                 "[000:000][1] (a.cc:1): onIceConnectionChange: FAILED",
-                "[000:001][1] (a.cc:2): Turn allocation error occurred",
-                "[000:002][1] (a.cc:3): something unrelated happened"
+                "[000:001][1] (a.cc:2): onConnectionChange: CONNECTED with action: 1",
+                "[000:002][1] (a.cc:3): onIceCandidate: seq:1 with candidate: host",
+                "[000:003][1] (a.cc:4): something unrelated happened"
         ) + "\n");
 
         ParseResult result = parser.parse(file, "CALL-1", Leg.CALLER);
 
         assertThat(result.events().get(0).eventType()).isEqualTo("ICE_CONNECTION_STATE_CHANGE");
-        assertThat(result.events().get(1).eventType()).isEqualTo("TURN_ERROR");
-        assertThat(result.events().get(2).eventType()).isEqualTo("ENGINE_LOG");
+        assertThat(result.events().get(1).eventType()).isEqualTo("PEER_CONNECTION_STATE_CHANGE");
+        assertThat(result.events().get(2).eventType()).isEqualTo("ICE_CANDIDATE");
+        assertThat(result.events().get(3).eventType()).isEqualTo("ENGINE_LOG");
+    }
+
+    @Test
+    void doesNotMisclassifyRoutineTurnProtocolNoiseAsAFailure(@TempDir Path tempDir) throws IOException {
+        // Found via live end-to-end testing against a real, clean SUCCESS call: free-text
+        // keyword matching on "turn"/"ice" + "error"/"fail" flagged dozens of routine,
+        // self-recovering per-candidate TURN protocol responses (the code=401 long-term-
+        // credential challenge, and code=400 permission errors on candidate pairs that
+        // simply get abandoned) as if they were failures. Only the engine's own terminal
+        // ICE_CONNECTION_STATE_CHANGE callback is trusted for failure signals now.
+        Path file = tempDir.resolve("turn_noise.log");
+        Files.writeString(file, String.join("\n",
+                "[000:101][1] (turn_port.cc:1687): TurnPort(...): Received TURN probe error "
+                        + "response, id=6e344f7a, code=401, rtt=35081 us",
+                "[000:102][1] (turn_port.cc:2069): TurnPort(...): Received TURN create permission "
+                        + "error response, id=abc123, code=400, rtt=1000 us"
+        ) + "\n");
+
+        ParseResult result = parser.parse(file, "CALL-1", Leg.CALLER);
+
+        assertThat(result.events()).allSatisfy(e -> assertThat(e.eventType()).isEqualTo("ENGINE_LOG"));
     }
 
     @Test
