@@ -1,6 +1,6 @@
 package com.tutran.callassistant.domain;
 
-/** Which of the three raw log sources an event was normalized from. */
+/** Sự kiện được chuẩn hoá từ nguồn log gốc nào trong 3 nguồn. */
 public enum EventSource {
     SIGNALING,
     END_CALL,

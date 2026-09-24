@@ -14,8 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Assembles a {@link Report} from the rule engine's output. In Sprint 1 there is no AI:
- * the rule verdict directly fills every field the template (§4.5) needs.
+ * Dựng một {@link Report} từ output của rule engine. Sprint 1 chưa có AI: verdict theo
+ * rule trực tiếp điền mọi field mà mẫu report (mục 4.5) cần.
  */
 public final class ReportBuilder {
 

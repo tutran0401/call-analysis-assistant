@@ -1,9 +1,9 @@
 package com.tutran.callassistant.metrics;
 
 /**
- * A single computed metric: either a value with its unit and source, or - per
- * PROJECT_SPEC.md §4.3 - an explicit N/A with a reason. Metrics must never default a
- * missing value to 0.
+ * Một chỉ số đã tính được: hoặc là một giá trị kèm đơn vị và nguồn, hoặc - theo
+ * PROJECT_SPEC.md mục 4.3 - một N/A tường minh kèm lý do. Chỉ số không bao giờ được mặc
+ * định về 0 khi thiếu dữ liệu.
  */
 public record MetricResult<T>(T value, String unit, String source, String naReason) {
 

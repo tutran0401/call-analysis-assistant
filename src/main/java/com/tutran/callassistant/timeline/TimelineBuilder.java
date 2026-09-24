@@ -15,19 +15,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Sorts, deduplicates and correlates a call's events from all sources into one timeline.
+ * Sắp thứ tự, loại trùng và liên kết sự kiện của một cuộc gọi từ mọi nguồn thành một
+ * timeline duy nhất.
  *
- * <p><b>Clock-skew handling.</b> Signaling (server clock) and end-call log (device clock)
- * both carry absolute timestamps, so they are trusted as-is - drift between server and
- * device clocks is a known limitation we do not attempt to correct in Sprint 1, only
- * document. WebRTC engine logs carry no absolute clock at all, only an elapsed
- * {@code [seconds:millis]} offset since process start; those events are anchored by
- * adding that offset to the earliest absolute timestamp seen for the same leg (preferring
- * the end-call log, falling back to the call's earliest signaling event if that leg has no
- * end-call log). This is a best-effort proxy, not an exact correlation, so anchored events
- * are marked {@link TimestampConfidence#ANCHORED} rather than {@link TimestampConfidence#EXACT};
- * if no timed event exists at all for a leg, its WebRTC events are left
- * {@link TimestampConfidence#UNKNOWN} and ordered last rather than guessed at.
+ * <p><b>Xử lý lệch đồng hồ.</b> Signaling (đồng hồ server) và end-call log (đồng hồ thiết
+ * bị) đều có timestamp tuyệt đối, nên được tin dùng trực tiếp - độ lệch giữa đồng hồ
+ * server và thiết bị là giới hạn đã biết, Sprint 1 không cố sửa mà chỉ ghi nhận lại. Log
+ * engine WebRTC thì hoàn toàn không có đồng hồ tuyệt đối, chỉ có mốc thời gian đã trôi qua
+ * {@code [seconds:millis]} tính từ lúc process khởi động; các sự kiện này được neo bằng
+ * cách cộng thêm mốc đó vào timestamp tuyệt đối sớm nhất quan sát được của cùng một bên
+ * (ưu tiên lấy từ end-call log, nếu bên đó không có end-call log thì lấy sự kiện signaling
+ * sớm nhất của cả cuộc gọi làm phương án dự phòng). Đây là một cách xấp xỉ tốt nhất có
+ * thể, không phải sự tương quan chính xác, nên các sự kiện đã neo được đánh dấu
+ * {@link TimestampConfidence#ANCHORED} chứ không phải {@link TimestampConfidence#EXACT};
+ * nếu một bên hoàn toàn không có sự kiện nào có thời gian, các sự kiện WebRTC của bên đó
+ * giữ nguyên {@link TimestampConfidence#UNKNOWN} và xếp cuối cùng thay vì đoán bừa.
  */
 public final class TimelineBuilder {
 

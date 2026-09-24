@@ -16,18 +16,18 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Deterministic rule baseline for verdict + issue category (PROJECT_SPEC.md §4.1/§4.2),
- * built only from the timeline and metrics that code already computed with 100% certainty
- * - no AI involved (§3.2: this is the rule signal AI's verdict gets checked against in
- * Sprint 2).
+ * Baseline rule xác định (deterministic) cho verdict + issue category (PROJECT_SPEC.md
+ * mục 4.1/4.2), chỉ dựng từ timeline và chỉ số mà code đã tính với độ chắc chắn 100% -
+ * không có AI tham gia (mục 3.2: đây là tín hiệu rule mà verdict của AI sẽ được đối chiếu
+ * vào ở Sprint 2).
  *
- * <p>Decision order: (1) not enough data at all -&gt; UNKNOWN; (2) call never reached a
- * confirmed state -&gt; FAIL, with the issue category picked from whatever WebRTC-layer
- * failure evidence exists, falling back to SIGNALING_FAILURE when the call never got that
- * far; (3) call confirmed but no BYE was observed -&gt; UNKNOWN (most likely truncated/
- * incomplete data rather than a real ongoing call); (4) call confirmed and terminated with
- * BYE -&gt; SUCCESS, flagged with a quality issue if any leg's metrics breach the
- * {@link IssueCategoryRegistry} thresholds.
+ * <p>Thứ tự quyết định: (1) không đủ dữ liệu -&gt; UNKNOWN; (2) cuộc gọi chưa từng đạt
+ * trạng thái đã xác nhận -&gt; FAIL, issue category chọn theo evidence lỗi tầng WebRTC nếu
+ * có, nếu không thì fallback về SIGNALING_FAILURE khi cuộc gọi chưa đi đủ xa; (3) cuộc gọi
+ * đã xác nhận nhưng chưa quan sát được BYE -&gt; UNKNOWN (nhiều khả năng do dữ liệu bị cắt/
+ * thiếu chứ không phải cuộc gọi thật đang diễn ra); (4) cuộc gọi đã xác nhận và kết thúc
+ * bằng BYE -&gt; SUCCESS, gắn cờ chất lượng kém nếu chỉ số của một trong hai bên vượt
+ * ngưỡng ở {@link IssueCategoryRegistry}.
  */
 public final class RuleVerdictEngine {
 
@@ -89,12 +89,13 @@ public final class RuleVerdictEngine {
                                             List<String> dataLimitations) {
         List<CanonicalEvent> webrtcEvents = timeline.forSource(EventSource.WEBRTC);
 
-        // Only the engine's own terminal ICE state callback is trusted here - free-text
-        // keyword matching for "turn"/"ice" + "error"/"fail" was tried and dropped (see
-        // WebRtcLogParser's classify() javadoc): it flagged routine, self-recovering
-        // per-candidate TURN protocol noise as failures even on clean SUCCESS calls, so a
-        // dedicated, reliable TURN_FAILURE detector is deferred past Sprint 1 (see
-        // IssueCategoryRegistry's known ambiguity note for ICE_FAILURE/TURN_FAILURE).
+        // Ở đây chỉ tin vào đúng callback trạng thái kết thúc ICE có sẵn của engine - cách
+        // so khớp từ khóa tự do "turn"/"ice" + "error"/"fail" đã được thử và bỏ đi (xem
+        // Javadoc của classify() trong WebRtcLogParser): nó báo nhầm cả nhiễu giao thức
+        // TURN bình thường, tự phục hồi được, thành lỗi ngay cả trên cuộc gọi SUCCESS
+        // sạch, nên một bộ phát hiện TURN_FAILURE riêng, đáng tin cậy sẽ để lại sau
+        // Sprint 1 (xem ghi chú điểm mơ hồ đã biết của ICE_FAILURE/TURN_FAILURE trong
+        // IssueCategoryRegistry).
         Optional<CanonicalEvent> iceFailure = webrtcEvents.stream()
                 .filter(e -> "ICE_CONNECTION_STATE_CHANGE".equals(e.eventType())
                         && matchesFailureKeyword(e.attribute("message")))

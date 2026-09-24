@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/** Wires a single-node local Elasticsearch client from {@code application.yml}. */
+/** Khởi tạo client Elasticsearch single-node local, cấu hình từ {@code application.yml}. */
 @Configuration
 public class EsClientConfig {
 

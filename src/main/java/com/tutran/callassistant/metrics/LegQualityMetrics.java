@@ -1,6 +1,6 @@
 package com.tutran.callassistant.metrics;
 
-/** Quality metrics for one leg, sourced from the end-call log's periodic stats. */
+/** Chỉ số chất lượng của một bên (leg), lấy từ periodic stats của end-call log. */
 public record LegQualityMetrics(
         MetricResult<Double> mos,
         MetricResult<Double> packetLossPercent,

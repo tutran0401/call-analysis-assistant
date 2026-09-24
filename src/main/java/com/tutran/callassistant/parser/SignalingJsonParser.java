@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parses the mentor-provided Elasticsearch export format for signaling logs
- * ({@code signaling.json}: {@code {callId, events: [...] }}). Used both by the local ES
- * import script (T1) and, directly, wherever a canonical view of a call's signaling is
- * needed without a live ES query (tests, offline runs). Every event is
- * {@link Leg#SERVER} - the signaling log is a server-side view not tied to one leg.
+ * Parse định dạng export Elasticsearch mà mentor cung cấp cho signaling log
+ * ({@code signaling.json}: {@code {callId, events: [...] }}). Dùng cho cả script import
+ * ES local (T1) lẫn trực tiếp ở bất kỳ đâu cần view chuẩn hoá của signaling một cuộc gọi
+ * mà không cần query ES thật (test, chạy offline). Mọi sự kiện đều gắn
+ * {@link Leg#SERVER} - signaling log là góc nhìn phía server, không gắn với một bên cụ
+ * thể nào.
  */
 public final class SignalingJsonParser {
 

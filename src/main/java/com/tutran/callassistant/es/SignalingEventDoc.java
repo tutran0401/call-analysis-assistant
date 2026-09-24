@@ -1,10 +1,10 @@
 package com.tutran.callassistant.es;
 
 /**
- * The Elasticsearch document shape for one signaling event. Denormalizes {@code callId}
- * onto every event (the mentor-provided export only carries it once, at the top of the
- * file) so that a query "by Call-ID" - the access pattern the whole system relies on - is
- * a simple term filter.
+ * Cấu trúc document Elasticsearch cho một sự kiện signaling. Denormalize {@code callId}
+ * vào từng sự kiện (file export mentor cung cấp chỉ có nó một lần, ở đầu file) để việc
+ * query "theo Call-ID" - cách truy cập mà cả hệ thống dựa vào - chỉ đơn giản là một term
+ * filter.
  */
 public record SignalingEventDoc(
         String callId,

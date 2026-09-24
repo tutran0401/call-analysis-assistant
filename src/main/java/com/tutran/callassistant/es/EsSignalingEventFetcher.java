@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Queries the local Elasticsearch index populated by {@link SignalingIndexer}, by Call-ID. */
+/** Query index Elasticsearch local (do {@link SignalingIndexer} nạp dữ liệu) theo Call-ID. */
 @Component
 public class EsSignalingEventFetcher implements SignalingEventFetcher {
 

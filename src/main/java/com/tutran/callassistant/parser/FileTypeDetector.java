@@ -8,10 +8,10 @@ import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 /**
- * Identifies which of the three raw log sources a file is, by sniffing its content
- * rather than trusting the filename - the sample dataset itself contains a
- * misnamed file ("calleer_webrtc.log"), and the spec explicitly requires content-based
- * detection so a wrong extension/name never silently misclassifies a file.
+ * Nhận diện một file thuộc loại nào trong 3 nguồn log gốc, bằng cách xem nội dung
+ * thay vì tin vào tên file - bản thân data mẫu đã có 1 file đặt sai tên
+ * ("calleer_webrtc.log"), và spec yêu cầu rõ phải nhận diện theo nội dung để không bao
+ * giờ bị phân loại sai một cách âm thầm chỉ vì tên/đuôi file sai.
  */
 public final class FileTypeDetector {
 

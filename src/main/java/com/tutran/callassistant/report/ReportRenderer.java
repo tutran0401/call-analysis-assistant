@@ -1,6 +1,6 @@
 package com.tutran.callassistant.report;
 
-/** Renders a {@link Report} to the fixed Vietnamese text layout in PROJECT_SPEC.md §4.5. */
+/** Render một {@link Report} thành bố cục văn bản tiếng Việt cố định ở PROJECT_SPEC.md mục 4.5. */
 public final class ReportRenderer {
 
     public String render(Report report) {

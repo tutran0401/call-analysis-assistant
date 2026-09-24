@@ -11,19 +11,19 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Scans a call's directory and normalizes every recognizable log file in it, using
- * {@link FileTypeDetector} to identify each file by content - so a misnamed file (the
- * sample dataset itself has one: {@code calleer_webrtc.log}) is still parsed correctly.
- * The end-call log's leg comes from its own CALL_SUMMARY row when present (see
- * {@link EndCallLogParser}); WebRTC engine logs carry no such signal in their content at
- * all, so their leg is inferred from the filename as a last resort.
+ * Quét thư mục của một cuộc gọi và chuẩn hoá mọi file log nhận diện được, dùng
+ * {@link FileTypeDetector} để xác định loại file theo nội dung - nhờ vậy một file đặt
+ * sai tên (bản thân data mẫu có 1 file như thế: {@code calleer_webrtc.log}) vẫn được
+ * parse đúng. Leg của end-call log lấy từ chính dòng CALL_SUMMARY của nó nếu có (xem
+ * {@link EndCallLogParser}); log engine WebRTC thì hoàn toàn không có tín hiệu này trong
+ * nội dung, nên leg của nó phải suy ra từ tên file như phương án cuối cùng.
  */
 public final class CallLogDirectoryLoader {
 
     private final EndCallLogParser endCallLogParser = new EndCallLogParser();
     private final WebRtcLogParser webRtcLogParser = new WebRtcLogParser();
 
-    /** Parses every end-call and WebRTC log in {@code dir}. Signaling files are skipped - see {@code includeSignaling}. */
+    /** Parse mọi end-call log và WebRTC log trong {@code dir}. File signaling bị bỏ qua (xem query ES ở nơi khác). */
     public ParseResult loadClientLogs(Path dir, String callId) {
         List<Path> files = listFiles(dir);
         List<com.tutran.callassistant.domain.CanonicalEvent> events = new ArrayList<>();
@@ -53,8 +53,8 @@ public final class CallLogDirectoryLoader {
                 }
             }
         } catch (IOException e) {
-            // an unreadable directory yields no client-log events; the caller sees this
-            // reflected as missing data (e.g. RuleVerdictEngine's "missing end-call log").
+            // thư mục không đọc được thì trả về danh sách rỗng; nơi gọi sẽ thấy điều này
+            // phản ánh thành thiếu dữ liệu (ví dụ RuleVerdictEngine báo "missing end-call log").
         }
         return files;
     }

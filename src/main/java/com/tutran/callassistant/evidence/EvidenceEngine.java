@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Assigns sequential, stable evidence IDs ({@code EV001}, {@code EV002}, ...) to
- * canonical events as {@link com.tutran.callassistant.evidence.RuleVerdictEngine} selects
- * them, so every conclusion in a report can cite exactly which log line it came from.
+ * Gán ID evidence tuần tự, ổn định ({@code EV001}, {@code EV002}, ...) cho các sự kiện
+ * chuẩn hoá khi {@link com.tutran.callassistant.evidence.RuleVerdictEngine} chọn ra chúng,
+ * để mỗi kết luận trong report đều trích dẫn được chính xác nó đến từ dòng log nào.
  */
 public final class EvidenceEngine {
 

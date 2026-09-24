@@ -6,9 +6,9 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 /**
- * A single normalized event, common to all three raw log sources (signaling, end-call,
- * webrtc). Every field that a rule, metric or evidence citation depends on must trace
- * back to {@link #rawLine()} in {@link #sourceFile()}.
+ * Một sự kiện đã chuẩn hoá, dùng chung cho cả 3 nguồn log gốc (signaling, end-call,
+ * webrtc). Mọi field mà một rule, chỉ số hay evidence phụ thuộc vào đều phải trace được
+ * về {@link #rawLine()} trong {@link #sourceFile()}.
  */
 public record CanonicalEvent(
         String callId,
@@ -41,7 +41,7 @@ public record CanonicalEvent(
         return attributes.get(key);
     }
 
-    /** Returns a copy of this event with its absolute timestamp anchored/overridden. */
+    /** Trả về bản sao của sự kiện này với timestamp tuyệt đối đã được neo/ghi đè. */
     public CanonicalEvent withTimestamp(Instant newTimestamp, TimestampConfidence newConfidence) {
         return new CanonicalEvent(callId, leg, source, sourceFile, newTimestamp, rawTimestamp,
                 newConfidence, sequenceNumber, eventType, attributes, rawLine);

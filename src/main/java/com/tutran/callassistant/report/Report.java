@@ -3,10 +3,10 @@ package com.tutran.callassistant.report;
 import java.util.List;
 
 /**
- * Report Schema v1 (PROJECT_SPEC.md §4.5 / §5.1 T8), as a POJO validated against
- * {@code report-schema-v1.json}. In Sprint 1 this is filled entirely by the rule engine;
- * from Sprint 2 the AI Analysis Engine fills {@code summary}, {@code analysis} and
- * {@code suggestions} instead, with Guardrails checking the rest still holds.
+ * Report Schema v1 (PROJECT_SPEC.md mục 4.5 / mục 5.1 T8), dạng POJO được validate theo
+ * {@code report-schema-v1.json}. Ở Sprint 1, toàn bộ field này do rule engine điền; từ
+ * Sprint 2 trở đi, AI Analysis Engine sẽ điền {@code summary}, {@code analysis} và
+ * {@code suggestions} thay vào đó, còn Guardrails kiểm tra phần còn lại vẫn đúng.
  */
 public record Report(
         String callId,
