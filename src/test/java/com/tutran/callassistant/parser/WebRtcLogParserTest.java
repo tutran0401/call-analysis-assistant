@@ -18,7 +18,7 @@ class WebRtcLogParserTest {
 
     @Test
     void parsesRealFormat1SampleFile() {
-        Path file = Path.of("success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_webrtc.log");
+        Path file = Path.of("sample-data", "success", "DE7DD314-F432-45CB-BCB4-AE9103CC0919", "caller_webrtc.log");
 
         ParseResult result = parser.parse(file, "DE7DD314-F432-45CB-BCB4-AE9103CC0919", Leg.CALLER);
 
@@ -33,7 +33,7 @@ class WebRtcLogParserTest {
 
     @Test
     void parsesRealFormat2SampleFile() {
-        Path file = Path.of("fail", "703100CF-5742-467E-9E0E-34E45F60FF58", "caller_webrtc.log");
+        Path file = Path.of("sample-data", "fail", "703100CF-5742-467E-9E0E-34E45F60FF58", "caller_webrtc.log");
 
         ParseResult result = parser.parse(file, "703100CF-5742-467E-9E0E-34E45F60FF58", Leg.CALLER);
 
