@@ -1,0 +1,443 @@
+[833:240][404775] (RTCLogging.mm:34): (RTCAudioSession.mm:680 -[RTCAudioSession incrementActivationCount]): Incrementing activation count.
+[833:240][404775] (RTCLogging.mm:34): (RTCAudioSession.mm:419 -[RTCAudioSession setActive:error:]): Number of current activations: 1
+[833:396][259] (RTCLogging.mm:34): (RTCAudioSession.mm:888 -[RTCAudioSession observeValueForKeyPath:ofObject:change:context:]): OutputVolumeDidChange to 1.000000
+[833:396][259] (RTCLogging.mm:34): (RTCAudioSession.mm:557 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed:
+[833:397][259] (RTCLogging.mm:34): (RTCAudioSession.mm:570 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed: CategoryChange to :AVAudioSessionCategoryPlayAndRecord
+[833:397][259] (RTCLogging.mm:34): (RTCAudioSession.mm:590 -[RTCAudioSession handleRouteChangeNotification:]): Previous route: <AVAudioSessionRouteDescription: 0x3027ae890, 
+inputs = (
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x3027aeba0, type = Speaker; name = Loa ngo\U00e0i; UID = Speaker; selectedDataSource = (null)>"
+)>
+Current route:<AVAudioSessionRouteDescription: 0x3027e88c0, 
+inputs = (
+    "<AVAudioSessionPortDescription: 0x3027e8020, type = MicrophoneBuiltIn; name = iPhone Micr\U00f4; UID = Built-In Microphone; selectedDataSource = D\U01b0\U1edbi c\U00f9ng>"
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x3027ebc90, type = Receiver; name = Thi\U1ebft b\U1ecb nh\U1eadn; UID = Built-In Receiver; selectedDataSource = (null)>"
+)>
+[833:425][259] (RTCLogging.mm:34): (RTCAudioSession.mm:888 -[RTCAudioSession observeValueForKeyPath:ofObject:change:context:]): OutputVolumeDidChange to 0.950000
+[833:458][259] (RTCLogging.mm:34): (RTCAudioSession.mm:557 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed:
+[833:458][259] (RTCLogging.mm:34): (RTCAudioSession.mm:582 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed: RouteConfigurationChange
+[833:459][259] (RTCLogging.mm:34): (RTCAudioSession.mm:590 -[RTCAudioSession handleRouteChangeNotification:]): Previous route: <AVAudioSessionRouteDescription: 0x30279d370, 
+inputs = (
+    "<AVAudioSessionPortDescription: 0x3027923d0, type = MicrophoneBuiltIn; name = iPhone Micr\U00f4; UID = Built-In Microphone; selectedDataSource = D\U01b0\U1edbi c\U00f9ng>"
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x3027913c0, type = Receiver; name = Thi\U1ebft b\U1ecb nh\U1eadn; UID = Built-In Receiver; selectedDataSource = (null)>"
+)>
+Current route:<AVAudioSessionRouteDescription: 0x3027641a0, 
+inputs = (
+    "<AVAudioSessionPortDescription: 0x302764220, type = MicrophoneBuiltIn; name = iPhone Micr\U00f4; UID = Built-In Microphone; selectedDataSource = D\U01b0\U1edbi c\U00f9ng>"
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x302764850, type = Receiver; name = Thi\U1ebft b\U1ecb nh\U1eadn; UID = Built-In Receiver; selectedDataSource = (null)>"
+)>
+[833:592][21763] (RTCConfiguration.mm:304): Don't have configured cert.
+[833:623][698211] (peer_connection_factory.cc:398): Using default network controller factory
+[833:625][698211] (bitrate_prober.cc:54): Bandwidth probing enabled, set to inactive
+[833:628][698211] (transport_sequence_number_feedback_generator.cc:52): Maximum interval between transport feedback RTCP messages: 250 ms
+[833:628][698211] (aimd_rate_control.cc:114): Using aimd rate control with back off factor 0.9
+[833:628][698211] (remote_bitrate_estimator_single_stream.cc:59): RemoteBitrateEstimatorSingleStream: Instantiating.
+[833:631][371279] (peer_connection.cc:659): PeerConnection create with session: 7715901238436591107
+[833:632][468495] (peer_connection.cc:2377): TCP candidates are disabled.
+[833:632][468495] (peer_connection.cc:2407): InitializePortAllocator port_allocator: old=10, new=16714, maxIpv6: 5, candidateFilter: 6
+[833:632][468495] (basic_port_allocator.cc:271): BasicPortAllocatorSession[43f72280] () component:0 u/p=4H7v/LpJIakUox1f7EP/ZMi1UBikS
+[833:632][468495] (basic_port_allocator.cc:375): Start getting ports with turn_port_prune_policy 0
+[833:635][468495] (basic_port_allocator.cc:1011): 43f72280 OnNetworksChanged start
+[833:635][468495] (basic_port_allocator.cc:711): Count of networks: 5
+[833:635][468495] (basic_port_allocator.cc:713): Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]
+[833:635][468495] (basic_port_allocator.cc:713): Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]
+[833:635][468495] (basic_port_allocator.cc:713): Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]
+[833:635][468495] (basic_port_allocator.cc:713): Net[lo0:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+[833:635][468495] (basic_port_allocator.cc:713): Net[lo0:127.0.0.x/8:Loopback:id=1]
+[833:635][468495] (basic_port_allocator.cc:125): Filtered out ignored networks:
+[833:635][468495] (basic_port_allocator.cc:127): Net[lo0:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+[833:635][468495] (basic_port_allocator.cc:127): Net[lo0:127.0.0.x/8:Loopback:id=1]
+[833:637][698211] (webrtc_voice_engine.cc:522): WebRtcVoiceEngine::Init
+[833:637][468495] (basic_port_allocator.cc:1030): 43f72280 OnNetworksChanged end with network_start: 0 ,allocation_started = 0, failed_networks = 0
+[833:637][468495] (basic_port_allocator.cc:1045): 43f72280 Network manager has started
+[833:637][468495] (basic_port_allocator.cc:669): 43f72280 OnAllocate allocation_epoch = 0 network_start: 1 ,allocation_started = 0
+[833:637][468495] (basic_port_allocator.cc:711): Count of networks: 5
+[833:637][468495] (basic_port_allocator.cc:713): Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]
+[833:637][468495] (basic_port_allocator.cc:713): Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]
+[833:637][468495] (basic_port_allocator.cc:713): Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]
+[833:637][468495] (basic_port_allocator.cc:713): Net[lo0:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+[833:637][468495] (basic_port_allocator.cc:713): Net[lo0:127.0.0.x/8:Loopback:id=1]
+[833:637][468495] (basic_port_allocator.cc:125): Filtered out ignored networks:
+[833:637][468495] (basic_port_allocator.cc:127): Net[lo0:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+[833:637][468495] (basic_port_allocator.cc:127): Net[lo0:127.0.0.x/8:Loopback:id=1]
+[833:637][468495] (basic_port_allocator.cc:934): BasicPortAllocatorSession[43f72280] Allocate ports on pdp_ip0 pdp_ip1 pdp_ip0  with allocation: 0, ports: 0, relay_count_success: 0, has_wifi: 0, max_total_probe_packet: 20, max_probe: 2
+[833:637][468495] (basic_port_allocator.cc:1434): AllocationSequence[1ec2700] khoi tao with network: Net[pdp_ip0:100.78.225.x/32:Cellular:id=3] with max_probe: 2
+[833:637][468495] (basic_port_allocator.cc:1434): AllocationSequence[1ec22f0] khoi tao with network: Net[pdp_ip1:9.65.152.x/32:Cellular:id=5] with max_probe: 2
+[833:637][468495] (basic_port_allocator.cc:1434): AllocationSequence[1e9e080] khoi tao with network: Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4] with max_probe: 2
+[833:637][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec2700]Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]: Allocation Phase=Udp
+[833:637][468495] (port.cc:130): Port[4ae3cdb0::1:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]: Port created with network cost 900
+[833:637][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for UDPPort(Port[4ae3cdb0::1:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]) with name
+[833:637][468495] (basic_port_allocator.cc:1093): UDPPort(Port[4ae3cdb0::0:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]): Added port to allocator
+[833:637][468495] (basic_port_allocator.cc:1110): UDPPort(Port[4ae3cdb0::0:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]): Gathered candidate: Cand[:2866290773:0:udp:2122194688:100.78.225.x:63446:host::0:4H7v:LpJIakUox1f7EP/ZMi1UBikS:3:900:0]
+[833:637][468495] (basic_port_allocator.cc:1143): UDPPort(Port[4ae3cdb0::0:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]): Port ready.
+[833:637][468495] (basic_port_allocator.cc:1152): OnCandidateReady: UDPPort(Port[4ae3cdb0::0:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]): s:1 with candidates:1
+[833:637][468495] (basic_port_allocator.cc:1259): UDPPort(Port[4ae3cdb0::0:0:host:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]): Port completed gathering candidates.
+[833:637][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec22f0]Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]: Allocation Phase=Udp
+[833:637][468495] (port.cc:130): Port[4ae4c720::1:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]: Port created with network cost 900
+[833:637][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for UDPPort(Port[4ae4c720::1:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]) with name
+[833:637][468495] (basic_port_allocator.cc:1093): UDPPort(Port[4ae4c720::0:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]): Added port to allocator
+[833:637][468495] (basic_port_allocator.cc:1110): UDPPort(Port[4ae4c720::0:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]): Gathered candidate: Cand[:4132511880:0:udp:2122129152:9.65.152.x:51016:host::0:4H7v:LpJIakUox1f7EP/ZMi1UBikS:5:900:0]
+[833:637][468495] (basic_port_allocator.cc:1143): UDPPort(Port[4ae4c720::0:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]): Port ready.
+[833:637][468495] (basic_port_allocator.cc:1152): OnCandidateReady: UDPPort(Port[4ae4c720::0:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]): s:1 with candidates:1
+[833:637][468495] (basic_port_allocator.cc:1259): UDPPort(Port[4ae4c720::0:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]): Port completed gathering candidates.
+[833:637][468495] (basic_port_allocator.cc:1576): AllocationSequence[1e9e080]Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]: Allocation Phase=Udp
+[833:637][468495] (port.cc:130): Port[4ae4cc20::1:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]: Port created with network cost 900
+[833:637][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for UDPPort(Port[4ae4cc20::1:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]) with name
+[833:637][468495] (basic_port_allocator.cc:1093): UDPPort(Port[4ae4cc20::0:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]): Added port to allocator
+[833:637][468495] (basic_port_allocator.cc:1110): UDPPort(Port[4ae4cc20::0:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]): Gathered candidate: Cand[:892713061:0:udp:2122262784:[2402:9d80:41e:x:x:x:x:x]:59979:host::0:4H7v:LpJIakUox1f7EP/ZMi1UBikS:4:900:0]
+[833:637][468495] (basic_port_allocator.cc:1143): UDPPort(Port[4ae4cc20::0:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]): Port ready.
+[833:637][468495] (basic_port_allocator.cc:1152): OnCandidateReady: UDPPort(Port[4ae4cc20::0:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]): s:1 with candidates:1
+[833:637][468495] (basic_port_allocator.cc:1259): UDPPort(Port[4ae4cc20::0:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]): Port completed gathering candidates.
+[833:638][698211] (audio_device_buffer.cc:75): AudioDeviceBuffer::ctor
+[833:638][698211] (audio_device_ios.mm:126): AudioDeviceIOS::ctor<NSThread: 0x303e9fb40>{number = 299, name = (null)},bypass_voice_processing=0
+[833:638][698211] (audio_device_ios.mm:144): AudioDeviceIOS::AttachAudioBuffer
+[833:638][698211] (audio_device_ios.mm:151): AudioDeviceIOS::Init
+[833:638][698211] (audio_device_ios.mm:741): AudioDeviceIOS::UpdateAudioDevicebuffer
+[833:638][698211] (audio_device_buffer.cc:213): SetPlayoutSampleRate(48000)
+[833:638][698211] (audio_device_buffer.cc:233): SetPlayoutChannels(1)
+[833:638][698211] (audio_device_buffer.cc:207): SetRecordingSampleRate(48000)
+[833:638][698211] (audio_device_buffer.cc:227): SetRecordingChannels(1)
+[833:638][698211] (audio_device_ios.mm:1134): SetPlayoutDevice: Not implemented
+[833:638][698211] (audio_device_ios.mm:1195): SetStereoPlayout: Not implemented
+[833:638][698211] (audio_device_module_ios.mm:390): stereo playout is not supported
+[833:638][698211] (adm_helpers.cc:57): Failed to set stereo playout mode.
+[833:638][698211] (audio_device_ios.mm:1244): SetRecordingDevice: Not implemented
+[833:638][698211] (adm_helpers.cc:77): Failed to set stereo recording mode.
+[833:638][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {aec: 1, agc: 1, ns: 0, hf: 1, swap: 0, audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:638][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:638][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:638][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:639][371279] (sdp_offer_answer.cc:1546): SdpOfferAnswerHandler::Initialize.
+[833:639][468495] (openssl_key_pair.cc:36): Making key pair
+[833:641][468495] (openssl_key_pair.cc:89): Returning key pair
+[833:641][468495] (boringssl_certificate.cc:186): Making certificate for WebRTC
+[833:642][468495] (boringssl_certificate.cc:242): Returning certificate
+[833:644][21763] (sctp_data_channel.cc:387): DataChannelObserver - adapter needed
+[833:647][371279] (rtp_transmission_manager.cc:242): Adding audio transceiver in response to a call to AddTrack.
+[833:649][698211] (webrtc_voice_engine.cc:1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:649][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:649][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:649][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:649][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:649][698211] (webrtc_voice_engine.cc:1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:649][698211] (webrtc_voice_engine.cc:2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:649][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:649][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:649][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:649][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:649][698211] (webrtc_voice_engine.cc:2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:652][21763] (RTCLogging.mm:34): (RTCDtmfSender.mm:78 -[RTCDtmfSender initWithNativeDtmfSender:]): RTC_OBJC_TYPE(RTCDtmfSender)(0x302778d10): created DTMF sender: RTC_OBJC_TYPE(RTCDtmfSender) {
+  remainingTones: 
+  duration: 0.100000 sec
+  interToneGap: 0.050000 sec
+}
+[833:652][21763] (RTCLogging.mm:34): (RTCRtpSender.mm:141 -[RTCRtpSender initWithFactory:nativeRtpSender:]): RTC_OBJC_TYPE(RTCRtpSender)(0x30248f5a0): created sender: RTC_OBJC_TYPE(RTCRtpSender) {
+  senderId: audio_ULNT62DBU3H
+}
+[833:652][21763] (RTCLogging.mm:34): (RTCDtmfSender.mm:78 -[RTCDtmfSender initWithNativeDtmfSender:]): RTC_OBJC_TYPE(RTCDtmfSender)(0x302778eb0): created DTMF sender: RTC_OBJC_TYPE(RTCDtmfSender) {
+  remainingTones: 
+  duration: 0.100000 sec
+  interToneGap: 0.050000 sec
+}
+[833:652][21763] (RTCLogging.mm:34): (RTCRtpSender.mm:141 -[RTCRtpSender initWithFactory:nativeRtpSender:]): RTC_OBJC_TYPE(RTCRtpSender)(0x30248f5a0): created sender: RTC_OBJC_TYPE(RTCRtpSender) {
+  senderId: audio_ULNT62DBU3H
+}
+[833:652][21763] (RTCLogging.mm:34): (RTCRtpReceiver.mm:150 -[RTCRtpReceiver initWithFactory:nativeRtpReceiver:]): RTC_OBJC_TYPE(RTCRtpReceiver)(0x302b35260): created receiver: RTC_OBJC_TYPE(RTCRtpReceiver) {
+  receiverId: 1c34fad2-14a5-45da-a4b6-7ad1441ede60
+}
+[833:652][21763] (RTCLogging.mm:34): (RTCRtpTransceiver.mm:257 -[RTCRtpTransceiver initWithFactory:nativeRtpTransceiver:]): RTC_OBJC_TYPE(RTCRtpTransceiver)(0x3029ba940): created transceiver: RTC_OBJC_TYPE(RTCRtpTransceiver) {
+  sender: RTC_OBJC_TYPE(RTCRtpSender) {
+  senderId: audio_ULNT62DBU3H
+}
+  receiver: RTC_OBJC_TYPE(RTCRtpReceiver) {
+  receiverId: 1c34fad2-14a5-45da-a4b6-7ad1441ede60
+}
+}
+[833:653][21763] (RTCLogging.mm:34): (RTCDtmfSender.mm:78 -[RTCDtmfSender initWithNativeDtmfSender:]): RTC_OBJC_TYPE(RTCDtmfSender)(0x302778d10): created DTMF sender: RTC_OBJC_TYPE(RTCDtmfSender) {
+  remainingTones: 
+  duration: 0.100000 sec
+  interToneGap: 0.050000 sec
+}
+[833:653][21763] (RTCLogging.mm:34): (RTCRtpSender.mm:141 -[RTCRtpSender initWithFactory:nativeRtpSender:]): RTC_OBJC_TYPE(RTCRtpSender)(0x30248f920): created sender: RTC_OBJC_TYPE(RTCRtpSender) {
+  senderId: audio_ULNT62DBU3H
+}
+[833:654][21763] (RTCLogging.mm:34): (RTCRtpReceiver.mm:150 -[RTCRtpReceiver initWithFactory:nativeRtpReceiver:]): RTC_OBJC_TYPE(RTCRtpReceiver)(0x3029b9fb0): created receiver: RTC_OBJC_TYPE(RTCRtpReceiver) {
+  receiverId: 1c34fad2-14a5-45da-a4b6-7ad1441ede60
+}
+[833:654][21763] (RTCLogging.mm:34): (RTCRtpTransceiver.mm:257 -[RTCRtpTransceiver initWithFactory:nativeRtpTransceiver:]): RTC_OBJC_TYPE(RTCRtpTransceiver)(0x3029b95c0): created transceiver: RTC_OBJC_TYPE(RTCRtpTransceiver) {
+  sender: RTC_OBJC_TYPE(RTCRtpSender) {
+  senderId: audio_ULNT62DBU3H
+}
+  receiver: RTC_OBJC_TYPE(RTCRtpReceiver) {
+  receiverId: 1c34fad2-14a5-45da-a4b6-7ad1441ede60
+}
+}
+[833:654][371279] (sdp_offer_answer.cc:1687): SdpOfferAnswerHandler::CreateOffer.
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [111:audio/opus/48000/2;minptime=10;useinbandfec=1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [9:audio/G722/8000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [0:audio/PCMU/8000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [8:audio/PCMA/8000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [13:audio/CN/8000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [110:audio/telephone-event/48000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [126:audio/telephone-event/8000/1]
+[833:655][371279] (sdp_payload_type_suggester.cc:63): SuggestPayloadType: FAILED to find remote mapping for [63:audio/red/48000/2;=111/111]
+[833:657][371279] (sdp_offer_answer.cc:2594): SdpOfferAnswerHandler::DoSetLocalDescription.
+[833:657][371279] (sdp_offer_answer.cc:2630): SdpOfferAnswerHandler::check last.
+[833:657][371279] (sdp_offer_answer.cc:2675): SdpOfferAnswerHandler::check codecs_mangled_to_raw.
+[833:657][371279] (sdp_offer_answer.cc:2711): DoSetLocalDescription: offer
+[833:657][468495] (jsep_transport_controller.cc:1096): MaybeCreateJsepTransport mid=0 begin create transport
+[833:657][468495] (p2p_transport_channel.cc:787): Set WebRTC-IceFieldTrials:stop_gather_on_strongly_connected 0
+[833:657][468495] (p2p_transport_channel.cc:799): Set skip_relay_to_non_relay_connections
+[833:657][468495] (p2p_transport_channel.cc:555): Set continual_gathering_policy to 1
+[833:657][468495] (p2p_transport_channel.cc:564): Set backup connection ping interval to 25 s milliseconds.
+[833:657][468495] (p2p_transport_channel.cc:573): Set ICE receiving timeout to 2500 ms milliseconds
+[833:657][468495] (p2p_transport_channel.cc:580): Set ping most likely connection to 0
+[833:657][468495] (p2p_transport_channel.cc:587): Set stable_writable_connection_ping_interval to 2500 ms
+[833:657][468495] (p2p_transport_channel.cc:600): Set presume writable when fully relayed to 0
+[833:657][468495] (p2p_transport_channel.cc:618): Set regather_on_failed_networks_interval to 300 s
+[833:657][468495] (p2p_transport_channel.cc:628): Set receiving_switching_delay to 1 s
+[833:657][468495] (p2p_transport_channel.cc:642): Set strong ping interval to 480 ms
+[833:657][468495] (p2p_transport_channel.cc:676): Set prune timeout to 10 s
+[833:657][468495] (jsep_transport_controller.cc:587): Creating DtlsSrtpTransport.
+[833:657][468495] (dtls_srtp_transport.cc:53): Setting RTP Transport on 0 transport 45794290
+[833:657][468495] (srtp_transport.cc:255): The params in SRTP transport are reset.
+[833:658][468495] (jsep_transport_controller.cc:1155): MaybeCreateJsepTransport mid=0 end transport
+[833:658][468495] (p2p_transport_channel.cc:498): Set ICE ufrag: 4H7v pwd: LpJIakUox1f7EP/ZMi1UBikS on transport 0
+[833:658][698211] (webrtc_voice_engine.cc:1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:658][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:658][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:658][698211] (webrtc_voice_engine.cc:1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][698211] (webrtc_voice_engine.cc:2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:658][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:658][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:658][698211] (webrtc_voice_engine.cc:2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:658][371279] (peer_connection.cc:2313): Creating data channel, mid=1
+[833:658][371279] (sdp_offer_answer.cc:3285): SdpOfferAnswerHandler::UpdateSessionState with type: offer
+[833:658][371279] (sdp_offer_answer.cc:3264): Session: 7715901238436591107 Old state: stable New state: have-local-offer
+[833:658][371279] (sdp_offer_answer.cc:3310): SdpOfferAnswerHandler::UpdateSessionState ChangeSignalingState with source: 0
+[833:658][371279] (sdp_offer_answer.cc:5242): SdpOfferAnswerHandler::PushdownMediaDescription
+[833:658][371279] (sdp_offer_answer.cc:5257): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState with rtp_transceivers:1
+[833:658][371279] (sdp_offer_answer.cc:5295): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState transceiver with source: 0
+[833:658][698211] (pacing_controller.cc:114): PacedSender paused.
+[833:658][698211] (webrtc_voice_engine.cc:2504): ResetUnsignaledRecvStream.
+[833:659][371279] (sdp_offer_answer.cc:5308): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState batcher.
+[833:659][698211] (webrtc_voice_engine.cc:2200): WebRtcVoiceMediaChannel::SetReceiverParameters: {codecs: [AudioCodec[111:opus:48000:0:2], AudioCodec[63:red:48000:0:2], AudioCodec[9:G722:8000:0:1], AudioCodec[0:PCMU:8000:0:1], AudioCodec[8:PCMA:8000:0:1], AudioCodec[13:CN:8000:0:1], AudioCodec[110:telephone-event:48000:0:1], AudioCodec[126:telephone-event:8000:0:1]], extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], rtcp: {reduced_size:1, remote_estimate:0}}
+[833:659][698211] (webrtc_voice_engine.cc:1618): AddSendStream: {id:audio_ULNT62DBU3H;ssrcs:[1122548751];ssrc_groups:;cname:j9No/d7GkbBobflT;stream_ids:stream_ULNT62DBU3H;}
+[833:659][698211] (audio_coding_module.cc:221): Created
+[833:659][698211] (audio_send_stream.cc:171): AudioSendStream: 1122548751
+[833:659][698211] (audio_send_stream.cc:233): AudioSendStream::ConfigureStream: {rtp: {ssrc: 1122548751, csrcs: [], extmap-allow-mixed: true, extensions: [], c_name: j9No/d7GkbBobflT}, rtcp_report_interval_ms: 5000, send_transport: (Transport), min_bitrate_bps: -1, max_bitrate_bps: -1, has audio_network_adaptor_config: false, has_dscp: false, send_codec_spec: <unset>}
+[833:659][698211] (channel.cc:751): Add send stream ssrc: 1122548751 into {mid: 0, media_type: audio}
+[833:659][698211] (channel.cc:916): Changing voice state, recv=0 send=0 for {mid: 0, media_type: audio}
+[833:659][371279] (sdp_offer_answer.cc:5378): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState sctp
+[833:659][371279] (sdp_offer_answer.cc:5408): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState done
+[833:659][698211] (webrtc_voice_engine.cc:1304): Setting voice channel options: AudioOptions {aec: 1, ns: 1, }
+[833:659][698211] (webrtc_voice_engine.cc:606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {aec: 1, ns: 1, audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:659][698211] (webrtc_voice_engine.cc:621): Always disable AEC on iOS. Use built-in instead.
+[833:659][698211] (webrtc_voice_engine.cc:629): Always disable AGC on iOS. Use built-in instead.
+[833:659][698211] (audio_processing_impl.cc:680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 1, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 0, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+[833:659][698211] (webrtc_voice_engine.cc:1318): Set voice send channel options. Current options: AudioOptions {aec: 1, ns: 1, audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+[833:659][371279] (sdp_offer_answer.cc:2734): SdpOfferAnswerHandler::check ModifyVideoCodecs.
+[833:659][371279] (sdp_offer_answer.cc:2739): SdpOfferAnswerHandler::check candidate_pool_size.
+[833:659][371279] (sdp_offer_answer.cc:2766): OnSetLocalDescriptionComplete
+[833:659][468495] (p2p_transport_channel.cc:883): P2PTransportChannel::MaybeStartGathering: 4H7v with: allocator_sessions:0
+[833:659][468495] (p2p_transport_channel.cc:947): P2PTransportChannel::OnPortReady: UDPPort(Port[4ae4c720:0:1:0:host:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]) remotes: 0
+[833:660][468495] (wrapping_active_ice_controller.cc:223): Not switching selected connection due to: new candidate pairs created from a new local candidate
+[833:660][468495] (p2p_transport_channel.cc:947): P2PTransportChannel::OnPortReady: UDPPort(Port[4ae4cc20:0:1:0:host:Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]]) remotes: 0
+[833:660][468495] (wrapping_active_ice_controller.cc:223): Not switching selected connection due to: new candidate pairs created from a new local candidate
+[833:660][371279] (sdp_offer_answer.cc:2791): SdpOfferAnswerHandler::done MaybeStartGathering.
+[833:688][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec2700]Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]: Allocation Phase=Relay
+[833:688][468495] (port.cc:130): Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]: Port created with network cost 900
+[833:688][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp] with name0
+[833:688][468495] (basic_port_allocator.cc:1093): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: Added port to allocator
+[833:688][468495] (turn_port.cc:552): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: Trying to connect to TURN server via udp @ 14.238.152.x:3478
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=4c415271357a445337572f47
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=5844784c5955477878615874
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=697174666b3965557177585a
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=444b6e32797337465a7a5451
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=634164656c5352615a316543
+[833:688][468495] (port.cc:130): Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]: Port created with network cost 900
+[833:688][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp] with name0
+[833:688][468495] (basic_port_allocator.cc:1093): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: Added port to allocator
+[833:688][468495] (turn_port.cc:552): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: Trying to connect to TURN server via udp @ 171.226.10.x:3478
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=54647346384c7561676a6d5a
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=6934584f6751636e666d497a
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=536d5548714e324b504f6473
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=344d42657073456579683571
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=507461616371784a4a2b7744
+[833:688][468495] (port.cc:130): Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]: Port created with network cost 900
+[833:688][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp] with name0
+[833:688][468495] (basic_port_allocator.cc:1093): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: Added port to allocator
+[833:688][468495] (turn_port.cc:552): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: Trying to connect to TURN server via udp @ 14.238.161.x:3478
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=475879626869753346452f77
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=6963754479305a57726b4252
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=45725a7870725a3848435134
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=66327775556f313439475a73
+[833:688][468495] (turn_port.cc:1666): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=76636264516746694e484763
+[833:688][468495] (port.cc:130): Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]: Port created with network cost 900
+[833:688][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp] with name0
+[833:688][468495] (basic_port_allocator.cc:1093): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: Added port to allocator
+[833:688][468495] (turn_port.cc:552): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: Trying to connect to TURN server via udp @ 58.186.3.x:3478
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=654c76547a42757857663370
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=646e545671557642776a7734
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=6c69415a636d667132516d70
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=6d397a635a477968585a536d
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=456a436c4267534d726c4948
+[833:689][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec22f0]Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]: Allocation Phase=Relay
+[833:689][468495] (port.cc:130): Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]: Port created with network cost 900
+[833:689][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp] with name0
+[833:689][468495] (basic_port_allocator.cc:1093): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: Added port to allocator
+[833:689][468495] (turn_port.cc:552): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: Trying to connect to TURN server via udp @ 14.238.152.x:3478
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=5559576a505336536442704f
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=4c4977756c315a4853454a4b
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=413359713143655254667a42
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=306b4b6c32334a6f52656777
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request sent, id=59562f49774d33794d69786b
+[833:689][468495] (port.cc:130): Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]: Port created with network cost 900
+[833:689][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp] with name0
+[833:689][468495] (basic_port_allocator.cc:1093): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: Added port to allocator
+[833:689][468495] (turn_port.cc:552): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: Trying to connect to TURN server via udp @ 171.226.10.x:3478
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=596a363276344d316b4e4953
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=68513556473579412f68726b
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=6e5659675a43584d57697a34
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=6a6869456c5a3255584d5633
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request sent, id=4757463832304d4149497652
+[833:689][468495] (port.cc:130): Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]: Port created with network cost 900
+[833:689][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp] with name0
+[833:689][468495] (basic_port_allocator.cc:1093): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: Added port to allocator
+[833:689][468495] (turn_port.cc:552): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: Trying to connect to TURN server via udp @ 14.238.161.x:3478
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=453067364e2f765246344d47
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=54624a716d2f445371486472
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=416832416f3432396f447a2f
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=3474726f43646c7539454142
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request sent, id=345a36513244374a6b612f72
+[833:689][468495] (port.cc:130): Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]: Port created with network cost 900
+[833:689][468495] (basic_port_allocator.cc:1068): Adding Candidate allocated port for TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp] with name0
+[833:689][468495] (basic_port_allocator.cc:1093): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: Added port to allocator
+[833:689][468495] (turn_port.cc:552): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: Trying to connect to TURN server via udp @ 58.186.3.x:3478
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=6f7547346e4e72746b736d47
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=684f49426e455139696b4431
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=4957777a652b645863784856
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=4c7444764b46334c49615944
+[833:689][468495] (turn_port.cc:1666): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request sent, id=397a55305045776533364d72
+[833:689][468495] (basic_port_allocator.cc:1576): AllocationSequence[1e9e080]Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]: Allocation Phase=Relay
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=50736461416d7373494f664f
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=314772735065586f64384f48
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=6e2b2f4b4a62787771375247
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=4f3343546d4972326a52346c
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=6b4430465a454e2b425a5578
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=55735a534644795638765a55
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=2f744635335a556958536b70
+[833:709][468495] (turn_port.cc:1728): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=587449463351357a4762674c
+[833:749][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec2700]Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]: Allocation Phase=Tcp
+[833:749][468495] (basic_port_allocator.cc:1576): AllocationSequence[1ec22f0]Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]: Allocation Phase=Tcp
+[833:749][468495] (basic_port_allocator.cc:1576): AllocationSequence[1e9e080]Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4]: Allocation Phase=Tcp
+[833:842][259] (RTCLogging.mm:34): (RTCAudioSession.mm:856 -[RTCAudioSession audioSessionDidActivate:]): Audio session was externally activated.
+[833:842][259] (RTCLogging.mm:34): (RTCAudioSession.mm:680 -[RTCAudioSession incrementActivationCount]): Incrementing activation count.
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request 4c415271357a445337572f47 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request 5844784c5955477878615874 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request 697174666b3965557177585a timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request 444b6e32797337465a7a5451 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN probe request 634164656c5352615a316543 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request 54647346384c7561676a6d5a timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request 6934584f6751636e666d497a timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request 536d5548714e324b504f6473 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request 344d42657073456579683571 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN probe request 507461616371784a4a2b7744 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request 475879626869753346452f77 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request 6963754479305a57726b4252 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request 45725a7870725a3848435134 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request 66327775556f313439475a73 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN probe request 76636264516746694e484763 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request 654c76547a42757857663370 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request 646e545671557642776a7734 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request 6c69415a636d667132516d70 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request 6d397a635a477968585a536d timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN probe request 456a436c4267534d726c4948 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request 5559576a505336536442704f timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request 4c4977756c315a4853454a4b timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request 413359713143655254667a42 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request 306b4b6c32334a6f52656777 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN probe request 59562f49774d33794d69786b timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request 596a363276344d316b4e4953 timeout
+[833:939][468495] (turn_port.cc:1695): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request 68513556473579412f68726b timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request 6e5659675a43584d57697a34 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request 6a6869456c5a3255584d5633 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN probe request 4757463832304d4149497652 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request 453067364e2f765246344d47 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request 54624a716d2f445371486472 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request 416832416f3432396f447a2f timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request 3474726f43646c7539454142 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN probe request 345a36513244374a6b612f72 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request 6f7547346e4e72746b736d47 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request 684f49426e455139696b4431 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request 4957777a652b645863784856 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request 4c7444764b46334c49615944 timeout
+[833:940][468495] (turn_port.cc:1695): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN probe request 397a55305045776533364d72 timeout
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=50736461416d7373494f664f
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=314772735065586f64384f48
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=6e2b2f4b4a62787771375247
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=4f3343546d4972326a52346c
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=6b4430465a454e2b425a5578
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=55735a534644795638765a55
+[833:959][468495] (turn_port.cc:1728): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=2f744635335a556958536b70
+[833:960][468495] (turn_port.cc:1728): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=587449463351357a4762674c
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=50736461416d7373494f664f
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=314772735065586f64384f48
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=6e2b2f4b4a62787771375247
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=4f3343546d4972326a52346c
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=6b4430465a454e2b425a5578
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=55735a534644795638765a55
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=2f744635335a556958536b70
+[834:460][468495] (turn_port.cc:1728): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=587449463351357a4762674c
+[835:461][468495] (turn_port.cc:1728): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=50736461416d7373494f664f
+[835:461][468495] (turn_port.cc:1728): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=314772735065586f64384f48
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=6e2b2f4b4a62787771375247
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=4f3343546d4972326a52346c
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=6b4430465a454e2b425a5578
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=55735a534644795638765a55
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=2f744635335a556958536b70
+[835:462][468495] (turn_port.cc:1728): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=587449463351357a4762674c
+[836:012][259] (RTCLogging.mm:34): (RTCAudioSession.mm:888 -[RTCAudioSession observeValueForKeyPath:ofObject:change:context:]): OutputVolumeDidChange to 1.000000
+[836:014][259] (RTCLogging.mm:34): (RTCAudioSession.mm:557 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed:
+[836:014][259] (RTCLogging.mm:34): (RTCAudioSession.mm:570 -[RTCAudioSession handleRouteChangeNotification:]): Audio route changed: CategoryChange to :AVAudioSessionCategoryPlayAndRecord
+[836:015][259] (RTCLogging.mm:34): (RTCAudioSession.mm:590 -[RTCAudioSession handleRouteChangeNotification:]): Previous route: <AVAudioSessionRouteDescription: 0x3027796b0, 
+inputs = (
+    "<AVAudioSessionPortDescription: 0x3027796a0, type = MicrophoneBuiltIn; name = iPhone Micr\U00f4; UID = Built-In Microphone; selectedDataSource = D\U01b0\U1edbi c\U00f9ng>"
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x302779410, type = Receiver; name = Thi\U1ebft b\U1ecb nh\U1eadn; UID = Built-In Receiver; selectedDataSource = (null)>"
+)>
+Current route:<AVAudioSessionRouteDescription: 0x302779470, 
+inputs = (
+    "<AVAudioSessionPortDescription: 0x302779130, type = MicrophoneBuiltIn; name = iPhone Micr\U00f4; UID = Built-In Microphone; selectedDataSource = D\U01b0\U1edbi c\U00f9ng>"
+); 
+outputs = (
+    "<AVAudioSessionPortDescription: 0x302778d90, type = Speaker; name = Loa ngo\U00e0i; UID = Speaker; selectedDataSource = (null)>"
+)>
+[837:463][468495] (turn_port.cc:1728): TurnPort(Port[4d20aa00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=50736461416d7373494f664f
+[837:463][468495] (turn_port.cc:1728): TurnPort(Port[44756a00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=314772735065586f64384f48
+[837:463][468495] (turn_port.cc:1728): TurnPort(Port[445edc00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=6e2b2f4b4a62787771375247
+[837:464][468495] (turn_port.cc:1728): TurnPort(Port[444e9e00:0:1:0:relay:Net[pdp_ip0:100.78.225.x/32:Cellular:id=3]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=4f3343546d4972326a52346c
+[837:464][468495] (turn_port.cc:1728): TurnPort(Port[446ba400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.152.70:3478/udp]: TURN allocate request sent, id=6b4430465a454e2b425a5578
+[837:464][468495] (turn_port.cc:1728): TurnPort(Port[44d07a00:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[171.226.10.227:3478/udp]: TURN allocate request sent, id=55735a534644795638765a55
+[837:464][468495] (turn_port.cc:1728): TurnPort(Port[4c286400:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[14.238.161.90:3478/udp]: TURN allocate request sent, id=2f744635335a556958536b70
+[837:464][468495] (turn_port.cc:1728): TurnPort(Port[44a74200:0:1:0:relay:Net[pdp_ip1:9.65.152.x/32:Cellular:id=5]]-Remote[58.186.3.44:3478/udp]: TURN allocate request sent, id=587449463351357a4762674c
+[839:598][371279] (peer_connection.cc:1945): PeerConnection close: 7715901238436591107
+[839:600][371279] (sdp_offer_answer.cc:3264): Session: 7715901238436591107 Old state: have-local-offer New state: closed
+[839:600][468495] (peer_connection.cc:2785): Tearing down data channel transport for mid=1
+[839:600][468495] (basic_port_allocator.cc:1460): [1ec2700]Net[pdp_ip0:100.78.225.x/32:Cellular:id=3] Clear
+[839:600][468495] (basic_port_allocator.cc:1460): [1ec22f0]Net[pdp_ip1:9.65.152.x/32:Cellular:id=5] Clear
+[839:600][468495] (basic_port_allocator.cc:1460): [1e9e080]Net[pdp_ip0:2402:9d80:41e:x:x:x:x:x/64:Cellular:id=4] Clear
+[839:601][698211] (webrtc_voice_engine.cc:1651): RemoveSendStream: 1122548751
+[839:601][698211] (audio_send_stream.cc:185): ~AudioSendStream: 1122548751

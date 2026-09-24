@@ -1,0 +1,321 @@
+peer_connection_factory.cc: [000:000][32003] (line 398): Using default network controller factory
+bitrate_prober.cc: [000:001][32003] (line 54): Bandwidth probing enabled, set to inactive
+cpu_info.cc: [000:001][32003] (line 77): Available number of cores: 8
+transport_sequence_number_feedback_generator.cc: [000:001][32003] (line 52): Maximum interval between transport feedback RTCP messages: 250 ms
+aimd_rate_control.cc: [000:001][32003] (line 114): Using aimd rate control with back off factor 0.9
+remote_bitrate_estimator_single_stream.cc: [000:001][32003] (line 59): RemoteBitrateEstimatorSingleStream: Instantiating.
+peer_connection.cc: [000:007][32004] (line 659): PeerConnection create with session: 6684678132713817019
+peer_connection.cc: [000:007][32002] (line 2407): InitializePortAllocator port_allocator: old=2, new=16706, maxIpv6: 5, candidateFilter: 4
+webrtc_voice_engine.cc: [000:007][32003] (line 522): WebRtcVoiceEngine::Init
+audio_device_buffer.cc: [000:009][32003] (line 75): AudioDeviceBuffer::ctor
+audio_track_jni.cc: [000:009][32003] (line 230): AttachAudioBuffer
+audio_track_jni.cc: [000:009][32003] (line 234): SetPlayoutSampleRate(48000)
+audio_device_buffer.cc: [000:009][32003] (line 213): SetPlayoutSampleRate(48000)
+audio_track_jni.cc: [000:009][32003] (line 237): SetPlayoutChannels(1)
+audio_device_buffer.cc: [000:009][32003] (line 233): SetPlayoutChannels(1)
+audio_record_jni.cc: [000:009][32003] (line 206): AttachAudioBuffer
+audio_record_jni.cc: [000:009][32003] (line 210): SetRecordingSampleRate(48000)
+audio_device_buffer.cc: [000:009][32003] (line 207): SetRecordingSampleRate(48000)
+audio_record_jni.cc: [000:009][32003] (line 213): SetRecordingChannels(1)
+audio_device_buffer.cc: [000:009][32003] (line 227): SetRecordingChannels(1)
+audio_track_jni.cc: [000:009][32003] (line 74): Init
+audio_record_jni.cc: [000:009][32003] (line 100): Init
+webrtc_voice_engine.cc: [000:009][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {aec: 1, agc: 1, ns: 1, hf: 1, swap: 0, audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_record_jni.cc: [000:009][32003] (line 230): EnableBuiltInAEC(1)
+webrtc_voice_engine.cc: [000:009][32003] (line 666): Disabling EC since built-in EC will be used instead
+audio_record_jni.cc: [000:010][32003] (line 238): EnableBuiltInNS(1)
+webrtc_voice_engine.cc: [000:010][32003] (line 693): Disabling NS since built-in NS will be used instead
+audio_processing_impl.cc: [000:010][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+clipping_predictor.cc: [000:010][32003] (line 367): [AGC2] Clipping prediction disabled.
+agc_manager_direct.cc: [000:010][32003] (line 495): [agc] analog controller enabled: yes
+agc_manager_direct.cc: [000:010][32003] (line 498): [agc] Min mic level: 12 (overridden: no)
+sdp_offer_answer.cc: [000:010][32004] (line 1546): SdpOfferAnswerHandler::Initialize.
+openssl_key_pair.cc: [000:011][32002] (line 36): Making key pair
+openssl_key_pair.cc: [000:011][32002] (line 89): Returning key pair
+boringssl_certificate.cc: [000:011][32002] (line 186): Making certificate for WebRTC
+boringssl_certificate.cc: [000:012][32002] (line 242): Returning certificate
+sctp_data_channel.cc: [000:012][32004] (line 105): Accepting maxRetransmits < 0 for backwards compatibility
+sctp_data_channel.cc: [000:012][32004] (line 115): Accepting maxRetransmitTime < 0 for backwards compatibility
+sctp_data_channel.cc: [000:020][31084] (line 387): DataChannelObserver - adapter needed
+rtp_transmission_manager.cc: [000:035][32004] (line 242): Adding audio transceiver in response to a call to AddTrack.
+webrtc_voice_engine.cc: [000:036][32003] (line 1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:036][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [000:036][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [000:036][32003] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:036][32003] (line 2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:036][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [000:036][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [000:036][32003] (line 2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+sdp_offer_answer.cc: [000:060][32004] (line 1687): SdpOfferAnswerHandler::CreateOffer.
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [111:audio/opus/48000/2;minptime=10;useinbandfec=1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [9:audio/G722/8000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [0:audio/PCMU/8000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [8:audio/PCMA/8000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [13:audio/CN/8000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [110:audio/telephone-event/48000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [126:audio/telephone-event/8000/1]
+sdp_payload_type_suggester.cc: [000:061][32004] (line 63): SuggestPayloadType: FAILED to find remote mapping for [63:audio/red/48000/2;=111/111]
+sdp_offer_answer.cc: [000:086][32004] (line 2594): SdpOfferAnswerHandler::DoSetLocalDescription.
+sdp_offer_answer.cc: [000:086][32004] (line 2630): SdpOfferAnswerHandler::check last.
+sdp_offer_answer.cc: [000:087][32004] (line 2675): SdpOfferAnswerHandler::check codecs_mangled_to_raw.
+sdp_offer_answer.cc: [000:087][32004] (line 2711): DoSetLocalDescription: offer
+jsep_transport_controller.cc: [000:087][32002] (line 1096): MaybeCreateJsepTransport mid=0 begin create transport
+p2p_transport_channel.cc: [000:087][32002] (line 787): Set WebRTC-IceFieldTrials:stop_gather_on_strongly_connected 0
+p2p_transport_channel.cc: [000:087][32002] (line 799): Set skip_relay_to_non_relay_connections
+p2p_transport_channel.cc: [000:087][32002] (line 555): Set continual_gathering_policy to 1
+p2p_transport_channel.cc: [000:087][32002] (line 564): Set backup connection ping interval to 25 s milliseconds.
+p2p_transport_channel.cc: [000:087][32002] (line 573): Set ICE receiving timeout to 2500 ms milliseconds
+p2p_transport_channel.cc: [000:087][32002] (line 580): Set ping most likely connection to 0
+p2p_transport_channel.cc: [000:087][32002] (line 587): Set stable_writable_connection_ping_interval to 2500 ms
+p2p_transport_channel.cc: [000:087][32002] (line 600): Set presume writable when fully relayed to 0
+p2p_transport_channel.cc: [000:087][32002] (line 618): Set regather_on_failed_networks_interval to 300 s
+p2p_transport_channel.cc: [000:087][32002] (line 628): Set receiving_switching_delay to 1 s
+p2p_transport_channel.cc: [000:087][32002] (line 642): Set strong ping interval to 480 ms
+p2p_transport_channel.cc: [000:087][32002] (line 676): Set prune timeout to 10 s
+jsep_transport_controller.cc: [000:087][32002] (line 587): Creating DtlsSrtpTransport.
+dtls_srtp_transport.cc: [000:087][32002] (line 53): Setting RTP Transport on 0 transport e6537680
+srtp_transport.cc: [000:087][32002] (line 255): The params in SRTP transport are reset.
+jsep_transport_controller.cc: [000:087][32002] (line 1155): MaybeCreateJsepTransport mid=0 end transport
+p2p_transport_channel.cc: [000:087][32002] (line 498): Set ICE ufrag: xrWn pwd: 7HgkWFuRnETTIwWpe2QhKpqW on transport 0
+webrtc_voice_engine.cc: [000:087][32003] (line 1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:088][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [000:088][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [000:088][32003] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:088][32003] (line 2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [000:088][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [000:088][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [000:088][32003] (line 2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+pacing_controller.cc: [000:088][32003] (line 114): PacedSender paused.
+peer_connection.cc: [000:088][32004] (line 2313): Creating data channel, mid=1
+sdp_offer_answer.cc: [000:088][32004] (line 3285): SdpOfferAnswerHandler::UpdateSessionState with type: offer
+sdp_offer_answer.cc: [000:088][32004] (line 3264): Session: 6684678132713817019 Old state: stable New state: have-local-offer
+sdp_offer_answer.cc: [000:089][32004] (line 3310): SdpOfferAnswerHandler::UpdateSessionState ChangeSignalingState with source: 0
+sdp_offer_answer.cc: [000:089][32004] (line 5242): SdpOfferAnswerHandler::PushdownMediaDescription
+sdp_offer_answer.cc: [000:089][32004] (line 5257): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState with rtp_transceivers:1
+sdp_offer_answer.cc: [000:089][32004] (line 5295): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState transceiver with source: 0
+webrtc_voice_engine.cc: [000:089][32003] (line 2504): ResetUnsignaledRecvStream.
+sdp_offer_answer.cc: [000:089][32004] (line 5308): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState batcher.
+webrtc_voice_engine.cc: [000:089][32003] (line 2200): WebRtcVoiceMediaChannel::SetReceiverParameters: {codecs: [AudioCodec[111:opus:48000:0:2], AudioCodec[63:red:48000:0:2], AudioCodec[9:G722:8000:0:1], AudioCodec[0:PCMU:8000:0:1], AudioCodec[8:PCMA:8000:0:1], AudioCodec[13:CN:8000:0:1], AudioCodec[110:telephone-event:48000:0:1], AudioCodec[126:telephone-event:8000:0:1]], extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], rtcp: {reduced_size:1, remote_estimate:0}}
+webrtc_voice_engine.cc: [000:089][32003] (line 1618): AddSendStream: {id:audio_UNZLXG7L7CV;ssrcs:[3362246291];ssrc_groups:;cname:nNiCL7Ngcz3D4+Xl;stream_ids:stream_UNZLXG7L7CV;}
+audio_coding_module.cc: [000:091][32003] (line 221): Created
+audio_send_stream.cc: [000:091][32003] (line 171): AudioSendStream: 3362246291
+audio_send_stream.cc: [000:091][32003] (line 233): AudioSendStream::ConfigureStream: {rtp: {ssrc: 3362246291, csrcs: [], extmap-allow-mixed: true, extensions: [], c_name: nNiCL7Ngcz3D4+Xl}, rtcp_report_interval_ms: 5000, send_transport: (Transport), min_bitrate_bps: -1, max_bitrate_bps: -1, has audio_network_adaptor_config: false, has_dscp: false, send_codec_spec: <unset>}
+channel.cc: [000:091][32003] (line 751): Add send stream ssrc: 3362246291 into {mid: 0, media_type: audio}
+channel.cc: [000:091][32003] (line 916): Changing voice state, recv=0 send=0 for {mid: 0, media_type: audio}
+sdp_offer_answer.cc: [000:092][32004] (line 5378): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState sctp
+sdp_offer_answer.cc: [000:092][32004] (line 5408): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState done
+webrtc_voice_engine.cc: [000:092][32003] (line 1304): Setting voice channel options: AudioOptions {}
+webrtc_voice_engine.cc: [000:092][32003] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [000:092][32003] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [000:092][32003] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+sdp_offer_answer.cc: [000:093][32004] (line 2734): SdpOfferAnswerHandler::check ModifyVideoCodecs.
+sdp_offer_answer.cc: [000:093][32004] (line 2739): SdpOfferAnswerHandler::check candidate_pool_size.
+sdp_offer_answer.cc: [000:093][32004] (line 2766): OnSetLocalDescriptionComplete
+p2p_transport_channel.cc: [000:095][32002] (line 883): P2PTransportChannel::MaybeStartGathering: xrWn with: allocator_sessions:0
+basic_port_allocator.cc: [000:095][32002] (line 271): BasicPortAllocatorSession[1f30ee00] (0) component:1 u/p=xrWn/7HgkWFuRnETTIwWpe2QhKpqW
+android_network_monitor.cc: [000:124][32002] (line 611): Android network monitor found 1 networks
+android_network_monitor.cc: [000:124][32002] (line 451): Network connected: NetInfo[name wlan0; handle 510211837965; type 2]
+network.cc: [000:124][32002] (line 605): Network change was observed
+basic_port_allocator.cc: [000:127][32002] (line 375): Start getting ports with turn_port_prune_policy 0
+thread.cc: [000:127][32002] (line 557): Message to network_thread took 32ms to dispatch.
+sdp_offer_answer.cc: [000:127][32004] (line 2791): SdpOfferAnswerHandler::done MaybeStartGathering.
+basic_port_allocator.cc: [000:132][32002] (line 1011): 1f30ee00 OnNetworksChanged start
+basic_port_allocator.cc: [000:132][32002] (line 711): Count of networks: 3
+basic_port_allocator.cc: [000:132][32002] (line 713): Net[wlan0:192.168.26.x/24:Wifi:id=3]
+basic_port_allocator.cc: [000:132][32002] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:132][32002] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:132][32002] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [000:132][32002] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:132][32002] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:132][32002] (line 1030): 1f30ee00 OnNetworksChanged end with network_start: 0 ,allocation_started = 0, failed_networks = 0
+basic_port_allocator.cc: [000:132][32002] (line 1045): 1f30ee00 Network manager has started
+android_network_monitor.cc: [000:132][32002] (line 451): Network connected: NetInfo[name wlan0; handle 510211837965; type 2]
+network.cc: [000:132][32002] (line 605): Network change was observed
+android_network_monitor.cc: [000:136][32002] (line 682): Android network monitor detected connection type change.
+network.cc: [000:136][32002] (line 605): Network change was observed
+android_network_monitor.cc: [000:139][32002] (line 451): Network connected: NetInfo[name wlan0; handle 510211837965; type 2]
+network.cc: [000:139][32002] (line 605): Network change was observed
+android_network_monitor.cc: [000:143][32002] (line 451): Network connected: NetInfo[name wlan0; handle 510211837965; type 2]
+network.cc: [000:143][32002] (line 605): Network change was observed
+basic_port_allocator.cc: [000:145][32002] (line 669): 1f30ee00 OnAllocate allocation_epoch = 0 network_start: 1 ,allocation_started = 0
+basic_port_allocator.cc: [000:145][32002] (line 711): Count of networks: 3
+basic_port_allocator.cc: [000:145][32002] (line 713): Net[wlan0:192.168.26.x/24:Wifi:id=3]
+basic_port_allocator.cc: [000:145][32002] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:145][32002] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:145][32002] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [000:146][32002] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:146][32002] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:146][32002] (line 934): BasicPortAllocatorSession[1f30ee00] Allocate ports on wlan0  with allocation: 0, ports: 0, relay_count_success: 0, has_wifi: 1, max_total_probe_packet: 20, max_probe: 5
+basic_port_allocator.cc: [000:146][32002] (line 1434): AllocationSequence[2a442b40] khoi tao with network: Net[wlan0:192.168.26.x/24:Wifi:id=3] with max_probe: 5
+android_network_monitor.cc: [000:157][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:157][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:157][32002] (line 54): UDP bind failed with error 0
+basic_port_allocator.cc: [000:157][32002] (line 1576): AllocationSequence[2a442b40]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Udp
+port.cc: [000:157][32002] (line 130): Port[e6537300:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+android_network_monitor.cc: [000:158][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:158][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:158][32002] (line 54): UDP bind failed with error 1
+stun_port.cc: [000:158][32002] (line 224): UDPPort(Port[e6537300:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): UDP socket creation failed
+android_network_monitor.cc: [000:160][32002] (line 451): Network connected: NetInfo[name tun0; handle 488737001485; type 9; underlying_type_for_vpn 2]
+network.cc: [000:160][32002] (line 605): Network change was observed
+basic_port_allocator.cc: [000:163][32002] (line 1011): 1f30ee00 OnNetworksChanged start
+basic_port_allocator.cc: [000:163][32002] (line 711): Count of networks: 5
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[wlan0:192.168.26.x/24:Wifi:id=3]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[tun0:2606:4700:cf1:x:x:x:x:x/128:VPN/Wifi:id=5]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[tun0:172.16.0.x/32:VPN/Wifi:id=4]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:163][32002] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[tun0:2606:4700:cf1:x:x:x:x:x/128:VPN/Wifi:id=5]
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[tun0:172.16.0.x/32:VPN/Wifi:id=4]
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:163][32002] (line 1030): 1f30ee00 OnNetworksChanged end with network_start: 1 ,allocation_started = 1, failed_networks = 0
+basic_port_allocator.cc: [000:163][32002] (line 711): Count of networks: 5
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[wlan0:192.168.26.x/24:Wifi:id=3]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[tun0:2606:4700:cf1:x:x:x:x:x/128:VPN/Wifi:id=5]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[tun0:172.16.0.x/32:VPN/Wifi:id=4]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:163][32002] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:163][32002] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[tun0:2606:4700:cf1:x:x:x:x:x/128:VPN/Wifi:id=5]
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[tun0:172.16.0.x/32:VPN/Wifi:id=4]
+basic_port_allocator.cc: [000:163][32002] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [000:164][32002] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [000:164][32002] (line 934): BasicPortAllocatorSession[1f30ee00] Allocate ports on wlan0  with allocation: 1, ports: 0, relay_count_success: 0, has_wifi: 1, max_total_probe_packet: 0, max_probe: 0
+basic_port_allocator.cc: [000:164][32002] (line 1434): AllocationSequence[2a442c20] khoi tao with network: Net[wlan0:192.168.26.x/24:Wifi:id=3] with max_probe: 0
+android_network_monitor.cc: [000:164][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:165][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:165][32002] (line 54): UDP bind failed with error 1
+basic_port_allocator.cc: [000:165][32002] (line 1576): AllocationSequence[2a442c20]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Udp
+port.cc: [000:165][32002] (line 130): Port[e6537300:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+android_network_monitor.cc: [000:166][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:166][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:166][32002] (line 54): UDP bind failed with error 1
+stun_port.cc: [000:166][32002] (line 224): UDPPort(Port[e6537300:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): UDP socket creation failed
+android_network_monitor.cc: [000:174][32002] (line 451): Network connected: NetInfo[name tun0; handle 488737001485; type 9; underlying_type_for_vpn 2]
+network.cc: [000:174][32002] (line 605): Network change was observed
+android_network_monitor.cc: [000:185][32002] (line 451): Network connected: NetInfo[name tun0; handle 488737001485; type 9; underlying_type_for_vpn 2]
+network.cc: [000:185][32002] (line 605): Network change was observed
+basic_port_allocator.cc: [000:208][32002] (line 1576): AllocationSequence[2a442b40]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Relay
+port.cc: [000:208][32002] (line 130): Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:208][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp] with name0
+basic_port_allocator.cc: [000:208][32002] (line 1093): TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Added port to allocator
+turn_port.cc: [000:208][32002] (line 552): TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Trying to connect to TURN server via udp @ 171.226.10.x:3478
+android_network_monitor.cc: [000:209][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:209][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:209][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:209][32002] (line 556): TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:209][32002] (line 1082): AddAllocatedPort: TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: OnCandidateError
+port.cc: [000:210][32002] (line 130): Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:210][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp] with name0
+basic_port_allocator.cc: [000:210][32002] (line 1093): TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Added port to allocator
+turn_port.cc: [000:210][32002] (line 552): TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Trying to connect to TURN server via udp @ 14.238.152.x:3478
+android_network_monitor.cc: [000:210][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:210][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:210][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:211][32002] (line 556): TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:211][32002] (line 1082): AddAllocatedPort: TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: OnCandidateError
+port.cc: [000:211][32002] (line 130): Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:211][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp] with name0
+basic_port_allocator.cc: [000:211][32002] (line 1093): TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Added port to allocator
+turn_port.cc: [000:211][32002] (line 552): TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Trying to connect to TURN server via udp @ 116.103.111.x:3478
+android_network_monitor.cc: [000:211][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:211][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:211][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:212][32002] (line 556): TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:212][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: OnCandidateError
+port.cc: [000:212][32002] (line 130): Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:212][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp] with name0
+basic_port_allocator.cc: [000:212][32002] (line 1093): TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Added port to allocator
+turn_port.cc: [000:212][32002] (line 552): TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Trying to connect to TURN server via udp @ 160.250.77.x:3478
+android_network_monitor.cc: [000:213][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:213][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:213][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:213][32002] (line 556): TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:213][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: OnCandidateError
+basic_port_allocator.cc: [000:213][32002] (line 1277): TurnPort(Port[3b034600:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:213][32002] (line 1277): TurnPort(Port[3b034b00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:213][32002] (line 1277): TurnPort(Port[d7b08000:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:213][32002] (line 1277): TurnPort(Port[d7b08500:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:216][32002] (line 1576): AllocationSequence[2a442c20]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Relay
+port.cc: [000:216][32002] (line 130): Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:216][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp] with name0
+basic_port_allocator.cc: [000:216][32002] (line 1093): TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Added port to allocator
+turn_port.cc: [000:216][32002] (line 552): TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Trying to connect to TURN server via udp @ 171.226.10.x:3478
+android_network_monitor.cc: [000:218][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:218][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:218][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:218][32002] (line 556): TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:218][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: OnCandidateError
+port.cc: [000:218][32002] (line 130): Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:218][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp] with name0
+basic_port_allocator.cc: [000:218][32002] (line 1093): TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Added port to allocator
+turn_port.cc: [000:218][32002] (line 552): TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Trying to connect to TURN server via udp @ 14.238.152.x:3478
+android_network_monitor.cc: [000:219][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:219][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:219][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:220][32002] (line 556): TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:220][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: OnCandidateError
+port.cc: [000:220][32002] (line 130): Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:220][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp] with name0
+basic_port_allocator.cc: [000:220][32002] (line 1093): TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Added port to allocator
+turn_port.cc: [000:220][32002] (line 552): TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Trying to connect to TURN server via udp @ 116.103.111.x:3478
+android_network_monitor.cc: [000:222][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:222][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:222][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:222][32002] (line 556): TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:222][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: OnCandidateError
+port.cc: [000:222][32002] (line 130): Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+basic_port_allocator.cc: [000:222][32002] (line 1068): Adding Candidate allocated port for TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp] with name0
+basic_port_allocator.cc: [000:222][32002] (line 1093): TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Added port to allocator
+turn_port.cc: [000:222][32002] (line 552): TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Trying to connect to TURN server via udp @ 160.250.77.x:3478
+android_network_monitor.cc: [000:223][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:224][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:224][32002] (line 54): UDP bind failed with error 1
+turn_port.cc: [000:224][32002] (line 556): TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Failed to create TURN client socket
+basic_port_allocator.cc: [000:224][32002] (line 1082): AddAllocatedPort: TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: OnCandidateError
+basic_port_allocator.cc: [000:224][32002] (line 1277): TurnPort(Port[d7b08a00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[171.226.10.227:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:224][32002] (line 1277): TurnPort(Port[d7b08f00:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[14.238.152.70:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:224][32002] (line 1277): TurnPort(Port[d7b09400:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[116.103.111.245:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:224][32002] (line 1277): TurnPort(Port[d7b09900:0:1:0:relay:Net[wlan0:192.168.26.x/24:Wifi:id=3]]-Remote[160.250.77.138:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [000:265][32002] (line 1576): AllocationSequence[2a442b40]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Tcp
+port.cc: [000:265][32002] (line 130): Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+android_network_monitor.cc: [000:269][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:269][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:269][32002] (line 135): TCP bind failed with error 1
+tcp_port.cc: [000:269][32002] (line 314): TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): TCP server socket creation failed; continuing anyway.
+basic_port_allocator.cc: [000:269][32002] (line 1068): Adding Candidate allocated port for TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]) with name0
+basic_port_allocator.cc: [000:269][32002] (line 1093): TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Added port to allocator
+tcp_port.cc: [000:269][32002] (line 189): TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Not listening due to firewall restrictions.
+basic_port_allocator.cc: [000:269][32002] (line 1110): TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Gathered candidate: Cand[:218798303:1:tcp:1518280447:192.168.26.x:9:host::0:xrWn:7HgkWFuRnETTIwWpe2QhKpqW:3:10:0]
+basic_port_allocator.cc: [000:269][32002] (line 1157): Discarding candidate because it doesn't match filter: TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]])
+basic_port_allocator.cc: [000:269][32002] (line 1259): TCPPort(Port[3b06e100:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Port completed gathering candidates.
+basic_port_allocator.cc: [000:275][32002] (line 1576): AllocationSequence[2a442c20]Net[wlan0:192.168.26.x/24:Wifi:id=3]: Allocation Phase=Tcp
+port.cc: [000:275][32002] (line 130): Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]: Port created with network cost 10
+android_network_monitor.cc: [000:277][32002] (line 438): BindSocketToNetwork got error: -1 addr: 192.168.26.x ifname: wlan0
+physical_socket_server.cc: [000:277][32002] (line 249): Binding socket to network address failed; result: -1
+basic_packet_socket_factory.cc: [000:277][32002] (line 135): TCP bind failed with error 2
+tcp_port.cc: [000:277][32002] (line 314): TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): TCP server socket creation failed; continuing anyway.
+basic_port_allocator.cc: [000:277][32002] (line 1068): Adding Candidate allocated port for TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]) with name0
+basic_port_allocator.cc: [000:277][32002] (line 1093): TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Added port to allocator
+tcp_port.cc: [000:277][32002] (line 189): TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Not listening due to firewall restrictions.
+basic_port_allocator.cc: [000:277][32002] (line 1110): TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Gathered candidate: Cand[:218798303:1:tcp:1518280447:192.168.26.x:9:host::0:xrWn:7HgkWFuRnETTIwWpe2QhKpqW:3:10:0]
+basic_port_allocator.cc: [000:277][32002] (line 1157): Discarding candidate because it doesn't match filter: TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]])
+basic_port_allocator.cc: [000:277][32002] (line 1259): TCPPort(Port[3b06e400:0:1:0:host:Net[wlan0:192.168.26.x/24:Wifi:id=3]]): Port completed gathering candidates.
+basic_port_allocator.cc: [000:277][32002] (line 1333): All candidates gathered for 0:1:0
+p2p_transport_channel.cc: [000:277][32002] (line 1009): P2PTransportChannel: 0, component 1 gathering complete, but using continual gathering so not changing gathering state.
+peer_connection.cc: [005:942][32004] (line 1945): PeerConnection close: 6684678132713817019
+sdp_offer_answer.cc: [005:953][32004] (line 3264): Session: 6684678132713817019 Old state: have-local-offer New state: closed
+peer_connection.cc: [005:953][32002] (line 2785): Tearing down data channel transport for mid=1
+basic_port_allocator.cc: [005:957][32002] (line 1460): [2a442b40]Net[wlan0:192.168.26.x/24:Wifi:id=3] Clear
+basic_port_allocator.cc: [005:957][32002] (line 1460): [2a442c20]Net[wlan0:192.168.26.x/24:Wifi:id=3] Clear
+webrtc_voice_engine.cc: [005:958][32003] (line 1651): RemoveSendStream: 3362246291
+audio_send_stream.cc: [005:958][32003] (line 185): ~AudioSendStream: 3362246291
+webrtc_voice_engine.cc: [005:964][32003] (line 560): WebRtcVoiceEngine::Terminate
+audio_record_jni.cc: [005:964][32003] (line 170): StopRecording
+audio_record_jni.cc: [005:964][32003] (line 107): Terminate
+audio_record_jni.cc: [005:964][32003] (line 170): StopRecording
+audio_track_jni.cc: [005:964][32003] (line 81): Terminate
+audio_track_jni.cc: [005:964][32003] (line 159): StopPlayout
+audio_device_buffer.cc: [005:964][32003] (line 89): AudioDeviceBuffer::~dtor

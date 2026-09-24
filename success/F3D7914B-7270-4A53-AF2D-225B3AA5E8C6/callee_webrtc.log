@@ -1,0 +1,954 @@
+peer_connection_factory.cc: [5388:162][25512] (line 398): Using default network controller factory
+bitrate_prober.cc: [5388:163][25512] (line 54): Bandwidth probing enabled, set to inactive
+transport_sequence_number_feedback_generator.cc: [5388:166][25512] (line 52): Maximum interval between transport feedback RTCP messages: 250 ms
+aimd_rate_control.cc: [5388:166][25512] (line 114): Using aimd rate control with back off factor 0.9
+remote_bitrate_estimator_single_stream.cc: [5388:166][25512] (line 59): RemoteBitrateEstimatorSingleStream: Instantiating.
+peer_connection.cc: [5388:170][25513] (line 659): PeerConnection create with session: 9021342025948114921
+peer_connection.cc: [5388:170][25511] (line 2407): InitializePortAllocator port_allocator: old=10, new=16714, maxIpv6: 5, candidateFilter: 6
+basic_port_allocator.cc: [5388:170][25511] (line 271): BasicPortAllocatorSession[44505700] () component:0 u/p=YIOU/7H2tw9lKhNNOSUvVRcXuxt1u
+android_network_monitor.cc: [5388:177][25511] (line 611): Android network monitor found 0 networks
+basic_port_allocator.cc: [5388:177][25511] (line 375): Start getting ports with turn_port_prune_policy 0
+webrtc_voice_engine.cc: [5388:177][25512] (line 522): WebRtcVoiceEngine::Init
+audio_device_buffer.cc: [5388:178][25512] (line 75): AudioDeviceBuffer::ctor
+audio_track_jni.cc: [5388:178][25512] (line 230): AttachAudioBuffer
+audio_track_jni.cc: [5388:178][25512] (line 234): SetPlayoutSampleRate(48000)
+audio_device_buffer.cc: [5388:178][25512] (line 213): SetPlayoutSampleRate(48000)
+audio_track_jni.cc: [5388:178][25512] (line 237): SetPlayoutChannels(1)
+audio_device_buffer.cc: [5388:178][25512] (line 233): SetPlayoutChannels(1)
+audio_record_jni.cc: [5388:178][25512] (line 206): AttachAudioBuffer
+audio_record_jni.cc: [5388:178][25512] (line 210): SetRecordingSampleRate(48000)
+audio_device_buffer.cc: [5388:178][25512] (line 207): SetRecordingSampleRate(48000)
+audio_record_jni.cc: [5388:178][25512] (line 213): SetRecordingChannels(1)
+audio_device_buffer.cc: [5388:178][25512] (line 227): SetRecordingChannels(1)
+audio_track_jni.cc: [5388:178][25512] (line 74): Init
+audio_record_jni.cc: [5388:178][25512] (line 100): Init
+webrtc_voice_engine.cc: [5388:178][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {aec: 1, agc: 1, ns: 1, hf: 1, swap: 0, audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_record_jni.cc: [5388:178][25512] (line 230): EnableBuiltInAEC(1)
+webrtc_voice_engine.cc: [5388:178][25512] (line 666): Disabling EC since built-in EC will be used instead
+audio_record_jni.cc: [5388:178][25512] (line 238): EnableBuiltInNS(1)
+webrtc_voice_engine.cc: [5388:179][25512] (line 693): Disabling NS since built-in NS will be used instead
+audio_processing_impl.cc: [5388:179][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+sdp_offer_answer.cc: [5388:179][25513] (line 1546): SdpOfferAnswerHandler::Initialize.
+basic_port_allocator.cc: [5388:181][25511] (line 1011): 44505700 OnNetworksChanged start
+basic_port_allocator.cc: [5388:181][25511] (line 711): Count of networks: 2
+basic_port_allocator.cc: [5388:181][25511] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:181][25511] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:181][25511] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [5388:181][25511] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:181][25511] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:181][25511] (line 1030): 44505700 OnNetworksChanged end with network_start: 0 ,allocation_started = 0, failed_networks = 0
+basic_port_allocator.cc: [5388:181][25511] (line 1045): 44505700 Network manager has started
+android_network_monitor.cc: [5388:181][25511] (line 682): Android network monitor detected connection type change.
+network.cc: [5388:181][25511] (line 605): Network change was observed
+openssl_key_pair.cc: [5388:182][25511] (line 36): Making key pair
+openssl_key_pair.cc: [5388:183][25511] (line 89): Returning key pair
+boringssl_certificate.cc: [5388:183][25511] (line 186): Making certificate for WebRTC
+boringssl_certificate.cc: [5388:183][25511] (line 242): Returning certificate
+android_network_monitor.cc: [5388:183][25511] (line 451): Network connected: NetInfo[name ccmni1; handle 703485366285; type 4]
+network.cc: [5388:183][25511] (line 605): Network change was observed
+basic_port_allocator.cc: [5388:185][25511] (line 1011): 44505700 OnNetworksChanged start
+basic_port_allocator.cc: [5388:185][25511] (line 711): Count of networks: 3
+basic_port_allocator.cc: [5388:185][25511] (line 713): Net[ccmni1:29.0.0.x/8:Cellular:id=3]
+basic_port_allocator.cc: [5388:185][25511] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:185][25511] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:185][25511] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [5388:185][25511] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:185][25511] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:185][25511] (line 1030): 44505700 OnNetworksChanged end with network_start: 1 ,allocation_started = 0, failed_networks = 0
+android_network_monitor.cc: [5388:185][25511] (line 451): Network connected: NetInfo[name ccmni1; handle 703485366285; type 4]
+network.cc: [5388:185][25511] (line 605): Network change was observed
+android_network_monitor.cc: [5388:187][25511] (line 451): Network connected: NetInfo[name ccmni1; handle 703485366285; type 4]
+network.cc: [5388:187][25511] (line 605): Network change was observed
+basic_port_allocator.cc: [5388:189][25511] (line 669): 44505700 OnAllocate allocation_epoch = 0 network_start: 1 ,allocation_started = 0
+basic_port_allocator.cc: [5388:189][25511] (line 711): Count of networks: 3
+basic_port_allocator.cc: [5388:189][25511] (line 713): Net[ccmni1:29.0.0.x/8:Cellular:id=3]
+basic_port_allocator.cc: [5388:189][25511] (line 713): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:189][25511] (line 713): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:189][25511] (line 125): Filtered out ignored networks:
+basic_port_allocator.cc: [5388:189][25511] (line 127): Net[lo:0:0:0:x:x:x:x:x/128:Loopback:id=2]
+basic_port_allocator.cc: [5388:189][25511] (line 127): Net[lo:127.0.0.x/8:Loopback:id=1]
+basic_port_allocator.cc: [5388:189][25511] (line 934): BasicPortAllocatorSession[44505700] Allocate ports on ccmni1  with allocation: 0, ports: 0, relay_count_success: 0, has_wifi: 0, max_total_probe_packet: 20, max_probe: 5
+basic_port_allocator.cc: [5388:189][25511] (line 1434): AllocationSequence[14572870] khoi tao with network: Net[ccmni1:29.0.0.x/8:Cellular:id=3] with max_probe: 5
+basic_port_allocator.cc: [5388:190][25511] (line 1576): AllocationSequence[14572870]Net[ccmni1:29.0.0.x/8:Cellular:id=3]: Allocation Phase=Udp
+port.cc: [5388:190][25511] (line 130): Port[645f33d0::1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]: Port created with network cost 900
+basic_port_allocator.cc: [5388:190][25511] (line 1068): Adding Candidate allocated port for UDPPort(Port[645f33d0::1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]) with name
+basic_port_allocator.cc: [5388:190][25511] (line 1093): UDPPort(Port[645f33d0::0:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]): Added port to allocator
+basic_port_allocator.cc: [5388:190][25511] (line 1110): UDPPort(Port[645f33d0::0:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]): Gathered candidate: Cand[:669962530:0:udp:2122260224:29.204.49.x:44190:host::0:YIOU:7H2tw9lKhNNOSUvVRcXuxt1u:3:900:0]
+basic_port_allocator.cc: [5388:190][25511] (line 1143): UDPPort(Port[645f33d0::0:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]): Port ready.
+basic_port_allocator.cc: [5388:190][25511] (line 1152): OnCandidateReady: UDPPort(Port[645f33d0::0:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]): s:1 with candidates:1
+basic_port_allocator.cc: [5388:190][25511] (line 1259): UDPPort(Port[645f33d0::0:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]): Port completed gathering candidates.
+basic_port_allocator.cc: [5388:240][25511] (line 1576): AllocationSequence[14572870]Net[ccmni1:29.0.0.x/8:Cellular:id=3]: Allocation Phase=Relay
+port.cc: [5388:240][25511] (line 130): Port[b446b590::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]: Port created with network cost 900
+basic_port_allocator.cc: [5388:240][25511] (line 1068): Adding Candidate allocated port for TurnPort(Port[b446b590::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp] with name
+basic_port_allocator.cc: [5388:240][25511] (line 1093): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: Added port to allocator
+turn_port.cc: [5388:240][25511] (line 552): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: Trying to connect to TURN server via udp @ 116.103.111.x:3478
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request sent, id=72346e4670336441372b6758
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request sent, id=684d6e49474a483835502b38
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request sent, id=506664794f4766635669564e
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request sent, id=4971457a3776527274544e55
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request sent, id=336c746c7757735469317a34
+port.cc: [5388:240][25511] (line 130): Port[b46b2580::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]: Port created with network cost 900
+basic_port_allocator.cc: [5388:240][25511] (line 1068): Adding Candidate allocated port for TurnPort(Port[b46b2580::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp] with name
+basic_port_allocator.cc: [5388:240][25511] (line 1093): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Added port to allocator
+turn_port.cc: [5388:240][25511] (line 552): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Trying to connect to TURN server via udp @ 103.63.112.x:3478
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN probe request sent, id=61724f56786f734a35632f54
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN probe request sent, id=595367306d73396a3865342f
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN probe request sent, id=6d64444a5046554d74746d59
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN probe request sent, id=7735596a5972735179573456
+turn_port.cc: [5388:240][25511] (line 1666): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN probe request sent, id=75764f6c342f4e3433393657
+port.cc: [5388:240][25511] (line 130): Port[b442eff0::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]: Port created with network cost 900
+basic_port_allocator.cc: [5388:240][25511] (line 1068): Adding Candidate allocated port for TurnPort(Port[b442eff0::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp] with name
+basic_port_allocator.cc: [5388:240][25511] (line 1093): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: Added port to allocator
+turn_port.cc: [5388:240][25511] (line 552): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: Trying to connect to TURN server via udp @ 171.226.10.x:3478
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request sent, id=49413050644471734c465869
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request sent, id=4968634d41417669704b6f71
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request sent, id=33376679555a2f4834527159
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request sent, id=756a596677353269496b5365
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request sent, id=322b366435425a37686b4f48
+port.cc: [5388:241][25511] (line 130): Port[b45b00a0::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]: Port created with network cost 900
+basic_port_allocator.cc: [5388:241][25511] (line 1068): Adding Candidate allocated port for TurnPort(Port[b45b00a0::1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp] with name
+basic_port_allocator.cc: [5388:241][25511] (line 1093): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Added port to allocator
+turn_port.cc: [5388:241][25511] (line 552): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Trying to connect to TURN server via udp @ 160.250.77.x:3478
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN probe request sent, id=59393274322b486259456b65
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN probe request sent, id=5a31692f51514c6a49386445
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN probe request sent, id=4a4e5142354830524a6e2b4a
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN probe request sent, id=6d526c567a79706f2b4e6a4c
+turn_port.cc: [5388:241][25511] (line 1666): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN probe request sent, id=6276426d4e3249674d4c3739
+turn_port.cc: [5388:260][25511] (line 1728): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5388:260][25511] (line 1728): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN allocate request sent, id=36396e4f3250687277316661
+turn_port.cc: [5388:262][25511] (line 1728): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+turn_port.cc: [5388:262][25511] (line 1728): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN allocate request sent, id=2b4b4437656b346e49446b32
+basic_port_allocator.cc: [5388:291][25511] (line 1576): AllocationSequence[14572870]Net[ccmni1:29.0.0.x/8:Cellular:id=3]: Allocation Phase=Tcp
+turn_port.cc: [5388:293][25511] (line 1687): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN probe error response, id=6d64444a5046554d74746d59, code=401, rtt=52718 us
+turn_port.cc: [5388:293][25511] (line 1687): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN probe error response, id=61724f56786f734a35632f54, code=401, rtt=52856 us
+turn_port.cc: [5388:293][25511] (line 1687): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN probe error response, id=7735596a5972735179573456, code=401, rtt=52745 us
+turn_port.cc: [5388:293][25511] (line 1687): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN probe error response, id=595367306d73396a3865342f, code=401, rtt=52809 us
+turn_port.cc: [5388:293][25511] (line 1687): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN probe error response, id=75764f6c342f4e3433393657, code=401, rtt=52746 us
+turn_port.cc: [5388:297][25511] (line 1687): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN probe error response, id=59393274322b486259456b65, code=401, rtt=56270 us
+turn_port.cc: [5388:297][25511] (line 1687): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN probe error response, id=5a31692f51514c6a49386445, code=401, rtt=56274 us
+turn_port.cc: [5388:297][25511] (line 1687): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN probe error response, id=4a4e5142354830524a6e2b4a, code=401, rtt=56266 us
+turn_port.cc: [5388:298][25511] (line 1687): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN probe error response, id=6d526c567a79706f2b4e6a4c, code=401, rtt=57213 us
+turn_port.cc: [5388:298][25511] (line 1687): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN probe error response, id=6276426d4e3249674d4c3739, code=401, rtt=57201 us
+turn_port.cc: [5388:330][25511] (line 1796): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Received TURN allocate error response, id=36396e4f3250687277316661, code=401, rtt=69484 us
+turn_port.cc: [5388:330][25511] (line 1728): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN allocate request sent, id=6968735950737247544c6d4d
+turn_port.cc: [5388:330][25511] (line 1796): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Received TURN allocate error response, id=2b4b4437656b346e49446b32, code=401, rtt=68235 us
+turn_port.cc: [5388:330][25511] (line 1728): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN allocate request sent, id=47775170425a444857433050
+turn_port.cc: [5388:384][25511] (line 1737): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN allocate requested successfully, id=6968735950737247544c6d4d, code=0, rtt=54448 us, time_initial=143740 us, time_handshake=143556 us
+turn_port.cc: [5388:384][25511] (line 1182): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: AddAddress 103.63.112.54:34260 proble=1, max/send/recv=(55/5), time_initial_ms=144, rttArgv=53, rtt=54, score=60, server_priority=3, priority=60
+basic_port_allocator.cc: [5388:384][25511] (line 1110): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Gathered candidate: Cand[:1774879396:0:udp:58670336:103.63.112.x:34260:relay:117.3.122.x:10829:YIOU:7H2tw9lKhNNOSUvVRcXuxt1u:3:900:0]
+basic_port_allocator.cc: [5388:384][25511] (line 1143): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Port ready.
+basic_port_allocator.cc: [5388:384][25511] (line 1152): OnCandidateReady: TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: s:1 with candidates:1
+basic_port_allocator.cc: [5388:384][25511] (line 1259): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Port completed gathering candidates.
+turn_port.cc: [5388:384][25511] (line 1443): TurnPort(Port[b46b2580::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Scheduled refresh in 540000ms.
+turn_port.cc: [5388:388][25511] (line 1737): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN allocate requested successfully, id=47775170425a444857433050, code=0, rtt=58044 us, time_initial=147333 us, time_handshake=147164 us
+turn_port.cc: [5388:388][25511] (line 1778): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Missing STUN_ATTR_TOKEN_ID attribute in allocate unauthorized response.
+turn_port.cc: [5388:388][25511] (line 1182): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: AddAddress 160.250.77.139:35278 proble=1, max/send/recv=(55/5), time_initial_ms=147, rttArgv=57, rtt=58, score=59, server_priority=1, priority=59
+basic_port_allocator.cc: [5388:388][25511] (line 1110): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Gathered candidate: Cand[:3594800202:0:udp:58669824:160.250.77.x:35278:relay:117.3.122.x:18289:YIOU:7H2tw9lKhNNOSUvVRcXuxt1u:3:900:0]
+basic_port_allocator.cc: [5388:388][25511] (line 1143): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Port ready.
+basic_port_allocator.cc: [5388:388][25511] (line 1152): OnCandidateReady: TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: s:1 with candidates:1
+basic_port_allocator.cc: [5388:388][25511] (line 1259): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Port completed gathering candidates.
+turn_port.cc: [5388:388][25511] (line 1443): TurnPort(Port[b45b00a0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Scheduled refresh in 540000ms.
+turn_port.cc: [5388:490][25511] (line 1695): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request 72346e4670336441372b6758 timeout
+turn_port.cc: [5388:490][25511] (line 1695): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request 684d6e49474a483835502b38 timeout
+turn_port.cc: [5388:490][25511] (line 1695): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request 506664794f4766635669564e timeout
+turn_port.cc: [5388:490][25511] (line 1695): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request 4971457a3776527274544e55 timeout
+turn_port.cc: [5388:490][25511] (line 1695): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN probe request 336c746c7757735469317a34 timeout
+turn_port.cc: [5388:492][25511] (line 1695): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request 49413050644471734c465869 timeout
+turn_port.cc: [5388:492][25511] (line 1695): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request 4968634d41417669704b6f71 timeout
+turn_port.cc: [5388:492][25511] (line 1695): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request 33376679555a2f4834527159 timeout
+turn_port.cc: [5388:492][25511] (line 1695): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request 756a596677353269496b5365 timeout
+turn_port.cc: [5388:492][25511] (line 1695): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN probe request 322b366435425a37686b4f48 timeout
+turn_port.cc: [5388:510][25511] (line 1728): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5388:512][25511] (line 1728): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+turn_port.cc: [5389:011][25511] (line 1728): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5389:012][25511] (line 1728): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+turn_port.cc: [5390:012][25511] (line 1728): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5390:012][25511] (line 1728): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+turn_port.cc: [5392:015][25511] (line 1728): TurnPort(Port[b446b590::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5392:015][25511] (line 1728): TurnPort(Port[b442eff0::0:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+rtp_transmission_manager.cc: [5392:375][25513] (line 242): Adding audio transceiver in response to a call to AddTrack.
+webrtc_voice_engine.cc: [5392:377][25512] (line 1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:377][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:377][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:377][25512] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:377][25512] (line 2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:377][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:377][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:377][25512] (line 2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+sdp_offer_answer.cc: [5392:385][25513] (line 2960): SdpOfferAnswerHandler::DoSetRemoteDescription.
+sdp_offer_answer.cc: [5392:385][25513] (line 2200): SdpOfferAnswerHandler::ApplyRemoteDescription
+jsep_transport_controller.cc: [5392:386][25511] (line 1096): MaybeCreateJsepTransport mid=0 begin create transport
+p2p_transport_channel.cc: [5392:386][25511] (line 787): Set WebRTC-IceFieldTrials:stop_gather_on_strongly_connected 0
+p2p_transport_channel.cc: [5392:386][25511] (line 799): Set skip_relay_to_non_relay_connections
+p2p_transport_channel.cc: [5392:386][25511] (line 555): Set continual_gathering_policy to 1
+p2p_transport_channel.cc: [5392:386][25511] (line 564): Set backup connection ping interval to 25 s milliseconds.
+p2p_transport_channel.cc: [5392:386][25511] (line 573): Set ICE receiving timeout to 2500 ms milliseconds
+p2p_transport_channel.cc: [5392:386][25511] (line 580): Set ping most likely connection to 0
+p2p_transport_channel.cc: [5392:386][25511] (line 587): Set stable_writable_connection_ping_interval to 2500 ms
+p2p_transport_channel.cc: [5392:386][25511] (line 600): Set presume writable when fully relayed to 0
+p2p_transport_channel.cc: [5392:386][25511] (line 618): Set regather_on_failed_networks_interval to 300 s
+p2p_transport_channel.cc: [5392:386][25511] (line 628): Set receiving_switching_delay to 1 s
+p2p_transport_channel.cc: [5392:386][25511] (line 642): Set strong ping interval to 480 ms
+p2p_transport_channel.cc: [5392:386][25511] (line 676): Set prune timeout to 10 s
+jsep_transport_controller.cc: [5392:387][25511] (line 587): Creating DtlsSrtpTransport.
+dtls_srtp_transport.cc: [5392:387][25511] (line 53): Setting RTP Transport on 0 transport 6473f920
+srtp_transport.cc: [5392:388][25511] (line 255): The params in SRTP transport are reset.
+jsep_transport_controller.cc: [5392:388][25511] (line 1155): MaybeCreateJsepTransport mid=0 end transport
+p2p_transport_channel.cc: [5392:388][25511] (line 509): Received remote ICE parameters: ufrag=F9hB, renomination enabled
+wrapping_active_ice_controller.cc: [5392:388][25511] (line 223): Not switching selected connection due to: remote candidate generation maybe changed
+webrtc_voice_engine.cc: [5392:389][25512] (line 1304): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:389][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:389][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:389][25512] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:389][25512] (line 2264): Setting voice channel options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:389][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:389][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:389][25512] (line 2294): Set voice receive channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+peer_connection.cc: [5392:389][25513] (line 2313): Creating data channel, mid=1
+sdp_offer_answer.cc: [5392:390][25513] (line 2217): SdpOfferAnswerHandler::UpdateChannels
+sdp_offer_answer.cc: [5392:390][25513] (line 3285): SdpOfferAnswerHandler::UpdateSessionState with type: offer
+sdp_offer_answer.cc: [5392:390][25513] (line 3264): Session: 9021342025948114921 Old state: stable New state: have-remote-offer
+sdp_offer_answer.cc: [5392:390][25513] (line 3310): SdpOfferAnswerHandler::UpdateSessionState ChangeSignalingState with source: 1
+sdp_offer_answer.cc: [5392:390][25513] (line 5242): SdpOfferAnswerHandler::PushdownMediaDescription
+pacing_controller.cc: [5392:390][25512] (line 114): PacedSender paused.
+sdp_offer_answer.cc: [5392:390][25513] (line 5257): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState with rtp_transceivers:1
+webrtc_voice_engine.cc: [5392:390][25512] (line 2504): ResetUnsignaledRecvStream.
+sdp_offer_answer.cc: [5392:390][25513] (line 5295): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState transceiver with source: 1
+sdp_offer_answer.cc: [5392:390][25513] (line 5308): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState batcher.
+channel.cc: [5392:390][25512] (line 996): Setting remote voice description for {mid: 0, media_type: audio}
+webrtc_voice_engine.cc: [5392:391][25512] (line 1327): WebRtcVoiceMediaChannel::SetSenderParameters: {codecs: [AudioCodec[111:opus:48000:0:2], AudioCodec[63:red:48000:0:2], AudioCodec[9:G722:8000:0:1], AudioCodec[0:PCMU:8000:0:1], AudioCodec[8:PCMA:8000:0:1], AudioCodec[13:CN:8000:0:1], AudioCodec[110:telephone-event:48000:0:1], AudioCodec[126:telephone-event:8000:0:1]], extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], extmap-allow-mixed: true, max_bandwidth_bps: -1, mid: 0, options: AudioOptions {}, rtcp: {reduced_size:1, remote_estimate:0}}
+webrtc_voice_engine.cc: [5392:391][25512] (line 1794): WebRtcVoiceMediaChannel::SetMaxSendBitrate.
+webrtc_voice_engine.cc: [5392:391][25512] (line 1304): Setting voice channel options: AudioOptions {}
+webrtc_voice_engine.cc: [5392:391][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:391][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:391][25512] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:391][25512] (line 2380): Changing RTCP mode on receive streams.
+webrtc_voice_engine.cc: [5392:391][25512] (line 2431): AddRecvStream: {id:audio_UU2PK4BNW4M;ssrcs:[4137428890];ssrc_groups:;cname:sPpKb76ydfI6+Lrc;stream_ids:stream_UU2PK4BNW4M;}
+neteq_impl.cc: [5392:392][25512] (line 160): NetEq config: sample_rate_hz=48000, max_packets_in_buffer=200, min_delay_ms=0, enable_fast_accelerate=false, enable_muted_state=true, enable_rtx_handling=false
+audio_receive_stream.cc: [5392:393][25512] (line 123): AudioReceiveStreamImpl: 4137428890
+channel.cc: [5392:393][25512] (line 810): Add remote ssrc: 4137428890 to {mid: 0, media_type: audio}
+channel.cc: [5392:393][25512] (line 916): Changing voice state, recv=0 send=0 for {mid: 0, media_type: audio}
+sdp_offer_answer.cc: [5392:393][25513] (line 5378): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState sctp
+sdp_offer_answer.cc: [5392:393][25513] (line 5408): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState done
+sdp_offer_answer.cc: [5392:393][25513] (line 2226): SdpOfferAnswerHandler::UpdateSessionState
+sdp_offer_answer.cc: [5392:393][25513] (line 2234): SdpOfferAnswerHandler::UseCandidatesInRemoteDescription
+sdp_offer_answer.cc: [5392:393][25513] (line 2271): SdpOfferAnswerHandler::old_remote_description no using
+sdp_offer_answer.cc: [5392:393][25513] (line 2278): SdpOfferAnswerHandler::operation->HaveSessionSuccess
+sdp_offer_answer.cc: [5392:394][25513] (line 2285): SdpOfferAnswerHandler::pt_suggester_.Update
+sdp_offer_answer.cc: [5392:394][25513] (line 2402): Processing the MSIDs for MID=0 (streams=[stream_UU2PK4BNW4M]).
+sdp_offer_answer.cc: [5392:394][25513] (line 2412): Processing the addition of a remote track for MID=0.
+webrtc_voice_engine.cc: [5392:394][25512] (line 2581): SetBaseMinimumPlayoutDelayMs() to 0 for recv stream with ssrc 4137428890
+webrtc_voice_engine.cc: [5392:394][25512] (line 2532): WRVMC::SetOutputVolume({ssrc=4137428890}, {volume=1.00})
+webrtc_voice_engine.cc: [5392:394][25512] (line 2542): WRVMC::SetOutputVolume => (stream with SSRC 4137428890 now uses volume 1.00)
+sdp_offer_answer.cc: [5392:396][25513] (line 2334): SdpOfferAnswerHandler::check operation: offer
+sdp_offer_answer.cc: [5392:396][25513] (line 2346): SdpOfferAnswerHandler::operation->SignalCompletion before
+sdp_offer_answer.cc: [5392:399][25513] (line 2354): SdpOfferAnswerHandler::ApplyRemoteDescription done
+sdp_offer_answer.cc: [5392:401][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB::1:10:0]
+p2p_transport_channel.cc: [5392:402][25511] (line 1495): CreateConnections: candidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], port_size: 0, created = 0 with no origin_port
+wrapping_active_ice_controller.cc: [5392:402][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+peer_connection.cc: [5392:402][25513] (line 2032): Changing IceConnectionState new => checking
+sdp_offer_answer.cc: [5392:402][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB::1:10:0]
+p2p_transport_channel.cc: [5392:402][25511] (line 1495): CreateConnections: candidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], port_size: 0, created = 0 with no origin_port
+wrapping_active_ice_controller.cc: [5392:402][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+sdp_offer_answer.cc: [5392:402][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB::1:10:0]
+p2p_transport_channel.cc: [5392:403][25511] (line 1495): CreateConnections: candidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], port_size: 0, created = 0 with no origin_port
+wrapping_active_ice_controller.cc: [5392:403][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+sdp_offer_answer.cc: [5392:403][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB::2:10:0]
+p2p_transport_channel.cc: [5392:403][25511] (line 1495): CreateConnections: candidate: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0], port_size: 0, created = 0 with no origin_port
+wrapping_active_ice_controller.cc: [5392:403][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+sdp_offer_answer.cc: [5392:403][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB::1:10:0]
+p2p_transport_channel.cc: [5392:403][25511] (line 1495): CreateConnections: candidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], port_size: 0, created = 0 with no origin_port
+wrapping_active_ice_controller.cc: [5392:403][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+sdp_offer_answer.cc: [5392:405][25513] (line 2864): SdpOfferAnswerHandler::CreateAnswer.
+sdp_offer_answer.cc: [5392:405][25513] (line 2930): CreateAnswer: offer_to_receive_audio is not supported with Unified Plan semantics. Use the RtpTransceiver API instead.
+sdp_offer_answer.cc: [5392:405][25513] (line 2936): CreateAnswer: offer_to_receive_video is not supported with Unified Plan semantics. Use the RtpTransceiver API instead.
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [111:audio/opus/48000/2;minptime=10;useinbandfec=1] to PT 111
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [9:audio/G722/8000/1] to PT 9
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [0:audio/PCMU/8000/1] to PT 0
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [8:audio/PCMA/8000/1] to PT 8
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [13:audio/CN/8000/1] to PT 13
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [110:audio/telephone-event/48000/1] to PT 110
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [126:audio/telephone-event/8000/1] to PT 126
+sdp_payload_type_suggester.cc: [5392:406][25513] (line 50): SuggestPayloadType: Found remote mapping for [63:audio/red/48000/2;=111/111] to PT 63
+sdp_offer_answer.cc: [5392:411][25513] (line 2594): SdpOfferAnswerHandler::DoSetLocalDescription.
+sdp_offer_answer.cc: [5392:411][25513] (line 2630): SdpOfferAnswerHandler::check last.
+sdp_offer_answer.cc: [5392:411][25513] (line 2675): SdpOfferAnswerHandler::check codecs_mangled_to_raw.
+sdp_offer_answer.cc: [5392:411][25513] (line 2711): DoSetLocalDescription: answer
+jsep_transport_controller.cc: [5392:411][25511] (line 1091): MaybeCreateJsepTransport mid=0 exits
+dtls_srtp_transport.cc: [5392:411][25511] (line 53): Setting RTP Transport on 0 transport 6473f920
+p2p_transport_channel.cc: [5392:411][25511] (line 498): Set ICE ufrag: YIOU pwd: 7H2tw9lKhNNOSUvVRcXuxt1u on transport 0
+openssl_stream_adapter.cc: [5392:411][25511] (line 167): WebRTC-ForceDtls13 Disabled
+dtls_transport.cc: [5392:411][25511] (line 599): DtlsTransport[0|1|__]: DTLS setup complete, dtls_in_stun: 0
+peer_connection.cc: [5392:411][25513] (line 2313): Creating data channel, mid=1
+rtp_transceiver.cc: [5392:411][25513] (line 884): Changing transceiver (MID=0) current direction from <not set> to kSendRecv
+sdp_offer_answer.cc: [5392:411][25513] (line 3285): SdpOfferAnswerHandler::UpdateSessionState with type: answer
+channel.cc: [5392:411][25512] (line 637): Channel enabled: {mid: 0, media_type: audio}
+channel.cc: [5392:411][25512] (line 916): Changing voice state, recv=0 send=0 for {mid: 0, media_type: audio}
+sdp_offer_answer.cc: [5392:411][25513] (line 3264): Session: 9021342025948114921 Old state: have-remote-offer New state: stable
+sdp_offer_answer.cc: [5392:411][25513] (line 3310): SdpOfferAnswerHandler::UpdateSessionState ChangeSignalingState with source: 0
+sdp_offer_answer.cc: [5392:411][25513] (line 5242): SdpOfferAnswerHandler::PushdownMediaDescription
+webrtc_voice_engine.cc: [5392:412][25512] (line 2504): ResetUnsignaledRecvStream.
+sdp_offer_answer.cc: [5392:412][25513] (line 5257): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState with rtp_transceivers:1
+sdp_offer_answer.cc: [5392:412][25513] (line 5295): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState transceiver with source: 0
+sdp_offer_answer.cc: [5392:412][25513] (line 5308): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState batcher.
+webrtc_voice_engine.cc: [5392:412][25512] (line 2200): WebRtcVoiceMediaChannel::SetReceiverParameters: {codecs: [AudioCodec[111:opus:48000:0:2], AudioCodec[63:red:48000:0:2], AudioCodec[9:G722:8000:0:1], AudioCodec[0:PCMU:8000:0:1], AudioCodec[8:PCMA:8000:0:1], AudioCodec[13:CN:8000:0:1], AudioCodec[110:telephone-event:48000:0:1], AudioCodec[126:telephone-event:8000:0:1]], extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], rtcp: {reduced_size:1, remote_estimate:0}}
+webrtc_voice_engine.cc: [5392:412][25512] (line 1327): WebRtcVoiceMediaChannel::SetSenderParameters: {codecs: [AudioCodec[111:opus:48000:0:2], AudioCodec[63:red:48000:0:2], AudioCodec[9:G722:8000:0:1], AudioCodec[0:PCMU:8000:0:1], AudioCodec[8:PCMA:8000:0:1], AudioCodec[13:CN:8000:0:1], AudioCodec[110:telephone-event:48000:0:1], AudioCodec[126:telephone-event:8000:0:1]], extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], extmap-allow-mixed: true, max_bandwidth_bps: -1, mid: 0, options: AudioOptions {}, rtcp: {reduced_size:1, remote_estimate:0}}
+webrtc_voice_engine.cc: [5392:412][25512] (line 1794): WebRtcVoiceMediaChannel::SetMaxSendBitrate.
+webrtc_voice_engine.cc: [5392:412][25512] (line 1304): Setting voice channel options: AudioOptions {}
+webrtc_voice_engine.cc: [5392:412][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5392:412][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:412][25512] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+webrtc_voice_engine.cc: [5392:412][25512] (line 1618): AddSendStream: {id:audio_U45W5INNOSX;ssrcs:[1492506366];ssrc_groups:;cname:0AlXQBM9ppe27r+8;stream_ids:stream_U45W5INNOSX;}
+audio_coding_module.cc: [5392:412][25512] (line 221): Created
+audio_send_stream.cc: [5392:412][25512] (line 171): AudioSendStream: 1492506366
+audio_send_stream.cc: [5392:412][25512] (line 233): AudioSendStream::ConfigureStream: {rtp: {ssrc: 1492506366, mid: 0, csrcs: [], extmap-allow-mixed: true, extensions: [{uri: http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01, id: 3}, {uri: http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time, id: 2}, {uri: urn:ietf:params:rtp-hdrext:sdes:mid, id: 4}, {uri: urn:ietf:params:rtp-hdrext:ssrc-audio-level, id: 1}], c_name: 0AlXQBM9ppe27r+8}, rtcp_report_interval_ms: 5000, send_transport: (Transport), min_bitrate_bps: 32000, max_bitrate_bps: 32000, has audio_network_adaptor_config: false, has_dscp: false, send_codec_spec: {nack_enabled: false, enable_non_sender_rtt: false, cng_payload_type: <unset>, red_payload_type: <unset>, payload_type: 111, format: {name: opus, clockrate_hz: 48000, num_channels: 2, parameters: {minptime: 10, useinbandfec: 1}}}}
+channel.cc: [5392:413][25512] (line 751): Add send stream ssrc: 1492506366 into {mid: 0, media_type: audio}
+audio_receive_stream.cc: [5392:413][25512] (line 194): AudioReceiveStreamImpl::Start: 4137428890
+audio_track_jni.cc: [5392:413][25512] (line 89): InitPlayout
+audio_track_jni.cc: [5392:413][25512] (line 244): OnCacheDirectBufferAddress
+audio_track_jni.cc: [5392:413][25512] (line 249): direct buffer capacity: 960
+audio_track_jni.cc: [5392:413][25512] (line 253): frames_per_buffer: 480
+audio_track_jni.cc: [5392:466][25512] (line 139): StartPlayout
+channel.cc: [5392:523][25512] (line 916): Changing voice state, recv=1 send=0 for {mid: 0, media_type: audio}
+audio_device_buffer.cc: [5392:524][26359] (line 347): Size of playout buffer: 480
+thread.cc: [5392:525][25512] (line 557): Message to worker_thread took 113ms to dispatch.
+sdp_offer_answer.cc: [5392:525][25513] (line 5378): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState sctp
+sdp_offer_answer.cc: [5392:525][25513] (line 5408): SdpOfferAnswerHandler::UpdatePayloadTypeDemuxingState done
+sdp_offer_answer.cc: [5392:525][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+sdp_offer_answer.cc: [5392:525][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+sdp_offer_answer.cc: [5392:525][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+sdp_offer_answer.cc: [5392:525][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0]
+sdp_offer_answer.cc: [5392:525][25513] (line 5580): UseCandidate: mid: 0 with candidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+webrtc_voice_engine.cc: [5392:525][25512] (line 1304): Setting voice channel options: AudioOptions {}
+webrtc_voice_engine.cc: [5392:525][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+p2p_transport_channel.cc: [5392:525][25511] (line 1470): CreateConnections: IsDuplicateRemoteCandidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+wrapping_active_ice_controller.cc: [5392:525][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+p2p_transport_channel.cc: [5392:525][25511] (line 1470): CreateConnections: IsDuplicateRemoteCandidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+wrapping_active_ice_controller.cc: [5392:525][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+p2p_transport_channel.cc: [5392:525][25511] (line 1470): CreateConnections: IsDuplicateRemoteCandidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+wrapping_active_ice_controller.cc: [5392:525][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+p2p_transport_channel.cc: [5392:525][25511] (line 1470): CreateConnections: IsDuplicateRemoteCandidate: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0]
+wrapping_active_ice_controller.cc: [5392:525][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+p2p_transport_channel.cc: [5392:525][25511] (line 1470): CreateConnections: IsDuplicateRemoteCandidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+wrapping_active_ice_controller.cc: [5392:525][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new remote candidate
+audio_processing_impl.cc: [5392:526][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+webrtc_voice_engine.cc: [5392:526][25512] (line 1318): Set voice send channel options. Current options: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+sdp_offer_answer.cc: [5392:526][25513] (line 2734): SdpOfferAnswerHandler::check ModifyVideoCodecs.
+sdp_offer_answer.cc: [5392:526][25513] (line 2739): SdpOfferAnswerHandler::check candidate_pool_size.
+sdp_offer_answer.cc: [5392:526][25513] (line 2766): OnSetLocalDescriptionComplete
+p2p_transport_channel.cc: [5392:527][25511] (line 883): P2PTransportChannel::MaybeStartGathering: YIOU with: allocator_sessions:0
+p2p_transport_channel.cc: [5392:527][25511] (line 947): P2PTransportChannel::OnPortReady: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]) remotes: 5
+p2p_transport_channel.cc: [5392:527][25511] (line 1531): Channel[0|1|__: skip creating connection host to relay, port: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]), remote: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+p2p_transport_channel.cc: [5392:527][25511] (line 1531): Channel[0|1|__: skip creating connection host to relay, port: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]), remote: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+p2p_transport_channel.cc: [5392:527][25511] (line 1531): Channel[0|1|__: skip creating connection host to relay, port: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]), remote: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+p2p_transport_channel.cc: [5392:527][25511] (line 1560): Channel[0|1|__: Created connection error with origin: 2, port: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]) remote: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0]
+p2p_transport_channel.cc: [5392:527][25511] (line 1531): Channel[0|1|__: skip creating connection host to relay, port: UDPPort(Port[645f33d0:0:1:0:host:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]), remote: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0]
+wrapping_active_ice_controller.cc: [5392:527][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new local candidate
+p2p_transport_channel.cc: [5392:527][25511] (line 947): P2PTransportChannel::OnPortReady: TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp] remotes: 5
+turn_port.cc: [5392:527][25511] (line 798): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: CreateConnection with candidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:527][25511] (line 269): Conn[345a3b70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|C--W|-|0|0|-|251705695210994176|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:527][25511] (line 2047): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN create permission request sent, id=534170575773634c49506f45 with address: 14.238.152.70:38737
+p2p_transport_channel.cc: [5392:527][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 1
+turn_port.cc: [5392:527][25511] (line 798): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: CreateConnection with candidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:527][25511] (line 269): Conn[345ffe20:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--W|-|0|0|-|251700197652855296|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:527][25511] (line 2047): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN create permission request sent, id=7477526f6b42574d46633147 with address: 116.103.111.245:31829
+p2p_transport_channel.cc: [5392:527][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 2
+turn_port.cc: [5392:527][25511] (line 798): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: CreateConnection with candidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:527][25511] (line 269): Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|C--W|-|0|0|-|251705695210994176|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:527][25511] (line 2047): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN create permission request sent, id=5962794b4f4e63354b595667 with address: 203.171.26.154:34993
+p2p_transport_channel.cc: [5392:527][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 3
+p2p_transport_channel.cc: [5392:527][25511] (line 1531): Channel[0|1|__: skip creating connection relay to host, port: TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp], remote: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0]
+turn_port.cc: [5392:527][25511] (line 798): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: CreateConnection with candidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:527][25511] (line 269): Conn[34577890:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|C--W|-|0|0|-|251701297164483072|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:527][25511] (line 2047): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN create permission request sent, id=673849373742316d456f6e4a with address: 171.226.10.227:29931
+p2p_transport_channel.cc: [5392:527][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 4
+wrapping_active_ice_controller.cc: [5392:527][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new local candidate
+p2p_transport_channel.cc: [5392:527][25511] (line 2027): Channel[0|1|__: Transport channel state changed from 0 to 1 with writable=0, receiving=0, iceCurrent=0, ice=1, conns=4, selected=0
+jsep_transport_controller.cc: [5392:527][25511] (line 1284): 0 Transport 1 state changed. Check if state is complete.
+p2p_transport_channel.cc: [5392:527][25511] (line 1818): Channel[0|1|__: Have a pingable connection for the first time; starting to ping.
+p2p_transport_channel.cc: [5392:527][25511] (line 947): P2PTransportChannel::OnPortReady: TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp] remotes: 5
+turn_port.cc: [5392:527][25511] (line 798): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: CreateConnection with candidate: Cand[:1639976793:1:udp:58604799:14.238.152.70:38737:relay:42.116.96.124:3181:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:528][25511] (line 269): Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|C--W|-|0|0|-|251705695210993152|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:528][25511] (line 2047): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN create permission request sent, id=6e6d5a554c2f473445785063 with address: 14.238.152.70:38737
+p2p_transport_channel.cc: [5392:528][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 5
+turn_port.cc: [5392:528][25511] (line 798): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: CreateConnection with candidate: Cand[:3937662729:1:udp:58603519:116.103.111.245:31829:relay:42.1.88.121:1733:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:528][25511] (line 269): Conn[34581700:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--W|-|0|0|-|251700197652854272|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:528][25511] (line 2047): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN create permission request sent, id=56624f6655475a3632596457 with address: 116.103.111.245:31829
+p2p_transport_channel.cc: [5392:528][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 6
+turn_port.cc: [5392:528][25511] (line 798): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: CreateConnection with candidate: Cand[:2841304656:1:udp:58604799:203.171.26.154:34993:relay:42.1.88.121:8463:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:528][25511] (line 269): Conn[345b2f30:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|C--W|-|0|0|-|251705695210993152|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:528][25511] (line 2047): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN create permission request sent, id=534444476733544b6e437977 with address: 203.171.26.154:34993
+p2p_transport_channel.cc: [5392:528][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 7
+p2p_transport_channel.cc: [5392:528][25511] (line 1531): Channel[0|1|__: skip creating connection relay to host, port: TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp], remote: Cand[:192173882:1:udp:2122262784:[2402:9d80:43b:f413:5d66:daa9:fb29:a3b]:54201:host::0:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:2:10:0]
+turn_port.cc: [5392:528][25511] (line 798): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: CreateConnection with candidate: Cand[:1358553328:1:udp:58603775:171.226.10.227:29931:relay:42.1.88.121:21937:F9hB:qAJ+Exx9C9pjvyxTL0Jc05BD:1:10:0], state: 2, local_candidate_size: 1
+connection.cc: [5392:528][25511] (line 269): Conn[3459fe80:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|C--W|-|0|0|-|251701297164482048|-][0 us][0 us]: Connection created
+turn_port.cc: [5392:528][25511] (line 2047): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN create permission request sent, id=46435468435765624e545067 with address: 171.226.10.227:29931
+p2p_transport_channel.cc: [5392:528][25511] (line 1567): Channel[0|1|__: Created connection with origin: 2, total: 8
+wrapping_active_ice_controller.cc: [5392:528][25511] (line 223): Not switching selected connection due to: new candidate pairs created from a new local candidate
+connection.cc: [5392:528][25511] (line 1824): Conn[345e0a70C--W|-|0|0|-|-]: Sent STUN BINDING request, id=444c695469776f5056657652, use_candidate=0, nomination=0
+connection.cc: [5392:528][25511] (line 1824): Conn[345a3b70C--W|-|0|0|-|-]: Sent STUN BINDING request, id=59375267485a785744773237, use_candidate=0, nomination=0
+connection.cc: [5392:528][25511] (line 1824): Conn[345b2f30C--W|-|0|0|-|-]: Sent STUN BINDING request, id=3673667351674f4654455065, use_candidate=0, nomination=0
+connection.cc: [5392:528][25511] (line 1824): Conn[345c22f0C--W|-|0|0|-|-]: Sent STUN BINDING request, id=432b5672634e724b534a3830, use_candidate=0, nomination=0
+connection.cc: [5392:528][25511] (line 1824): Conn[34577890C--W|-|0|0|-|-]: Sent STUN BINDING request, id=74506d6d63714f4563485369, use_candidate=0, nomination=0
+connection.cc: [5392:528][25511] (line 1824): Conn[3459fe80C--W|-|0|0|-|-]: Sent STUN BINDING request, id=4438724a514e3757396f7874, use_candidate=0, nomination=0
+sdp_offer_answer.cc: [5392:528][25513] (line 2791): SdpOfferAnswerHandler::done MaybeStartGathering.
+thread.cc: [5392:528][25513] (line 557): Message to signaling_thread took 117ms to dispatch.
+connection.cc: [5392:530][25511] (line 1824): Conn[345ffe20C--W|-|0|0|-|-]: Sent STUN BINDING request, id=70542f6e3046794c5965572f, use_candidate=0, nomination=0
+connection.cc: [5392:530][25511] (line 1824): Conn[34581700C--W|-|0|0|-|-]: Sent STUN BINDING request, id=4976424b78456b5831365945, use_candidate=0, nomination=0
+peer_connection.cc: [5392:532][25513] (line 2054): Changing standardized IceConnectionState new => checking
+turn_port.cc: [5392:592][25511] (line 2055): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN permission requested successfully, id=534170575773634c49506f45, code=0, rtt=65343 us
+turn_port.cc: [5392:592][25511] (line 2271): TurnEntry(74489d70:0:TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp][Ext:14.238.152.x:38737][Conn(1)[345a3b70]]): Create permission for 14.238.152.x:38737 succeeded
+connection.cc: [5392:592][25511] (line 439): Conn[345a3b70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|C--I|-|0|0|p|251705695210994176|-][229271640326 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:593][25511] (line 1824): Conn[345a3b70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=707879446c68565055515770, use_candidate=0, nomination=0
+turn_port.cc: [5392:608][25511] (line 2055): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN permission requested successfully, id=6e6d5a554c2f473445785063, code=0, rtt=80784 us
+turn_port.cc: [5392:608][25511] (line 2271): TurnEntry(745b1820:0:TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp][Ext:14.238.152.x:38737][Conn(1)[345c22f0]]): Create permission for 14.238.152.x:38737 succeeded
+connection.cc: [5392:608][25511] (line 439): Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|C--I|-|0|0|p|251705695210993152|-][229271640373 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:609][25511] (line 1824): Conn[345c22f0C--I|-|0|0|p|-]: Sent STUN BINDING request, id=4268334d6438625269716b44, use_candidate=0, nomination=0
+turn_port.cc: [5392:609][25511] (line 2055): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN permission requested successfully, id=7477526f6b42574d46633147, code=0, rtt=81897 us
+turn_port.cc: [5392:609][25511] (line 2271): TurnEntry(7455b450:0:TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp][Ext:116.103.111.x:31829][Conn(1)[345ffe20]]): Create permission for 116.103.111.x:31829 succeeded
+connection.cc: [5392:609][25511] (line 439): Conn[345ffe20:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--I|-|0|0|p|251700197652855296|-][229271640436 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:609][25511] (line 1824): Conn[345ffe20C--I|-|0|0|p|-]: Sent STUN BINDING request, id=54783065456349634d596938, use_candidate=0, nomination=0
+turn_port.cc: [5392:610][25511] (line 2055): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN permission requested successfully, id=5962794b4f4e63354b595667, code=0, rtt=82232 us
+turn_port.cc: [5392:610][25511] (line 2271): TurnEntry(745f8050:0:TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp][Ext:203.171.26.x:34993][Conn(1)[345e0a70]]): Create permission for 203.171.26.x:34993 succeeded
+connection.cc: [5392:610][25511] (line 439): Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|C--I|-|0|0|p|251705695210994176|-][229271640290 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:610][25511] (line 1824): Conn[345e0a70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=2b376c417a4656443457656e, use_candidate=0, nomination=0
+turn_port.cc: [5392:610][25511] (line 2055): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN permission requested successfully, id=673849373742316d456f6e4a, code=0, rtt=82498 us
+turn_port.cc: [5392:610][25511] (line 2271): TurnEntry(74588420:0:TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp][Ext:171.226.10.x:29931][Conn(1)[34577890]]): Create permission for 171.226.10.x:29931 succeeded
+connection.cc: [5392:610][25511] (line 439): Conn[34577890:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|C--I|-|0|0|p|251701297164483072|-][229271640394 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:610][25511] (line 1824): Conn[34577890C--I|-|0|0|p|-]: Sent STUN BINDING request, id=423976327335524a4a37656a, use_candidate=0, nomination=0
+turn_port.cc: [5392:610][25511] (line 2055): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN permission requested successfully, id=56624f6655475a3632596457, code=0, rtt=82675 us
+turn_port.cc: [5392:610][25511] (line 2271): TurnEntry(745aa4a0:0:TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp][Ext:116.103.111.x:31829][Conn(1)[34581700]]): Create permission for 116.103.111.x:31829 succeeded
+connection.cc: [5392:610][25511] (line 439): Conn[34581700:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--I|-|0|0|p|251700197652854272|-][229271642494 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:610][25511] (line 1824): Conn[34581700C--I|-|0|0|p|-]: Sent STUN BINDING request, id=646a7a69446156524c2f4c74, use_candidate=0, nomination=0
+turn_port.cc: [5392:611][25511] (line 2055): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN permission requested successfully, id=534444476733544b6e437977, code=0, rtt=82943 us
+turn_port.cc: [5392:611][25511] (line 2271): TurnEntry(745ccd60:0:TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp][Ext:203.171.26.x:34993][Conn(1)[345b2f30]]): Create permission for 203.171.26.x:34993 succeeded
+connection.cc: [5392:611][25511] (line 439): Conn[345b2f30:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|C--I|-|0|0|p|251705695210993152|-][229271640349 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:611][25511] (line 1824): Conn[345b2f30C--I|-|0|0|p|-]: Sent STUN BINDING request, id=49556d31307a6c4b4e2b4734, use_candidate=0, nomination=0
+turn_port.cc: [5392:611][25511] (line 2055): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN permission requested successfully, id=46435468435765624e545067, code=0, rtt=83262 us
+turn_port.cc: [5392:611][25511] (line 2271): TurnEntry(745330d0:0:TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp][Ext:171.226.10.x:29931][Conn(1)[3459fe80]]): Create permission for 171.226.10.x:29931 succeeded
+connection.cc: [5392:611][25511] (line 439): Conn[3459fe80:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|C--I|-|0|0|p|251701297164482048|-][229271640416 us][0 us]: SetTurnPermissioned
+connection.cc: [5392:611][25511] (line 1824): Conn[3459fe80C--I|-|0|0|p|-]: Sent STUN BINDING request, id=4f75533133337158514b4e34, use_candidate=0, nomination=0
+connection.cc: [5392:674][25511] (line 1824): Conn[345a3b70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=52594d45424436542f6e7245, use_candidate=0, nomination=0
+connection.cc: [5392:723][25511] (line 1824): Conn[345c22f0C--I|-|0|0|p|-]: Sent STUN BINDING request, id=756152485838586659595241, use_candidate=0, nomination=0
+connection.cc: [5392:772][25511] (line 1824): Conn[345ffe20C--I|-|0|0|p|-]: Sent STUN BINDING request, id=6b592f46777a2f5177584775, use_candidate=0, nomination=0
+connection.cc: [5392:821][25511] (line 1824): Conn[345e0a70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=366c5a7766532b6853614b4f, use_candidate=0, nomination=0
+connection.cc: [5392:869][25511] (line 1824): Conn[34577890C--I|-|0|0|p|-]: Sent STUN BINDING request, id=75736e68334d344a44625070, use_candidate=0, nomination=0
+connection.cc: [5392:918][25511] (line 1824): Conn[34581700C--I|-|0|0|p|-]: Sent STUN BINDING request, id=335a657738674c664d496539, use_candidate=0, nomination=0
+connection.cc: [5392:966][25511] (line 1824): Conn[345b2f30C--I|-|0|0|p|-]: Sent STUN BINDING request, id=6e495837672f766377386f4e, use_candidate=0, nomination=0
+connection.cc: [5393:015][25511] (line 1824): Conn[3459fe80C--I|-|0|0|p|-]: Sent STUN BINDING request, id=51343977495373582b72495a, use_candidate=0, nomination=0
+connection.cc: [5393:063][25511] (line 1824): Conn[345a3b70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=4f626a334a434b484b4b4768, use_candidate=0, nomination=0
+connection.cc: [5393:111][25511] (line 1824): Conn[345c22f0C--I|-|0|0|p|-]: Sent STUN BINDING request, id=46476c6678674871516e3368, use_candidate=0, nomination=0
+connection.cc: [5393:160][25511] (line 1824): Conn[345ffe20C--I|-|0|0|p|-]: Sent STUN BINDING request, id=7a52763553754b6967777555, use_candidate=0, nomination=0
+connection.cc: [5393:208][25511] (line 1824): Conn[345e0a70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=6930634b5a31685042674345, use_candidate=0, nomination=0
+connection.cc: [5393:257][25511] (line 1824): Conn[34577890C--I|-|0|0|p|-]: Sent STUN BINDING request, id=344c6b347367745630786e65, use_candidate=0, nomination=0
+connection.cc: [5393:306][25511] (line 1824): Conn[34581700C--I|-|0|0|p|-]: Sent STUN BINDING request, id=655446494251476736426842, use_candidate=0, nomination=0
+connection.cc: [5393:355][25511] (line 1824): Conn[345b2f30C--I|-|0|0|p|-]: Sent STUN BINDING request, id=4168417a6d5446676b694745, use_candidate=0, nomination=0
+android_network_monitor.cc: [5393:374][25511] (line 451): Network connected: NetInfo[name ccmni1; handle 703485366285; type 4]
+network.cc: [5393:374][25511] (line 605): Network change was observed
+connection.cc: [5393:404][25511] (line 1824): Conn[3459fe80C--I|-|0|0|p|-]: Sent STUN BINDING request, id=5a7265736465436256544564, use_candidate=0, nomination=0
+connection.cc: [5393:453][25511] (line 1824): Conn[345a3b70C--I|-|0|0|p|-]: Sent STUN BINDING request, id=61357a645151677432344177, use_candidate=0, nomination=0
+connection.cc: [5393:501][25511] (line 1824): Conn[345c22f0C--I|-|0|0|p|-]: Sent STUN BINDING request, id=707951562f3430764a51306f, use_candidate=0, nomination=0
+connection.cc: [5393:542][25511] (line 634): Conn[345c22f0C--I|-|0|0|p|-]: Received STUN BINDING request, id=6932534e5a43344a35326566
+connection.cc: [5393:542][25511] (line 407): Conn[345c22f0C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:543][25511] (line 957): Conn[345c22f0CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=0, id=6932534e5a43344a35326566
+connection.cc: [5393:543][25511] (line 634): Conn[345b2f30C--I|-|0|0|p|-]: Received STUN BINDING request, id=2b686e58664b4374704a654f
+connection.cc: [5393:543][25511] (line 407): Conn[345b2f30C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:543][25511] (line 957): Conn[345b2f30CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=2b686e58664b4374704a654f
+wrapping_active_ice_controller.cc: [5393:543][25511] (line 223): Not switching selected connection due to: first candidate pair selected
+basic_ice_controller.cc: [5393:549][25511] (line 313): Selecting connection for triggered check: Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|CR-I|-|0|0|p|251705695210993152|-][229272613589 us][229272654796 us], with selected_connection: nullptr
+connection.cc: [5393:550][25511] (line 1824): Conn[345c22f0CR-I|-|0|0|p|-]: Sent STUN BINDING request, id=46375a6643762b674148644c, use_candidate=0, nomination=0
+connection.cc: [5393:552][25511] (line 634): Conn[345e0a70C--I|-|0|0|p|-]: Received STUN BINDING request, id=76414e4e5a6c336945374a56
+connection.cc: [5393:552][25511] (line 407): Conn[345e0a70C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:553][25511] (line 957): Conn[345e0a70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=76414e4e5a6c336945374a56
+connection.cc: [5393:553][25511] (line 634): Conn[345a3b70C--I|-|0|0|p|-]: Received STUN BINDING request, id=626562786c2b753132304d53
+connection.cc: [5393:553][25511] (line 407): Conn[345a3b70C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:553][25511] (line 957): Conn[345a3b70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=0, id=626562786c2b753132304d53
+wrapping_active_ice_controller.cc: [5393:553][25511] (line 223): Not switching selected connection due to: first candidate pair selected
+connection.cc: [5393:554][25511] (line 634): Conn[3459fe80C--I|-|0|0|p|-]: Received STUN BINDING request, id=6743364543536d4b76663565
+connection.cc: [5393:554][25511] (line 407): Conn[3459fe80C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:554][25511] (line 957): Conn[3459fe80CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=6743364543536d4b76663565
+connection.cc: [5393:554][25511] (line 634): Conn[345ffe20C--I|-|0|0|p|-]: Received STUN BINDING request, id=68503879692b785034597745
+connection.cc: [5393:554][25511] (line 407): Conn[345ffe20C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:554][25511] (line 957): Conn[345ffe20CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=68503879692b785034597745
+wrapping_active_ice_controller.cc: [5393:555][25511] (line 223): Not switching selected connection due to: first candidate pair selected
+connection.cc: [5393:562][25511] (line 634): Conn[34577890C--I|-|0|0|p|-]: Received STUN BINDING request, id=424a413161686e4741654c44
+connection.cc: [5393:562][25511] (line 407): Conn[34577890C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:563][25511] (line 957): Conn[34577890CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=424a413161686e4741654c44
+wrapping_active_ice_controller.cc: [5393:563][25511] (line 223): Not switching selected connection due to: first candidate pair selected
+connection.cc: [5393:566][25511] (line 634): Conn[34581700C--I|-|0|0|p|-]: Received STUN BINDING request, id=386f52646546366732716665
+connection.cc: [5393:566][25511] (line 407): Conn[34581700C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5393:567][25511] (line 957): Conn[34581700CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=386f52646546366732716665
+wrapping_active_ice_controller.cc: [5393:567][25511] (line 223): Not switching selected connection due to: first candidate pair selected
+connection.cc: [5393:591][25511] (line 634): Conn[345c22f0CR-I|-|0|0|p|-]: Received STUN BINDING request, id=664b5a4362776c6244374175
+connection.cc: [5393:592][25511] (line 957): Conn[345c22f0CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=0, id=664b5a4362776c6244374175
+connection.cc: [5393:593][25511] (line 634): Conn[345b2f30CR-I|-|0|0|p|-]: Received STUN BINDING request, id=76784f2f35754632766e5834
+connection.cc: [5393:594][25511] (line 957): Conn[345b2f30CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=76784f2f35754632766e5834
+basic_ice_controller.cc: [5393:598][25511] (line 313): Selecting connection for triggered check: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CR-I|-|0|0|p|251705695210994176|-][229272320330 us][229272664627 us], with selected_connection: nullptr
+connection.cc: [5393:598][25511] (line 1824): Conn[345e0a70CR-I|-|0|0|p|-]: Sent STUN BINDING request, id=416b667a5947514d7244654e, use_candidate=0, nomination=0
+connection.cc: [5393:600][25511] (line 634): Conn[345e0a70CR-I|-|0|0|p|-]: Received STUN BINDING request, id=366a634a6c4238536c466131
+connection.cc: [5393:601][25511] (line 957): Conn[345e0a70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=366a634a6c4238536c466131
+connection.cc: [5393:601][25511] (line 634): Conn[345a3b70CR-I|-|0|0|p|-]: Received STUN BINDING request, id=6d4b2f334a4f495952624853
+connection.cc: [5393:601][25511] (line 957): Conn[345a3b70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=0, id=6d4b2f334a4f495952624853
+connection.cc: [5393:601][25511] (line 634): Conn[345e0a70CR-I|-|0|0|p|-]: Received STUN BINDING request, id=6435504c4932727257617363
+connection.cc: [5393:601][25511] (line 957): Conn[345e0a70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=6435504c4932727257617363
+connection.cc: [5393:611][25511] (line 1702): Conn[345c22f0CR-I|-|0|0|p|-]: Received STUN BINDING response, id=707951562f3430764a51306f, code=0, rtt=110009 us, pings_since_last_response=432b5672634e724b534a3830 4268334d6438625269716b44 756152485838586659595241 46476c6678674871516e3368 707951562f3430764a51306f ... 1 more
+connection.cc: [5393:611][25511] (line 380): Conn[345c22f0CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5393:612][25511] (line 216): Switching selected connection due to: first candidate pair selected with connect:Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|CRWS|-|0|0|p|251705695210993152|110][229272661911 us][229272703942 us]
+p2p_transport_channel.cc: [5393:612][25511] (line 1942): Channel[0|1|R_: New selected connection: Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|CRWS|S|0|0|p|251705695210993152|110][229272661911 us][229272703942 us]
+channel.cc: [5393:612][25511] (line 392): Network route changed for {mid: 0, media_type: audio}
+rtp_transport_controller_send.cc: [5393:612][25512] (line 370): Network route changed on transport 0: new_route = [ connected: 1 local: [ 4/3 Cellular turn: 1 ] remote: [ 2/1 Wifi turn: 1 ] packet_overhead_bytes: 28 ]
+dtls_transport.cc: [5393:612][25511] (line 814): DtlsTransport[0|1|__]: ice_transport writable state changed to 1 dtls_state: kNew
+dtls_transport.cc: [5393:612][25511] (line 1217): DtlsTransport[0|1|__]: configuring DTLS handshake timeout 220ms based on ICE RTT 110
+dtls_transport.cc: [5393:612][25511] (line 1067): DtlsTransport[0|1|__]: DtlsTransportInternalImpl: Start DTLS handshake active=1 role=client
+openssl_adapter.cc: [5393:613][25511] (line 811): TLS client start_connect
+openssl_adapter.cc: [5393:613][25511] (line 811): TLS client enter_early_data
+turn_port.cc: [5393:613][25511] (line 2123): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN channel bind request sent, id=684a53484b4e5763654b7238 with address: 14.238.152.70:38737
+openssl_adapter.cc: [5393:614][25511] (line 811): TLS client read_server_hello
+openssl_adapter.cc: [5393:614][25511] (line 811): TLS client read_server_hello
+srtp_transport.cc: [5393:614][25511] (line 255): The params in SRTP transport are reset.
+jsep_transport_controller.cc: [5393:614][25511] (line 1284): 0 Transport 1 state changed. Check if state is complete.
+peer_connection.cc: [5393:616][25513] (line 2054): Changing standardized IceConnectionState checking => connected
+connection.cc: [5393:618][25511] (line 634): Conn[3459fe80CR-I|-|0|0|p|-]: Received STUN BINDING request, id=3634526f484b2b3331774551
+connection.cc: [5393:618][25511] (line 957): Conn[3459fe80CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=3634526f484b2b3331774551
+connection.cc: [5393:619][25511] (line 634): Conn[345ffe20CR-I|-|0|0|p|-]: Received STUN BINDING request, id=77305837307a592f49617a48
+connection.cc: [5393:619][25511] (line 957): Conn[345ffe20CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=77305837307a592f49617a48
+connection.cc: [5393:620][25511] (line 634): Conn[34577890CR-I|-|0|0|p|-]: Received STUN BINDING request, id=7066345a5a7355736c6e356e
+connection.cc: [5393:620][25511] (line 957): Conn[34577890CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=7066345a5a7355736c6e356e
+connection.cc: [5393:631][25511] (line 634): Conn[34581700CR-I|-|0|0|p|-]: Received STUN BINDING request, id=786c545136354d654a66526b
+connection.cc: [5393:632][25511] (line 957): Conn[34581700CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=786c545136354d654a66526b
+connection.cc: [5393:647][25511] (line 1702): Conn[345c22f0CRWS|S|0|0|p|110]: Received STUN BINDING response, id=46375a6643762b674148644c, code=0, rtt=97897 us, pings_since_last_response=
+turn_port.cc: [5393:668][25511] (line 2131): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN channel bind requested successfully, id=684a53484b4e5763654b7238, code=0, rtt=55389 us
+turn_port.cc: [5393:668][25511] (line 2319): TurnEntry(745b1820:1:TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp][Ext:14.238.152.x:38737][Conn(1)[345c22f0]]): Successful channel bind for 14.238.152.x:38737
+turn_port.cc: [5393:668][25511] (line 2146): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: Scheduled channel bind in 240000ms.
+connection.cc: [5393:690][25511] (line 634): Conn[345a3b70CR-I|-|0|0|p|-]: Received STUN BINDING request, id=65795372416231337a56694e
+connection.cc: [5393:691][25511] (line 957): Conn[345a3b70CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=0, id=65795372416231337a56694e
+connection.cc: [5393:719][25511] (line 1702): Conn[345e0a70CR-I|-|0|0|p|-]: Received STUN BINDING response, id=416b667a5947514d7244654e, code=0, rtt=121234 us, pings_since_last_response=444c695469776f5056657652 2b376c417a4656443457656e 366c5a7766532b6853614b4f 6930634b5a31685042674345 416b667a5947514d7244654e 
+connection.cc: [5393:719][25511] (line 380): Conn[345e0a70CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5393:719][25511] (line 216): Switching selected connection due to: candidate pair state changed with connect:Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|-|0|0|p|251705695210994176|121][229272710291 us][229272713625 us]
+p2p_transport_channel.cc: [5393:719][25511] (line 1939): Channel[0|1|RW: Previous selected connection: Conn[345c22f0:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|CRWS|-|0|0|p|251705695210993152|107][229272661911 us][229272703942 us]
+p2p_transport_channel.cc: [5393:719][25511] (line 1942): Channel[0|1|RW: New selected connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|0|0|p|251705695210994176|121][229272710291 us][229272713625 us]
+channel.cc: [5393:719][25511] (line 392): Network route changed for {mid: 0, media_type: audio}
+connection.cc: [5393:771][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|107]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=61376f556f6536434c464433
+openssl_adapter.cc: [5393:780][25511] (line 811): TLS client read_server_certificate
+openssl_adapter.cc: [5393:780][25511] (line 811): TLS client read_certificate_status
+openssl_adapter.cc: [5393:780][25511] (line 811): TLS client verify_server_certificate
+openssl_adapter.cc: [5393:780][25511] (line 811): TLS client read_server_key_exchange
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client read_certificate_request
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client read_server_hello_done
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client send_client_certificate
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client send_client_key_exchange
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client send_client_certificate_verify
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client send_client_finished
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client finish_flight
+turn_port.cc: [5393:781][25511] (line 2123): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN channel bind request sent, id=576e55534b65536b4362592b with address: 203.171.26.154:34993
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client read_session_ticket
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client process_change_cipher_spec
+openssl_adapter.cc: [5393:781][25511] (line 811): TLS client process_change_cipher_spec
+connection.cc: [5393:840][25511] (line 634): Conn[345b2f30CR-I|-|0|0|p|-]: Received STUN BINDING request, id=475254754762414941623162
+connection.cc: [5393:840][25511] (line 957): Conn[345b2f30CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=0, id=475254754762414941623162
+turn_port.cc: [5393:852][25511] (line 2131): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN channel bind requested successfully, id=576e55534b65536b4362592b, code=0, rtt=71059 us
+turn_port.cc: [5393:852][25511] (line 2319): TurnEntry(745f8050:1:TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp][Ext:203.171.26.x:34993][Conn(1)[345e0a70]]): Successful channel bind for 203.171.26.x:34993
+turn_port.cc: [5393:852][25511] (line 2146): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: Scheduled channel bind in 240000ms.
+connection.cc: [5393:890][25511] (line 634): Conn[34577890CR-I|-|0|0|p|-]: Received STUN BINDING request, id=57666735434d5734726d3436
+connection.cc: [5393:891][25511] (line 957): Conn[34577890CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=57666735434d5734726d3436
+openssl_adapter.cc: [5393:952][25511] (line 811): TLS client read_server_finished
+openssl_adapter.cc: [5393:952][25511] (line 811): TLS client finish_client_handshake
+openssl_adapter.cc: [5393:952][25511] (line 811): TLS client done
+openssl_adapter.cc: [5393:952][25511] (line 811): TLS client done
+openssl_adapter.cc: [5393:952][25511] (line 811): TLS client done
+dtls_transport.cc: [5393:952][25511] (line 993): DtlsTransport[0|1|__]: DTLS handshake complete.
+jsep_transport_controller.cc: [5393:952][25511] (line 1222):  Transport 0 writability changed to 1.
+dtls_srtp_transport.cc: [5393:952][25511] (line 253): Extracting keys from transport: 0
+call.cc: [5393:952][25512] (line 1215): UpdateAggregateNetworkState: aggregate_state change to up
+pacing_controller.cc: [5393:952][25512] (line 121): PacedSender resumed.
+rtp_transport_controller_send.cc: [5393:952][25512] (line 868): Creating Goog CC Factory.
+peer_connection.cc: [5393:952][25513] (line 2613): Changing to ICE connected state because all transports are writable.
+peer_connection.cc: [5393:952][25513] (line 2032): Changing IceConnectionState checking => connected
+alr_experiment.cc: [5393:953][25512] (line 69): Using ALR experiment settings: pacing factor: 1, max pacer queue length: 2875, ALR bandwidth usage percent: 80, ALR start budget level percent: 40, ALR end budget level percent: -60, ALR experiment group ID: 3
+trendline_estimator.cc: [5393:953][25512] (line 200): Using Trendline filter for delay change estimation with settings sort:false,cap:false,beginning_packets:7,end_packets:7,cap_uncertainty:0,window_size:40 and no network state predictor
+trendline_estimator.cc: [5393:953][25512] (line 200): Using Trendline filter for delay change estimation with settings sort:false,cap:false,beginning_packets:7,end_packets:7,cap_uncertainty:0,window_size:40 and no network state predictor
+aimd_rate_control.cc: [5393:953][25512] (line 114): Using aimd rate control with back off factor 0.9
+delay_based_bwe.cc: [5393:953][25512] (line 105): Initialized DelayBasedBwe with separate audio overuse detectionenabled:false,packet_threshold:10,time_threshold:1 s
+delay_based_bwe.cc: [5393:953][25512] (line 443): BWE Setting start bitrate to: 100 kbps
+bitrate_allocator.cc: [5393:953][25512] (line 500): Current BWE 100000
+bitrate_prober.cc: [5393:953][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (200 kbps:375:5, Inactive)
+bitrate_prober.cc: [5393:953][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (400 kbps:750:5, Inactive)
+pacing_controller.cc: [5393:953][25512] (line 327): Elapsed time (5789711 us) longer than expected, limiting to 2 s
+srtp_transport.cc: [5393:963][25511] (line 200): SRTP activated with negotiated parameters: send crypto_suite 1 recv crypto_suite 1
+channel.cc: [5393:963][25511] (line 667): Channel writable ({mid: 0, media_type: audio}) for the first time
+webrtc_voice_engine.cc: [5393:963][25512] (line 606): WebRtcVoiceEngine::ApplyOptions: AudioOptions {audio_jitter_buffer_max_packets: 200, audio_jitter_buffer_fast_accelerate: 0, audio_jitter_buffer_min_delay_ms: 0, }
+audio_processing_impl.cc: [5393:963][25512] (line 680): AudioProcessing::ApplyConfig: AudioProcessing::Config{ pipeline: { maximum_internal_processing_rate: 32000, multi_channel_render: 1, multi_channel_capture: 1 }, pre_amplifier: { enabled: 0, fixed_gain_factor: 1 },capture_level_adjustment: { enabled: 0, pre_gain_factor: 1, post_gain_factor: 1, analog_mic_gain_emulation: { enabled: 0, initial_level: 255 }}, high_pass_filter: { enabled: 1 }, echo_canceller: { enabled: 0, enforce_high_pass_filtering: 1 }, noise_suppression: { enabled: 0, level: High }, transient_suppression: { enabled: 0 }, gain_controller1: { enabled: 1, mode: FixedDigital, target_level_dbfs: 3, compression_gain_db: 9, enable_limiter: 1, analog_gain_controller { enabled: 1, startup_min_volume: 0, clipped_level_min: 70, enable_digital_adaptive: 1, clipped_level_step: 15, clipped_ratio_threshold: 0.1, clipped_wait_frames: 300, clipping_predictor:  { enabled: 0, mode: 0, window_length: 5, reference_window_length: 5, reference_window_delay: 5, clipping_threshold: -1, crest_factor_margin: 3, use_predicted_step: 1 }}}, gain_controller2: { enabled: 0, fixed_digital: { gain_db: 0 }, adaptive_digital: { enabled: 0, headroom_db: 5, max_gain_db: 50, initial_gain_db: 15, max_gain_change_db_per_second: 6, max_output_noise_level_dbfs: -50 }, input_volume_control : { enabled 0}}
+audio_record_jni.cc: [5393:963][25512] (line 115): InitRecording
+connection.cc: [5393:964][25511] (line 634): Conn[3459fe80CR-I|-|0|0|p|-]: Received STUN BINDING request, id=6c6e7767494641554c785634
+audio_record_jni.cc: [5393:964][25512] (line 249): OnCacheDirectBufferAddress
+audio_record_jni.cc: [5393:964][25512] (line 254): direct buffer capacity: 960
+connection.cc: [5393:964][25511] (line 957): Conn[3459fe80CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=0, id=6c6e7767494641554c785634
+connection.cc: [5394:001][25511] (line 634): Conn[345ffe20CR-I|-|0|0|p|-]: Received STUN BINDING request, id=51505a54494b484238434765
+connection.cc: [5394:001][25511] (line 957): Conn[345ffe20CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=51505a54494b484238434765
+connection.cc: [5394:090][25511] (line 634): Conn[34581700CR-I|-|0|0|p|-]: Received STUN BINDING request, id=34713577396e48344f796933
+connection.cc: [5394:090][25511] (line 957): Conn[34581700CR-I|-|0|0|p|-]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=0, id=34713577396e48344f796933
+basic_ice_controller.cc: [5394:146][25511] (line 313): Selecting connection for triggered check: Conn[345a3b70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->SZiYOFjE:1:58604799:relay:udp:14.238.152.x:38737|CR-I|-|0|0|p|251705695210994176|-][229272564680 us][229272802977 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|0|0|p|251705695210994176|121][229272710291 us][229272713625 us]
+connection.cc: [5394:147][25511] (line 1824): Conn[345a3b70CR-I|-|0|0|p|-]: Sent STUN BINDING request, id=4e64556b644d582b77636b33, use_candidate=0, nomination=0
+audio_record_jni.cc: [5394:233][25512] (line 134): frames_per_buffer: 480
+audio_record_jni.cc: [5394:233][25512] (line 50): WebRTC.Audio.InitRecordingDurationMs: 269
+audio_send_stream.cc: [5394:233][25512] (line 365): AudioSendStream::Start: 1492506366
+bitrate_allocator.cc: [5394:233][25512] (line 727): UpdateAllocationLimits : total_requested_min_bitrate: 60800 bps, total_requested_padding_bitrate: 0 bps, total_requested_max_bitrate: 60800 bps
+audio_record_jni.cc: [5394:233][25512] (line 148): StartRecording
+audio_record_jni.cc: [5394:239][25512] (line 50): WebRTC.Audio.StartRecordingDurationMs: 7
+channel.cc: [5394:239][25512] (line 916): Changing voice state, recv=1 send=1 for {mid: 0, media_type: audio}
+thread.cc: [5394:239][25512] (line 557): Message to worker_thread took 276ms to dispatch.
+sctp_data_channel.cc: [5394:249][27075] (line 387): DataChannelObserver - adapter needed
+connection.cc: [5394:264][25511] (line 1702): Conn[345a3b70CR-I|-|0|0|p|-]: Received STUN BINDING response, id=4e64556b644d582b77636b33, code=0, rtt=117654 us, pings_since_last_response=59375267485a785744773237 707879446c68565055515770 52594d45424436542f6e7245 4f626a334a434b484b4b4768 61357a645151677432344177 ... 1 more
+connection.cc: [5394:264][25511] (line 380): Conn[345a3b70CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5394:264][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+connection.cc: [5394:591][25511] (line 957): Conn[345e0a70CRWS|S|0|0|p|121]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=497458736f44637933342f69
+audio_device_buffer.cc: [5394:591][26409] (line 272): Size of recording buffer: 480
+timestamp_aligner.cc: [5394:591][26409] (line 98): Resetting timestamp translation after averaging 0 frames. Old offset: 0, new offset: 368945720
+rtp_sender_audio.cc: [5394:593][25512] (line 270): First audio RTP packet sent to pacer
+connection.cc: [5394:648][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|121]: Sent STUN BINDING request, id=68706d386d7277794947454f, use_candidate=0, nomination=0
+probe_bitrate_estimator.cc: [5394:768][25512] (line 115): Probing unsuccessful, invalid send/receive interval [cluster id: 1] [send interval: 9 ms] [receive interval: 0 us]
+probe_bitrate_estimator.cc: [5394:768][25512] (line 115): Probing unsuccessful, invalid send/receive interval [cluster id: 1] [send interval: 12 ms] [receive interval: 0 us]
+probe_bitrate_estimator.cc: [5394:768][25512] (line 115): Probing unsuccessful, invalid send/receive interval [cluster id: 1] [send interval: 15 ms] [receive interval: 0 us]
+probe_bitrate_estimator.cc: [5394:768][25512] (line 156): Probing unsuccessful, receive/send ratio too high [cluster id: 2] [send: 524 bytes / 8 ms = 524 kbps] [receive: 574 bytes / 4 ms = 1148 kbps ] [ratio: 1148 kbps / 524 kbps = 2.19084 > kMaxValidRatio (2)]
+trendline_estimator.cc: [5394:768][25512] (line 200): Using Trendline filter for delay change estimation with settings sort:false,cap:false,beginning_packets:7,end_packets:7,cap_uncertainty:0,window_size:40 and no network state predictor
+trendline_estimator.cc: [5394:768][25512] (line 200): Using Trendline filter for delay change estimation with settings sort:false,cap:false,beginning_packets:7,end_packets:7,cap_uncertainty:0,window_size:40 and no network state predictor
+probe_controller.cc: [5394:768][25512] (line 356): Measured bitrate: 101 kbps Minimum to probe further: 280 kbps upper limit: +inf bps
+connection.cc: [5394:769][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|121]: Received STUN BINDING response, id=68706d386d7277794947454f, code=0, rtt=120779 us, pings_since_last_response=68706d386d7277794947454f 
+timestamp_aligner.cc: [5394:802][26409] (line 98): Resetting timestamp translation after averaging 4 frames. Old offset: 369024040, new offset: 174480
+probe_bitrate_estimator.cc: [5394:813][25512] (line 191): Probing successful [cluster id: 2] [send: 680 bytes / 12 ms = 453333 bps ] [receive: 730 bytes / 26 ms = 224615 bps]
+probe_bitrate_estimator.cc: [5394:813][25512] (line 191): Probing successful [cluster id: 2] [send: 836 bytes / 12 ms = 557333 bps ] [receive: 886 bytes / 26 ms = 272615 bps]
+probe_controller.cc: [5394:814][25512] (line 356): Measured bitrate: 258984 bps Minimum to probe further: 280 kbps upper limit: +inf bps
+probe_controller.cc: [5394:954][25512] (line 499): kWaitingForProbingResult: timeout
+connection.cc: [5395:101][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|118]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=523945767330387652784839
+basic_ice_controller.cc: [5395:149][25511] (line 313): Selecting connection for triggered check: Conn[345b2f30:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CR-I|-|0|0|p|251705695210993152|-][229272466494 us][229272952591 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|2|0|p|251705695210994176|121][229273760262 us][229273703038 us]
+connection.cc: [5395:149][25511] (line 1824): Conn[345b2f30CR-I|-|0|0|p|-]: Sent STUN BINDING request, id=664e486c3949426a43393130, use_candidate=0, nomination=0
+connection.cc: [5395:280][25511] (line 1702): Conn[345b2f30CR-I|-|0|0|p|-]: Received STUN BINDING response, id=664e486c3949426a43393130, code=0, rtt=130943 us, pings_since_last_response=3673667351674f4654455065 49556d31307a6c4b4e2b4734 6e495837672f766377386f4e 4168417a6d5446676b694745 664e486c3949426a43393130 
+connection.cc: [5395:280][25511] (line 380): Conn[345b2f30CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5395:280][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+bitrate_allocator.cc: [5395:560][25512] (line 727): UpdateAllocationLimits : total_requested_min_bitrate: 54400 bps, total_requested_padding_bitrate: 0 bps, total_requested_max_bitrate: 54400 bps
+connection.cc: [5395:611][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|121]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=576a427749756a716f746f4c
+connection.cc: [5395:649][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|121]: Sent STUN BINDING request, id=785a4b687a7a474a6c444b75, use_candidate=0, nomination=0
+connection.cc: [5395:783][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|121]: Received STUN BINDING response, id=785a4b687a7a474a6c444b75, code=0, rtt=133208 us, pings_since_last_response=785a4b687a7a474a6c444b75 
+turn_port.cc: [5396:016][25511] (line 1728): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5396:016][25511] (line 1728): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+connection.cc: [5396:101][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|107]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=582b71362b636c4159595941
+basic_ice_controller.cc: [5396:150][25511] (line 313): Selecting connection for triggered check: Conn[34577890:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|CR-I|-|0|0|p|251701297164483072|-][229272368764 us][229273002781 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|2|0|p|251705695210994176|124][229274761761 us][229274723612 us]
+connection.cc: [5396:150][25511] (line 1824): Conn[34577890CR-I|-|0|0|p|-]: Sent STUN BINDING request, id=2f537238646c3436482f6374, use_candidate=0, nomination=0
+timestamp_aligner.cc: [5396:188][26409] (line 98): Resetting timestamp translation after averaging 49 frames. Old offset: 26521, new offset: 332232
+connection.cc: [5396:311][25511] (line 1702): Conn[34577890CR-I|-|0|0|p|-]: Received STUN BINDING response, id=2f537238646c3436482f6374, code=0, rtt=161396 us, pings_since_last_response=74506d6d63714f4563485369 423976327335524a4a37656a 75736e68334d344a44625070 344c6b347367745630786e65 2f537238646c3436482f6374 
+connection.cc: [5396:311][25511] (line 380): Conn[34577890CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5396:312][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+timestamp_aligner.cc: [5396:446][26409] (line 98): Resetting timestamp translation after averaging 10 frames. Old offset: 448726, new offset: 1776
+connection.cc: [5396:600][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|131]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=37484e4c51744e6532374475
+connection.cc: [5396:651][25511] (line 407): Conn[345ffe20CR-I|-|0|0|p|-]: set_receiving to 0
+connection.cc: [5396:651][25511] (line 407): Conn[34581700CR-I|-|0|0|p|-]: set_receiving to 0
+connection.cc: [5396:651][25511] (line 407): Conn[3459fe80CR-I|-|0|0|p|-]: set_receiving to 0
+connection.cc: [5396:651][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|124]: Sent STUN BINDING request, id=2b5941767957554536357748, use_candidate=0, nomination=0
+wrapping_active_ice_controller.cc: [5396:651][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+connection.cc: [5396:769][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|124]: Received STUN BINDING response, id=2b5941767957554536357748, code=0, rtt=118533 us, pings_since_last_response=2b5941767957554536357748 
+remote_ntp_time_estimator.cc: [5396:776][26359] (line 94): RTP timestamp: 230324960 in NTP clock: 3999052194024 estimated time in receiver NTP clock: 3999052193396
+connection.cc: [5397:117][25511] (line 957): Conn[34577890CRWS|-|0|0|p|161]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=672f495a6a4177616f44634f
+basic_ice_controller.cc: [5397:153][25511] (line 313): Selecting connection for triggered check: Conn[3459fe80:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->c6XJZC3b:1:58603775:relay:udp:171.226.10.x:29931|C--I|-|0|0|p|251701297164482048|-][229272515806 us][229273076741 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|2|0|p|251705695210994176|123][229275763284 us][229274723612 us]
+connection.cc: [5397:153][25511] (line 1824): Conn[3459fe80C--I|-|0|0|p|-]: Sent STUN BINDING request, id=46386545556374506d576d71, use_candidate=0, nomination=0
+connection.cc: [5397:284][25511] (line 1702): Conn[3459fe80C--I|-|0|0|p|-]: Received STUN BINDING response, id=46386545556374506d576d71, code=0, rtt=131507 us, pings_since_last_response=4438724a514e3757396f7874 4f75533133337158514b4e34 51343977495373582b72495a 5a7265736465436256544564 46386545556374506d576d71 
+connection.cc: [5397:284][25511] (line 407): Conn[3459fe80C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5397:284][25511] (line 380): Conn[3459fe80CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5397:285][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+connection.cc: [5397:601][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|132]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=416366444444475051513761
+connection.cc: [5397:653][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|123]: Sent STUN BINDING request, id=3078446161766e6c5962674e, use_candidate=0, nomination=0
+connection.cc: [5397:763][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|123]: Received STUN BINDING response, id=3078446161766e6c5962674e, code=0, rtt=110248 us, pings_since_last_response=3078446161766e6c5962674e 
+connection.cc: [5398:101][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|120]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=4934674237716a4f6c384a64
+basic_ice_controller.cc: [5398:153][25511] (line 313): Selecting connection for triggered check: Conn[345ffe20:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--I|-|0|0|p|251700197652855296|-][229272271916 us][229273113596 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|2|0|p|251705695210994176|120][229276765097 us][229277213326 us]
+connection.cc: [5398:154][25511] (line 1824): Conn[345ffe20C--I|-|0|0|p|-]: Sent STUN BINDING request, id=6770585847686c76696c4a57, use_candidate=0, nomination=0
+connection.cc: [5398:299][25511] (line 1702): Conn[345ffe20C--I|-|0|0|p|-]: Received STUN BINDING response, id=6770585847686c76696c4a57, code=0, rtt=145562 us, pings_since_last_response=70542f6e3046794c5965572f 54783065456349634d596938 6b592f46777a2f5177584775 7a52763553754b6967777555 6770585847686c76696c4a57 
+connection.cc: [5398:299][25511] (line 407): Conn[345ffe20C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5398:299][25511] (line 380): Conn[345ffe20CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5398:299][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+connection.cc: [5398:616][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|146]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=79574c2f4965334c50517537
+basic_ice_controller.cc: [5398:655][25511] (line 313): Selecting connection for triggered check: Conn[34581700:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:+ZRTLcUo:1:0:relay:udp:160.250.77.x:35278->fJmit7kv:1:58603519:relay:udp:116.103.111.x:31829|C--I|-|0|0|p|251700197652854272|-][229272417762 us][229273202146 us], with selected_connection: Conn[345e0a70:0:Net[ccmni1:29.0.0.x/8:Cellular:id=3]:A1W9mbvl:1:0:relay:udp:103.63.112.x:34260->vXRNsbMj:1:58604799:relay:udp:203.171.26.x:34993|CRWS|S|2|0|p|251705695210994176|120][229276765097 us][229277213326 us]
+connection.cc: [5398:655][25511] (line 1824): Conn[34581700C--I|-|0|0|p|-]: Sent STUN BINDING request, id=58756877433338554e757a53, use_candidate=0, nomination=0
+connection.cc: [5398:806][25511] (line 1702): Conn[34581700C--I|-|0|0|p|-]: Received STUN BINDING response, id=58756877433338554e757a53, code=0, rtt=150871 us, pings_since_last_response=4976424b78456b5831365945 646a7a69446156524c2f4c74 335a657738674c664d496539 655446494251476736426842 58756877433338554e757a53 
+connection.cc: [5398:806][25511] (line 407): Conn[34581700C--I|-|0|0|p|-]: set_receiving to 1
+connection.cc: [5398:806][25511] (line 380): Conn[34581700CRWI|-|0|0|p|-]: set_write_state from: 2 to 0
+wrapping_active_ice_controller.cc: [5398:806][25511] (line 223): Not switching selected connection due to: candidate pair state changed
+connection.cc: [5399:124][25511] (line 957): Conn[34581700CRWS|-|0|0|p|151]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=7279484b4c712f3838724c39
+connection.cc: [5399:157][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|107]: Sent STUN BINDING request, id=2f303259464c437065754876, use_candidate=0, nomination=0
+connection.cc: [5399:272][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|107]: Received STUN BINDING response, id=2f303259464c437065754876, code=0, rtt=115386 us, pings_since_last_response=2f303259464c437065754876 
+android_network_monitor.cc: [5399:396][25511] (line 451): Network connected: NetInfo[name ccmni1; handle 703485366285; type 4]
+network.cc: [5399:396][25511] (line 605): Network change was observed
+connection.cc: [5399:614][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|118]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=3765394478534f6373436734
+connection.cc: [5399:658][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|118]: Sent STUN BINDING request, id=4b48657531312f6f38426c31, use_candidate=0, nomination=0
+connection.cc: [5399:782][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|118]: Received STUN BINDING response, id=4b48657531312f6f38426c31, code=0, rtt=125155 us, pings_since_last_response=4b48657531312f6f38426c31 
+connection.cc: [5400:097][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=355a396861616e726b324d78
+bitrate_prober.cc: [5400:104][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5400:159][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|120]: Sent STUN BINDING request, id=6f796e6677424e3778734a61, use_candidate=0, nomination=0
+connection.cc: [5400:277][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|120]: Received STUN BINDING response, id=6f796e6677424e3778734a61, code=0, rtt=118649 us, pings_since_last_response=6f796e6677424e3778734a61 
+probe_bitrate_estimator.cc: [5400:286][25512] (line 156): Probing unsuccessful, receive/send ratio too high [cluster id: 3] [send: 296 bytes / 17 ms = 139294 bps] [receive: 296 bytes / 4 ms = 592 kbps ] [ratio: 592 kbps / 139294 bps = 4.25 > kMaxValidRatio (2)]
+probe_bitrate_estimator.cc: [5400:286][25512] (line 156): Probing unsuccessful, receive/send ratio too high [cluster id: 3] [send: 398 bytes / 21 ms = 151619 bps] [receive: 388 bytes / 4 ms = 776 kbps ] [ratio: 776 kbps / 151619 bps = 5.11809 > kMaxValidRatio (2)]
+bitrate_allocator.cc: [5400:503][25512] (line 500): Current BWE 258984
+connection.cc: [5400:610][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|119]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=6d72486f5135546a5753586f
+connection.cc: [5400:661][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|131]: Sent STUN BINDING request, id=556761517758634261654b32, use_candidate=0, nomination=0
+connection.cc: [5400:795][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|131]: Received STUN BINDING response, id=556761517758634261654b32, code=0, rtt=134756 us, pings_since_last_response=556761517758634261654b32 
+connection.cc: [5401:103][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|132]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=387846692f63324250496674
+connection.cc: [5401:162][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|161]: Sent STUN BINDING request, id=7769376a544c6379302b5832, use_candidate=0, nomination=0
+connection.cc: [5401:293][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|161]: Received STUN BINDING response, id=7769376a544c6379302b5832, code=0, rtt=130835 us, pings_since_last_response=7769376a544c6379302b5832 
+connection.cc: [5401:631][25511] (line 957): Conn[34577890CRWS|-|0|0|p|154]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=4e75746a4d434a6a4e2f354d
+connection.cc: [5401:665][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|132]: Sent STUN BINDING request, id=465562455a5969522b6b6e32, use_candidate=0, nomination=0
+connection.cc: [5401:784][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|132]: Received STUN BINDING response, id=465562455a5969522b6b6e32, code=0, rtt=119348 us, pings_since_last_response=465562455a5969522b6b6e32 
+connection.cc: [5402:141][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|128]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=7463706d614c675859327230
+connection.cc: [5402:166][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|146]: Sent STUN BINDING request, id=4b4753363475736669754231, use_candidate=0, nomination=0
+connection.cc: [5402:282][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|146]: Received STUN BINDING response, id=4b4753363475736669754231, code=0, rtt=115988 us, pings_since_last_response=4b4753363475736669754231 
+connection.cc: [5402:622][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|138]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=657a5879496c4d5853546146
+connection.cc: [5402:667][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|119]: Sent STUN BINDING request, id=57444868614e33703238792b, use_candidate=0, nomination=0
+connection.cc: [5402:783][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|119]: Received STUN BINDING response, id=57444868614e33703238792b, code=0, rtt=115921 us, pings_since_last_response=57444868614e33703238792b 
+connection.cc: [5403:133][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|119]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=58776e644954495864526834
+connection.cc: [5403:169][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|151]: Sent STUN BINDING request, id=55564b56504f6e6441397344, use_candidate=0, nomination=0
+connection.cc: [5403:313][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|151]: Received STUN BINDING response, id=55564b56504f6e6441397344, code=0, rtt=145225 us, pings_since_last_response=55564b56504f6e6441397344 
+connection.cc: [5403:654][25511] (line 957): Conn[34581700CRWS|-|0|0|p|149]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=32586d7a554f6e304a384b41
+connection.cc: [5403:670][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING request, id=6c596570304b624d484f6b48, use_candidate=0, nomination=0
+connection.cc: [5403:781][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|109]: Received STUN BINDING response, id=6c596570304b624d484f6b48, code=0, rtt=112146 us, pings_since_last_response=6c596570304b624d484f6b48 
+turn_port.cc: [5404:017][25511] (line 1728): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5404:018][25511] (line 1728): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+connection.cc: [5404:159][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|120]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=5333506c5a54695a45482b39
+connection.cc: [5404:170][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|120]: Sent STUN BINDING request, id=636e555051416870786d2f4f, use_candidate=0, nomination=0
+connection.cc: [5404:301][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|120]: Received STUN BINDING response, id=636e555051416870786d2f4f, code=0, rtt=131497 us, pings_since_last_response=636e555051416870786d2f4f 
+connection.cc: [5404:641][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|110]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=5a4459304777456135474677
+connection.cc: [5404:671][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|132]: Sent STUN BINDING request, id=39506b316b626756392b4336, use_candidate=0, nomination=0
+connection.cc: [5404:831][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|132]: Received STUN BINDING response, id=39506b316b626756392b4336, code=0, rtt=160228 us, pings_since_last_response=39506b316b626756392b4336 
+bitrate_prober.cc: [5405:104][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5405:141][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|139]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=6357504f427558727a6f6848
+connection.cc: [5405:171][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|119]: Sent STUN BINDING request, id=2b7177782f484c6432767874, use_candidate=0, nomination=0
+connection.cc: [5405:299][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|119]: Received STUN BINDING response, id=2b7177782f484c6432767874, code=0, rtt=127979 us, pings_since_last_response=2b7177782f484c6432767874 
+probe_bitrate_estimator.cc: [5405:308][25512] (line 191): Probing successful [cluster id: 4] [send: 296 bytes / 16 ms = 148 kbps ] [receive: 296 bytes / 13 ms = 182153 bps]
+probe_bitrate_estimator.cc: [5405:308][25512] (line 191): Probing successful [cluster id: 4] [send: 398 bytes / 21 ms = 151619 bps ] [receive: 398 bytes / 13 ms = 244923 bps]
+connection.cc: [5405:632][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|121]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=6a5a587961492b744559482f
+connection.cc: [5405:672][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|154]: Sent STUN BINDING request, id=6e644f432f58324d65684a31, use_candidate=0, nomination=0
+connection.cc: [5405:811][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|154]: Received STUN BINDING response, id=6e644f432f58324d65684a31, code=0, rtt=138842 us, pings_since_last_response=6e644f432f58324d65684a31 
+connection.cc: [5406:151][25511] (line 957): Conn[34577890CRWS|-|0|0|p|150]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=41326962556e7a494b6f5157
+connection.cc: [5406:173][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|128]: Sent STUN BINDING request, id=4e4a44584a4975614a485072, use_candidate=0, nomination=0
+connection.cc: [5406:301][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|128]: Received STUN BINDING response, id=4e4a44584a4975614a485072, code=0, rtt=128835 us, pings_since_last_response=4e4a44584a4975614a485072 
+connection.cc: [5406:645][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|129]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=672b4446465a4c5656426241
+connection.cc: [5406:673][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|138]: Sent STUN BINDING request, id=67325954474c67315a684156, use_candidate=0, nomination=0
+connection.cc: [5406:794][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|138]: Received STUN BINDING response, id=67325954474c67315a684156, code=0, rtt=121286 us, pings_since_last_response=67325954474c67315a684156 
+remote_ntp_time_estimator.cc: [5406:805][26359] (line 94): RTP timestamp: 230843632 in NTP clock: 3999052204829 estimated time in receiver NTP clock: 3999052204165
+connection.cc: [5407:149][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|134]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=45576a6c5a54464a5a345233
+connection.cc: [5407:174][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|149]: Sent STUN BINDING request, id=42485a74304b374553376532, use_candidate=0, nomination=0
+connection.cc: [5407:301][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|149]: Received STUN BINDING response, id=42485a74304b374553376532, code=0, rtt=127751 us, pings_since_last_response=42485a74304b374553376532 
+bitrate_allocator.cc: [5407:603][25512] (line 500): Current BWE 151619
+connection.cc: [5407:654][25511] (line 957): Conn[34581700CRWS|-|0|0|p|144]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=7979523661775679494d374f
+connection.cc: [5407:676][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|121]: Sent STUN BINDING request, id=4e36594734636530782f7869, use_candidate=0, nomination=0
+connection.cc: [5407:805][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|121]: Received STUN BINDING response, id=4e36594734636530782f7869, code=0, rtt=129552 us, pings_since_last_response=4e36594734636530782f7869 
+connection.cc: [5408:140][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|123]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=2f5453516f456f4c314c4862
+connection.cc: [5408:177][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|110]: Sent STUN BINDING request, id=47574646584f756976775330, use_candidate=0, nomination=0
+connection.cc: [5408:284][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|110]: Received STUN BINDING response, id=47574646584f756976775330, code=0, rtt=107618 us, pings_since_last_response=47574646584f756976775330 
+connection.cc: [5408:645][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|123]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=4c4b66754d34644b3576566f
+connection.cc: [5408:677][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|123]: Sent STUN BINDING request, id=6e584773455452704837412f, use_candidate=0, nomination=0
+connection.cc: [5408:805][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|123]: Received STUN BINDING response, id=6e584773455452704837412f, code=0, rtt=127989 us, pings_since_last_response=6e584773455452704837412f 
+connection.cc: [5409:131][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=34354276356b31624f50514a
+connection.cc: [5409:178][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|139]: Sent STUN BINDING request, id=364e6d6a576266496a694857, use_candidate=0, nomination=0
+connection.cc: [5409:349][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|139]: Received STUN BINDING response, id=364e6d6a576266496a694857, code=0, rtt=171344 us, pings_since_last_response=364e6d6a576266496a694857 
+connection.cc: [5409:631][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|147]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=7970554a3256334d72395932
+connection.cc: [5409:678][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|150]: Sent STUN BINDING request, id=394e4b47617376442b4c5852, use_candidate=0, nomination=0
+connection.cc: [5409:853][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|150]: Received STUN BINDING response, id=394e4b47617376442b4c5852, code=0, rtt=175206 us, pings_since_last_response=394e4b47617376442b4c5852 
+bitrate_prober.cc: [5410:104][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5410:152][25511] (line 957): Conn[34577890CRWS|-|0|0|p|156]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=567270597261757439703349
+connection.cc: [5410:181][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|123]: Sent STUN BINDING request, id=2f495562326a657033547a30, use_candidate=0, nomination=0
+probe_bitrate_estimator.cc: [5410:263][25512] (line 191): Probing successful [cluster id: 5] [send: 340 bytes / 20 ms = 136 kbps ] [receive: 340 bytes / 10 ms = 272 kbps]
+probe_bitrate_estimator.cc: [5410:263][25512] (line 191): Probing successful [cluster id: 5] [send: 442 bytes / 25 ms = 141440 bps ] [receive: 472 bytes / 16 ms = 236 kbps]
+connection.cc: [5410:302][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|123]: Received STUN BINDING response, id=2f495562326a657033547a30, code=0, rtt=122037 us, pings_since_last_response=2f495562326a657033547a30 
+connection.cc: [5410:640][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|123]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=3277756655426178736f7679
+connection.cc: [5410:682][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|129]: Sent STUN BINDING request, id=5477666879627669326c3838, use_candidate=0, nomination=0
+connection.cc: [5410:800][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|129]: Received STUN BINDING response, id=5477666879627669326c3838, code=0, rtt=118882 us, pings_since_last_response=5477666879627669326c3838 
+connection.cc: [5411:161][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|126]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=384a582b66372b61372b5068
+connection.cc: [5411:184][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|134]: Sent STUN BINDING request, id=3969596b4c386b692f596437, use_candidate=0, nomination=0
+connection.cc: [5411:292][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|134]: Received STUN BINDING response, id=3969596b4c386b692f596437, code=0, rtt=108157 us, pings_since_last_response=3969596b4c386b692f596437 
+connection.cc: [5411:651][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|127]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=366a6a7a59747038577a6942
+connection.cc: [5411:685][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|144]: Sent STUN BINDING request, id=70482f776743424446773242, use_candidate=0, nomination=0
+connection.cc: [5411:825][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|144]: Received STUN BINDING response, id=70482f776743424446773242, code=0, rtt=139865 us, pings_since_last_response=70482f776743424446773242 
+turn_port.cc: [5412:018][25511] (line 1728): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5412:018][25511] (line 1728): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+connection.cc: [5412:155][25511] (line 957): Conn[34581700CRWS|-|0|0|p|143]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=396e624d43354f792f4e4139
+connection.cc: [5412:187][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING request, id=64386a4e7a7975554c637174, use_candidate=0, nomination=0
+connection.cc: [5412:294][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|109]: Received STUN BINDING response, id=64386a4e7a7975554c637174, code=0, rtt=107609 us, pings_since_last_response=64386a4e7a7975554c637174 
+audio_device_buffer.cc: [5412:525][26143] (line 471): [REC : 10001msec, 48kHz] callbacks: 999, samples: 479520, rate: 47947, rate diff: 0%, level: 7694
+audio_device_buffer.cc: [5412:525][26143] (line 497): [PLAY: 10001msec, 48kHz] callbacks: 1002, samples: 480960, rate: 48091, rate diff: 0%, level: 31600
+connection.cc: [5412:651][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|124]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=58737466626845725262354c
+connection.cc: [5412:689][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|123]: Sent STUN BINDING request, id=65392b58617a36445762654c, use_candidate=0, nomination=0
+connection.cc: [5412:844][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|123]: Received STUN BINDING response, id=65392b58617a36445762654c, code=0, rtt=155674 us, pings_since_last_response=65392b58617a36445762654c 
+bitrate_allocator.cc: [5413:069][25512] (line 500): Current BWE 141440
+connection.cc: [5413:158][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|131]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=313975346b5267754f785262
+connection.cc: [5413:190][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|124]: Sent STUN BINDING request, id=6b6f6c6a614334395a786a6e, use_candidate=0, nomination=0
+connection.cc: [5413:353][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|124]: Received STUN BINDING response, id=6b6f6c6a614334395a786a6e, code=0, rtt=163479 us, pings_since_last_response=6b6f6c6a614334395a786a6e 
+connection.cc: [5413:643][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=6d455141722f7a77502b6f59
+connection.cc: [5413:690][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|147]: Sent STUN BINDING request, id=75594c68334573576c574d34, use_candidate=0, nomination=0
+connection.cc: [5413:840][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|147]: Received STUN BINDING response, id=75594c68334573576c574d34, code=0, rtt=150332 us, pings_since_last_response=75594c68334573576c574d34 
+connection.cc: [5414:141][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|148]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=55566a6144467950357a496d
+connection.cc: [5414:190][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|156]: Sent STUN BINDING request, id=6269666e376b516236496131, use_candidate=0, nomination=0
+connection.cc: [5414:359][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|156]: Received STUN BINDING response, id=6269666e376b516236496131, code=0, rtt=168478 us, pings_since_last_response=6269666e376b516236496131 
+connection.cc: [5414:671][25511] (line 957): Conn[34577890CRWS|-|0|0|p|159]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=6f756b54474150356e62554c
+connection.cc: [5414:691][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|126]: Sent STUN BINDING request, id=683270544749366f34587148, use_candidate=0, nomination=0
+connection.cc: [5414:813][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|126]: Received STUN BINDING response, id=683270544749366f34587148, code=0, rtt=122529 us, pings_since_last_response=683270544749366f34587148 
+bitrate_prober.cc: [5415:129][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5415:151][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|125]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=6b30622f7979715364452b31
+connection.cc: [5415:192][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|131]: Sent STUN BINDING request, id=6d453741784542374e434f42, use_candidate=0, nomination=0
+probe_bitrate_estimator.cc: [5415:284][25512] (line 191): Probing successful [cluster id: 6] [send: 296 bytes / 16 ms = 148 kbps ] [receive: 296 bytes / 13 ms = 182153 bps]
+probe_bitrate_estimator.cc: [5415:284][25512] (line 191): Probing successful [cluster id: 6] [send: 398 bytes / 20 ms = 159200 bps ] [receive: 388 bytes / 23 ms = 134956 bps]
+connection.cc: [5415:352][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|131]: Received STUN BINDING response, id=6d453741784542374e434f42, code=0, rtt=160413 us, pings_since_last_response=6d453741784542374e434f42 
+connection.cc: [5415:660][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|138]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=6776514f706145756c433279
+connection.cc: [5415:692][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|127]: Sent STUN BINDING request, id=564a564a5a72646d67616d4d, use_candidate=0, nomination=0
+connection.cc: [5415:818][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|127]: Received STUN BINDING response, id=564a564a5a72646d67616d4d, code=0, rtt=126129 us, pings_since_last_response=564a564a5a72646d67616d4d 
+connection.cc: [5416:151][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|127]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=756a434b346a624433446e4f
+connection.cc: [5416:192][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|143]: Sent STUN BINDING request, id=4d48574c3837467779576567, use_candidate=0, nomination=0
+connection.cc: [5416:354][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|143]: Received STUN BINDING response, id=4d48574c3837467779576567, code=0, rtt=161793 us, pings_since_last_response=4d48574c3837467779576567 
+connection.cc: [5416:670][25511] (line 957): Conn[34581700CRWS|-|0|0|p|148]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=796d347838584f4d594b4330
+connection.cc: [5416:692][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|109]: Sent STUN BINDING request, id=7a6d412f6f7639335363785a, use_candidate=0, nomination=0
+connection.cc: [5416:793][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|109]: Received STUN BINDING response, id=7a6d412f6f7639335363785a, code=0, rtt=101525 us, pings_since_last_response=7a6d412f6f7639335363785a 
+remote_ntp_time_estimator.cc: [5416:831][26359] (line 94): RTP timestamp: 231324694 in NTP clock: 3999052214850 estimated time in receiver NTP clock: 3999052214212
+connection.cc: [5417:173][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|134]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=2b4731443267325179306956
+connection.cc: [5417:193][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|134]: Sent STUN BINDING request, id=62494d666543554457387a6c, use_candidate=0, nomination=0
+connection.cc: [5417:344][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|134]: Received STUN BINDING response, id=62494d666543554457387a6c, code=0, rtt=151304 us, pings_since_last_response=62494d666543554457387a6c 
+connection.cc: [5417:650][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|107]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=536a4a50356531345573396a
+connection.cc: [5417:694][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|138]: Sent STUN BINDING request, id=725074786755426779384e4d, use_candidate=0, nomination=0
+connection.cc: [5417:857][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|138]: Received STUN BINDING response, id=725074786755426779384e4d, code=0, rtt=163651 us, pings_since_last_response=725074786755426779384e4d 
+connection.cc: [5418:161][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|145]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=79332b624e35484d665a5546
+connection.cc: [5418:194][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|148]: Sent STUN BINDING request, id=726e43515a474943794f4830, use_candidate=0, nomination=0
+connection.cc: [5418:348][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|148]: Received STUN BINDING response, id=726e43515a474943794f4830, code=0, rtt=153643 us, pings_since_last_response=726e43515a474943794f4830 
+connection.cc: [5418:662][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|149]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=796c4c52356538375661397a
+bitrate_allocator.cc: [5418:671][25512] (line 500): Current BWE 128208
+connection.cc: [5418:696][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|159]: Sent STUN BINDING request, id=794955656175364370385659, use_candidate=0, nomination=0
+connection.cc: [5418:853][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|159]: Received STUN BINDING response, id=794955656175364370385659, code=0, rtt=157624 us, pings_since_last_response=794955656175364370385659 
+connection.cc: [5419:176][25511] (line 957): Conn[34577890CRWS|-|0|0|p|159]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=4563462b4a7a7a7949546b70
+connection.cc: [5419:196][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|125]: Sent STUN BINDING request, id=5942355a476c4f456d336f39, use_candidate=0, nomination=0
+connection.cc: [5419:350][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|125]: Received STUN BINDING response, id=5942355a476c4f456d336f39, code=0, rtt=153908 us, pings_since_last_response=5942355a476c4f456d336f39 
+connection.cc: [5419:670][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|132]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=4842597a6b516b2f2f527174
+connection.cc: [5419:697][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|127]: Sent STUN BINDING request, id=31566f6270724331574a7466, use_candidate=0, nomination=0
+connection.cc: [5419:811][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|127]: Received STUN BINDING response, id=31566f6270724331574a7466, code=0, rtt=115397 us, pings_since_last_response=31566f6270724331574a7466 
+turn_port.cc: [5420:018][25511] (line 1728): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request sent, id=61797a5a6f7151614d34624c
+turn_port.cc: [5420:019][25511] (line 1728): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request sent, id=492f4d706676307366754936
+bitrate_prober.cc: [5420:129][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5420:168][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|124]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=2f715150755a345675477167
+connection.cc: [5420:197][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|145]: Sent STUN BINDING request, id=54705878617646664c54714f, use_candidate=0, nomination=0
+probe_bitrate_estimator.cc: [5420:279][25512] (line 191): Probing successful [cluster id: 7] [send: 348 bytes / 19 ms = 146526 bps ] [receive: 348 bytes / 18 ms = 154666 bps]
+probe_bitrate_estimator.cc: [5420:279][25512] (line 191): Probing successful [cluster id: 7] [send: 450 bytes / 25 ms = 144 kbps ] [receive: 475 bytes / 18 ms = 211111 bps]
+connection.cc: [5420:332][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|145]: Received STUN BINDING response, id=54705878617646664c54714f, code=0, rtt=135414 us, pings_since_last_response=54705878617646664c54714f 
+connection.cc: [5420:670][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|142]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=67696862736841775379334d
+connection.cc: [5420:700][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|148]: Sent STUN BINDING request, id=306856396438615947527944, use_candidate=0, nomination=0
+connection.cc: [5420:863][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|148]: Received STUN BINDING response, id=306856396438615947527944, code=0, rtt=163921 us, pings_since_last_response=306856396438615947527944 
+connection.cc: [5421:185][25511] (line 957): Conn[34581700CRWS|-|0|0|p|152]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=624b78744f54355570786737
+connection.cc: [5421:202][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|107]: Sent STUN BINDING request, id=446c454630504344726b624a, use_candidate=0, nomination=0
+connection.cc: [5421:341][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|107]: Received STUN BINDING response, id=446c454630504344726b624a, code=0, rtt=139107 us, pings_since_last_response=446c454630504344726b624a 
+connection.cc: [5421:672][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|138]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=536e4f6b54365044417a4232
+connection.cc: [5421:703][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|138]: Sent STUN BINDING request, id=53643672455a43444451536d, use_candidate=0, nomination=0
+connection.cc: [5421:850][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|138]: Received STUN BINDING response, id=53643672455a43444451536d, code=0, rtt=147071 us, pings_since_last_response=53643672455a43444451536d 
+connection.cc: [5422:161][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|115]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=534473744d47773650496e45
+connection.cc: [5422:204][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|149]: Sent STUN BINDING request, id=3042556b30695a354a46337a, use_candidate=0, nomination=0
+connection.cc: [5422:341][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|149]: Received STUN BINDING response, id=3042556b30695a354a46337a, code=0, rtt=137560 us, pings_since_last_response=3042556b30695a354a46337a 
+audio_device_buffer.cc: [5422:525][26143] (line 471): [REC : 10001msec, 48kHz] callbacks: 1000, samples: 480000, rate: 47995, rate diff: 0%, level: 14782
+audio_device_buffer.cc: [5422:525][26143] (line 497): [PLAY: 10001msec, 48kHz] callbacks: 999, samples: 479520, rate: 47947, rate diff: 0%, level: 7712
+connection.cc: [5422:662][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|146]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=5873397945383947736c5376
+connection.cc: [5422:705][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|142]: Sent STUN BINDING request, id=6844722b644370744c413178, use_candidate=0, nomination=0
+connection.cc: [5422:850][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|142]: Received STUN BINDING response, id=6844722b644370744c413178, code=0, rtt=145321 us, pings_since_last_response=6844722b644370744c413178 
+connection.cc: [5423:175][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|143]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=4c326d44667a473033565954
+connection.cc: [5423:206][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|159]: Sent STUN BINDING request, id=3358596d5a754a6248716c33, use_candidate=0, nomination=0
+connection.cc: [5423:351][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|159]: Received STUN BINDING response, id=3358596d5a754a6248716c33, code=0, rtt=145940 us, pings_since_last_response=3358596d5a754a6248716c33 
+connection.cc: [5423:691][25511] (line 957): Conn[34577890CRWS|-|0|0|p|156]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=51562b4d76394f5657526456
+connection.cc: [5423:707][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|132]: Sent STUN BINDING request, id=724573673858554b616f4e58, use_candidate=0, nomination=0
+connection.cc: [5423:861][25511] (line 1702): Conn[3459fe80CRWI|-|0|0|p|132]: Received STUN BINDING response, id=724573673858554b616f4e58, code=0, rtt=153913 us, pings_since_last_response=724573673858554b616f4e58 
+connection.cc: [5424:176][25511] (line 957): Conn[3459fe80CRWS|-|0|0|p|138]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=3658694c726b756a52704b6b
+connection.cc: [5424:208][25511] (line 1824): Conn[345ffe20CRWS|-|0|0|p|124]: Sent STUN BINDING request, id=677464325248347836795877, use_candidate=0, nomination=0
+connection.cc: [5424:359][25511] (line 1702): Conn[345ffe20CRWI|-|0|0|p|124]: Received STUN BINDING response, id=677464325248347836795877, code=0, rtt=151409 us, pings_since_last_response=677464325248347836795877 
+connection.cc: [5424:691][25511] (line 957): Conn[345ffe20CRWS|-|0|0|p|131]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=6c4e6c693869716b36523732
+connection.cc: [5424:710][25511] (line 1824): Conn[34581700CRWS|-|0|0|p|152]: Sent STUN BINDING request, id=3353544b4578335648656a46, use_candidate=0, nomination=0
+agc_manager_direct.cc: [5424:848][26409] (line 146): Input clipping rate: 0%
+connection.cc: [5424:865][25511] (line 1702): Conn[34581700CRWI|-|0|0|p|152]: Received STUN BINDING response, id=3353544b4578335648656a46, code=0, rtt=156292 us, pings_since_last_response=3353544b4578335648656a46 
+bitrate_prober.cc: [5425:153][25512] (line 130): Probe cluster (bitrate_bps:min bytes:min packets): (108800 bps:204:5, Inactive)
+connection.cc: [5425:192][25511] (line 957): Conn[34581700CRWS|-|0|0|p|153]: Sent STUN BINDING response, to=116.103.111.x:31829, writable=1, id=733756554b30497174376a59
+connection.cc: [5425:210][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|143]: Sent STUN BINDING request, id=3646384657326b62684a796e, use_candidate=0, nomination=0
+probe_bitrate_estimator.cc: [5425:309][25512] (line 191): Probing successful [cluster id: 8] [send: 296 bytes / 16 ms = 148 kbps ] [receive: 296 bytes / 18 ms = 131555 bps]
+bitrate_allocator.cc: [5425:310][25512] (line 500): Current BWE 124977
+connection.cc: [5425:339][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|143]: Received STUN BINDING response, id=3646384657326b62684a796e, code=0, rtt=129513 us, pings_since_last_response=3646384657326b62684a796e 
+probe_bitrate_estimator.cc: [5425:385][25512] (line 191): Probing successful [cluster id: 8] [send: 398 bytes / 21 ms = 151619 bps ] [receive: 398 bytes / 24 ms = 132666 bps]
+connection.cc: [5425:689][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|140]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=414238367a4f737769686666
+connection.cc: [5425:711][25511] (line 1824): Conn[345c22f0CRWS|-|0|0|p|115]: Sent STUN BINDING request, id=4d47765546764730487a664f, use_candidate=0, nomination=0
+connection.cc: [5425:841][25511] (line 1702): Conn[345c22f0CRWI|-|0|0|p|115]: Received STUN BINDING response, id=4d47765546764730487a664f, code=0, rtt=129668 us, pings_since_last_response=4d47765546764730487a664f 
+connection.cc: [5426:199][25511] (line 957): Conn[345a3b70CRWS|-|0|0|p|140]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=2f337a707375484d32652f6e
+connection.cc: [5426:212][25511] (line 1824): Conn[345a3b70CRWS|-|0|0|p|140]: Sent STUN BINDING request, id=79543276367738787455626e, use_candidate=0, nomination=0
+connection.cc: [5426:339][25511] (line 1702): Conn[345a3b70CRWI|-|0|0|p|140]: Received STUN BINDING response, id=79543276367738787455626e, code=0, rtt=126908 us, pings_since_last_response=79543276367738787455626e 
+connection.cc: [5426:681][25511] (line 957): Conn[345c22f0CRWS|-|0|0|p|119]: Sent STUN BINDING response, to=14.238.152.x:38737, writable=1, id=75764858524666596b6a6163
+connection.cc: [5426:713][25511] (line 1824): Conn[345b2f30CRWS|-|0|0|p|146]: Sent STUN BINDING request, id=6b515a712b7a794556656657, use_candidate=0, nomination=0
+remote_ntp_time_estimator.cc: [5426:858][26359] (line 94): RTP timestamp: 231806134 in NTP clock: 3999052224880 estimated time in receiver NTP clock: 3999052224251
+connection.cc: [5426:870][25511] (line 1702): Conn[345b2f30CRWI|-|0|0|p|146]: Received STUN BINDING response, id=6b515a712b7a794556656657, code=0, rtt=158074 us, pings_since_last_response=6b515a712b7a794556656657 
+connection.cc: [5427:182][25511] (line 957): Conn[345b2f30CRWS|-|0|0|p|149]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=524d532f4473473872765539
+connection.cc: [5427:213][25511] (line 1824): Conn[34577890CRWS|-|0|0|p|156]: Sent STUN BINDING request, id=33786b6d7374415975635875, use_candidate=0, nomination=0
+connection.cc: [5427:350][25511] (line 1702): Conn[34577890CRWI|-|0|0|p|156]: Received STUN BINDING response, id=33786b6d7374415975635875, code=0, rtt=137334 us, pings_since_last_response=33786b6d7374415975635875 
+connection.cc: [5427:697][25511] (line 957): Conn[34577890CRWS|-|0|0|p|151]: Sent STUN BINDING response, to=171.226.10.x:29931, writable=1, id=7a775a796a7a47672b776a55
+connection.cc: [5427:715][25511] (line 1824): Conn[345e0a70CRWS|S|2|0|p|140]: Sent STUN BINDING request, id=41773573344b3337762b6c38, use_candidate=0, nomination=0
+connection.cc: [5427:850][25511] (line 1702): Conn[345e0a70CRWI|S|2|0|p|140]: Received STUN BINDING response, id=41773573344b3337762b6c38, code=0, rtt=135523 us, pings_since_last_response=41773573344b3337762b6c38 
+turn_port.cc: [5428:018][25511] (line 1830): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: TURN allocate request 61797a5a6f7151614d34624c timeout
+basic_port_allocator.cc: [5428:018][25511] (line 1082): AddAllocatedPort: TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: OnCandidateError
+basic_port_allocator.cc: [5428:019][25511] (line 1277): TurnPort(Port[b446b590:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[116.103.111.241:3478/udp]: Port encountered error while gathering candidates.
+turn_port.cc: [5428:019][25511] (line 1830): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: TURN allocate request 492f4d706676307366754936 timeout
+basic_port_allocator.cc: [5428:019][25511] (line 1082): AddAllocatedPort: TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: OnCandidateError
+basic_port_allocator.cc: [5428:019][25511] (line 1277): TurnPort(Port[b442eff0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[171.226.10.226:3478/udp]: Port encountered error while gathering candidates.
+basic_port_allocator.cc: [5428:019][25511] (line 1333): All candidates gathered for 0:1:0
+p2p_transport_channel.cc: [5428:019][25511] (line 1009): P2PTransportChannel: 0, component 1 gathering complete, but using continual gathering so not changing gathering state.
+connection.cc: [5428:190][25511] (line 957): Conn[345e0a70CRWS|S|2|0|p|139]: Sent STUN BINDING response, to=203.171.26.x:34993, writable=1, id=4d377849326271764153484d
+connection.cc: [5428:217][25511] (line 1824): Conn[3459fe80CRWS|-|0|0|p|138]: Sent STUN BINDING request, id=582b6a38354154734750746e, use_candidate=0, nomination=0
+dcsctp_transport.cc: [5428:272][25511] (line 637): DcSctpTransport0->OnIncomingStreamsReset(...): Incoming stream reset, sid=1
+dcsctp_transport.cc: [5428:272][25511] (line 554): DcSctpTransport0->OnAborted(error=PEER_REPORTED, message=User-Initiated Abort, reason=Close called).
+openssl_adapter.cc: [5428:272][25511] (line 811): SSL negotiation finished successfully
+openssl_adapter.cc: [5428:272][25511] (line 811): SSL negotiation finished successfully
+dtls_transport.cc: [5428:272][25511] (line 1024): DtlsTransport[0|1|_W]: DTLS transport closed by remote
+jsep_transport_controller.cc: [5428:272][25511] (line 1222):  Transport 0 writability changed to 0.
+channel.cc: [5428:273][25511] (line 687): Channel not writable ({mid: 0, media_type: audio})
+srtp_transport.cc: [5428:273][25511] (line 255): The params in SRTP transport are reset.
+dtls_transport.cc: [5428:273][25511] (line 297): DTLS-STUN piggyback complete with success=0
+peer_connection.cc: [5428:277][25513] (line 2032): Changing IceConnectionState connected => disconnected
+peer_connection.cc: [5428:297][25513] (line 1945): PeerConnection close: 9021342025948114921
+sdp_offer_answer.cc: [5428:300][25513] (line 3264): Session: 9021342025948114921 Old state: stable New state: closed
+webrtc_voice_engine.cc: [5428:301][25512] (line 2532): WRVMC::SetOutputVolume({ssrc=4137428890}, {volume=0.00})
+webrtc_voice_engine.cc: [5428:301][25512] (line 2542): WRVMC::SetOutputVolume => (stream with SSRC 4137428890 now uses volume 0.00)
+peer_connection.cc: [5428:302][25511] (line 2785): Tearing down data channel transport for mid=1
+connection.cc: [5428:302][25511] (line 1027): Conn[345a3b70CRWS|-|0|0|p|137]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[345ffe20CRWS|-|0|0|p|131]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[345e0a70CRWS|S|2|0|p|139]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[34577890CRWS|-|0|0|p|151]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[345c22f0CRWS|-|0|0|p|119]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[34581700CRWS|-|0|0|p|153]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[345b2f30CRWS|-|0|0|p|149]: Connection destroy
+connection.cc: [5428:303][25511] (line 1027): Conn[3459fe80CRWI|-|0|0|p|138]: Connection destroy
+basic_port_allocator.cc: [5428:305][25511] (line 1460): [14572870]Net[ccmni1:29.0.0.x/8:Cellular:id=3] Clear
+turn_port.cc: [5428:305][25511] (line 1947): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TURN refresh request sent, id=725932514a47437a34347871 with lifetime = 0
+turn_port.cc: [5428:305][25511] (line 1262): TurnPort(Port[b46b2580:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[103.63.112.54:3478/udp]: TurnPort::Release
+turn_port.cc: [5428:305][25511] (line 1947): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TURN refresh request sent, id=3349625955786e596243632f with lifetime = 0
+turn_port.cc: [5428:305][25511] (line 1262): TurnPort(Port[b45b00a0:0:1:0:relay:Net[ccmni1:29.0.0.x/8:Cellular:id=3]]-Remote[160.250.77.139:3478/udp]: TurnPort::Release
+channel.cc: [5428:306][25512] (line 646): Channel disabled: {mid: 0, media_type: audio}
+audio_receive_stream.cc: [5428:306][25512] (line 205): AudioReceiveStreamImpl::Stop: 4137428890
+audio_device_module.cc: [5428:306][25512] (line 272): StopPlayout
+audio_device_buffer.cc: [5428:306][25512] (line 170): total playout time: 35784
+audio_track_jni.cc: [5428:306][25512] (line 159): StopPlayout
+audio_send_stream.cc: [5428:313][25512] (line 388): AudioSendStream::Stop: 1492506366
+bitrate_allocator.cc: [5428:313][25512] (line 727): UpdateAllocationLimits : total_requested_min_bitrate: 0 bps, total_requested_padding_bitrate: 0 bps, total_requested_max_bitrate: 0 bps
+audio_device_buffer.cc: [5428:313][25512] (line 200): HISTOGRAM(WebRTC.Audio.RecordedOnlyZeros): 0
+audio_device_buffer.cc: [5428:313][25512] (line 203): total recording time: 34074
+audio_record_jni.cc: [5428:313][25512] (line 170): StopRecording
+channel.cc: [5428:709][25512] (line 916): Changing voice state, recv=0 send=0 for {mid: 0, media_type: audio}
+webrtc_voice_engine.cc: [5428:709][25512] (line 2480): RemoveRecvStream: 4137428890
+audio_receive_stream.cc: [5428:709][25512] (line 146): ~AudioReceiveStreamImpl: 4137428890
+webrtc_voice_engine.cc: [5428:710][25512] (line 1651): RemoveSendStream: 1492506366
+call.cc: [5428:710][25512] (line 1215): UpdateAggregateNetworkState: aggregate_state change to down
+pacing_controller.cc: [5428:710][25512] (line 114): PacedSender paused.
+control_handler.cc: [5428:710][25512] (line 65): Bitrate estimate state changed, BWE: 126033 bps.
+audio_send_stream.cc: [5428:710][25512] (line 185): ~AudioSendStream: 1492506366
+call.cc: [5428:712][25512] (line 586): WebRTC.Call.AudioBitrateReceivedInBps, periodic_samples:17, {min:36040, avg:40336, max:50024}
+call.cc: [5428:712][25512] (line 594): WebRTC.Call.RtcpBitrateReceivedInBps, periodic_samples:17, {min:2128, avg:2880, max:4016}
+call.cc: [5428:712][25512] (line 602): WebRTC.Call.BitrateReceivedInBps, periodic_samples:17, {min:38208, avg:43216, max:52728}
+thread.cc: [5428:712][25512] (line 557): Message to worker_thread took 406ms to dispatch.
+thread.cc: [5428:713][25513] (line 557): Message to signaling_thread took 416ms to dispatch.
+webrtc_voice_engine.cc: [5428:714][25512] (line 560): WebRtcVoiceEngine::Terminate
+audio_record_jni.cc: [5428:714][25512] (line 170): StopRecording
+audio_record_jni.cc: [5428:714][25512] (line 107): Terminate
+audio_record_jni.cc: [5428:714][25512] (line 170): StopRecording
+audio_track_jni.cc: [5428:714][25512] (line 81): Terminate
+audio_track_jni.cc: [5428:714][25512] (line 159): StopPlayout
+audio_device_buffer.cc: [5428:714][25512] (line 89): AudioDeviceBuffer::~dtor
