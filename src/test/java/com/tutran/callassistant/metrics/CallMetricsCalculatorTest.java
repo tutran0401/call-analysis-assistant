@@ -115,4 +115,63 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.qualityByLeg().get(Leg.CALLER).webrtcKeyEvents().isAvailable()).isFalse();
         assertThat(metrics.qualityByLeg().get(Leg.CALLEE).webrtcKeyEvents().isAvailable()).isFalse();
     }
+
+    /**
+     * Second real call, hand-computed independently from DE7DD314 above, to satisfy the
+     * Sprint 1 acceptance criteria of matching hand-calculated numbers on at least 5 real
+     * calls (see also 703100CF and C8CF631E below, plus 1B009D42 in RuleVerdictEngineTest
+     * and DE7DD314 above - 4 distinct calls with hand-verified signaling-derived numbers,
+     * across success and fail cases).
+     */
+    @Test
+    void computesSignalingDerivedMetricsForASecondRealCallWithNoEndCallLogsAtAll() {
+        String callId = "6A7CE985-4A1A-44D1-84B1-DBB0B0B90448";
+        Path callDir = Path.of("success", callId);
+        List<CanonicalEvent> events = new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events();
+        CallTimeline timeline = new TimelineBuilder().build(callId, events);
+
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(9301);
+        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(4818);
+        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(32818);
+        assertThat(metrics.timeToReachCallee().value().toMillis()).isEqualTo(3685);
+        assertThat(metrics.inviteRetransmitCount().value()).isEqualTo(0);
+        assertThat(metrics.byeRetransmitCount().value()).isEqualTo(1);
+    }
+
+    @Test
+    void computesSignalingDerivedMetricsForAThirdRealCallWithASingleEndCallLog() {
+        String callId = "C8CF631E-0C6B-46E4-92E7-280E7B6A5394";
+        Path callDir = Path.of("success", callId);
+        List<CanonicalEvent> events = new ArrayList<>();
+        events.addAll(new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events());
+        events.addAll(new EndCallLogParser().parse(callDir.resolve("caller_endcall.log"), callId).events());
+        CallTimeline timeline = new TimelineBuilder().build(callId, events);
+
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(11958);
+        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(10942);
+        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(15809);
+        assertThat(metrics.byeRetransmitCount().value()).isEqualTo(1);
+        assertThat(metrics.terminator().value()).isEqualTo(Leg.CALLER);
+    }
+
+    @Test
+    void reportsSetupTimeAsNotAvailableForAFourthRealCallThatNeverProgressedPastInitCall() {
+        // 703100CF's signaling export only ever contains INIT_CALL and CANCEL - the
+        // caller cancelled before an INVITE was ever sent (a different failure shape
+        // than 1B009D42's post-INVITE rejection, covered in RuleVerdictEngineTest).
+        String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
+        Path callDir = Path.of("fail", callId);
+        List<CanonicalEvent> events = new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events();
+        CallTimeline timeline = new TimelineBuilder().build(callId, events);
+
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.setupTime().isAvailable()).isFalse();
+        assertThat(metrics.timeToReachCallee().isAvailable()).isFalse();
+        assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
+    }
 }

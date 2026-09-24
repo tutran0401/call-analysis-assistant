@@ -67,6 +67,51 @@ class RuleVerdictEngineTest {
     }
 
     @Test
+    void classifiesASecondRealFailCallAsSignalingFailureViaADifferentFailureShape() {
+        // 703100CF never even sent an INVITE (caller cancelled during INIT_CALL) -
+        // a different real failure shape than 1B009D42's post-INVITE rejection above,
+        // both correctly falling back to SIGNALING_FAILURE with no ICE evidence at all.
+        String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
+        CallTimeline timeline = buildTimeline(Path.of("fail", callId), callId);
+        CallMetrics metrics = metricsCalculator.calculate(timeline);
+
+        RuleVerdictResult result = engine.evaluate(timeline, metrics);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.SIGNALING_FAILURE);
+    }
+
+    @Test
+    void classifiesARealCallWithBothEndCallLogsMissingAsUnknownDespiteCleanSignaling() {
+        // 6A7CE985 has a fully normal-looking signaling flow (INIT_CALL...BYE all
+        // present) but no end-call log for either leg in the sample data - verifying we
+        // still refuse to conclude SUCCESS from signaling alone, per the acceptance
+        // criteria's "UNKNOWN do thiếu file" scenario, using real (not synthetic) data.
+        String callId = "6A7CE985-4A1A-44D1-84B1-DBB0B0B90448";
+        CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
+        CallMetrics metrics = metricsCalculator.calculate(timeline);
+
+        RuleVerdictResult result = engine.evaluate(timeline, metrics);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
+        assertThat(result.dataLimitations()).contains("Missing caller_endcall.log", "Missing callee_endcall.log");
+    }
+
+    @Test
+    void classifiesARealSuccessWithOneMissingEndCallLogAsMediumConfidence() {
+        String callId = "C8CF631E-0C6B-46E4-92E7-280E7B6A5394";
+        CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
+        CallMetrics metrics = metricsCalculator.calculate(timeline);
+
+        RuleVerdictResult result = engine.evaluate(timeline, metrics);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+        assertThat(result.dataLimitations()).containsExactly("Missing callee_endcall.log");
+        assertThat(com.tutran.callassistant.report.ConfidenceLevel.derive(result))
+                .isEqualTo(com.tutran.callassistant.report.ConfidenceLevel.MEDIUM);
+    }
+
+    @Test
     void returnsUnknownWhenNoSignalingDataExistsAtAll() {
         CallTimeline emptyTimeline = new TimelineBuilder().build("CALL-EMPTY", List.of());
         CallMetrics metrics = metricsCalculator.calculate(emptyTimeline);
