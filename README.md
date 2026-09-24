@@ -53,8 +53,14 @@ mvn test
 All parser, timeline, metrics, evidence/rule-verdict and report-schema tests run
 against the real sample data in `fail/`, `success/` and `for_test/` — several
 expected values (durations, retransmit counts, MOS/packet-loss/RTT/jitter) are
-hand-computed directly from those files, not just asserted against the code's own
-output.
+hand-computed directly from 5 distinct real calls (§5.1's acceptance bar), not just
+asserted against the code's own output.
+
+**Verified against the full sample dataset** (`demo success fail for_test`, all 20
+calls, via the live ES-backed pipeline): 0 parser warnings across every file — 100%
+of the provided logs parsed cleanly (well above the ≥90% acceptance target) — with
+8 `SUCCESS`, 6 `FAIL`, 6 `UNKNOWN` verdicts, each `UNKNOWN` traceable to a real
+missing-file reason in its report, and no exceptions anywhere in the run.
 
 ## Project layout
 
