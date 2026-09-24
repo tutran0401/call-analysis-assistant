@@ -101,7 +101,7 @@ việc tường minh của Sprint 3 (mục 7.1 T1).
 
 ## Một điểm bất thường trong data thật đã ảnh hưởng đến thiết kế này
 
-Số hiệu schema `#HN` trong end-call log (xem `sample.md`) **không phải** một định danh cố
+Số hiệu schema `#HN` trong end-call log (xem `sample-data/sample.md`) **không phải** một định danh cố
 định: đúng một schema logic (ví dụ "call summary", hay bản ghi periodic quality stats
 ~150 field) lại xuất hiện dưới các số *khác nhau* giữa log của caller và callee trong
 **cùng một cuộc gọi mẫu** (`sample-data/success/DE7DD314-F432-45CB-BCB4-AE9103CC0919`). Vì vậy

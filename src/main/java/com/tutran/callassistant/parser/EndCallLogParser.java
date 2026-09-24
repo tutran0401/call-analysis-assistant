@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parse định dạng TSV "End Call log" đã mô tả trong {@code sample.md}: 9 dòng header
+ * Parse định dạng TSV "End Call log" đã mô tả trong {@code sample-data/sample.md}: 9 dòng header
  * ({@code #H1}..{@code #H9}), mỗi dòng khai báo schema cột cho một "loại" bản ghi mà các
  * dòng dữ liệu tham chiếu tới bằng một tag số ở đầu dòng. Cột 1-2 của mọi dòng dữ liệu
  * luôn là tag loại và timestamp dạng epoch-millis; cột 3 là nhãn category dạng text tự do
