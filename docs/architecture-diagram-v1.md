@@ -1,28 +1,28 @@
 # Architecture Diagram v1 (Sprint 1)
 
-Adapts PROJECT_SPEC.md §3.1's target architecture to what actually exists after
-Sprint 1: a CLI pipeline with no AI, no sanitizer, and no web UI yet. Package names are
-the real ones under `src/main/java/com/tutran/callassistant/`.
+Chuyển thể kiến trúc mục tiêu ở PROJECT_SPEC.md mục 3.1 thành những gì thực sự đã có sau
+Sprint 1: một pipeline chạy CLI, chưa có AI, chưa có sanitizer, chưa có web UI. Tên package
+dưới đây là tên thật trong `src/main/java/com/tutran/callassistant/`.
 
 ```mermaid
 flowchart TD
-    subgraph cli["cli — Sprint 1 entrypoint (Web UI is Sprint 2)"]
+    subgraph cli["cli — Entrypoint Sprint 1 (Web UI để dành Sprint 2)"]
         CLI["CallAnalysisCli\n(import / analyze / demo)"]
     end
 
     subgraph es["es — T1"]
         Indexer["SignalingIndexer\n(bulk import, idempotent)"]
-        Fetcher["EsSignalingEventFetcher\n(query by Call-ID)"]
+        Fetcher["EsSignalingEventFetcher\n(query theo Call-ID)"]
         ESStore[(Elasticsearch\nlocal, Docker)]
         Indexer -->|signaling.json| ESStore
         Fetcher -->|term query: callId| ESStore
     end
 
     subgraph parser["parser — T3 Log Normalizer"]
-        Detect["FileTypeDetector\n(by content, not filename)"]
+        Detect["FileTypeDetector\n(theo nội dung, không theo tên file)"]
         EndCall["EndCallLogParser\n+ EndCallSchemaClassifier"]
-        WebRtc["WebRtcLogParser\n(iOS + Android engine formats)"]
-        SigJson["SignalingJsonParser\n(local file fallback)"]
+        WebRtc["WebRtcLogParser\n(định dạng engine iOS + Android)"]
+        SigJson["SignalingJsonParser\n(fallback đọc file local)"]
         DirLoader["CallLogDirectoryLoader"]
         Detect --> EndCall
         Detect --> WebRtc
@@ -34,7 +34,7 @@ flowchart TD
     end
 
     subgraph timeline["timeline — T4"]
-        TimelineBuilder["TimelineBuilder\n(dedupe, cross-source sort,\nWebRTC clock-skew anchoring)"]
+        TimelineBuilder["TimelineBuilder\n(loại trùng, sắp thứ tự đa nguồn,\nneo lệch đồng hồ cho WebRTC)"]
     end
 
     subgraph analysis["taxonomy (T5) + metrics (T6) + evidence (T7)"]
@@ -47,7 +47,7 @@ flowchart TD
     subgraph report["report — T8"]
         Builder["ReportBuilder"]
         Schema["report-schema-v1.json\n+ ReportSchemaValidator"]
-        Renderer["ReportRenderer\n(§4.5 text layout)"]
+        Renderer["ReportRenderer\n(bố cục theo mục 4.5)"]
         Builder --> Schema
         Builder --> Renderer
     end
@@ -65,7 +65,7 @@ flowchart TD
     Metrics --> RuleEngine
     RuleEngine --> Builder
     Metrics --> Builder
-    Renderer --> Stdout(["stdout report\n(Web UI: Sprint 2)"])
+    Renderer --> Stdout(["report ra stdout\n(Web UI: Sprint 2)"])
 
     classDef future fill:#eee,stroke:#999,color:#999,stroke-dasharray: 4 3
     class Sanitizer,AIEngine,Guardrails,WebUI future
@@ -77,19 +77,18 @@ flowchart TD
     Stdout -.->|Sprint 2| WebUI
 ```
 
-## What changed vs. the target architecture (§3.1)
+## Khác gì so với kiến trúc mục tiêu (mục 3.1)
 
-- **No Chat API / Request Parser / File Validator yet** — Sprint 1 takes a call
-  directory path directly on the CLI instead of a chat message with attachments; intent
-  parsing has no reason to exist without a user question yet.
-- **No Input/Output Sanitizer, AI Analysis Engine, or Guardrails** — nothing is sent to
-  an AI provider in Sprint 1 (§3.2: "phần nào tính được bằng code thì không giao cho
-  AI"), so there is no sanitizer boundary to sit at yet. `docs/sensitive-data-inventory.md`
-  is the groundwork for Sprint 2's sanitizer.
-- **Report Renderer prints to stdout**, not a Web UI. The `Report` POJO and JSON Schema
-  are already the exact contract the Web UI (Sprint 2 T1/T2) will consume — only the
-  transport changes.
-- **Two paths into signaling data**: the target architecture always queries
-  Elasticsearch; Sprint 1's CLI also supports `--from-file` (parsing `signaling.json`
-  directly) so the demo works even before/without running `import`, useful for quick
-  debugging against a specific sample call.
+- **Chưa có Chat API / Request Parser / File Validator** — Sprint 1 nhận trực tiếp đường
+  dẫn thư mục cuộc gọi qua CLI thay vì tin nhắn chat kèm file đính kèm; chưa cần phân tích
+  intent vì chưa có câu hỏi của người dùng.
+- **Chưa có Input/Output Sanitizer, AI Analysis Engine, hay Guardrails** — Sprint 1 chưa
+  gửi gì sang AI provider (mục 3.2: "phần nào tính được bằng code thì không giao cho AI"),
+  nên chưa cần ranh giới sanitizer. `docs/sensitive-data-inventory.md` là bước chuẩn bị
+  cho sanitizer của Sprint 2.
+- **Report Renderer in ra stdout**, chưa có Web UI. POJO `Report` và JSON Schema đã đúng
+  là hợp đồng (contract) mà Web UI (Sprint 2 T1/T2) sẽ tiêu thụ — chỉ thay đổi phương
+  tiện hiển thị.
+- **Có 2 đường lấy signaling data**: kiến trúc mục tiêu luôn query Elasticsearch; CLI
+  Sprint 1 hỗ trợ thêm `--from-file` (đọc trực tiếp `signaling.json`) để demo chạy được
+  ngay cả khi chưa/không chạy `import`, tiện cho việc debug nhanh với một cuộc gọi cụ thể.
