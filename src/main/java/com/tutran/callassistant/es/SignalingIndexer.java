@@ -20,13 +20,13 @@ import java.util.HexFormat;
 import java.util.List;
 
 /**
- * Imports the mentor-provided {@code signaling.json} exports into a local Elasticsearch
- * index (T1), so the pipeline can query signaling "by Call-ID" the way the production
- * system would, instead of reading the export file directly at analysis time.
+ * Import các file export {@code signaling.json} mentor cung cấp vào một index
+ * Elasticsearch local (T1), để pipeline có thể query signaling "theo Call-ID" giống hệt
+ * hệ thống production, thay vì đọc trực tiếp file export lúc phân tích.
  *
- * <p>Re-running the import is safe: each document's id is a deterministic hash of the
- * fields that make an event unique, so importing the same file twice overwrites the same
- * documents rather than duplicating them.
+ * <p>Chạy lại import nhiều lần là an toàn: id của mỗi document là một hash xác định
+ * (deterministic) từ các field làm nên tính duy nhất của sự kiện, nên import cùng một
+ * file 2 lần sẽ ghi đè lên đúng các document cũ chứ không tạo bản trùng.
  */
 @Component
 public class SignalingIndexer {
@@ -60,7 +60,7 @@ public class SignalingIndexer {
         client.indices().create(c -> c.index(indexName).mappings(mapping));
     }
 
-    /** Imports one call folder's {@code signaling.json}. Returns the number of events indexed. */
+    /** Import {@code signaling.json} của một thư mục cuộc gọi. Trả về số sự kiện đã index. */
     public int importFile(String indexName, Path signalingJsonFile) throws IOException {
         JsonNode root = objectMapper.readTree(signalingJsonFile.toFile());
         String callId = root.path("callId").asText();

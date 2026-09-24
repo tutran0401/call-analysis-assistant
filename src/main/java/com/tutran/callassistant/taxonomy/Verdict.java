@@ -1,13 +1,13 @@
 package com.tutran.callassistant.taxonomy;
 
 /**
- * Call outcome per PROJECT_SPEC.md §4.1.
+ * Kết luận cuộc gọi theo PROJECT_SPEC.md mục 4.1.
  */
 public enum Verdict {
-    /** Call was established and ended normally. May still carry a quality flag. */
+    /** Cuộc gọi thiết lập được và kết thúc bình thường. Vẫn có thể kèm cờ chất lượng kém. */
     SUCCESS,
-    /** Call was never established, or was terminated abnormally. */
+    /** Cuộc gọi chưa từng thiết lập được, hoặc bị ngắt bất thường. */
     FAIL,
-    /** Not enough evidence to conclude (missing files, missing data, contradictory evidence). */
+    /** Không đủ evidence để kết luận (thiếu file, thiếu dữ liệu, evidence mâu thuẫn). */
     UNKNOWN
 }

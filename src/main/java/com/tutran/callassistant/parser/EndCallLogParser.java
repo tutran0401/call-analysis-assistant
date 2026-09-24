@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parses the TSV "End Call log" format documented in {@code sample.md}: 9 header rows
- * ({@code #H1}..{@code #H9}), each declaring the column schema for a record "type" that
- * data rows reference by a leading numeric tag. Columns 1-2 of every data row are always
- * the type tag and an epoch-millis timestamp; column 3 is a free-text category label
- * (e.g. "log_detail", "send_cmd"); columns 4+ are the schema-specific fields named by the
- * matching header (whose own first 3 tokens - "#HN", "#ts", "#tag" - are markers, not data
- * columns).
+ * Parse định dạng TSV "End Call log" đã mô tả trong {@code sample.md}: 9 dòng header
+ * ({@code #H1}..{@code #H9}), mỗi dòng khai báo schema cột cho một "loại" bản ghi mà các
+ * dòng dữ liệu tham chiếu tới bằng một tag số ở đầu dòng. Cột 1-2 của mọi dòng dữ liệu
+ * luôn là tag loại và timestamp dạng epoch-millis; cột 3 là nhãn category dạng text tự do
+ * (ví dụ "log_detail", "send_cmd"); từ cột 4 trở đi là các field riêng của schema đó, đặt
+ * tên theo header tương ứng (3 token đầu của header - "#HN", "#ts", "#tag" - chỉ là nhãn,
+ * không phải cột dữ liệu).
  *
- * <p><b>Important:</b> the {@code N} in {@code #HN} is NOT a stable, semantic schema id -
- * comparing real sample files shows the same logical schema (e.g. "call summary", or the
- * ~150-field periodic quality stats record) shows up under a different {@code #HN} number
- * in different files. It appears to be assigned by registration order within that upload,
- * not a fixed convention. This parser therefore classifies each header's *meaning* by the
- * distinctive field names it declares (mirroring the file-type detection principle used
- * elsewhere: identify by content, never by a name/number that can vary) and only uses the
- * numeric tag to look up the right column layout within one file.
+ * <p><b>Lưu ý quan trọng:</b> số {@code N} trong {@code #HN} KHÔNG phải là id schema cố
+ * định, có ý nghĩa ổn định - so sánh các file mẫu thật cho thấy cùng một schema logic
+ * (ví dụ "call summary", hoặc bản ghi periodic quality stats ~150 field) lại xuất hiện
+ * dưới số {@code #HN} khác nhau ở các file khác nhau. Có vẻ số này được gán theo thứ tự
+ * đăng ký trong lần upload đó, không phải theo quy ước cố định. Vì vậy parser này phân
+ * loại *ý nghĩa* của từng header dựa trên tập tên field đặc trưng mà nó khai báo (theo
+ * đúng nguyên tắc nhận diện theo nội dung, không theo tên/số có thể thay đổi, đã dùng ở
+ * chỗ khác), và chỉ dùng tag số để tra đúng layout cột trong phạm vi một file.
  */
 public final class EndCallLogParser {
 
@@ -142,9 +142,9 @@ public final class EndCallLogParser {
     }
 
     /**
-     * The CALL_SUMMARY row carries an explicit {@code role} field ("caller"/"callee") -
-     * that is the authoritative signal. Only when no such row is present do we fall back
-     * to the filename, since the file is otherwise entirely about one leg.
+     * Dòng CALL_SUMMARY có sẵn field {@code role} ("caller"/"callee") tường minh - đây là
+     * tín hiệu đáng tin cậy nhất. Chỉ khi không có dòng nào như vậy mới fallback về tên
+     * file, vì mỗi file vốn chỉ nói về một bên (leg) duy nhất.
      */
     private Leg inferLeg(List<String[]> dataRows, Map<Integer, List<String>> headerFieldsBySchema,
                           Map<Integer, String> schemaTypeById, Path file) {

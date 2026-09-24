@@ -1,10 +1,10 @@
 package com.tutran.callassistant.domain;
 
-/** Which side of the call an event belongs to. */
+/** Sự kiện thuộc về bên nào của cuộc gọi. */
 public enum Leg {
     CALLER,
     CALLEE,
-    /** Server-side signaling events are not tied to a single leg. */
+    /** Sự kiện signaling phía server không gắn với một bên (leg) cụ thể nào. */
     SERVER,
     UNKNOWN
 }

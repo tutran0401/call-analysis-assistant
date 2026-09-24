@@ -5,7 +5,7 @@ import com.tutran.callassistant.domain.Leg;
 import java.time.Duration;
 import java.util.Map;
 
-/** All Sprint 1 Core call metrics per PROJECT_SPEC.md §4.3, for one call. */
+/** Toàn bộ chỉ số Core của Sprint 1 theo PROJECT_SPEC.md mục 4.3, cho một cuộc gọi. */
 public record CallMetrics(
         String callId,
         MetricResult<Duration> setupTime,

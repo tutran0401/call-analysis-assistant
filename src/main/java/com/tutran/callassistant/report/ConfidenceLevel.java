@@ -5,11 +5,11 @@ import com.tutran.callassistant.taxonomy.IssueCategory;
 import com.tutran.callassistant.taxonomy.Verdict;
 
 /**
- * Deterministic HIGH/MEDIUM/LOW confidence, never an AI-generated number
- * (PROJECT_SPEC.md §7.2). Sprint 1 has no AI to compare against yet, so this is a
- * provisional heuristic based only on data completeness and how definite the rule
- * engine's category is; the full design (factoring in AI-vs-rule agreement) is Sprint 3
- * T3.
+ * Độ tin cậy HIGH/MEDIUM/LOW xác định (deterministic), không bao giờ là một con số do AI
+ * tự sinh ra (PROJECT_SPEC.md mục 7.2). Sprint 1 chưa có AI để đối chiếu, nên đây chỉ là
+ * heuristic tạm thời dựa trên độ đầy đủ của dữ liệu và mức độ chắc chắn của category mà
+ * rule engine đưa ra; thiết kế đầy đủ (có tính đến mức độ đồng thuận AI-vs-rule) là việc
+ * của Sprint 3 T3.
  */
 public enum ConfidenceLevel {
     HIGH, MEDIUM, LOW;

@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Static registry backing the taxonomy in PROJECT_SPEC.md §4.2. Detection thresholds here
- * are a documented Sprint 1 baseline (no ground truth was shipped with the sample data to
- * calibrate against) - tightening them with real accuracy data is explicit Sprint 3 work
- * (§7.1 T1 "Improve Accuracy & Consistency").
+ * Registry tĩnh chứa taxonomy trong PROJECT_SPEC.md mục 4.2. Các ngưỡng phát hiện ở đây
+ * là baseline của Sprint 1, đã ghi rõ trong tài liệu (data mẫu không kèm ground truth để
+ * hiệu chỉnh) - việc siết chặt ngưỡng bằng dữ liệu accuracy thật là công việc tường minh
+ * của Sprint 3 (mục 7.1 T1 "Improve Accuracy & Consistency").
  */
 public final class IssueCategoryRegistry {
 

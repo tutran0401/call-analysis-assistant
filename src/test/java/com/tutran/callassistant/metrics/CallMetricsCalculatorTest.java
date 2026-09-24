@@ -16,10 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 /**
- * Every expected value here was hand-computed directly from the real sample files for
- * call DE7DD314-F432-45CB-BCB4-AE9103CC0919 (signaling.json + caller/callee end-call
- * logs), per Sprint 1's acceptance criteria of matching hand-calculated numbers on real
- * calls.
+ * Mọi giá trị kỳ vọng ở đây đều được tính tay trực tiếp từ file mẫu thật của cuộc gọi
+ * DE7DD314-F432-45CB-BCB4-AE9103CC0919 (signaling.json + end-call log của caller/callee),
+ * đúng theo acceptance criteria của Sprint 1 là số liệu phải khớp tính tay trên cuộc gọi thật.
  */
 class CallMetricsCalculatorTest {
 
@@ -82,9 +81,9 @@ class CallMetricsCalculatorTest {
 
     @Test
     void countsNoSessionsFoundAsZeroForThisSuccessfulCall() {
-        // The end-call log's LOG_MESSAGE rows do carry free-text "msg" fields (unlike the
-        // signaling export, which is purely structured), so this metric is a real,
-        // available count here - just zero, since this call never hit that condition.
+        // Các dòng LOG_MESSAGE trong end-call log có field "msg" dạng text tự do (khác với
+        // signaling export vốn hoàn toàn có cấu trúc), nên chỉ số này ở đây là một con số
+        // thật, có sẵn - chỉ là bằng 0 vì cuộc gọi này chưa bao giờ gặp tình huống đó.
         CallMetrics metrics = calculator.calculate(buildTimeline());
 
         assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
@@ -93,9 +92,9 @@ class CallMetricsCalculatorTest {
 
     @Test
     void reportsNoSessionsFoundAsNotAvailableWhenOnlySignalingEventsArePresent() {
-        // The signaling export alone has no msg/message field at all (only structured
-        // cmd/service/csid/... fields) - confirms we say N/A rather than a false 0 when
-        // end-call logs (the only source with free text) are missing entirely.
+        // Riêng signaling export hoàn toàn không có field msg/message nào (chỉ có các
+        // field có cấu trúc cmd/service/csid/...) - xác nhận báo N/A thay vì trả về 0 sai
+        // khi end-call log (nguồn duy nhất có text tự do) bị thiếu hoàn toàn.
         List<CanonicalEvent> signalingOnly =
                 new SignalingJsonParser().parse(CALL_DIR.resolve("signaling.json"), CALL_ID).events();
         CallTimeline timeline = new TimelineBuilder().build(CALL_ID, signalingOnly);
@@ -108,8 +107,8 @@ class CallMetricsCalculatorTest {
 
     @Test
     void reportsWebrtcQualityAsNotAvailableWhenNoWebrtcLogWasParsedForThatLeg() {
-        // This test only feeds signaling + end-call logs (no webrtc.log), so both legs'
-        // webrtc-derived metric must be an explicit N/A, not a silent empty value.
+        // Test này chỉ đưa vào signaling + end-call log (không có webrtc.log), nên chỉ số
+        // suy ra từ webrtc của cả hai bên phải là N/A tường minh, không phải giá trị rỗng âm thầm.
         CallMetrics metrics = calculator.calculate(buildTimeline());
 
         assertThat(metrics.qualityByLeg().get(Leg.CALLER).webrtcKeyEvents().isAvailable()).isFalse();
@@ -117,11 +116,11 @@ class CallMetricsCalculatorTest {
     }
 
     /**
-     * Second real call, hand-computed independently from DE7DD314 above, to satisfy the
-     * Sprint 1 acceptance criteria of matching hand-calculated numbers on at least 5 real
-     * calls (see also 703100CF and C8CF631E below, plus 1B009D42 in RuleVerdictEngineTest
-     * and DE7DD314 above - 4 distinct calls with hand-verified signaling-derived numbers,
-     * across success and fail cases).
+     * Cuộc gọi thật thứ hai, tính tay độc lập với DE7DD314 ở trên, để đáp ứng acceptance
+     * criteria của Sprint 1 là khớp số liệu tính tay trên tối thiểu 5 cuộc gọi thật (xem
+     * thêm 703100CF và C8CF631E bên dưới, cộng với 1B009D42 trong RuleVerdictEngineTest và
+     * DE7DD314 ở trên - 4 cuộc gọi khác nhau đã kiểm chứng tay số liệu suy ra từ signaling,
+     * trải đều cả case success và fail).
      */
     @Test
     void computesSignalingDerivedMetricsForASecondRealCallWithNoEndCallLogsAtAll() {
@@ -160,9 +159,9 @@ class CallMetricsCalculatorTest {
 
     @Test
     void reportsSetupTimeAsNotAvailableForAFourthRealCallThatNeverProgressedPastInitCall() {
-        // 703100CF's signaling export only ever contains INIT_CALL and CANCEL - the
-        // caller cancelled before an INVITE was ever sent (a different failure shape
-        // than 1B009D42's post-INVITE rejection, covered in RuleVerdictEngineTest).
+        // Signaling export của 703100CF chỉ có đúng INIT_CALL và CANCEL - caller đã huỷ
+        // trước khi kịp gửi INVITE (một dạng lỗi khác với việc 1B009D42 bị từ chối sau
+        // INVITE, đã kiểm tra ở RuleVerdictEngineTest).
         String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
         Path callDir = Path.of("fail", callId);
         List<CanonicalEvent> events = new SignalingJsonParser().parse(callDir.resolve("signaling.json"), callId).events();

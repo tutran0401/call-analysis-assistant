@@ -1,9 +1,9 @@
 package com.tutran.callassistant.taxonomy;
 
 /**
- * Issue categories per PROJECT_SPEC.md §4.2, applicable to {@code FAIL} calls and to
- * {@code SUCCESS} calls flagged with poor quality. See {@link IssueCategoryRegistry} for
- * the definition/symptoms/evidence/detection/ambiguity of each.
+ * Các issue category theo PROJECT_SPEC.md mục 4.2, áp dụng cho cuộc gọi {@code FAIL} và
+ * cuộc gọi {@code SUCCESS} có gắn cờ chất lượng kém. Xem {@link IssueCategoryRegistry} để
+ * biết định nghĩa/triệu chứng/evidence/điều kiện phát hiện/điểm mơ hồ của từng category.
  */
 public enum IssueCategory {
     NETWORK_PACKET_LOSS,

@@ -68,9 +68,9 @@ class RuleVerdictEngineTest {
 
     @Test
     void classifiesASecondRealFailCallAsSignalingFailureViaADifferentFailureShape() {
-        // 703100CF never even sent an INVITE (caller cancelled during INIT_CALL) -
-        // a different real failure shape than 1B009D42's post-INVITE rejection above,
-        // both correctly falling back to SIGNALING_FAILURE with no ICE evidence at all.
+        // 703100CF chưa từng gửi INVITE (caller huỷ ngay trong lúc INIT_CALL) -
+        // một dạng lỗi thật khác với việc 1B009D42 bị từ chối sau INVITE ở trên,
+        // cả hai đều đúng khi fallback về SIGNALING_FAILURE vì không có evidence ICE nào.
         String callId = "703100CF-5742-467E-9E0E-34E45F60FF58";
         CallTimeline timeline = buildTimeline(Path.of("fail", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);
@@ -83,10 +83,10 @@ class RuleVerdictEngineTest {
 
     @Test
     void classifiesARealCallWithBothEndCallLogsMissingAsUnknownDespiteCleanSignaling() {
-        // 6A7CE985 has a fully normal-looking signaling flow (INIT_CALL...BYE all
-        // present) but no end-call log for either leg in the sample data - verifying we
-        // still refuse to conclude SUCCESS from signaling alone, per the acceptance
-        // criteria's "UNKNOWN do thiếu file" scenario, using real (not synthetic) data.
+        // 6A7CE985 có luồng signaling nhìn hoàn toàn bình thường (đủ INIT_CALL...BYE)
+        // nhưng không có end-call log cho bên nào cả trong data mẫu - test này xác nhận
+        // vẫn từ chối kết luận SUCCESS chỉ dựa vào signaling, đúng theo kịch bản
+        // "UNKNOWN do thiếu file" trong acceptance criteria, dùng data thật (không phải giả lập).
         String callId = "6A7CE985-4A1A-44D1-84B1-DBB0B0B90448";
         CallTimeline timeline = buildTimeline(Path.of("success", callId), callId);
         CallMetrics metrics = metricsCalculator.calculate(timeline);

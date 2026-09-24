@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
-/** Validates a {@link Report} against {@code schema/report-schema-v1.json} (T8). */
+/** Validate một {@link Report} theo {@code schema/report-schema-v1.json} (T8). */
 public final class ReportSchemaValidator {
 
     private static final String SCHEMA_RESOURCE = "/schema/report-schema-v1.json";

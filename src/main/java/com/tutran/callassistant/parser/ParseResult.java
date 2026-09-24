@@ -5,10 +5,10 @@ import com.tutran.callassistant.domain.CanonicalEvent;
 import java.util.List;
 
 /**
- * Result of normalizing one raw log file: the events it produced, plus any lines that
- * could not be parsed. Malformed input must never throw past a parser - it is recorded
- * here instead so the pipeline can keep going and the report can mention data quality
- * issues if relevant.
+ * Kết quả chuẩn hoá một file log gốc: các sự kiện sinh ra được, cộng với những dòng
+ * không parse được. Dữ liệu lỗi định dạng không bao giờ được phép ném exception ra khỏi
+ * parser - thay vào đó được ghi lại ở đây để pipeline vẫn chạy tiếp được và report có thể
+ * nhắc tới vấn đề chất lượng dữ liệu nếu cần.
  */
 public record ParseResult(List<CanonicalEvent> events, List<String> warnings) {
 

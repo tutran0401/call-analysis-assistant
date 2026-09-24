@@ -3,10 +3,10 @@ package com.tutran.callassistant.taxonomy;
 import java.util.List;
 
 /**
- * The taxonomy entry for one {@link IssueCategory}: what it means, how it presents,
- * what evidence proves it, the deterministic condition {@code RuleVerdictEngine} checks,
- * and where the category is known to be ambiguous with another one. Mirrored in
- * human-readable form in {@code docs/verdict-issue-taxonomy.md}.
+ * Một mục taxonomy cho một {@link IssueCategory}: ý nghĩa là gì, biểu hiện ra sao,
+ * evidence nào chứng minh được, điều kiện xác định (deterministic) mà
+ * {@code RuleVerdictEngine} kiểm tra, và category này thường bị nhầm lẫn với category nào
+ * khác. Được mirror ở dạng đọc-hiểu-được trong {@code docs/verdict-issue-taxonomy.md}.
  */
 public record IssueCategoryDefinition(
         IssueCategory category,

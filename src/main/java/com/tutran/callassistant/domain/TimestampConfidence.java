@@ -1,15 +1,16 @@
 package com.tutran.callassistant.domain;
 
 /**
- * How trustworthy an event's absolute {@code timestamp} is, given that signaling
- * (server clock) and client logs (device clock) can drift, and that WebRTC logs only
- * carry a relative offset from process start with no absolute clock at all.
+ * Độ tin cậy của {@code timestamp} tuyệt đối của một sự kiện, do đồng hồ server
+ * (signaling) và đồng hồ thiết bị (client log) có thể bị lệch nhau, và log WebRTC thì
+ * chỉ có mốc thời gian tương đối tính từ lúc process khởi động, hoàn toàn không có đồng
+ * hồ tuyệt đối.
  */
 public enum TimestampConfidence {
-    /** Parsed directly from an absolute timestamp in the source (signaling, end-call log). */
+    /** Đọc trực tiếp từ timestamp tuyệt đối có sẵn trong nguồn (signaling, end-call log). */
     EXACT,
-    /** Derived by anchoring a relative offset (WebRTC log) to another event's absolute timestamp. */
+    /** Suy ra bằng cách neo mốc thời gian tương đối (log WebRTC) vào timestamp tuyệt đối của một sự kiện khác. */
     ANCHORED,
-    /** No absolute timestamp could be determined; only file-local relative order is known. */
+    /** Không xác định được timestamp tuyệt đối; chỉ biết thứ tự tương đối trong phạm vi 1 file. */
     UNKNOWN
 }

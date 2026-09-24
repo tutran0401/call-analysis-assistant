@@ -10,9 +10,10 @@ class EndCallSchemaClassifierTest {
 
     @Test
     void classifiesBySchemaContentNotByNumericLabel() {
-        // Same field sets as sample.md's #H1..#H9, but the numeric label is irrelevant to
-        // classification - real sample files reuse these same field sets under different
-        // #HN numbers (see EndCallLogParser's class doc), so only content must matter here.
+        // Cùng tập field như #H1..#H9 trong sample.md, nhưng nhãn số hoàn toàn không liên
+        // quan đến việc phân loại - file mẫu thật dùng lại đúng các tập field này dưới
+        // những số #HN khác nhau (xem Javadoc của EndCallLogParser), nên ở đây chỉ nội
+        // dung mới quan trọng.
         assertThat(EndCallSchemaClassifier.classify(List.of(
                 "appUserId", "callId", "callMode", "callType", "callUserId", "duration", "end",
                 "fromTag", "partnerAppUserId", "partnerCallUserId", "platform", "role", "sessionId",

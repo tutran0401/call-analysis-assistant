@@ -98,7 +98,7 @@ class TimelineBuilderTest {
         CallTimeline timeline = builder.build("CALL-1", List.of(calleeEvent, callerEvent));
 
         assertThat(timeline.events()).extracting(CanonicalEvent::leg)
-                .containsExactly(Leg.CALLEE, Leg.CALLER); // CALLEE < CALLER alphabetically, both otherwise tied
+                .containsExactly(Leg.CALLEE, Leg.CALLER); // CALLEE < CALLER theo bảng chữ cái, các tiêu chí khác đều hoà
         assertThat(timeline.events()).allSatisfy(e ->
                 assertThat(e.timestampConfidence()).isEqualTo(TimestampConfidence.UNKNOWN));
     }

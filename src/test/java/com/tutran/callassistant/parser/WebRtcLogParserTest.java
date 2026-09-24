@@ -86,12 +86,12 @@ class WebRtcLogParserTest {
 
     @Test
     void doesNotMisclassifyRoutineTurnProtocolNoiseAsAFailure(@TempDir Path tempDir) throws IOException {
-        // Found via live end-to-end testing against a real, clean SUCCESS call: free-text
-        // keyword matching on "turn"/"ice" + "error"/"fail" flagged dozens of routine,
-        // self-recovering per-candidate TURN protocol responses (the code=401 long-term-
-        // credential challenge, and code=400 permission errors on candidate pairs that
-        // simply get abandoned) as if they were failures. Only the engine's own terminal
-        // ICE_CONNECTION_STATE_CHANGE callback is trusted for failure signals now.
+        // Phát hiện được nhờ test end-to-end thật trên một cuộc gọi SUCCESS sạch: so khớp
+        // từ khóa tự do "turn"/"ice" + "error"/"fail" báo nhầm hàng chục phản hồi giao
+        // thức TURN bình thường, tự phục hồi được theo từng candidate (thử thách
+        // credential dài hạn code=401, và lỗi permission code=400 trên các candidate pair
+        // đơn giản bị bỏ) thành lỗi thật. Giờ chỉ tin vào đúng callback trạng thái kết
+        // thúc ICE_CONNECTION_STATE_CHANGE của engine cho tín hiệu lỗi.
         Path file = tempDir.resolve("turn_noise.log");
         Files.writeString(file, String.join("\n",
                 "[000:101][1] (turn_port.cc:1687): TurnPort(...): Received TURN probe error "

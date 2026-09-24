@@ -15,17 +15,16 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Computes the Sprint 1 Core call metrics (PROJECT_SPEC.md §4.3) from a built
- * {@link CallTimeline}. Every metric is either a value or an explicit N/A with a reason -
- * never a silent 0 for missing data.
+ * Tính các chỉ số Core của Sprint 1 (PROJECT_SPEC.md mục 4.3) từ một {@link CallTimeline}
+ * đã dựng xong. Mỗi chỉ số hoặc là một giá trị, hoặc là N/A tường minh kèm lý do - không
+ * bao giờ âm thầm trả về 0 khi thiếu dữ liệu.
  *
- * <p>The signaling command vocabulary observed in the sample data
+ * <p>Tập lệnh (cmd) signaling quan sát được trong data mẫu
  * ({@code INIT_CALL, INVITE, TRYING, RINGING, ACK_RINGING, OK, OK_ACK_OK, ICE, ACK_ICE,
- * PAIR_PING, PAIR_PONG_PAIR_PING, BYE, ACK_BYE, BYE_ACK_BYE, LOG_STATS}) does not include a
- * literal "OK_ACK" command as named in the spec's metric definitions; {@code OK_ACK_OK} is
- * treated as its equivalent (the concatenated ack-of-OK event). This mapping assumption is
- * called out here so it can be corrected once the mentor confirms the exact signaling
- * command semantics.
+ * PAIR_PING, PAIR_PONG_PAIR_PING, BYE, ACK_BYE, BYE_ACK_BYE, LOG_STATS}) không có lệnh nào
+ * tên đúng là "OK_ACK" như trong định nghĩa chỉ số của spec; {@code OK_ACK_OK} được coi là
+ * tương đương (sự kiện ack-of-OK đã được gộp tên). Giả định ánh xạ này được ghi rõ ở đây
+ * để có thể sửa lại khi mentor xác nhận đúng ngữ nghĩa của các lệnh signaling.
  */
 public final class CallMetricsCalculator {
 

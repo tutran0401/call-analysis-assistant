@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Classifies an end-call log header's schema by the field names it declares, since (per
- * {@link EndCallLogParser}'s class doc) the numeric {@code #HN} tag is not a stable
- * identifier across files. Order matters: schemas are checked most-specific first because
- * some share overlapping field names (e.g. both SIGNAL and LOG_MESSAGE use {@code msg};
- * both PERIODIC_STATS and END_CALL_SUMMARY use {@code audio.audioMos}).
+ * Phân loại schema của một header end-call log dựa trên tên các field nó khai báo, vì
+ * (theo Javadoc của {@link EndCallLogParser}) tag số {@code #HN} không phải một định danh
+ * ổn định giữa các file. Thứ tự kiểm tra rất quan trọng: các schema được kiểm tra từ đặc
+ * trưng nhất trở đi vì có một số field bị trùng lặp giữa các schema (ví dụ cả SIGNAL và
+ * LOG_MESSAGE đều dùng {@code msg}; cả PERIODIC_STATS và END_CALL_SUMMARY đều dùng
+ * {@code audio.audioMos}).
  */
 final class EndCallSchemaClassifier {
 

@@ -17,18 +17,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parses native WebRTC engine logs (iOS {@code RTCLogging.mm}-style and
- * Android/native {@code peer_connection_factory.cc}-style). These logs carry only a
- * relative {@code [seconds:millis]} offset since process start - there is no absolute
- * clock in this source at all, so every event here is emitted with
- * {@link TimestampConfidence#UNKNOWN}; {@code TimelineBuilder} is responsible for
- * anchoring them to an absolute time using another source.
+ * Parse log engine WebRTC gốc (kiểu iOS {@code RTCLogging.mm} và kiểu Android/native
+ * {@code peer_connection_factory.cc}). Các log này chỉ có mốc thời gian tương đối
+ * {@code [seconds:millis]} tính từ lúc process khởi động - hoàn toàn không có đồng hồ
+ * tuyệt đối trong nguồn này, nên mọi sự kiện ở đây đều được gắn
+ * {@link TimestampConfidence#UNKNOWN}; {@code TimelineBuilder} chịu trách nhiệm neo
+ * chúng vào thời gian tuyệt đối bằng một nguồn khác.
  *
- * <p>Lines that don't match either header pattern are treated as a continuation of the
- * previous event's message (WebRTC engine logs routinely wrap a single log statement
- * across multiple physical lines, e.g. multi-line audio route dumps) rather than being
- * reported as malformed - only a genuinely unparseable file (no recognizable lines at
- * all) produces a warning.
+ * <p>Những dòng không khớp pattern header nào được coi là phần tiếp nối của message sự
+ * kiện trước đó (log engine WebRTC hay xuống dòng giữa chừng một câu log, ví dụ khi dump
+ * thông tin audio route nhiều dòng) thay vì bị báo là lỗi định dạng - chỉ khi cả file
+ * không có lấy một dòng nào nhận diện được thì mới sinh cảnh báo.
  */
 public final class WebRtcLogParser {
 
@@ -104,15 +103,15 @@ public final class WebRtcLogParser {
     }
 
     private static String classify(String message) {
-        // Deliberately narrow: only the engine's own controlled-vocabulary callback names
-        // are trusted (onIceConnectionChange/onConnectionChange/onIceCandidate). An
-        // earlier version also pattern-matched free text containing "turn"/"ice" plus
-        // "error"/"fail" - that produced false positives (e.g. "TURN create permission
-        // error response, code=400" and the code=401 long-term-credential challenge are
-        // both routine per-candidate protocol noise, observed dozens of times even in a
-        // clean, high-quality SUCCESS call) and was removed rather than special-cased
-        // further; a real terminal media failure is what ICE_CONNECTION_STATE_CHANGE with
-        // a FAILED/DISCONNECTED message already captures reliably.
+        // Cố tình thu hẹp phạm vi: chỉ tin vào đúng tên callback có sẵn của engine
+        // (onIceConnectionChange/onConnectionChange/onIceCandidate). Phiên bản trước có
+        // so khớp thêm cả văn bản tự do chứa "turn"/"ice" cộng "error"/"fail" - cách đó
+        // sinh ra false positive (ví dụ "TURN create permission error response,
+        // code=400" và thử thách credential dài hạn code=401 đều chỉ là nhiễu giao thức
+        // bình thường theo từng candidate, quan sát thấy hàng chục lần ngay cả trên một
+        // cuộc gọi SUCCESS sạch, chất lượng cao) nên đã bị gỡ bỏ thay vì vá thêm; một lỗi
+        // media thật sự đã được ICE_CONNECTION_STATE_CHANGE với message FAILED/
+        // DISCONNECTED nắm bắt đủ tin cậy rồi.
         String lower = message.toLowerCase();
         if (lower.contains("iceconnectionchange")) {
             return "ICE_CONNECTION_STATE_CHANGE";

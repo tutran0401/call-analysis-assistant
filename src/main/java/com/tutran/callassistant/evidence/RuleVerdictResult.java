@@ -6,8 +6,8 @@ import com.tutran.callassistant.taxonomy.Verdict;
 import java.util.List;
 
 /**
- * The rule-based baseline conclusion for one call: the deterministic counterpart AI's
- * verdict is checked against in Sprint 2 (PROJECT_SPEC.md §3.2).
+ * Kết luận baseline theo rule cho một cuộc gọi: đây là đối chứng xác định (deterministic)
+ * mà verdict của AI sẽ được đối chiếu vào ở Sprint 2 (PROJECT_SPEC.md mục 3.2).
  */
 public record RuleVerdictResult(
         Verdict verdict,

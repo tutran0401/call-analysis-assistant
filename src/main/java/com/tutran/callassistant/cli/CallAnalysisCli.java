@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sprint 1 demo entrypoint (no web UI yet - §5.3 "Demo tối thiểu 5 cuộc gọi bằng CLI").
+ * Entrypoint demo của Sprint 1 (chưa có web UI - mục 5.3 "Demo tối thiểu 5 cuộc gọi bằng CLI").
  *
  * <pre>
- *   import &lt;dataRoot&gt; [&lt;dataRoot&gt; ...]   index every signaling.json under these roots into ES
- *   analyze &lt;callDir&gt; [--from-file]      run the full pipeline for one call, print its report
- *   demo &lt;dataRoot&gt; [&lt;dataRoot&gt; ...]     analyze every call folder found under these roots
+ *   import &lt;dataRoot&gt; [&lt;dataRoot&gt; ...]   index toàn bộ signaling.json dưới các thư mục này vào ES
+ *   analyze &lt;callDir&gt; [--from-file]      chạy full pipeline cho 1 cuộc gọi, in report ra
+ *   demo &lt;dataRoot&gt; [&lt;dataRoot&gt; ...]     phân tích mọi thư mục cuộc gọi tìm thấy dưới các thư mục này
  * </pre>
  */
 @Component
