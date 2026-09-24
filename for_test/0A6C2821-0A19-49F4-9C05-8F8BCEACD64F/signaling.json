@@ -1,0 +1,237 @@
+{
+  "callId": "0A6C2821-0A19-49F4-9C05-8F8BCEACD64F",
+  "environment": "production",
+  "index_pattern": "hermes-call-apps-*",
+  "service_name_filter": "call-signaling-*",
+  "time_range_minutes": 43200,
+  "total_matching": 21,
+  "returned": 21,
+  "truncated": false,
+  "events": [
+    {
+      "@timestamp": "2026-09-12T19:40:59.592343825Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.593506654Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.594627624Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.597950302Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.599175695Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US",
+      "latencyMs": 4
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.599324393Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US",
+      "latencyMs": 5
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.599785863Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US",
+      "latencyMs": 6
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.603725904Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.603778773Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US",
+      "latencyMs": 10
+    },
+    {
+      "@timestamp": "2026-09-12T19:40:59.604894306Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "INIT_CALL",
+      "csid": "4Bml9g3C",
+      "requestId": "16c80a90-f481-438e-9503-94aee0cca235",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:05.816166700Z",
+      "service": "SCYZPESAVDK",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "f870a55c-0d57-4e53-a8c6-9bb827b75b06",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:05.831152318Z",
+      "service": "S46TQW3OJDW",
+      "level": "INFO",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "d6537f7b-5d1c-4901-8581-a6ca7c7f573b",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:05.839299629Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "d6537f7b-5d1c-4901-8581-a6ca7c7f573b",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:06.819277554Z",
+      "service": "SCYZPESAVDK",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "f870a55c-0d57-4e53-a8c6-9bb827b75b06",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:06.829883110Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "62573118-2a38-4617-935c-bc9968d63194",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:06.829972167Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "62573118-2a38-4617-935c-bc9968d63194",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:06.830998981Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "62573118-2a38-4617-935c-bc9968d63194",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:08.818473452Z",
+      "service": "SCYZPESAVDK",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "f870a55c-0d57-4e53-a8c6-9bb827b75b06",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:08.827981232Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "53900334-2971-4a0c-8eea-03495db5d3f2",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:08.828077787Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "53900334-2971-4a0c-8eea-03495db5d3f2",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    },
+    {
+      "@timestamp": "2026-09-12T19:41:08.829106478Z",
+      "service": "S46TQW3OJDW",
+      "level": "WARN",
+      "cmd": "CANCEL",
+      "csid": "4Bml9g3C",
+      "callSessionId": "01a09723-2b5d-7b07-bc3e-207d1cdde18b",
+      "requestId": "53900334-2971-4a0c-8eea-03495db5d3f2",
+      "appUserId": "UNZLXG7L7CV",
+      "countryCode": "US"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+
+elasticsearch:
+  host: localhost
+  port: 9200
+  signaling-index: call-signaling-events
