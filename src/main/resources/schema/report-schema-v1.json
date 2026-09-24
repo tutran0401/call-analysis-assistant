@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tutran.com/call-analysis-assistant/report-schema-v1.json",
+  "title": "Call Analysis Report v1",
+  "description": "PROJECT_SPEC.md section 4.5 report template, as a validatable schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "callId",
+    "verdict",
+    "qualityFlag",
+    "confidenceLevel",
+    "summary",
+    "evidence",
+    "metrics",
+    "suggestions",
+    "dataLimitations"
+  ],
+  "properties": {
+    "callId": { "type": "string", "minLength": 1 },
+    "verdict": { "type": "string", "enum": ["SUCCESS", "FAIL", "UNKNOWN"] },
+    "qualityFlag": { "type": "boolean" },
+    "issueCategory": {
+      "type": ["string", "null"],
+      "enum": [
+        "NETWORK_PACKET_LOSS",
+        "NETWORK_DELAY_JITTER",
+        "ICE_FAILURE",
+        "TURN_FAILURE",
+        "SIGNALING_FAILURE",
+        "UNKNOWN",
+        null
+      ]
+    },
+    "confidenceLevel": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "source", "timestamp", "description"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^EV[0-9]{3}$" },
+          "source": { "type": "string", "minLength": 1 },
+          "timestamp": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value", "source"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dataLimitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
