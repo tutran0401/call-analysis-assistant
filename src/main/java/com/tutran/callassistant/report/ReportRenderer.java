@@ -1,63 +1,14 @@
 package com.tutran.callassistant.report;
 
-/** Render một {@link Report} thành bố cục văn bản tiếng Việt cố định ở PROJECT_SPEC.md mục 4.5. */
-public final class ReportRenderer {
+import com.tutran.callassistant.domain.report.Report;
 
-    public String render(Report report) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("# Báo cáo phân tích cuộc gọi\n");
-        sb.append("Call-ID: ").append(report.callId()).append('\n');
-        sb.append("Kết luận: ").append(report.verdict()).append('\n');
-        sb.append("Cờ chất lượng: ")
-                .append(report.qualityFlag() ? "Có - " + report.issueCategory() : "Không")
-                .append('\n');
-        sb.append("Độ tin cậy: ").append(report.confidenceLevel()).append('\n');
-        sb.append("Tóm tắt: ").append(report.summary()).append('\n');
-        sb.append('\n');
+/**
+ * Render {@link Report} thành một định dạng trình bày cụ thể.
+ *
+ * <p>Sprint 1 có bản text cho CLI; Sprint 2 thêm bản cho Web UI. Cả hai cùng tiêu thụ đúng một
+ * {@link Report} nên không thể xảy ra chuyện hai mặt trình bày nói hai kết luận khác nhau.
+ */
+public interface ReportRenderer {
 
-        sb.append("## Evidence chính\n");
-        int i = 1;
-        for (EvidenceItem e : report.evidence()) {
-            sb.append(i++).append(". [").append(e.id()).append("][").append(e.source()).append(' ')
-                    .append(e.timestamp()).append("] ").append(e.description()).append('\n');
-        }
-        sb.append('\n');
-
-        sb.append("## Chỉ số cuộc gọi\n");
-        sb.append("| Chỉ số | Giá trị | Nguồn |\n");
-        for (MetricRow row : report.metrics()) {
-            sb.append("| ").append(row.name()).append(" | ").append(row.value()).append(" | ")
-                    .append(row.source()).append(" |\n");
-        }
-        sb.append('\n');
-
-        sb.append("## Vấn đề chất lượng / nguyên nhân khả dĩ\n");
-        if (report.issueCategory() != null) {
-            sb.append("- Chính: ").append(report.issueCategory()).append('\n');
-        } else {
-            sb.append("- Không phát hiện vấn đề.\n");
-        }
-        sb.append('\n');
-
-        sb.append("## Đề xuất\n");
-        if (report.suggestions().isEmpty()) {
-            sb.append("- Không có đề xuất bổ sung.\n");
-        } else {
-            for (String suggestion : report.suggestions()) {
-                sb.append("- ").append(suggestion).append('\n');
-            }
-        }
-        sb.append('\n');
-
-        sb.append("## Giới hạn dữ liệu\n");
-        if (report.dataLimitations().isEmpty()) {
-            sb.append("- Không có.\n");
-        } else {
-            for (String limitation : report.dataLimitations()) {
-                sb.append("- ").append(limitation).append('\n');
-            }
-        }
-
-        return sb.toString();
-    }
+    String render(Report report);
 }

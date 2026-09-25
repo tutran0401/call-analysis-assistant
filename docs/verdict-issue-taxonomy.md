@@ -1,8 +1,13 @@
 # Verdict & Issue Taxonomy (T5)
 
-Đây là bản đọc-hiểu-được-bằng-tiếng-Việt của package `com.tutran.callassistant.taxonomy`
-— code (`IssueCategoryRegistry`) mới là nguồn chân lý; tài liệu này tồn tại để có thể
-review taxonomy mà không cần đọc Java. Khi sửa 1 bên thì nhớ đồng bộ bên còn lại.
+Đây là bản đọc-hiểu-được-bằng-tiếng-Việt của package
+`com.tutran.callassistant.analysis.verdict` — code (`IssueCategoryRegistry`) mới là nguồn
+chân lý; tài liệu này tồn tại để có thể review taxonomy mà không cần đọc Java. Khi sửa 1
+bên thì nhớ đồng bộ bên còn lại.
+
+Thứ tự quyết định verdict nằm ở danh sách rule trong `RuleVerdictEngine` (package con
+`analysis/verdict/rule/`), và các tiêu chí gắn cờ chất lượng nằm ở `analysis/verdict/quality/`
+— mỗi mục trong 2 bảng dưới đây tương ứng đúng một class.
 
 ## Verdict (PROJECT_SPEC.md mục 4.1)
 
@@ -20,8 +25,11 @@ kiểm tra theo thứ tự sau (khớp điều kiện nào trước thì dùng �
 3. `audio.audioMos < 3.5` (và không rơi vào 2 điều kiện trên) → `UNKNOWN` (chất lượng rõ
    ràng kém, nhưng không có chỉ số mạng cụ thể nào giải thích được lý do)
 
-Các ngưỡng này là baseline của Sprint 1, đã ghi rõ trong tài liệu, **chưa được hiệu chỉnh
-theo ground truth** (data mẫu không kèm ground truth) — việc tinh chỉnh ngưỡng là công
+Các ngưỡng này là baseline của Sprint 1, **chưa được hiệu chỉnh theo ground truth** (data
+mẫu không kèm ground truth). Chúng là cấu hình (`call-analysis.quality-thresholds.*` trong
+`application.yml`, bind vào `QualityThresholds`) nên thử một ngưỡng khác không cần sửa code;
+phần mô tả điều kiện phát hiện trong `IssueCategoryRegistry` cũng được dựng từ chính các
+giá trị đó, nên tài liệu và code không thể nói hai ngưỡng khác nhau — việc tinh chỉnh ngưỡng là công
 việc tường minh của Sprint 3 (mục 7.1 T1).
 
 ## Issue Category (PROJECT_SPEC.md mục 4.2)

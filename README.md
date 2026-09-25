@@ -58,22 +58,40 @@ của code.
 
 **Đã kiểm chứng trên toàn bộ data mẫu** (`demo sample-data/success sample-data/fail sample-data/for_test`, cả 20 cuộc gọi,
 qua pipeline có ES thật): 0 cảnh báo parser trên mọi file — **parse sạch 100%** (vượt xa
-mục tiêu ≥90%) — với 8 verdict `SUCCESS`, 6 `FAIL`, 6 `UNKNOWN`; mỗi `UNKNOWN` đều có lý
+mục tiêu ≥90%) — với 6 verdict `SUCCESS`, 8 `FAIL`, 6 `UNKNOWN`; mỗi `UNKNOWN` đều có lý
 do thiếu dữ liệu cụ thể trong report, và không có exception nào trong suốt quá trình chạy.
+Kết quả giống hệt nhau trên cả hai đường lấy signaling (qua Elasticsearch và `--from-file`).
 
 ## Cấu trúc project
 
+Code chia thành 4 tầng, phụ thuộc **một chiều** từ ngoài vào trong (`cli`/`ingest`/`report`
+→ `application` → `analysis` → `domain`). Chi tiết và sơ đồ ở
+`docs/architecture-diagram-v1.md`.
+
 ```
 src/main/java/com/tutran/callassistant/
-  domain/     Canonical Event Model (T2)
-  parser/     Log Normalizer: nhận diện loại file + 3 parser cho 3 nguồn log (T3)
-  timeline/   Call Timeline Builder (T4)
-  taxonomy/   Verdict & Issue Taxonomy (T5)
-  metrics/    Call Metrics Calculator (T6)
-  evidence/   Evidence Engine + Rule Verdict (T7)
-  report/     Report Schema v1 + renderer (T8)
-  es/         Import + query Elasticsearch (T1)
-  cli/        Entrypoint chạy demo
+  domain/         Model thuần - không Spring, không IO, không phụ thuộc gì bên ngoài
+    event/        Canonical Event Model (T2) + NormalizedEvents
+    timeline/     CallTimeline (+ các truy vấn dùng chung cho metrics và rule)
+    metrics/      CallMetrics, MetricResult (giá trị hoặc N/A kèm lý do)
+    verdict/      Verdict, IssueCategory, Evidence, RuleVerdictResult
+    report/       Report Schema v1 dạng record + ConfidenceLevel
+  application/    Use case + port (chỉ interface, không biết công nghệ nào)
+    port/in/      AnalyzeCallUseCase, ImportSignalingUseCase
+    port/out/     SignalingEventSource, ClientLogSource, SignalingEventArchive,
+                  CallDirectoryScanner, ReportPresenter, ImportProgressListener
+    CallAnalysisPipeline    <- đọc class này là thấy toàn bộ hệ thống (8 dòng)
+  analysis/       Logic nghiệp vụ
+    timeline/     Timeline Builder (T4): loại trùng + neo thời gian + sắp thứ tự
+    metrics/      Call Metrics Calculator (T6): facade gom 4 calculator chuyên trách
+    verdict/      Evidence Engine + Rule Verdict (T7) + taxonomy (T5)
+      rule/       5 VerdictRule - thứ tự quyết định verdict đọc được ngay ở danh sách
+      quality/    3 QualityCheck - tiêu chí gắn cờ chất lượng kém
+  ingest/         Adapter đầu vào
+    file/         Log Normalizer (T3): 3 parser + nhận diện loại file theo nội dung
+    es/           Import + query Elasticsearch (T1)
+  report/         Report Schema v1 + assembler + renderer + guard (T8)
+  cli/            Entrypoint: mỗi lệnh (import/analyze/demo) là một class riêng
 docs/
   architecture-diagram-v1.md
   verdict-issue-taxonomy.md
@@ -86,22 +104,41 @@ sample-data/    Data mẫu do mentor cung cấp (không chỉnh sửa nội dung
   for_test/     7 cuộc gọi chưa gắn nhãn, dùng để tự kiểm chứng
 ```
 
+### Nguyên tắc thiết kế
+
+Những chỗ dễ thay đổi nhất đều được đặt sau một interface, nên **thêm tính năng là thêm
+class, không phải sửa class đang chạy**:
+
+| Muốn thêm gì | Phải sửa gì |
+| --- | --- |
+| Một nguồn log thứ 4 | Thêm 1 class implement `LogParser` (nó tự khai báo cách nhận diện và cách đọc) |
+| Một tình huống verdict mới | Thêm 1 class implement `VerdictRule` |
+| Một tiêu chí chất lượng mới | Thêm 1 class implement `QualityCheck` |
+| Một lệnh CLI mới | Thêm 1 class implement `CliCommand` |
+| Một cách trình bày report mới | Thêm 1 class implement `ReportRenderer` |
+| Đổi ngưỡng cảnh báo | Sửa `application.yml`, không cần build lại |
+
+Chỉ những đường biên thật sự sẽ thay đổi mới có interface — `TimelineBuilder` hay
+`CallMetricsCalculator` vẫn là class thường, vì tạo interface cho mọi thứ cũng là một dạng
+rối rắm không cần thiết.
+
 ## Giới hạn đã biết (Known Limitations) — Sprint 1
 
 - **Chưa phát hiện lỗi TURN riêng biệt một cách đáng tin cậy.** Phiên bản đầu tiên dùng
   cách so khớp từ khóa tự do ("turn"/"ice" + "error"/"fail"), nhưng cách này báo nhầm cả
   những phản hồi giao thức TURN bình thường, tự phục hồi được (per-candidate) thành lỗi —
-  kể cả trên một cuộc gọi SUCCESS hoàn toàn sạch (xem Javadoc của package `evidence`/`parser`
-  và lịch sử commit để biết số lượng false-positive cụ thể). `RuleVerdictEngine` hiện gộp
-  lỗi tầng TURN vào `ICE_FAILURE` (dựa trên trạng thái kết thúc chính thức
+  kể cả trên một cuộc gọi SUCCESS hoàn toàn sạch (xem Javadoc của `IceFailureDetector` và
+  `WebRtcLogParser`, cùng lịch sử commit, để biết số lượng false-positive cụ thể). Rule
+  engine hiện gộp lỗi tầng TURN vào `ICE_FAILURE` (dựa trên trạng thái kết thúc chính thức
   `onIceConnectionChange` của engine) hoặc `SIGNALING_FAILURE`. Một bộ phát hiện TURN
   riêng, đáng tin cậy hơn sẽ để lại cho sprint sau.
 - **Chưa làm các chỉ số "Nếu kịp" (mục 4.3)**: proxy khoảng trống PAIR_PING, latency API
   nội bộ lúc INIT_CALL, số lượng WARN/ERROR phía server, ngữ cảnh ISP/ASN/country. Sprint 1
   ưu tiên làm xong các chỉ số Core trước.
-- **Độ tin cậy (confidence level) mới chỉ là placeholder tạm thời.** `ConfidenceLevel` suy
-  ra HIGH/MEDIUM/LOW chỉ dựa trên độ đầy đủ của dữ liệu và mức độ chắc chắn của issue
-  category; thiết kế đầy đủ (đối chiếu AI vs rule) là việc của Sprint 3 T3.
+- **Độ tin cậy (confidence level) mới chỉ là placeholder tạm thời.**
+  `DataCompletenessConfidencePolicy` suy ra HIGH/MEDIUM/LOW chỉ dựa trên độ đầy đủ của dữ
+  liệu và mức độ chắc chắn của issue category; thiết kế đầy đủ (đối chiếu AI vs rule) là
+  việc của Sprint 3 T3 — khi đó chỉ cần thêm một implementation của `ConfidencePolicy`.
 - **Chưa có sanitizer.** Các field nhạy cảm/bí mật đã được liệt kê ở
   `docs/sensitive-data-inventory.md`, nhưng việc mask/pseudonymize/drop là deliverable của
   Sprint 2 (Sprint 1 chưa gửi gì sang AI provider nên chưa có nguy cơ rò rỉ dữ liệu).

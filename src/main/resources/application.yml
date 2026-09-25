@@ -7,3 +7,14 @@ elasticsearch:
   host: localhost
   port: 9200
   signaling-index: call-signaling-events
+
+call-analysis:
+  # Ngưỡng cảnh báo chất lượng của rule baseline (Sprint 1). Data mẫu không kèm ground truth để
+  # hiệu chỉnh, nên đây là giá trị baseline đã ghi trong tài liệu; việc siết chặt bằng dữ liệu
+  # accuracy thật là công việc của Sprint 3 T1.
+  quality-thresholds:
+    packet-loss-percent: 5.0
+    jitter-ms: 30.0
+    rtt-ms: 300.0
+    mos: 3.5
+    signaling-retransmit-count: 2
