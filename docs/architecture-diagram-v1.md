@@ -69,8 +69,10 @@ flowchart TD
     subgraph analysis["analysis — T4 + T5 + T6 + T7"]
         Timeline["TimelineBuilder<br/>+ EventDeduplicator<br/>+ WebRtcElapsedTimeAnchor"]
         Metrics["CallMetricsCalculator<br/>(4 calculator chuyên trách)"]
-        Rules["RuleVerdictEngine<br/>(chuỗi 5 VerdictRule)"]
+        Rules["RuleVerdictEngine<br/>(chuỗi 7 VerdictRule)"]
         Quality["QualityInspector<br/>(3 QualityCheck)"]
+        IceDetect["IceFailureDetector"]
+        Rules --> IceDetect
         Evidence["EvidenceEngine"]
         Taxonomy["IssueCategoryRegistry<br/>+ QualityThresholds"]
         Rules --> Quality

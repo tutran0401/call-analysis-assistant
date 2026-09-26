@@ -37,7 +37,7 @@ class RuleBasedReportAssemblerTest {
         assertThat(report.callId()).isEqualTo(callId);
         assertThat(report.verdict()).isEqualTo("SUCCESS");
         assertThat(report.qualityFlag()).isFalse();
-        assertThat(report.issueCategory()).isNull();
+        assertThat(report.issueCategory()).isEqualTo("NONE");
         assertThat(report.metrics()).isNotEmpty();
         assertThat(report.evidence()).isNotEmpty();
 
@@ -54,14 +54,25 @@ class RuleBasedReportAssemblerTest {
     }
 
     @Test
-    void omitsIssueCategoryAndSuggestionsForACleanSuccessfulCall() {
-        // Nêu category "UNKNOWN" ở một cuộc gọi hoàn toàn bình thường sẽ bị đọc thành "có vấn đề
-        // nhưng không biết là gì", nên cả category và đề xuất đều phải để trống.
+    void reportsNoneAsTheCategoryForACleanSuccessfulCall() {
+        // Cuộc gọi sạch vẫn phải nêu category, nhưng là NONE chứ không phải UNKNOWN: NONE là kết luận
+        // khẳng định "đã kiểm tra, không có vấn đề", còn UNKNOWN sẽ bị đọc thành "có vấn đề nhưng
+        // không biết là gì". Đề xuất thì vẫn để trống - không bịa việc cho cuộc gọi bình thường.
         String callId = SampleCalls.SUCCESS_FULL_LOGS;
         Report report = reportFor(SampleCalls.success(callId), callId);
 
-        assertThat(report.issueCategory()).isNull();
+        assertThat(report.issueCategory()).isEqualTo("NONE");
         assertThat(report.suggestions()).isEmpty();
+    }
+
+    @Test
+    void everyCallReportsAnIssueCategoryWhateverTheVerdict() {
+        // Mục "Vấn đề chất lượng / nguyên nhân khả dĩ" không bao giờ được để trống, ở cả 3 loại verdict.
+        String ok = SampleCalls.SUCCESS_FULL_LOGS;
+        String bad = SampleCalls.FAIL_REJECTED_AFTER_INVITE;
+
+        assertThat(reportFor(SampleCalls.success(ok), ok).issueCategory()).isNotNull();
+        assertThat(reportFor(SampleCalls.fail(bad), bad).issueCategory()).isNotNull();
     }
 
     @Test

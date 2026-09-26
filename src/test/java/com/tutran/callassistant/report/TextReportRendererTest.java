@@ -51,13 +51,14 @@ class TextReportRendererTest {
 
     @Test
     void rendersNoQualityFlagAndNoLimitationsGracefully() {
-        Report report = new Report("CALL-2", "SUCCESS", false, null, "HIGH", "All good.",
+        Report report = new Report("CALL-2", "SUCCESS", false, "NONE", "HIGH", "All good.",
                 List.of(), List.of(), List.of(), List.of());
 
         String rendered = renderer.render(report);
 
         assertThat(rendered).contains("Cờ chất lượng: Không");
-        assertThat(rendered).contains("- Không phát hiện vấn đề.");
+        // Cuộc gọi sạch vẫn nêu category, kèm diễn giải tiếng Việt cho tên hằng số kỹ thuật.
+        assertThat(rendered).contains("- Chính: NONE - không phát hiện vấn đề chất lượng nào");
         assertThat(rendered).contains("- Không có đề xuất bổ sung.");
         assertThat(rendered).contains("- Không có.");
     }

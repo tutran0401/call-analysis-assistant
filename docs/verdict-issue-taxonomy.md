@@ -13,8 +13,8 @@ Thứ tự quyết định verdict nằm ở danh sách rule trong `RuleVerdictE
 
 | Verdict | Tiêu chí `RuleVerdictEngine` kiểm tra |
 | --- | --- |
-| `UNKNOWN` | Không có signaling data nào cả; hoặc thiếu end-call log ở **cả hai** bên; hoặc cuộc gọi có vẻ đã kết nối (thấy `OK_ACK_OK`) nhưng chưa từng thấy `BYE` (nhiều khả năng do data bị cắt/thiếu, không phải cuộc gọi thật đang diễn ra) |
-| `FAIL` | Có signaling data và ít nhất một bên có end-call log, nhưng chưa từng quan sát được sự kiện `OK_ACK_OK` (đã xác nhận kết nối) |
+| `UNKNOWN` | Không có signaling data nào cả; hoặc không có log client nào (end-call **lẫn** WebRTC) ở cả hai bên; hoặc cuộc gọi có vẻ đã kết nối (thấy `OK_ACK_OK`) nhưng chưa từng thấy `BYE` (nhiều khả năng do data bị cắt/thiếu, không phải cuộc gọi thật đang diễn ra) |
+| `FAIL` | Một trong ba trường hợp: (a) signaling ghi rõ `CANCEL`/`FAIL_HARD` trước khi đạt `OK_ACK_OK` — bằng chứng này đủ mạnh nên **không cần** log client; (b) có log client và chưa từng quan sát được `OK_ACK_OK`; (c) đã đạt `OK_ACK_OK` và có `BYE`, nhưng log WebRTC cho thấy ICE của một bên `=> failed` nên bên đó không hề có media |
 | `SUCCESS` | Đã thấy `OK_ACK_OK` và sau đó có `BYE` — có thể kèm cờ chất lượng kém (xem bên dưới) |
 
 Cờ chất lượng (chỉ áp dụng cho `SUCCESS`) được gắn khi **một trong hai bên** vượt ngưỡng,

@@ -121,6 +121,28 @@ class WebRtcLogParserTest {
     }
 
     @Test
+    void classifiesNativeEngineIceStateLinesWhichUseAnEntirelyDifferentWording(@TempDir Path tempDir)
+            throws IOException {
+        // Bản iOS gọi callback theo tên (onIceConnectionChange); bản native peer_connection.cc lại ghi
+        // thành câu kể "Changing IceConnectionState X => Y", kèm một dòng song song có chữ
+        // "standardized". Trước đây chỉ dạng đầu được nhận ra, nên 16/28 file webrtc của data mẫu CÓ
+        // ghi trạng thái ICE mà hệ thống thấy 0 sự kiện.
+        Path file = tempDir.resolve("native_ice.log");
+        Files.writeString(file, String.join("\n",
+                "peer_connection.cc: [004:592][8431] (line 2032): Changing IceConnectionState new => checking",
+                "peer_connection.cc: [005:191][8431] (line 2054): Changing standardized IceConnectionState new => checking",
+                "peer_connection.cc: [020:195][8431] (line 2032): Changing IceConnectionState checking => failed"
+        ) + "\n");
+
+        NormalizedEvents result = parser.parse(LogFile.of(file, "CALL-1", Leg.CALLEE));
+
+        assertThat(result.warnings()).isEmpty();
+        assertThat(result.events()).hasSize(3);
+        assertThat(result.events()).allSatisfy(e ->
+                assertThat(e.eventType()).isEqualTo("ICE_CONNECTION_STATE_CHANGE"));
+    }
+
+    @Test
     void recognizesBothEngineLogFormats() {
         assertThat(parser.type()).isEqualTo(LogFileType.WEBRTC);
         assertThat(parser.recognizes("[000:000][259] (RTCLogging.mm:34): hello")).isTrue();

@@ -23,6 +23,22 @@ public final class SignalingCommands {
     public static final String OK_ACK_OK = "OK_ACK_OK";
     public static final String BYE = "BYE";
 
+    /**
+     * Bên gọi chủ động huỷ trước khi cuộc gọi kết nối được.
+     *
+     * <p>Trong toàn bộ data mẫu, lệnh này xuất hiện ở 7 cuộc gọi và <b>chưa bao giờ</b> đi cùng
+     * {@link #OK_ACK_OK} - nên nó là bằng chứng tin cậy cho "cuộc gọi kết thúc trước khi kết nối".
+     */
+    public static final String CANCEL = "CANCEL";
+
+    /**
+     * Server từ chối cứng cuộc gọi. Cũng chưa bao giờ đi cùng {@link #OK_ACK_OK} trong data mẫu.
+     */
+    public static final String FAIL_HARD = "FAIL_HARD";
+
+    /** Các lệnh chấm dứt cuộc gọi tường minh, theo thứ tự ưu tiên khi trích dẫn evidence. */
+    public static final java.util.List<String> EXPLICIT_TERMINATIONS = java.util.List.of(FAIL_HARD, CANCEL);
+
     private SignalingCommands() {
     }
 }

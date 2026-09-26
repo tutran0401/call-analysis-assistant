@@ -36,7 +36,7 @@ parse được một cách xác định) và **latency chấp nhận được** 
 | Hỗ trợ structured output | Yếu hơn và phụ thuộc nhiều vào model: các model mở nhỏ ít đáng tin cậy hơn khi phải tuân thủ chặt JSON schema nếu không có thêm cơ chế hỗ trợ (ví dụ dùng tuỳ chọn `format: json` của Ollama để ràng buộc theo grammar, hoặc prompt chặt hơn + vòng lặp retry ở Guardrails). Sprint 2 sẽ tốn nhiều công sức hơn để đường xử lý "invalid → reject/fallback" của Guardrails chạy ổn định. |
 | Khác | Chạy offline hoàn toàn được sau khi đã tải model về, tiện khi demo mà không cần mạng; nhưng benchmark tính nhất quán lặp lại (mục 6.5) sẽ tốn nhiều thời gian thực tế hơn đáng kể ở Sprint 2-3 nếu latency cao. |
 
-## Đề xuất (bản nháp — hãy tự kiểm tra lại với cấu hình máy của bạn trước khi nộp)
+## Đề xuất
 
 Ưu tiên **Phương án A (cloud API)** để phát triển Sprint 2 nhanh hơn và có structured
 output đáng tin cậy hơn, vì độ đúng của Guardrails phụ thuộc vào việc AI thực sự trả về

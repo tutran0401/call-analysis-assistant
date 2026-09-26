@@ -103,6 +103,19 @@ public class IssueCategoryRegistry {
                                 + "rather than a system failure; evidence must be read in context, not just presence "
                                 + "of an error code."
                 ),
+                IssueCategory.NONE, new IssueCategoryDefinition(
+                        IssueCategory.NONE,
+                        "The call was checked against every detection condition below and none of them "
+                                + "matched: the call connected, ended normally, and no quality metric "
+                                + "breached its threshold.",
+                        List.of(),
+                        List.of("Signaling reached OK_ACK_OK then BYE",
+                                "All available quality metrics within thresholds"),
+                        "No other category matched AND the verdict is SUCCESS without a quality flag",
+                        "Absence of evidence is not evidence of absence: a leg with no end-call log "
+                                + "contributes no quality metric, so NONE means nothing was found in the "
+                                + "data that was actually available - see the data limitations section."
+                ),
                 IssueCategory.UNKNOWN, new IssueCategoryDefinition(
                         IssueCategory.UNKNOWN,
                         "Not enough evidence was available to attribute the issue to a specific category.",

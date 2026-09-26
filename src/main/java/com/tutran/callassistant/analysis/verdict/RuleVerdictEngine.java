@@ -3,7 +3,9 @@ package com.tutran.callassistant.analysis.verdict;
 import com.tutran.callassistant.analysis.verdict.quality.QualityInspector;
 import com.tutran.callassistant.analysis.verdict.rule.ConnectedSuccessfullyRule;
 import com.tutran.callassistant.analysis.verdict.rule.ConnectedWithoutByeRule;
+import com.tutran.callassistant.analysis.verdict.rule.ExplicitTerminationRule;
 import com.tutran.callassistant.analysis.verdict.rule.FailedToConnectRule;
+import com.tutran.callassistant.analysis.verdict.rule.MediaFailedAfterConnectRule;
 import com.tutran.callassistant.analysis.verdict.rule.MissingClientLogsRule;
 import com.tutran.callassistant.analysis.verdict.rule.MissingSignalingDataRule;
 import com.tutran.callassistant.analysis.verdict.rule.VerdictRule;
@@ -27,9 +29,11 @@ import java.util.Optional;
  *
  * <ol>
  *   <li>{@link MissingSignalingDataRule} - không có signaling thì UNKNOWN</li>
- *   <li>{@link MissingClientLogsRule} - thiếu end-call log cả hai bên thì UNKNOWN</li>
+ *   <li>{@link ExplicitTerminationRule} - signaling ghi rõ CANCEL/FAIL_HARD trước khi CONFIRMED thì FAIL</li>
+ *   <li>{@link MissingClientLogsRule} - không có log client nào của bên nào thì UNKNOWN</li>
  *   <li>{@link FailedToConnectRule} - chưa từng CONFIRMED thì FAIL</li>
  *   <li>{@link ConnectedWithoutByeRule} - đã kết nối mà không thấy kết thúc thì UNKNOWN</li>
+ *   <li>{@link MediaFailedAfterConnectRule} - đã kết nối nhưng ICE của một bên failed thì FAIL</li>
  *   <li>{@link ConnectedSuccessfullyRule} - kết nối và kết thúc bình thường thì SUCCESS</li>
  * </ol>
  */
@@ -47,12 +51,15 @@ public class RuleVerdictEngine implements VerdictEngine {
     /** Engine với đầy đủ detector/rule theo đúng thứ tự, dùng cho test và chỗ không có Spring container. */
     public static RuleVerdictEngine withDefaults() {
         QualityThresholds thresholds = QualityThresholds.defaults();
+        IceFailureDetector iceFailureDetector = new IceFailureDetector();
         return new RuleVerdictEngine(
                 List.of(new MissingEndCallLogDetector()),
                 List.of(new MissingSignalingDataRule(),
+                        new ExplicitTerminationRule(),
                         new MissingClientLogsRule(),
-                        new FailedToConnectRule(new IceFailureDetector()),
+                        new FailedToConnectRule(iceFailureDetector),
                         new ConnectedWithoutByeRule(),
+                        new MediaFailedAfterConnectRule(iceFailureDetector),
                         new ConnectedSuccessfullyRule(QualityInspector.withDefaults(thresholds))));
     }
 

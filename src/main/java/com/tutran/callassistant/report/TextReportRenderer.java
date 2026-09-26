@@ -59,14 +59,30 @@ public class TextReportRenderer implements ReportRenderer {
         out.append('\n');
     }
 
+    /**
+     * Mục này <b>luôn</b> nêu một issue category, kể cả cuộc gọi sạch (khi đó là {@code NONE}) - để
+     * người đọc phân biệt được "đã kiểm tra, không có vấn đề" với "chưa kiểm tra". Kèm một câu diễn
+     * giải tiếng Việt vì tên category là hằng số kỹ thuật, không tự giải thích được.
+     */
     private void appendIssue(StringBuilder out, Report report) {
         out.append("## Vấn đề chất lượng / nguyên nhân khả dĩ\n");
-        if (report.issueCategory() != null) {
-            out.append("- Chính: ").append(report.issueCategory()).append('\n');
-        } else {
-            out.append("- Không phát hiện vấn đề.\n");
-        }
+        String category = report.issueCategory();
+        out.append("- Chính: ").append(category)
+                .append(" - ").append(explain(category)).append('\n');
         out.append('\n');
+    }
+
+    private String explain(String category) {
+        return switch (category) {
+            case "NONE" -> "không phát hiện vấn đề chất lượng nào";
+            case "NETWORK_PACKET_LOSS" -> "mất gói trên đường truyền";
+            case "NETWORK_DELAY_JITTER" -> "độ trễ hoặc jitter mạng cao";
+            case "ICE_FAILURE" -> "không thiết lập được kết nối media (ICE)";
+            case "TURN_FAILURE" -> "lỗi phía TURN server";
+            case "SIGNALING_FAILURE" -> "lỗi ở tầng signaling";
+            case "UNKNOWN" -> "chưa quy được nguyên nhân cụ thể";
+            default -> "không có mô tả cho category này";
+        };
     }
 
     private void appendSuggestions(StringBuilder out, Report report) {

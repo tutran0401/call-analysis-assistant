@@ -41,6 +41,7 @@ class RuleVerdictEngineTest {
 
         assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
         assertThat(result.qualityFlag()).isFalse();
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.NONE);
         assertThat(result.evidence()).isNotEmpty();
         assertThat(result.evidence()).anySatisfy(e -> assertThat(e.description()).contains("OK_ACK_OK"));
         assertThat(result.evidence()).anySatisfy(e -> assertThat(e.description()).contains("BYE"));
@@ -83,17 +84,61 @@ class RuleVerdictEngineTest {
     }
 
     @Test
-    void classifiesARealCallWithBothEndCallLogsMissingAsUnknownDespiteCleanSignaling() {
-        // Cuộc gọi này có luồng signaling nhìn hoàn toàn bình thường (đủ INIT_CALL...BYE) nhưng không
-        // có end-call log cho bên nào cả trong data mẫu - test này xác nhận vẫn từ chối kết luận
-        // SUCCESS chỉ dựa vào signaling, đúng theo kịch bản "UNKNOWN do thiếu file" trong acceptance
-        // criteria, dùng data thật (không phải giả lập).
+    void refusesToConcludeFromSignalingAloneWhenNoClientLogExists() {
+        // Cuộc gọi thật này có luồng signaling nhìn hoàn toàn bình thường (đủ INIT_CALL...BYE). Ở đây
+        // cố tình chỉ nạp signaling, không nạp log client nào - xác nhận vẫn từ chối kết luận SUCCESS
+        // chỉ dựa vào góc nhìn server, đúng kịch bản "UNKNOWN do thiếu dữ liệu" của acceptance criteria.
         RuleVerdictResult result = evaluateCall(
                 SampleCalls.success(SampleCalls.SUCCESS_NO_CLIENT_LOGS), SampleCalls.SUCCESS_NO_CLIENT_LOGS);
 
         assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
         assertThat(result.dataLimitations()).contains("Missing caller_endcall.log", "Missing callee_endcall.log");
         assertThat(result.evidence()).isEmpty();
+    }
+
+    @Test
+    void concludesFailFromAnExplicitCancelEvenWithoutAnyClientLog() {
+        // Cuộc gọi thật (nhãn fail) bị huỷ tường minh CANCEL x15 và không có end-call log nào. CANCEL
+        // chưa bao giờ đi cùng OK_ACK_OK trong data mẫu, nên nó là bằng chứng dứt khoát - thiếu file
+        // client không làm bằng chứng đó yếu đi.
+        CallTimeline signalingOnly = SampleCalls.signalingOnlyTimeline(
+                SampleCalls.fail(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS),
+                SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS);
+
+        RuleVerdictResult result = evaluate(signalingOnly);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.evidence()).anySatisfy(e -> assertThat(e.description()).contains("CANCEL"));
+    }
+
+    @Test
+    void concludesIceFailureWhenMediaDiedDespiteACompleteSignalingFlow() {
+        // Signaling của cuộc gọi này đi đủ INIT_CALL...OK_ACK_OK...BYE nên nhìn hệt một cuộc gọi
+        // thành công; chỉ webrtc log của callee mới tiết lộ ICE "checking => failed".
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.fail(SampleCalls.FAIL_MEDIA_NEVER_CONNECTED),
+                SampleCalls.FAIL_MEDIA_NEVER_CONNECTED);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
+        assertThat(result.evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("ICE connectivity failed"));
+    }
+
+    @Test
+    void doesNotTreatNormalTeardownAsAnIceFailure() {
+        // Bảo vệ chống hồi quy: 3 file trong data mẫu kết thúc bằng ICE "connected => disconnected" và
+        // CẢ BA đều thuộc cuộc gọi SUCCESS - đó là teardown bình thường lúc cúp máy. Nếu bộ phát hiện
+        // nhận cả "disconnected" là lỗi thì mọi cuộc gọi kết thúc bình thường sẽ thành ICE_FAILURE.
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS), SampleCalls.SUCCESS_FULL_LOGS);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+        assertThat(result.qualityFlag()).isFalse();
     }
 
     @Test
