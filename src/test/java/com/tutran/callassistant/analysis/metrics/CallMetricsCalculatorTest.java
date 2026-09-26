@@ -7,152 +7,163 @@ import com.tutran.callassistant.domain.timeline.CallTimeline;
 import com.tutran.callassistant.testsupport.SampleCalls;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 /**
  * Mọi giá trị kỳ vọng ở đây đều được tính tay trực tiếp từ file mẫu thật, đúng theo acceptance
- * criteria của Sprint 1 là số liệu phải khớp tính tay trên cuộc gọi thật - chứ không chỉ so khớp với
- * chính output của code.
+ * criteria của Sprint 1 là số liệu phải khớp tính tay trên tối thiểu 5 cuộc gọi - chứ không chỉ so
+ * khớp với chính output của code.
+ *
+ * <p>Cố tình dùng 5 cuộc gọi trong {@code sample-data/for_test/} thay vì {@code success/}/{@code fail/}:
+ * hai thư mục kia đã bị mentor gắn nhãn kết quả sẵn ngay trong tên thư mục, nên đối chiếu trên đó
+ * không chứng minh được nhiều - tên thư mục không nói cho biết setup time là bao nhiêu mili-giây hay
+ * MOS là bao nhiêu. {@code for_test/} không gắn nhãn, nên khớp tính tay trên tập này là bằng chứng
+ * thuyết phục hơn rằng phép tính đúng, không phải "đoán đúng vì đã biết đáp số".
  */
 class CallMetricsCalculatorTest {
 
-    private static final String CALL_ID = SampleCalls.SUCCESS_FULL_LOGS;
-    private static final Path CALL_DIR = SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS);
-
     private final CallMetricsCalculator calculator = CallMetricsCalculator.withDefaults();
 
-    private CallMetrics metricsOfFullyLoggedCall() {
-        return calculator.calculate(SampleCalls.timelineWithEndCallLogs(CALL_DIR, CALL_ID));
-    }
-
+    /**
+     * Cuộc gọi thứ nhất: thành công đầy đủ, cả hai leg có end-call + webrtc log - dùng cho phần lớn
+     * số liệu tính tay (thời lượng, retransmit, bên kết thúc, chất lượng thoại từng bên).
+     */
     @Test
-    void computesSetupAndCallProgressDurationsMatchingHandCalculation() {
-        CallMetrics metrics = metricsOfFullyLoggedCall();
+    void computesMetricsForAFullyLoggedRealCallMatchingHandCalculation() {
+        CallTimeline timeline = SampleCalls.timelineWithEndCallLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_FULL_LOGS), SampleCalls.FOR_TEST_FULL_LOGS);
+        CallMetrics metrics = calculator.calculate(timeline);
 
         assertThat(metrics.setupTime().isAvailable()).isTrue();
-        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(8581);
+        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(3840);
+        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(3032);
+        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(80358);
 
-        assertThat(metrics.timeToReachCallee().value().toMillis()).isEqualTo(2991);
-        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(4749);
-        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(361311);
-    }
+        // Không có sự kiện TRYING nào trong signaling export của cuộc gọi này - một chỉ số Core hoàn
+        // toàn hợp lệ khi trả N/A, không phải lỗi tính toán.
+        assertThat(metrics.timeToReachCallee().isAvailable()).isFalse();
 
-    @Test
-    void computesRetransmitCountsMatchingHandCalculation() {
-        CallMetrics metrics = metricsOfFullyLoggedCall();
-
-        assertThat(metrics.inviteRetransmitCount().value()).isEqualTo(0);
+        assertThat(metrics.inviteRetransmitCount().value()).isEqualTo(1);
         assertThat(metrics.byeRetransmitCount().value()).isEqualTo(1);
-    }
-
-    @Test
-    void identifiesCalleeAsTerminatorMatchingHandCalculation() {
-        CallMetrics metrics = metricsOfFullyLoggedCall();
 
         assertThat(metrics.terminator().isAvailable()).isTrue();
-        assertThat(metrics.terminator().value()).isEqualTo(Leg.CALLEE);
-    }
+        assertThat(metrics.terminator().value()).isEqualTo(Leg.CALLER);
 
-    @Test
-    void computesPerLegAudioQualityMatchingHandCalculation() {
-        CallMetrics metrics = metricsOfFullyLoggedCall();
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
+        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
 
         LegQualityMetrics caller = metrics.qualityOf(Leg.CALLER);
-        assertThat(caller.mos().value()).isCloseTo(4.42397, within(0.00001));
+        assertThat(caller.mos().value()).isCloseTo(4.15346, within(0.00001));
         assertThat(caller.packetLossPercent().value()).isEqualTo(0.0);
-        assertThat(caller.rttMs().value()).isEqualTo(54.0);
-        assertThat(caller.jitterMs().value()).isCloseTo(0.006, within(0.0001));
+        assertThat(caller.rttMs().value()).isEqualTo(16.0);
+        assertThat(caller.jitterMs().value()).isCloseTo(0.012, within(0.0001));
 
         LegQualityMetrics callee = metrics.qualityOf(Leg.CALLEE);
-        assertThat(callee.mos().value()).isCloseTo(4.42201, within(0.00001));
-        assertThat(callee.rttMs().value()).isEqualTo(63.0);
-        assertThat(callee.jitterMs().value()).isCloseTo(0.01, within(0.0001));
+        assertThat(callee.mos().value()).isCloseTo(4.37331, within(0.00001));
+        assertThat(callee.packetLossPercent().value()).isEqualTo(0.0);
+        assertThat(callee.rttMs().value()).isEqualTo(18.0);
+        assertThat(callee.jitterMs().value()).isCloseTo(0.003, within(0.0001));
+
+        // timelineWithEndCallLogs() cố tình không nạp webrtc log (xem Javadoc của nó) - xác nhận N/A
+        // tường minh, không phải giá trị rỗng âm thầm.
+        assertThat(caller.webrtcKeyEvents().isAvailable()).isFalse();
+        assertThat(callee.webrtcKeyEvents().isAvailable()).isFalse();
     }
 
+    /**
+     * Cuộc gọi thứ hai: bị từ chối cứng (FAIL_HARD) sau RINGING, thiếu hẳn caller_endcall.log - vẫn
+     * tính được "thời gian với tới callee" từ signaling dù cuộc gọi thất bại, và phải báo đúng N/A cho
+     * mọi chỉ số phụ thuộc vào các mốc chưa từng xảy ra (OK_ACK_OK, BYE).
+     */
     @Test
-    void countsNoSessionsFoundAsZeroForThisSuccessfulCall() {
-        // Các dòng LOG_MESSAGE trong end-call log có field "msg" dạng text tự do (khác với signaling
-        // export vốn hoàn toàn có cấu trúc), nên chỉ số này ở đây là một con số thật, có sẵn - chỉ là
-        // bằng 0 vì cuộc gọi này chưa bao giờ gặp tình huống đó.
-        CallMetrics metrics = metricsOfFullyLoggedCall();
+    void computesSignalingDerivedMetricsForARealFailHardCallWithAnAsymmetricLogSet() {
+        CallTimeline timeline = SampleCalls.timelineWithEndCallLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_FAIL_HARD), SampleCalls.FOR_TEST_FAIL_HARD);
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.timeToReachCallee().isAvailable()).isTrue();
+        assertThat(metrics.timeToReachCallee().value().toMillis()).isEqualTo(9402);
+
+        assertThat(metrics.setupTime().isAvailable()).isFalse();
+        assertThat(metrics.ringingTime().isAvailable()).isFalse();
+        assertThat(metrics.connectedDuration().isAvailable()).isFalse();
+        assertThat(metrics.byeRetransmitCount().isAvailable()).isFalse();
+        assertThat(metrics.terminator().isAvailable()).isFalse();
+
+        assertThat(metrics.inviteRetransmitCount().value()).isEqualTo(0);
+
+        // callee_endcall.log có mặt nhưng cuộc gọi chưa từng vào tầng media (từ chối ngay sau
+        // RINGING), nên không có dòng PERIODIC_STATS nào - N/A đúng vì thiếu dữ liệu, không phải vì
+        // thiếu file.
+        assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
+        assertThat(metrics.qualityOf(Leg.CALLEE).mos().isAvailable()).isFalse();
 
         assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
         assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
     }
 
-    @Test
-    void reportsNoSessionsFoundAsNotAvailableWhenOnlySignalingEventsArePresent() {
-        // Riêng signaling export hoàn toàn không có field msg/message nào (chỉ có các field có cấu
-        // trúc cmd/service/csid/...) - xác nhận báo N/A thay vì trả về 0 sai khi end-call log (nguồn
-        // duy nhất có text tự do) bị thiếu hoàn toàn.
-        CallTimeline timeline = SampleCalls.signalingOnlyTimeline(CALL_DIR, CALL_ID);
-
-        CallMetrics metrics = calculator.calculate(timeline);
-
-        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
-        assertThat(metrics.noSessionsFoundCount().naReason()).contains("no free-text log message field");
-    }
-
-    @Test
-    void reportsWebrtcQualityAsNotAvailableWhenNoWebrtcLogWasParsedForThatLeg() {
-        // Test này chỉ đưa vào signaling + end-call log (không có webrtc.log), nên chỉ số suy ra từ
-        // webrtc của cả hai bên phải là N/A tường minh, không phải giá trị rỗng âm thầm.
-        CallMetrics metrics = metricsOfFullyLoggedCall();
-
-        assertThat(metrics.qualityOf(Leg.CALLER).webrtcKeyEvents().isAvailable()).isFalse();
-        assertThat(metrics.qualityOf(Leg.CALLEE).webrtcKeyEvents().isAvailable()).isFalse();
-    }
-
     /**
-     * Cuộc gọi thật thứ hai, tính tay độc lập với cuộc gọi ở trên, để đáp ứng acceptance criteria của
-     * Sprint 1 là khớp số liệu tính tay trên tối thiểu 5 cuộc gọi thật (xem thêm hai test bên dưới,
-     * cộng với cuộc gọi bị từ chối trong RuleVerdictEngineTest - 5 cuộc gọi khác nhau đã kiểm chứng
-     * tay, trải đều cả case success và fail).
+     * Cuộc gọi thứ ba: chỉ có đúng một sự kiện INIT_CALL trong toàn bộ signaling export, không có
+     * end-call log nào - trường hợp "khô" nhất có thể, mọi chỉ số Core phải là N/A tường minh.
      */
     @Test
-    void computesSignalingDerivedMetricsForASecondRealCallWithNoEndCallLogsAtAll() {
-        String callId = SampleCalls.SUCCESS_NO_CLIENT_LOGS;
-        CallTimeline timeline = SampleCalls.signalingOnlyTimeline(SampleCalls.success(callId), callId);
-
-        CallMetrics metrics = calculator.calculate(timeline);
-
-        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(9301);
-        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(4818);
-        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(32818);
-        assertThat(metrics.timeToReachCallee().value().toMillis()).isEqualTo(3685);
-        assertThat(metrics.inviteRetransmitCount().value()).isEqualTo(0);
-        assertThat(metrics.byeRetransmitCount().value()).isEqualTo(1);
-    }
-
-    @Test
-    void computesSignalingDerivedMetricsForAThirdRealCallWithASingleEndCallLog() {
-        String callId = SampleCalls.SUCCESS_CALLER_LOG_ONLY;
-        CallTimeline timeline = SampleCalls.timelineWithEndCallLogs(SampleCalls.success(callId), callId);
-
-        CallMetrics metrics = calculator.calculate(timeline);
-
-        assertThat(metrics.setupTime().value().toMillis()).isEqualTo(11958);
-        assertThat(metrics.ringingTime().value().toMillis()).isEqualTo(10942);
-        assertThat(metrics.connectedDuration().value().toMillis()).isEqualTo(15809);
-        assertThat(metrics.byeRetransmitCount().value()).isEqualTo(1);
-        assertThat(metrics.terminator().value()).isEqualTo(Leg.CALLER);
-    }
-
-    @Test
-    void reportsSetupTimeAsNotAvailableForAFourthRealCallThatNeverProgressedPastInitCall() {
-        // Signaling export của cuộc gọi này chỉ có đúng INIT_CALL và CANCEL - caller đã huỷ trước khi
-        // kịp gửi INVITE (một dạng lỗi khác với việc bị từ chối sau INVITE, đã kiểm tra ở
-        // RuleVerdictEngineTest).
-        String callId = SampleCalls.FAIL_CANCELLED_BEFORE_INVITE;
-        CallTimeline timeline = SampleCalls.signalingOnlyTimeline(SampleCalls.fail(callId), callId);
-
+    void reportsEveryCoreMetricAsNotAvailableForARealCallThatNeverProgressedPastInitCall() {
+        CallTimeline timeline = SampleCalls.signalingOnlyTimeline(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_INIT_ONLY), SampleCalls.FOR_TEST_INIT_ONLY);
         CallMetrics metrics = calculator.calculate(timeline);
 
         assertThat(metrics.setupTime().isAvailable()).isFalse();
         assertThat(metrics.timeToReachCallee().isAvailable()).isFalse();
+        assertThat(metrics.ringingTime().isAvailable()).isFalse();
+        assertThat(metrics.connectedDuration().isAvailable()).isFalse();
         assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
+        assertThat(metrics.byeRetransmitCount().isAvailable()).isFalse();
+        assertThat(metrics.terminator().isAvailable()).isFalse();
+
+        // Signaling export hoàn toàn có cấu trúc, không có field msg/message nào để tìm.
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("no free-text log message field");
+    }
+
+    /**
+     * Cuộc gọi thứ tư: caller huỷ ngay trong lúc INIT_CALL (chưa từng gửi INVITE), nhưng có
+     * caller_endcall.log - xác nhận end-call log có mặt vẫn không "tự chế" ra được chỉ số nào không
+     * có căn cứ.
+     */
+    @Test
+    void reportsCoreMetricsAsNotAvailableForARealCallCancelledDuringInitCall() {
+        CallTimeline timeline = SampleCalls.timelineWithEndCallLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_CANCELLED_A), SampleCalls.FOR_TEST_CANCELLED_A);
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.setupTime().isAvailable()).isFalse();
+        assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
+        assertThat(metrics.terminator().isAvailable()).isFalse();
+
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
+        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+
+        assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
+    }
+
+    /**
+     * Cuộc gọi thứ năm: cùng dạng với cuộc gọi thứ tư (huỷ trong lúc INIT_CALL) nhưng là một cuộc gọi
+     * thật độc lập khác - xác nhận hành vi N/A nhất quán, không phải trùng hợp của riêng một file.
+     */
+    @Test
+    void reportsCoreMetricsAsNotAvailableForASecondIndependentRealCallCancelledDuringInitCall() {
+        CallTimeline timeline = SampleCalls.timelineWithEndCallLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_CANCELLED_B), SampleCalls.FOR_TEST_CANCELLED_B);
+        CallMetrics metrics = calculator.calculate(timeline);
+
+        assertThat(metrics.setupTime().isAvailable()).isFalse();
+        assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
+        assertThat(metrics.terminator().isAvailable()).isFalse();
+
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
+        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+
+        assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
     }
 }

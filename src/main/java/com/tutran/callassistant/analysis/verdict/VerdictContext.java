@@ -57,6 +57,32 @@ public final class VerdictContext {
         return timeline.hasAnyEvent(EventSource.END_CALL, leg);
     }
 
+    /**
+     * Bên này có <i>bất kỳ</i> log phía client nào không - end-call log hoặc WebRTC log.
+     *
+     * <p>Cả hai đều là log của thiết bị người dùng và đều nói được về trạng thái phía client, nên
+     * cả hai đều tính là bằng chứng. Trước đây chỉ end-call log được tính, khiến 6/20 cuộc gọi
+     * trong data mẫu bị trả UNKNOWN dù có WebRTC log ghi rõ ICE đã lên được hay chưa.
+     */
+    public boolean hasClientEvidence(Leg leg) {
+        return timeline.hasAnyEvent(EventSource.END_CALL, leg)
+                || timeline.hasAnyEvent(EventSource.WEBRTC, leg);
+    }
+
+    /**
+     * Sự kiện signaling cho biết cuộc gọi bị chấm dứt tường minh ({@code FAIL_HARD} hoặc
+     * {@code CANCEL}), nếu có. Ưu tiên {@code FAIL_HARD} vì nó chỉ rõ lỗi phía server.
+     */
+    public Optional<CanonicalEvent> explicitTermination() {
+        for (String cmd : SignalingCommands.EXPLICIT_TERMINATIONS) {
+            Optional<CanonicalEvent> event = timeline.earliestSignaling(cmd);
+            if (event.isPresent()) {
+                return event;
+            }
+        }
+        return Optional.empty();
+    }
+
     /** Cuộc gọi đã đạt trạng thái đã xác nhận (CONFIRMED) chưa - mốc phân định SUCCESS/FAIL. */
     public Optional<CanonicalEvent> callConfirmed() {
         return timeline.earliestSignaling(SignalingCommands.OK_ACK_OK);
@@ -91,6 +117,12 @@ public final class VerdictContext {
                 ? metrics.terminator().value().name()
                 : "unknown side";
         recordEvidence(bye, "BYE from " + terminator);
+    }
+
+    /** Ghi mốc cuộc gọi bị chấm dứt tường minh, nêu rõ lệnh nào đã chấm dứt nó. */
+    public void recordExplicitTermination(CanonicalEvent termination) {
+        recordEvidence(termination, termination.eventType()
+                + ": call terminated before it was ever confirmed");
     }
 
     // --- dựng kết luận -------------------------------------------------------------------

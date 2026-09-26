@@ -9,6 +9,7 @@
     "callId",
     "verdict",
     "qualityFlag",
+    "issueCategory",
     "confidenceLevel",
     "summary",
     "evidence",
@@ -17,34 +18,74 @@
     "dataLimitations"
   ],
   "properties": {
-    "callId": { "type": "string", "minLength": 1 },
-    "verdict": { "type": "string", "enum": ["SUCCESS", "FAIL", "UNKNOWN"] },
-    "qualityFlag": { "type": "boolean" },
+    "callId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "FAIL",
+        "UNKNOWN"
+      ]
+    },
+    "qualityFlag": {
+      "type": "boolean"
+    },
     "issueCategory": {
-      "type": ["string", "null"],
+      "type": "string",
+      "description": "Issue category theo PROJECT_SPEC.md muc 4.2. Luon co gia tri: cuoc goi khong phat hien van de thi la NONE (khac UNKNOWN - khong quy duoc nguyen nhan).",
       "enum": [
         "NETWORK_PACKET_LOSS",
         "NETWORK_DELAY_JITTER",
         "ICE_FAILURE",
         "TURN_FAILURE",
         "SIGNALING_FAILURE",
-        "UNKNOWN",
-        null
+        "NONE",
+        "UNKNOWN"
       ]
     },
-    "confidenceLevel": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
-    "summary": { "type": "string", "minLength": 1 },
+    "confidenceLevel": {
+      "type": "string",
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
     "evidence": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "source", "timestamp", "description"],
+        "required": [
+          "id",
+          "source",
+          "timestamp",
+          "description"
+        ],
         "properties": {
-          "id": { "type": "string", "pattern": "^EV[0-9]{3}$" },
-          "source": { "type": "string", "minLength": 1 },
-          "timestamp": { "type": "string", "minLength": 1 },
-          "description": { "type": "string", "minLength": 1 }
+          "id": {
+            "type": "string",
+            "pattern": "^EV[0-9]{3}$"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "timestamp": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
@@ -53,21 +94,40 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "value", "source"],
+        "required": [
+          "name",
+          "value",
+          "source"
+        ],
         "properties": {
-          "name": { "type": "string", "minLength": 1 },
-          "value": { "type": "string", "minLength": 1 },
-          "source": { "type": "string", "minLength": 1 }
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
     "suggestions": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "dataLimitations": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     }
   }
 }

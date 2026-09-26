@@ -42,14 +42,15 @@ public class RuleBasedReportAssembler implements ReportAssembler {
 
     @Override
     public Report assemble(String callId, RuleVerdictResult verdict, CallMetrics metrics) {
-        // Cuộc gọi SUCCESS không có vấn đề gì thì không nêu issue category và không kèm đề xuất -
-        // báo "UNKNOWN" ở một cuộc gọi hoàn toàn bình thường sẽ gây hiểu nhầm là có vấn đề.
+        // Issue category LUÔN được nêu, kể cả cuộc gọi sạch (khi đó là NONE) - để người đọc phân
+        // biệt được "đã kiểm tra, không có vấn đề" với "chưa kiểm tra". Riêng đề xuất thì vẫn chỉ
+        // kèm khi thật sự có vấn đề, tránh bịa việc cho một cuộc gọi hoàn toàn bình thường.
         boolean reportIssue = verdict.hasIssueToReport();
         return new Report(
                 callId,
                 verdict.verdict().name(),
                 verdict.qualityFlag(),
-                reportIssue ? verdict.issueCategory().name() : null,
+                verdict.issueCategory().name(),
                 confidencePolicy.confidenceFor(verdict).name(),
                 verdict.summary(),
                 verdict.evidence().stream().map(this::toEvidenceItem).toList(),

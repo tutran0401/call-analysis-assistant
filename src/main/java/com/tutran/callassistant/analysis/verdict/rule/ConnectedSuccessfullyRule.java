@@ -35,7 +35,9 @@ public class ConnectedSuccessfullyRule implements VerdictRule {
 
         Optional<QualityIssue> issue = qualityInspector.inspect(context.metrics());
         if (issue.isEmpty()) {
-            return Optional.of(context.success(false, IssueCategory.UNKNOWN,
+            // NONE chứ không phải UNKNOWN: đây là kết luận khẳng định "đã kiểm tra, không có vấn đề",
+            // không phải thừa nhận không quy được nguyên nhân.
+            return Optional.of(context.success(false, IssueCategory.NONE,
                     "Call established and ended normally with no quality issues detected."));
         }
         IssueCategory category = issue.get().category();

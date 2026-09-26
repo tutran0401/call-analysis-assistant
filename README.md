@@ -58,9 +58,14 @@ của code.
 
 **Đã kiểm chứng trên toàn bộ data mẫu** (`demo sample-data/success sample-data/fail sample-data/for_test`, cả 20 cuộc gọi,
 qua pipeline có ES thật): 0 cảnh báo parser trên mọi file — **parse sạch 100%** (vượt xa
-mục tiêu ≥90%) — với 6 verdict `SUCCESS`, 8 `FAIL`, 6 `UNKNOWN`; mỗi `UNKNOWN` đều có lý
-do thiếu dữ liệu cụ thể trong report, và không có exception nào trong suốt quá trình chạy.
-Kết quả giống hệt nhau trên cả hai đường lấy signaling (qua Elasticsearch và `--from-file`).
+mục tiêu ≥90%) — và không có exception nào trong suốt quá trình chạy. Kết quả giống hệt
+nhau trên cả hai đường lấy signaling (qua Elasticsearch và `--from-file`).
+
+**Độ chính xác trên tập có nhãn của mentor: 13/13.** Cả 7 cuộc gọi trong `success/` đều ra
+`SUCCESS`, cả 6 cuộc gọi trong `fail/` đều ra `FAIL` — 0 ca `UNKNOWN`, 0 ca sai. Bộ
+`for_test/` (không có nhãn) ra 1 `SUCCESS` + 6 `FAIL`, mỗi kết luận đều trace được về
+evidence cụ thể. Chi tiết cách đo, 3 lỗi đã sửa để đạt được con số này, và toàn bộ output
+thô: `docs/accuracy-evaluation.md`.
 
 ## Cấu trúc project
 
@@ -129,9 +134,15 @@ rối rắm không cần thiết.
   những phản hồi giao thức TURN bình thường, tự phục hồi được (per-candidate) thành lỗi —
   kể cả trên một cuộc gọi SUCCESS hoàn toàn sạch (xem Javadoc của `IceFailureDetector` và
   `WebRtcLogParser`, cùng lịch sử commit, để biết số lượng false-positive cụ thể). Rule
-  engine hiện gộp lỗi tầng TURN vào `ICE_FAILURE` (dựa trên trạng thái kết thúc chính thức
-  `onIceConnectionChange` của engine) hoặc `SIGNALING_FAILURE`. Một bộ phát hiện TURN
-  riêng, đáng tin cậy hơn sẽ để lại cho sprint sau.
+  engine hiện gộp lỗi tầng TURN vào `ICE_FAILURE` (dựa trên trạng thái ICE chính thức của
+  engine — cả dạng callback `onIceConnectionChange` của iOS lẫn dạng
+  `Changing IceConnectionState X => Y` của bản native) hoặc `SIGNALING_FAILURE`. Một bộ
+  phát hiện TURN riêng, đáng tin cậy hơn sẽ để lại cho sprint sau.
+- **Cuộc gọi do người dùng chủ động huỷ chưa có issue category riêng.** 7/20 cuộc gọi trong
+  data mẫu kết thúc bằng `CANCEL` trước khi kết nối. Verdict `FAIL` là đúng, nhưng mục 4.2
+  của spec không có category nào cho hành vi người dùng nên chúng tạm mang
+  `SIGNALING_FAILURE` — ngụ ý lỗi hệ thống. Đang chờ Mentor xác nhận nên gắn nhãn gì
+  (xem `docs/accuracy-evaluation.md` mục 7).
 - **Chưa làm các chỉ số "Nếu kịp" (mục 4.3)**: proxy khoảng trống PAIR_PING, latency API
   nội bộ lúc INIT_CALL, số lượng WARN/ERROR phía server, ngữ cảnh ISP/ASN/country. Sprint 1
   ưu tiên làm xong các chỉ số Core trước.

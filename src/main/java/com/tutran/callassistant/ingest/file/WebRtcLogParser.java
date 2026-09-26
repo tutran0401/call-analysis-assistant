@@ -147,19 +147,26 @@ public class WebRtcLogParser implements ClientLogParser {
     }
 
     /**
-     * Cố tình thu hẹp phạm vi: chỉ tin vào đúng tên callback có sẵn của engine
-     * ({@code onIceConnectionChange}/{@code onConnectionChange}/{@code onIceCandidate}).
+     * Cố tình thu hẹp phạm vi: chỉ tin vào đúng từ vựng có sẵn của engine, không so khớp văn bản tự do.
      *
      * <p>Phiên bản trước có so khớp thêm cả văn bản tự do chứa "turn"/"ice" cộng "error"/"fail" -
      * cách đó sinh ra false positive (ví dụ "TURN create permission error response, code=400" và
      * thử thách credential dài hạn code=401 đều chỉ là nhiễu giao thức bình thường theo từng
      * candidate, quan sát thấy hàng chục lần ngay cả trên một cuộc gọi SUCCESS sạch, chất lượng
-     * cao) nên đã bị gỡ bỏ thay vì vá thêm; một lỗi media thật sự đã được
-     * {@code ICE_CONNECTION_STATE_CHANGE} với message FAILED/DISCONNECTED nắm bắt đủ tin cậy rồi.
+     * cao) nên đã bị gỡ bỏ thay vì vá thêm.
+     *
+     * <p><b>Hai cách engine báo trạng thái ICE.</b> Bản iOS gọi callback theo tên
+     * ({@code onIceConnectionChange: FAILED}); bản native {@code peer_connection.cc} lại ghi thành
+     * câu kể: {@code Changing IceConnectionState checking => failed} (và một dòng song song
+     * {@code Changing standardized IceConnectionState ...}). Trước đây chỉ dạng thứ nhất được nhận
+     * ra, nên 16 trong 28 file webrtc của data mẫu <i>có</i> ghi trạng thái ICE mà hệ thống thấy 0
+     * sự kiện - nhánh ICE_FAILURE chưa từng chạy một lần nào, và một cuộc gọi lỗi media thật
+     * (ICE {@code => failed}, MOS = 0) bị kết luận SUCCESS. Khớp {@code iceconnectionstate} bắt được
+     * cả hai biến thể của dạng thứ hai.
      */
     private String classify(String message) {
         String lower = message.toLowerCase(Locale.ROOT);
-        if (lower.contains("iceconnectionchange")) {
+        if (lower.contains("iceconnectionchange") || lower.contains("iceconnectionstate")) {
             return "ICE_CONNECTION_STATE_CHANGE";
         }
         if (lower.contains("onconnectionchange")) {

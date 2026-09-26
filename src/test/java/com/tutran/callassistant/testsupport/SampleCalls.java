@@ -1,11 +1,13 @@
 package com.tutran.callassistant.testsupport;
 
 import com.tutran.callassistant.analysis.timeline.EventDeduplicator;
+import com.tutran.callassistant.application.CallReference;
 import com.tutran.callassistant.analysis.timeline.TimelineBuilder;
 import com.tutran.callassistant.analysis.timeline.WebRtcElapsedTimeAnchor;
 import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.event.Leg;
 import com.tutran.callassistant.domain.timeline.CallTimeline;
+import com.tutran.callassistant.ingest.file.DirectoryClientLogSource;
 import com.tutran.callassistant.ingest.file.EndCallLogParser;
 import com.tutran.callassistant.ingest.file.EndCallSchemaClassifier;
 import com.tutran.callassistant.ingest.file.LogFile;
@@ -38,6 +40,32 @@ public final class SampleCalls {
     public static final String FAIL_REJECTED_AFTER_INVITE = "1B009D42-49CD-479E-B26C-3A2994AEB720";
     /** Caller huỷ ngay trong lúc INIT_CALL, chưa từng gửi INVITE. */
     public static final String FAIL_CANCELLED_BEFORE_INVITE = "703100CF-5742-467E-9E0E-34E45F60FF58";
+    /**
+     * Signaling đi đủ INIT_CALL...OK_ACK_OK...BYE như một cuộc gọi hoàn hảo, nhưng ICE của callee
+     * {@code checking => failed} nên bên đó không hề có media (MOS = 0 trên cả 25 dòng periodic stats).
+     * Ca mà chỉ signaling không bao giờ phát hiện được.
+     */
+    public static final String FAIL_MEDIA_NEVER_CONNECTED = "2D9057AA-C496-48B2-946A-98FA2896D086";
+    /**
+     * Bị huỷ tường minh ({@code CANCEL} ×15) và <b>không có end-call log nào</b>; webrtc log cũng không
+     * có dòng ICE nào - nên chỉ signaling mới kết luận được.
+     */
+    public static final String FAIL_CANCELLED_NO_CLIENT_LOGS = "7B56D7AD-1FF1-4EDB-B212-06EC12CA73FB";
+
+    // --- for_test/ - tập không gắn nhãn sẵn (không phải success/fail do mentor phân loại trước), dùng
+    // làm bằng chứng "khớp tính tay" cho acceptance criteria vì kết quả không thể suy ra được từ tên
+    // thư mục. ---
+    /** Thành công đầy đủ, cả hai leg có end-call + webrtc log. */
+    public static final String FOR_TEST_FULL_LOGS = "271D1FAF-26D4-4150-AC3F-9204505BD84B";
+    /** Bị từ chối cứng (FAIL_HARD) sau RINGING; thiếu caller_endcall.log. */
+    public static final String FOR_TEST_FAIL_HARD = "0EC7B700-6B5D-45A3-9BB6-1463B56C9634";
+    /** Chỉ có đúng một sự kiện INIT_CALL, không có end-call log nào. */
+    public static final String FOR_TEST_INIT_ONLY = "9B556E56-24D3-43BA-853D-7972AD009865";
+    /** Caller huỷ trong lúc INIT_CALL; có caller_endcall.log nhưng chưa từng có media nên không có
+     *  PERIODIC_STATS. */
+    public static final String FOR_TEST_CANCELLED_A = "0A6C2821-0A19-49F4-9C05-8F8BCEACD64F";
+    /** Cùng dạng với {@link #FOR_TEST_CANCELLED_A}, một cuộc gọi thật độc lập khác. */
+    public static final String FOR_TEST_CANCELLED_B = "45AA3011-1034-4D13-82A4-634A72D432B6";
 
     private static final Path SAMPLE_DATA = Path.of("sample-data");
     private static final String SIGNALING_FILE = "signaling.json";
@@ -51,6 +79,10 @@ public final class SampleCalls {
 
     public static Path fail(String callId) {
         return SAMPLE_DATA.resolve("fail").resolve(callId);
+    }
+
+    public static Path forTest(String callId) {
+        return SAMPLE_DATA.resolve("for_test").resolve(callId);
     }
 
     public static TimelineBuilder timelineBuilder() {
@@ -86,6 +118,21 @@ public final class SampleCalls {
                 events.addAll(endCallEvents(endCallLog, callId));
             }
         }
+        return timelineBuilder().build(callId, events);
+    }
+
+    /**
+     * Timeline từ signaling cộng <b>mọi</b> log client có trong thư mục - end-call lẫn WebRTC, nhận
+     * diện theo nội dung nên file đặt sai tên vẫn vào đúng chỗ.
+     *
+     * <p>Dùng cho các test cần bằng chứng tầng media (trạng thái ICE), ví dụ phân biệt một cuộc gọi
+     * thật sự thành công với một cuộc gọi có signaling hoàn hảo nhưng media chết.
+     */
+    public static CallTimeline timelineWithAllClientLogs(Path callDirectory, String callId) {
+        List<CanonicalEvent> events = new ArrayList<>(signalingEvents(callDirectory, callId));
+        events.addAll(DirectoryClientLogSource.withDefaults()
+                .load(new CallReference(callId, callDirectory))
+                .events());
         return timelineBuilder().build(callId, events);
     }
 }

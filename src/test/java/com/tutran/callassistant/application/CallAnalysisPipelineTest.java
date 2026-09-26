@@ -80,13 +80,40 @@ class CallAnalysisPipelineTest {
     }
 
     @Test
-    void stillProducesAReportForACallWithNoClientLogsAtAll() {
+    void concludesFromWebRtcLogWhenNoEndCallLogExists() {
+        // Cuộc gọi thật này (nhãn success) không có end-call log của bên nào, nhưng webrtc log của cả
+        // hai bên đều ghi ICE "checking => connected" - đủ bằng chứng phía client để kết luận. Trước
+        // khi MissingClientLogsRule chấp nhận webrtc log, đúng cuộc gọi này bị trả UNKNOWN.
         AnalysisOutcome outcome = analyze(SampleCalls.success(SampleCalls.SUCCESS_NO_CLIENT_LOGS));
 
-        assertThat(outcome.report().verdict()).isEqualTo("UNKNOWN");
-        assertThat(outcome.report().confidenceLevel()).isEqualTo("LOW");
+        assertThat(outcome.report().verdict()).isEqualTo("SUCCESS");
+        // Vẫn hạ độ tin cậy vì end-call log thiếu thật - và vẫn nói rõ thiếu file nào.
+        assertThat(outcome.report().confidenceLevel()).isEqualTo("MEDIUM");
         assertThat(outcome.report().dataLimitations())
                 .contains("Missing caller_endcall.log", "Missing callee_endcall.log");
+    }
+
+    @Test
+    void reportsIceFailureForACallThatLooksCompleteAtTheSignalingLayer() {
+        // Ca mà chỉ signaling không bao giờ phát hiện được: lệnh đi đủ INIT_CALL...OK_ACK_OK...BYE,
+        // nhưng ICE của callee "checking => failed" nên bên đó không hề có media (MOS = 0).
+        AnalysisOutcome outcome = analyze(SampleCalls.fail(SampleCalls.FAIL_MEDIA_NEVER_CONNECTED));
+
+        assertThat(outcome.report().verdict()).isEqualTo("FAIL");
+        assertThat(outcome.report().issueCategory()).isEqualTo("ICE_FAILURE");
+        assertThat(outcome.report().evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("ICE connectivity failed"));
+    }
+
+    @Test
+    void concludesFailFromSignalingAloneWhenTheCallWasExplicitlyCancelled() {
+        // Không có end-call log, webrtc log không có dòng ICE nào - nhưng signaling ghi rõ CANCEL,
+        // đủ để kết luận cuộc gọi chưa từng thiết lập được.
+        AnalysisOutcome outcome = analyze(SampleCalls.fail(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS));
+
+        assertThat(outcome.report().verdict()).isEqualTo("FAIL");
+        assertThat(outcome.report().evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("CANCEL"));
     }
 
     @Test
