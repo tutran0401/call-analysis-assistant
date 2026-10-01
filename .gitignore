@@ -6,3 +6,6 @@ target/
 .env
 .DS_Store
 *.log.tmp
+
+# Data mẫu của mentor: có thể chứa dữ liệu thật/nhạy cảm, không đưa vào git (xem docs/sensitive-data-inventory.md)
+sample-data/
