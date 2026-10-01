@@ -25,6 +25,11 @@ trình khởi động), nên phải "neo" nó vào timestamp tuyệt đối sớ
 log — nếu leg đó không có end-call log thì neo tạm vào mốc signaling sớm nhất của cả cuộc gọi, và
 đánh dấu rõ đây là suy luận (`ANCHORED`) chứ không phải số liệu chắc chắn (`EXACT`).
 
+Đồng hồ server (signaling) và đồng hồ thiết bị (end-call log) có thể lệch nhau, nên trước bước neo có
+`ClockSkewAnchor`: so mốc đầu tiên của cùng một lệnh signaling ở hai phía, lấy trung vị theo từng leg, và
+chỉ dịch timestamp khi lệch quá 2 giây (dưới đó coi là trễ mạng). Data mẫu hiện không có ca lệch thật nên
+phần này mới được kiểm bằng test tổng hợp, chưa kiểm trên data thật.
+
 Trên timeline đã sắp xếp, một bộ calculator đo các khoảng cách giữa các mốc signaling (setup time,
 ringing time, thời lượng kết nối...), đếm số lần gửi lại lệnh, và đọc dòng "chỉ số chất lượng" cuối
 cùng trong end-call log của mỗi bên (MOS, packet loss, RTT, jitter). Nguyên tắc xuyên suốt: thiếu dữ
@@ -70,7 +75,7 @@ lộ ra 3 lỗi cùng một bản chất — logic đúng nhưng **bỏ sót ho�
 
 Sau khi sửa cả 3 và viết test chống hồi quy cho từng ca: **13/13 đúng** trên tập có nhãn (0 UNKNOWN,
 0 sai), bộ `for_test/` không nhãn ra 1 SUCCESS + 6 FAIL đều có căn cứ, 0 cảnh báo parser trên toàn bộ
-20 cuộc gọi, 81/81 unit test pass. Toàn bộ quá trình đo, soát dữ liệu, và bằng chứng chi tiết từng ca
+20 cuộc gọi, 112/112 unit test pass (đã chạy lại `mvn test` và `demo` ngày 2026-10-01). Toàn bộ quá trình đo, soát dữ liệu, và bằng chứng chi tiết từng ca
 nằm ở `docs/sample-run-report.md`.
 
 Riêng phần "chỉ số khớp tính tay trên ≥5 cuộc gọi" (acceptance criteria mục 5.1) được đối chiếu trên
@@ -104,8 +109,12 @@ dứt tường minh nào khác) — hiện vẫn đang báo `MEDIUM`.
 
 ## Còn thiếu gì, và vì sao
 
-- **Phát hiện lỗi TURN riêng biệt**: chưa làm. Cách so khớp từ khoá tự do từng thử báo nhầm hàng
-  loạt phản hồi TURN bình thường thành lỗi; lỗi tầng TURN hiện tạm gộp chung vào `ICE_FAILURE`.
+- **Phát hiện lỗi TURN riêng biệt**: đã làm (`TurnFailureDetector`, category `TURN_FAILURE`), dựa trên
+  việc đếm request/response TURN thay vì so khớp từ khoá. 6/20 cuộc gọi mẫu ra `TURN_FAILURE`.
+- **Test Elasticsearch**: có 4 test bằng client giả (ES sập, id document ổn định khi import lại, bulk
+  lỗi, file rỗng); chưa có integration test với ES thật (Testcontainers).
+- **Hiệu chỉnh lệch đồng hồ trên data thật**: cơ chế đã có (`ClockSkewAnchor`) nhưng chưa có ca lệch thật
+  nào trong data mẫu để xác nhận ngưỡng 2 giây.
 - **Category riêng cho cuộc gọi bị người dùng chủ động huỷ**: 7/20 cuộc gọi mẫu kết thúc bằng
   `CANCEL`, verdict `FAIL` đúng nhưng taxonomy hiện chưa có category nào cho hành vi người dùng (khác
   lỗi hệ thống) — đang chờ mentor xác nhận nên gắn nhãn gì.
@@ -118,6 +127,9 @@ dứt tường minh nào khác) — hiện vẫn đang báo `MEDIUM`.
   đề xuất Cloud API, nhưng **chưa được mentor duyệt**.
 
 ---
+
+*Lưu ý:* `sample-data/` không nằm trong git (có thể chứa dữ liệu nhạy cảm); ES/Kibana trong
+`docker-compose.yml` chỉ bind `127.0.0.1`.
 
 *Xem thêm:*
 - *Bản trình bày trực quan tổng quan Sprint 1 (HTML): [Sprint 1 Baseline Report](https://claude.ai/artifact/GnN7k1uCXwXSJaMyG586Ci)*
