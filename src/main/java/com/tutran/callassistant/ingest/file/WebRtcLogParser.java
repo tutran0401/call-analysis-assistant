@@ -166,6 +166,18 @@ public class WebRtcLogParser implements ClientLogParser {
      */
     private String classify(String message) {
         String lower = message.toLowerCase(Locale.ROOT);
+        // TURN: chỉ nhận đúng ba câu có từ vựng cố định của engine, đủ để phân biệt "hỏng thật" với
+        // "nhiễu giao thức bình thường". Xem TurnFailureDetector để biết ba câu này ghép lại thành
+        // chẩn đoán ra sao - và vì sao chỉ đếm lỗi thì không đủ.
+        if (lower.contains("failed to create turn client socket")) {
+            return "TURN_SOCKET_ERROR";
+        }
+        if (lower.contains("received turn allocate") && lower.contains("response")) {
+            return "TURN_ALLOCATE_RESPONSE";
+        }
+        if (lower.contains("allocate request sent")) {
+            return "TURN_ALLOCATE_REQUEST";
+        }
         if (lower.contains("iceconnectionchange") || lower.contains("iceconnectionstate")) {
             return "ICE_CONNECTION_STATE_CHANGE";
         }

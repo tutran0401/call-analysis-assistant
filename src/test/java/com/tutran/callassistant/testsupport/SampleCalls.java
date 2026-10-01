@@ -51,6 +51,8 @@ public final class SampleCalls {
      * có dòng ICE nào - nên chỉ signaling mới kết luận được.
      */
     public static final String FAIL_CANCELLED_NO_CLIENT_LOGS = "7B56D7AD-1FF1-4EDB-B212-06EC12CA73FB";
+    /** TURN hỏng kiểu "không tạo nổi socket": chưa gửi đi được request allocate nào. */
+    public static final String FAIL_TURN_SOCKET = "703100CF-5742-467E-9E0E-34E45F60FF58";
 
     // --- for_test/ - tập không gắn nhãn sẵn (không phải success/fail do mentor phân loại trước), dùng
     // làm bằng chứng "khớp tính tay" cho acceptance criteria vì kết quả không thể suy ra được từ tên
@@ -66,6 +68,16 @@ public final class SampleCalls {
     public static final String FOR_TEST_CANCELLED_A = "0A6C2821-0A19-49F4-9C05-8F8BCEACD64F";
     /** Cùng dạng với {@link #FOR_TEST_CANCELLED_A}, một cuộc gọi thật độc lập khác. */
     public static final String FOR_TEST_CANCELLED_B = "45AA3011-1034-4D13-82A4-634A72D432B6";
+    /**
+     * TURN hỏng kiểu "gửi request nhưng không có phản hồi": 60 request allocate, 0 response.
+     * Không có end-call log nên chỉ webrtc log mới nói được nguyên nhân.
+     */
+    public static final String FOR_TEST_TURN_NO_RESPONSE = "AA9791CE-13D8-4DD7-942D-4D78304FD458";
+    /**
+     * Bẫy false positive: log có 24 dòng lỗi TURN <b>nhưng</b> 40 request đã gửi và có phản hồi về,
+     * tức TURN vẫn hoạt động - không được gắn TURN_FAILURE cho ca này.
+     */
+    public static final String FOR_TEST_TURN_NOISY_BUT_OK = "311A9B6A-0D30-4C30-9E01-9A42E4EF11E6";
 
     private static final Path SAMPLE_DATA = Path.of("sample-data");
     private static final String SIGNALING_FILE = "signaling.json";

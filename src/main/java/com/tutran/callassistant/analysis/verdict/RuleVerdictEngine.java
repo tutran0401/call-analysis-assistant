@@ -52,12 +52,14 @@ public class RuleVerdictEngine implements VerdictEngine {
     public static RuleVerdictEngine withDefaults() {
         QualityThresholds thresholds = QualityThresholds.defaults();
         IceFailureDetector iceFailureDetector = new IceFailureDetector();
+        FailureCauseClassifier causeClassifier =
+                new FailureCauseClassifier(new TurnFailureDetector(), iceFailureDetector);
         return new RuleVerdictEngine(
                 List.of(new MissingEndCallLogDetector()),
                 List.of(new MissingSignalingDataRule(),
-                        new ExplicitTerminationRule(),
+                        new ExplicitTerminationRule(causeClassifier),
                         new MissingClientLogsRule(),
-                        new FailedToConnectRule(iceFailureDetector),
+                        new FailedToConnectRule(causeClassifier),
                         new ConnectedWithoutByeRule(),
                         new MediaFailedAfterConnectRule(iceFailureDetector),
                         new ConnectedSuccessfullyRule(QualityInspector.withDefaults(thresholds))));

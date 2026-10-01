@@ -20,6 +20,7 @@ class TextReportRendererTest {
                 "SUCCESS",
                 true,
                 "NETWORK_PACKET_LOSS",
+                List.of("NETWORK_DELAY_JITTER - chưa xác nhận được do thiếu RTT/jitter"),
                 "MEDIUM",
                 "Call established and ended normally, but quality degraded.",
                 List.of(new EvidenceItem("EV001", "signaling", "2026-01-01 00:00:00.000", "OK_ACK_OK: confirmed")),
@@ -42,6 +43,7 @@ class TextReportRendererTest {
                 "Thời lượng kết nối",
                 "## Vấn đề chất lượng / nguyên nhân khả dĩ",
                 "- Chính: NETWORK_PACKET_LOSS",
+                "- Khả dĩ khác: NETWORK_DELAY_JITTER - chưa xác nhận được do thiếu RTT/jitter",
                 "## Đề xuất",
                 "Kiểm tra chất lượng mạng.",
                 "## Giới hạn dữ liệu",
@@ -51,8 +53,8 @@ class TextReportRendererTest {
 
     @Test
     void rendersNoQualityFlagAndNoLimitationsGracefully() {
-        Report report = new Report("CALL-2", "SUCCESS", false, "NONE", "HIGH", "All good.",
-                List.of(), List.of(), List.of(), List.of());
+        Report report = new Report("CALL-2", "SUCCESS", false, "NONE", List.of(), "HIGH",
+                "Cuộc gọi tốt.", List.of(), List.of(), List.of(), List.of());
 
         String rendered = renderer.render(report);
 

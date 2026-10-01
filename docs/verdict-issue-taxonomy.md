@@ -34,7 +34,13 @@ việc tường minh của Sprint 3 (mục 7.1 T1).
 
 ## Issue Category (PROJECT_SPEC.md mục 4.2)
 
-Áp dụng cho cuộc gọi `FAIL` và cuộc gọi `SUCCESS` có cờ chất lượng kém.
+**Mọi report đều nêu đúng một issue category**, kể cả cuộc gọi thành công hoàn toàn — khi đó là
+`NONE`. Mục 4.2 của spec mô tả category là chỉ áp dụng cho `FAIL` và `SUCCESS` có cờ chất lượng kém;
+`NONE` là phần **mở rộng so với spec** để mục "Vấn đề chất lượng / nguyên nhân khả dĩ" của report
+không bao giờ rỗng — **cần mentor xác nhận**.
+
+Lý do mở rộng: khi mục này để trống, người đọc không phân biệt được "hệ thống đã kiểm tra đủ và
+không tìm thấy vấn đề" với "hệ thống chưa kiểm tra / không có dữ liệu để kiểm tra".
 
 ### NETWORK_PACKET_LOSS
 
@@ -72,19 +78,21 @@ việc tường minh của Sprint 3 (mục 7.1 T1).
 
 ### TURN_FAILURE
 
-- **Định nghĩa**: không thiết lập được (hoặc bị suy giảm) kết nối media do lỗi
-  allocation/relay của TURN quan sát được từ phía client.
-- **Chưa tự động phát hiện được trong Sprint 1.** Phiên bản đầu tiên so khớp từ khóa tự
-  do "turn" + "error"/"fail", nhưng cách này báo nhầm các phản hồi giao thức TURN bình
-  thường, tự phục hồi được thành lỗi thật — đã xác nhận trên một cuộc gọi `SUCCESS` thật,
-  sạch, ra tới 26/16 false positive (đây là bước "thách thức" (challenge) tiêu chuẩn của
-  cơ chế credential dài hạn, và các lần thử lại xin quyền (permission) đơn giản bị bỏ để
-  chuyển sang candidate pair khác đang hoạt động tốt). Hiện tại lỗi này được gộp vào
-  `ICE_FAILURE` (qua trạng thái kết thúc ICE đáng tin cậy) hoặc `SIGNALING_FAILURE`. Một
-  bộ phát hiện TURN thật sự — có lẽ cần theo dõi trạng thái theo từng candidate pair chứ
-  không phải so khớp từ khóa từng dòng — được để lại làm Known Limitations.
-- **Dù sao cũng ngoài phạm vi** (PROJECT_SPEC.md mục 9): chẩn đoán nghẽn/quá tải TURN
-  server, kể cả khi đã phát hiện được lỗi TURN phía client một cách đáng tin cậy.
+- **Định nghĩa**: không thiết lập được (hoặc suy giảm) kết nối media vì client không đi hết được vòng
+  request/response với TURN server.
+- **Triệu chứng**: không tạo được socket tới TURN server (chưa gửi đi request nào); hoặc đã gửi
+  request allocate nhưng không nhận được phản hồi nào.
+- **Evidence cần có**: WebRTC log — `TURN_SOCKET_ERROR`, `TURN_ALLOCATE_REQUEST`,
+  `TURN_ALLOCATE_RESPONSE`.
+- **Điều kiện phát hiện**: có `TURN_SOCKET_ERROR`; HOẶC có request allocate gửi đi mà không có phản
+  hồi nào.
+- **Cố tình KHÔNG dựa vào việc đếm lỗi**: mọi cuộc gọi SUCCESS trong data mẫu đều sẵn có 20 dòng
+  `TURN probe error response` và 4 dòng `Received TURN allocate error response` — đó là thử thách
+  credential dài hạn và nhiễu dò đường theo từng candidate, hoàn toàn bình thường. Bản phát hiện đầu
+  tiên so khớp từ khoá tự do đã bị gỡ vì gắn nhầm cho cả 7 cuộc gọi tốt.
+- **Điểm mơ hồ đã biết**: theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm
+  vi — ở đây chỉ kết luận được là client không đi hết được vòng request/response, chứ không nói được
+  lỗi nằm ở phía server hay phía mạng của thiết bị.
 
 ### SIGNALING_FAILURE
 
@@ -103,9 +111,25 @@ việc tường minh của Sprint 3 (mục 7.1 T1).
   hiện chưa thể nhận cuộc gọi") ngay trước khi kịp gửi INVITE. Evidence cần được đọc theo
   ngữ cảnh, không nên coi là bằng chứng lỗi kỹ thuật.
 
+### NONE
+
+- **Định nghĩa**: đã đối chiếu với mọi điều kiện phát hiện ở trên và không điều kiện nào khớp —
+  cuộc gọi kết nối được, kết thúc bình thường, và không chỉ số chất lượng nào vượt ngưỡng.
+- **Evidence cần có**: signaling đạt `OK_ACK_OK` rồi `BYE`; mọi chỉ số chất lượng đang có đều trong
+  ngưỡng.
+- **Điều kiện phát hiện**: không category nào khác khớp VÀ verdict là `SUCCESS` không kèm cờ chất
+  lượng.
+- **Điểm mơ hồ đã biết**: không có evidence không có nghĩa là không có vấn đề. Một bên thiếu
+  end-call log thì không đóng góp chỉ số chất lượng nào, nên `NONE` chỉ có nghĩa "không tìm thấy gì
+  trong phần dữ liệu thực sự có" — phải đọc kèm mục *Giới hạn dữ liệu* của report.
+- **Khác `UNKNOWN` thế nào**: `NONE` là kết luận khẳng định (cuộc gọi tốt); `UNKNOWN` là thừa nhận
+  không quy được nguyên nhân. Gộp hai cái làm một sẽ khiến cuộc gọi hoàn hảo bị đọc thành "có vấn đề
+  nhưng không rõ là gì".
+
 ### UNKNOWN
 
-- Không đủ evidence để gán vào một category cụ thể.
+- Có dấu hiệu bất thường hoặc thiếu dữ liệu, nhưng không đủ evidence để gán vào một category cụ thể.
+- Không dùng cho cuộc gọi sạch — trường hợp đó là `NONE`.
 
 ## Một điểm bất thường trong data thật đã ảnh hưởng đến thiết kế này
 

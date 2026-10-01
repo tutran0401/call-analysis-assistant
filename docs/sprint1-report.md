@@ -71,7 +71,7 @@ lộ ra 3 lỗi cùng một bản chất — logic đúng nhưng **bỏ sót ho�
 Sau khi sửa cả 3 và viết test chống hồi quy cho từng ca: **13/13 đúng** trên tập có nhãn (0 UNKNOWN,
 0 sai), bộ `for_test/` không nhãn ra 1 SUCCESS + 6 FAIL đều có căn cứ, 0 cảnh báo parser trên toàn bộ
 20 cuộc gọi, 81/81 unit test pass. Toàn bộ quá trình đo, soát dữ liệu, và bằng chứng chi tiết từng ca
-nằm ở `docs/accuracy-evaluation.md`.
+nằm ở `docs/sample-run-report.md`.
 
 Riêng phần "chỉ số khớp tính tay trên ≥5 cuộc gọi" (acceptance criteria mục 5.1) được đối chiếu trên
 **5 cuộc gọi trong `for_test/`** thay vì tập có nhãn — vì tập có nhãn đã tiết lộ sẵn đáp số cuối cùng
@@ -121,4 +121,4 @@ dứt tường minh nào khác) — hiện vẫn đang báo `MEDIUM`.
 
 *Xem thêm:*
 - *Bản trình bày trực quan tổng quan Sprint 1 (HTML): [Sprint 1 Baseline Report](https://claude.ai/artifact/GnN7k1uCXwXSJaMyG586Ci)*
-- *Đánh giá độ chính xác chi tiết (bằng chứng từng ca, output thô, câu hỏi cho mentor): `docs/accuracy-evaluation.md`, bản trực quan [Độ chính xác rule baseline](https://claude.ai/code/artifact/f8665a78-c5ba-4887-9bf6-7ba4373fe8d6)*
+- *Kết quả chạy chi tiết (bằng chứng từng ca, output thô, câu hỏi cho mentor): `docs/sample-run-report.md`, bản trực quan [Kết quả chạy data mẫu](https://claude.ai/code/artifact/f8665a78-c5ba-4887-9bf6-7ba4373fe8d6)*

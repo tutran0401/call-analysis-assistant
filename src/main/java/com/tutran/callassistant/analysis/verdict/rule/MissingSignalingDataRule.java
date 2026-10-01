@@ -20,8 +20,8 @@ public class MissingSignalingDataRule implements VerdictRule {
         if (context.hasSignalingData()) {
             return Optional.empty();
         }
-        context.noteDataLimitation("No signaling data available for this call");
+        context.noteDataLimitation("Không có dữ liệu signaling cho cuộc gọi này");
         return Optional.of(context.unknown(
-                "Not enough evidence to conclude: no signaling data was found for this call."));
+                "Không đủ evidence để kết luận: không tìm thấy dữ liệu signaling nào cho cuộc gọi này."));
     }
 }

@@ -90,7 +90,7 @@ class CallAnalysisPipelineTest {
         // Vẫn hạ độ tin cậy vì end-call log thiếu thật - và vẫn nói rõ thiếu file nào.
         assertThat(outcome.report().confidenceLevel()).isEqualTo("MEDIUM");
         assertThat(outcome.report().dataLimitations())
-                .contains("Missing caller_endcall.log", "Missing callee_endcall.log");
+                .contains("Thiếu caller_endcall.log", "Thiếu callee_endcall.log");
     }
 
     @Test
@@ -102,7 +102,7 @@ class CallAnalysisPipelineTest {
         assertThat(outcome.report().verdict()).isEqualTo("FAIL");
         assertThat(outcome.report().issueCategory()).isEqualTo("ICE_FAILURE");
         assertThat(outcome.report().evidence())
-                .anySatisfy(e -> assertThat(e.description()).contains("ICE connectivity failed"));
+                .anySatisfy(e -> assertThat(e.description()).contains("ICE của CALLEE không kết nối được"));
     }
 
     @Test

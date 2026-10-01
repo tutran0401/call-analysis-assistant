@@ -25,9 +25,10 @@ public class ConnectedWithoutByeRule implements VerdictRule {
         }
         context.recordCallSetupStarted();
         context.recordCallConfirmed(context.callConfirmed().orElseThrow());
-        context.noteDataLimitation("Call appears connected (OK_ACK_OK observed) but no BYE was found; "
-                + "signaling data may be truncated or incomplete");
+        context.noteDataLimitation("Cuộc gọi có vẻ đã kết nối (quan sát được OK_ACK_OK) nhưng không "
+                + "thấy BYE; dữ liệu signaling có thể bị cắt hoặc thiếu");
         return Optional.of(context.unknown(
-                "Not enough evidence to conclude: the call connected but its end could not be observed."));
+                "Không đủ evidence để kết luận: cuộc gọi đã kết nối nhưng không quan sát được lúc "
+                        + "kết thúc."));
     }
 }

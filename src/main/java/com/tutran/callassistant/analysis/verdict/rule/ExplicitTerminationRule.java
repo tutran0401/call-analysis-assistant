@@ -1,5 +1,6 @@
 package com.tutran.callassistant.analysis.verdict.rule;
 
+import com.tutran.callassistant.analysis.verdict.FailureCauseClassifier;
 import com.tutran.callassistant.analysis.verdict.VerdictContext;
 import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.verdict.IssueCategory;
@@ -18,18 +19,24 @@ import java.util.Optional;
  * nó không thiết lập được; không cần hỏi thêm phía client có nghe được hay không.
  *
  * <p><b>Vì sao phải đứng trước {@link MissingClientLogsRule}:</b> trước khi có rule này, hai cuộc gọi
- * thật trong tập ground truth {@code fail/} ({@code 7B56D7AD} với {@code CANCEL} ×15 và
+ * thật trong data mẫu ({@code 7B56D7AD} với {@code CANCEL} ×15 và
  * {@code E9D6C112} với {@code CANCEL} ×10) bị trả UNKNOWN chỉ vì thiếu end-call log, dù signaling đã
  * chứng minh dứt khoát. Thiếu file client không làm một bằng chứng đã đủ mạnh yếu đi.
  *
  * <p><b>Issue category:</b> {@code FAIL_HARD} là server từ chối nên đúng là
  * {@link IssueCategory#SIGNALING_FAILURE}. {@code CANCEL} là hành vi người dùng - mục 4.2 của spec
  * chưa có category nào cho việc đó, nên tạm dùng cùng category và nói rõ bản chất trong phần tóm tắt;
- * đây là câu đang chờ mentor xác nhận (xem {@code docs/accuracy-evaluation.md} mục 7).
+ * đây là câu đang chờ mentor xác nhận (xem {@code docs/sample-run-report.md} mục 6).
  */
 @Component
 @Order(15)
 public class ExplicitTerminationRule implements VerdictRule {
+
+    private final FailureCauseClassifier causeClassifier;
+
+    public ExplicitTerminationRule(FailureCauseClassifier causeClassifier) {
+        this.causeClassifier = causeClassifier;
+    }
 
     @Override
     public Optional<RuleVerdictResult> apply(VerdictContext context) {
@@ -43,8 +50,21 @@ public class ExplicitTerminationRule implements VerdictRule {
 
         context.recordCallSetupStarted();
         context.recordExplicitTermination(termination.get());
+        // Mục 4.2: client state timeline là nguồn evidence chính cho SIGNALING_FAILURE/ICE_FAILURE.
+        context.recordClientStateTimeline();
+
+        String terminationCmd = termination.get().eventType();
+        Optional<FailureCauseClassifier.Cause> cause = causeClassifier.classify(context);
+        if (cause.isPresent()) {
+            context.recordEvidence(cause.get().evidence(), cause.get().description());
+            return Optional.of(context.fail(cause.get().category(),
+                    "Cuộc gọi không thiết lập được: " + cause.get().description()
+                            + ". Signaling ghi nhận " + terminationCmd
+                            + " - đó là hệ quả, không phải nguyên nhân gốc."));
+        }
         return Optional.of(context.fail(IssueCategory.SIGNALING_FAILURE,
-                "Call failed to establish: signaling shows an explicit " + termination.get().eventType()
-                        + " before the call was ever confirmed (no OK_ACK_OK observed)."));
+                "Cuộc gọi không thiết lập được: signaling ghi rõ " + terminationCmd
+                        + " trước khi cuộc gọi kịp được xác nhận (không quan sát được OK_ACK_OK), "
+                        + "và log client không chỉ ra nguyên nhân tầng media nào."));
     }
 }

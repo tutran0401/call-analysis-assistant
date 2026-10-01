@@ -53,19 +53,25 @@ mvn test
 Toàn bộ test cho parser, timeline, metrics, evidence/rule-verdict và report-schema đều
 chạy trên data mẫu thật trong `sample-data/fail/`, `sample-data/success/`, `sample-data/for_test/` — nhiều giá trị kỳ vọng
 (thời lượng, số lần gửi lại, MOS/packet-loss/RTT/jitter) được **tính tay** trực tiếp từ
-5 cuộc gọi thật khác nhau (đúng yêu cầu ở mục 5.1), chứ không chỉ so khớp với chính output
-của code.
+8 cuộc gọi thật khác nhau (yêu cầu ở mục 5.1 là tối thiểu 5), chứ không chỉ so khớp với chính
+output của code. Mốc gốc và phép tính của từng giá trị: `docs/metrics-hand-calculation.md`.
 
 **Đã kiểm chứng trên toàn bộ data mẫu** (`demo sample-data/success sample-data/fail sample-data/for_test`, cả 20 cuộc gọi,
 qua pipeline có ES thật): 0 cảnh báo parser trên mọi file — **parse sạch 100%** (vượt xa
 mục tiêu ≥90%) — và không có exception nào trong suốt quá trình chạy. Kết quả giống hệt
 nhau trên cả hai đường lấy signaling (qua Elasticsearch và `--from-file`).
 
-**Độ chính xác trên tập có nhãn của mentor: 13/13.** Cả 7 cuộc gọi trong `success/` đều ra
-`SUCCESS`, cả 6 cuộc gọi trong `fail/` đều ra `FAIL` — 0 ca `UNKNOWN`, 0 ca sai. Bộ
-`for_test/` (không có nhãn) ra 1 `SUCCESS` + 6 `FAIL`, mỗi kết luận đều trace được về
-evidence cụ thể. Chi tiết cách đo, 3 lỗi đã sửa để đạt được con số này, và toàn bộ output
-thô: `docs/accuracy-evaluation.md`.
+**Lưu ý về data mẫu: chưa có ground truth.** `sample-data/` chỉ có log và `sample.md` (đặc tả định
+dạng), không kèm file nhãn nào; tên ba thư mục `success/`, `fail/`, `for_test/` là **cách tổ chức
+data để chạy thử**, không phải nhãn verdict. Theo mục 1.4 của spec, ground truth sẽ do Mentor cung
+cấp riêng — nên **chưa đo được Verdict Accuracy** (mục 6.5), hiện chỉ kiểm được từng kết luận có
+bằng chứng trong log chống lưng hay không.
+
+**Kết quả chạy thử 20 cuộc gọi:** 12 `FAIL`, 7 `SUCCESS`, 1 `SUCCESS` có cờ chất lượng kém, 0
+`UNKNOWN`. **5 trên 6 issue category** của mục 4.2 đã được data mẫu chạm tới (`TURN_FAILURE` ×6,
+`SIGNALING_FAILURE` ×5, `ICE_FAILURE` ×1, `NETWORK_PACKET_LOSS` ×1, cộng `NONE` ×7); chỉ
+`NETWORK_DELAY_JITTER` chưa có ca nào. Toàn bộ kết quả từng cuộc, phần đối chiếu độc lập với log thô,
+5 lỗi tìm ra khi chạy, và output nguyên văn: `docs/sample-run-report.md`.
 
 ## Cấu trúc project
 
@@ -102,11 +108,11 @@ docs/
   verdict-issue-taxonomy.md
   sensitive-data-inventory.md
   ai-provider-proposal.md
-sample-data/    Data mẫu do mentor cung cấp (không chỉnh sửa nội dung)
+sample-data/    Data mẫu do mentor cung cấp (không chỉnh sửa nội dung), KHÔNG kèm nhãn verdict
   sample.md     Đặc tả định dạng log (WebRTC + 9 schema #H1-#H9 của end-call log)
-  success/      7 cuộc gọi thành công
-  fail/         6 cuộc gọi thất bại
-  for_test/     7 cuộc gọi chưa gắn nhãn, dùng để tự kiểm chứng
+  success/      7 cuộc gọi — tên thư mục chỉ là cách tổ chức data, không phải nhãn
+  fail/         6 cuộc gọi — như trên
+  for_test/     7 cuộc gọi — tập chính dùng để chạy thử và đối chiếu với log thô
 ```
 
 ### Nguyên tắc thiết kế
@@ -129,20 +135,16 @@ rối rắm không cần thiết.
 
 ## Giới hạn đã biết (Known Limitations) — Sprint 1
 
-- **Chưa phát hiện lỗi TURN riêng biệt một cách đáng tin cậy.** Phiên bản đầu tiên dùng
-  cách so khớp từ khóa tự do ("turn"/"ice" + "error"/"fail"), nhưng cách này báo nhầm cả
-  những phản hồi giao thức TURN bình thường, tự phục hồi được (per-candidate) thành lỗi —
-  kể cả trên một cuộc gọi SUCCESS hoàn toàn sạch (xem Javadoc của `IceFailureDetector` và
-  `WebRtcLogParser`, cùng lịch sử commit, để biết số lượng false-positive cụ thể). Rule
-  engine hiện gộp lỗi tầng TURN vào `ICE_FAILURE` (dựa trên trạng thái ICE chính thức của
-  engine — cả dạng callback `onIceConnectionChange` của iOS lẫn dạng
-  `Changing IceConnectionState X => Y` của bản native) hoặc `SIGNALING_FAILURE`. Một bộ
-  phát hiện TURN riêng, đáng tin cậy hơn sẽ để lại cho sprint sau.
+- **Chưa phân định được lỗi TURN nằm ở phía server hay phía mạng của thiết bị.** Rule engine phát
+  hiện được lỗi TURN theo hai hình thái (không tạo được socket / gửi request mà không có phản hồi),
+  nhưng theo mục 9 của spec thì chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi. Ba cuộc
+  gọi `TURN_FAILURE` dạng "không tạo được socket" đều đến từ một máy có VPN `tun0` — mới thấy trên
+  một máy nên chưa kết luận VPN là nguyên nhân.
 - **Cuộc gọi do người dùng chủ động huỷ chưa có issue category riêng.** 7/20 cuộc gọi trong
   data mẫu kết thúc bằng `CANCEL` trước khi kết nối. Verdict `FAIL` là đúng, nhưng mục 4.2
   của spec không có category nào cho hành vi người dùng nên chúng tạm mang
   `SIGNALING_FAILURE` — ngụ ý lỗi hệ thống. Đang chờ Mentor xác nhận nên gắn nhãn gì
-  (xem `docs/accuracy-evaluation.md` mục 7).
+  (xem `docs/sample-run-report.md` mục 6).
 - **Chưa làm các chỉ số "Nếu kịp" (mục 4.3)**: proxy khoảng trống PAIR_PING, latency API
   nội bộ lúc INIT_CALL, số lượng WARN/ERROR phía server, ngữ cảnh ISP/ASN/country. Sprint 1
   ưu tiên làm xong các chỉ số Core trước.

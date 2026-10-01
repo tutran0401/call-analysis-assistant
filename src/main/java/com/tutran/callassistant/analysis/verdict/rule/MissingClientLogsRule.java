@@ -22,7 +22,7 @@ import java.util.Optional;
  * {@code *_endcall.log}, nhưng {@code *_webrtc.log} cũng là log của thiết bị người dùng, và
  * trạng thái {@code IceConnectionState} trong đó còn nói trực tiếp hơn về việc media có lên được
  * hay không. Vì chỉ tính end-call log, 6/20 cuộc gọi trong data mẫu bị trả UNKNOWN dù có WebRTC
- * log đủ rõ - trong đó 3 cuộc gọi thuộc tập ground truth {@code success/} và cả 3 đều có ICE
+ * log đủ rõ - trong đó 3 cuộc gọi đều có ICE
  * {@code checking => connected} trong webrtc log.
  */
 @Component
@@ -35,7 +35,7 @@ public class MissingClientLogsRule implements VerdictRule {
             return Optional.empty();
         }
         return Optional.of(context.unknown(
-                "Not enough evidence to conclude: no client-side log (end-call or WebRTC) is "
-                        + "available for either leg."));
+                "Không đủ evidence để kết luận: không có log phía client (end-call hoặc WebRTC) "
+                        + "của bên nào."));
     }
 }

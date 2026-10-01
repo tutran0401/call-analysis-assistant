@@ -38,10 +38,11 @@ public class ConnectedSuccessfullyRule implements VerdictRule {
             // NONE chứ không phải UNKNOWN: đây là kết luận khẳng định "đã kiểm tra, không có vấn đề",
             // không phải thừa nhận không quy được nguyên nhân.
             return Optional.of(context.success(false, IssueCategory.NONE,
-                    "Call established and ended normally with no quality issues detected."));
+                    "Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng."));
         }
         IssueCategory category = issue.get().category();
         return Optional.of(context.success(true, category,
-                "Call established and ended normally, but quality degraded (" + category + ")."));
+                "Cuộc gọi thiết lập được và kết thúc bình thường, nhưng chất lượng bị giảm ("
+                        + category + ")."));
     }
 }

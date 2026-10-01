@@ -21,30 +21,31 @@ import java.util.Optional;
 public class SignalingDurationCalculator {
 
     public MetricResult<Duration> setupTime(CallTimeline timeline) {
-        return between(timeline, SignalingCommands.INIT_CALL, SignalingCommands.OK_ACK_OK, "Setup time");
+        return between(timeline, SignalingCommands.INIT_CALL, SignalingCommands.OK_ACK_OK, "thời gian thiết lập");
     }
 
     public MetricResult<Duration> timeToReachCallee(CallTimeline timeline) {
-        return between(timeline, SignalingCommands.INVITE, SignalingCommands.TRYING, "time to reach callee");
+        return between(timeline, SignalingCommands.INVITE, SignalingCommands.TRYING, "thời gian với tới callee");
     }
 
     public MetricResult<Duration> ringingTime(CallTimeline timeline) {
-        return between(timeline, SignalingCommands.RINGING, SignalingCommands.OK, "ringing time");
+        return between(timeline, SignalingCommands.RINGING, SignalingCommands.OK, "thời gian đổ chuông");
     }
 
     public MetricResult<Duration> connectedDuration(CallTimeline timeline) {
-        return between(timeline, SignalingCommands.OK_ACK_OK, SignalingCommands.BYE, "connected duration");
+        return between(timeline, SignalingCommands.OK_ACK_OK, SignalingCommands.BYE, "thời lượng kết nối");
     }
 
     private MetricResult<Duration> between(CallTimeline timeline, String startCmd, String endCmd, String label) {
         Optional<CanonicalEvent> start = timeline.earliestSignaling(startCmd);
         if (start.isEmpty()) {
-            return MetricResult.notAvailable("s", MetricSources.SIGNALING, "no " + startCmd + " event found");
+            return MetricResult.notAvailable("s", MetricSources.SIGNALING,
+                    "không tìm thấy sự kiện " + startCmd);
         }
         Optional<CanonicalEvent> end = timeline.earliestSignaling(endCmd, start.get().timestamp());
         if (end.isEmpty()) {
             return MetricResult.notAvailable("s", MetricSources.SIGNALING,
-                    "no " + endCmd + " event found after " + startCmd + " for " + label);
+                    "không tìm thấy sự kiện " + endCmd + " nào sau " + startCmd + " để tính " + label);
         }
         return MetricResult.of(Duration.between(start.get().timestamp(), end.get().timestamp()),
                 "s", MetricSources.SIGNALING);

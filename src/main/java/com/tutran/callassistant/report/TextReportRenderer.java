@@ -69,6 +69,10 @@ public class TextReportRenderer implements ReportRenderer {
         String category = report.issueCategory();
         out.append("- Chính: ").append(category)
                 .append(" - ").append(explain(category)).append('\n');
+        // Dòng "Khả dĩ khác" của mẫu report (mục 4.5): kết luận này còn có thể nhầm với cái gì.
+        for (String alternative : report.alternativeCauses()) {
+            out.append("- Khả dĩ khác: ").append(alternative).append('\n');
+        }
         out.append('\n');
     }
 
@@ -78,7 +82,10 @@ public class TextReportRenderer implements ReportRenderer {
             case "NETWORK_PACKET_LOSS" -> "mất gói trên đường truyền";
             case "NETWORK_DELAY_JITTER" -> "độ trễ hoặc jitter mạng cao";
             case "ICE_FAILURE" -> "không thiết lập được kết nối media (ICE)";
-            case "TURN_FAILURE" -> "lỗi phía TURN server";
+            // Cố tình KHÔNG viết "lỗi phía TURN server": evidence chỉ chứng minh được client không đi
+            // hết vòng request/response, chưa đủ để nói lỗi nằm ở server hay ở mạng của thiết bị -
+            // đúng như dòng "Khả dĩ khác" ngay bên dưới, và đúng giới hạn phạm vi ở mục 9 của spec.
+            case "TURN_FAILURE" -> "client không đi hết được vòng request/response với TURN";
             case "SIGNALING_FAILURE" -> "lỗi ở tầng signaling";
             case "UNKNOWN" -> "chưa quy được nguyên nhân cụ thể";
             default -> "không có mô tả cho category này";

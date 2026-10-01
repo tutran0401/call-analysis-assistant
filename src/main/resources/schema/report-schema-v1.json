@@ -10,6 +10,7 @@
     "verdict",
     "qualityFlag",
     "issueCategory",
+    "alternativeCauses",
     "confidenceLevel",
     "summary",
     "evidence",
@@ -45,6 +46,13 @@
         "NONE",
         "UNKNOWN"
       ]
+    },
+    "alternativeCauses": {
+      "type": "array",
+      "description": "Nguyen nhan kha di khac ngoai issueCategory (muc 4.5: dong 'Kha di khac'). Rong khi khong co nguyen nhan nao khac dang neu.",
+      "items": {
+        "type": "string"
+      }
     },
     "confidenceLevel": {
       "type": "string",
