@@ -1,5 +1,6 @@
 package com.tutran.callassistant.testsupport;
 
+import com.tutran.callassistant.analysis.timeline.ClockSkewAnchor;
 import com.tutran.callassistant.analysis.timeline.EventDeduplicator;
 import com.tutran.callassistant.application.CallReference;
 import com.tutran.callassistant.analysis.timeline.TimelineBuilder;
@@ -98,7 +99,7 @@ public final class SampleCalls {
     }
 
     public static TimelineBuilder timelineBuilder() {
-        return new TimelineBuilder(new EventDeduplicator(), List.of(new WebRtcElapsedTimeAnchor()));
+        return new TimelineBuilder(new EventDeduplicator(), List.of(new ClockSkewAnchor(), new WebRtcElapsedTimeAnchor()));
     }
 
     /** Signaling export của cuộc gọi, chuẩn hoá thành canonical event. */

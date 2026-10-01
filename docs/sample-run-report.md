@@ -3,9 +3,9 @@
 **Ngày chạy:** 2026-09-26, xác nhận lại 2026-09-29
 **Lệnh:** `analyze <callDir>` cho từng cuộc gọi, signaling lấy qua **Elasticsearch thật**
 (1.059 event / 20 cuộc gọi, index `call-signaling-events`)
-**Test:** 104/104 pass · 0 cảnh báo parser · 0 exception · 0 vi phạm JSON schema
+**Test:** 112/112 pass · 0 cảnh báo parser · 0 exception · 0 vi phạm JSON schema
 
-> **Xác nhận lại 2026-09-29:** chạy lại `mvn test` (104/104 pass, không đổi) và `demo` trên cả 20
+> **Xác nhận lại 2026-10-01:** chạy lại `mvn test` (112/112 pass: 104 cũ + 4 test hiệu chỉnh lệch đồng hồ + 4 test Elasticsearch) và `demo` trên cả 20
 > cuộc gọi qua đường `--from-file` (Elasticsearch không chạy sẵn trên máy soạn báo cáo). Verdict,
 > category và toàn bộ chỉ số của cả 20 cuộc gọi khớp 100% với dữ liệu ở tài liệu này — kể cả 7 cuộc
 > gọi tập `for_test` ở Phụ lục A giống hệt từng byte. Phát sinh đúng 1 thông tin mới: `DE7DD314` tự

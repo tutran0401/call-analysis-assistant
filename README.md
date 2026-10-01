@@ -25,7 +25,12 @@ java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar import success fail 
 ```
 
 Elasticsearch cần khoảng 1-2 GB heap (đã cấu hình trong `docker-compose.yml`); Kibana
-truy cập được tại http://localhost:5601 khi cả 2 container đã chạy.
+truy cập được tại http://localhost:5601 khi cả 2 container đã chạy. Cả Elasticsearch (9200) và
+Kibana (5601) chỉ bind vào `127.0.0.1`, không mở ra mạng ngoài (ES chạy với security tắt).
+
+**Data mẫu không nằm trong git** (`sample-data/` được ignore vì có thể chứa dữ liệu nhạy cảm): cần tự đặt
+data mentor cung cấp vào `sample-data/{success,fail,for_test}/` trước khi chạy `import`, `demo` hay `mvn test`
+(test đọc trực tiếp các cuộc gọi trong thư mục này).
 
 ## Chạy demo
 
@@ -72,6 +77,10 @@ bằng chứng trong log chống lưng hay không.
 `SIGNALING_FAILURE` ×5, `ICE_FAILURE` ×1, `NETWORK_PACKET_LOSS` ×1, cộng `NONE` ×7); chỉ
 `NETWORK_DELAY_JITTER` chưa có ca nào. Toàn bộ kết quả từng cuộc, phần đối chiếu độc lập với log thô,
 5 lỗi tìm ra khi chạy, và output nguyên văn: `docs/sample-run-report.md`.
+
+**Lệch đồng hồ server–thiết bị (T4):** `ClockSkewAnchor` so mốc đầu tiên của cùng một lệnh signaling ở
+server và ở end-call log của từng leg, lấy trung vị; chỉ dịch timestamp khi lệch vượt 2 giây (dưới đó coi là
+trễ mạng). Data mẫu hiện không có ca lệch thật nên chưa kích hoạt trên data thật, chỉ được kiểm bằng test tổng hợp.
 
 ## Cấu trúc project
 
