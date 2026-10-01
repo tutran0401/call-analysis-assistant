@@ -17,7 +17,7 @@ public class MissingEndCallLogDetector implements DataLimitationDetector {
     public void detect(VerdictContext context) {
         for (Leg leg : com.tutran.callassistant.domain.metrics.CallMetrics.QUALITY_LEGS) {
             if (!context.hasEndCallLog(leg)) {
-                context.noteDataLimitation("Missing " + leg.name().toLowerCase(java.util.Locale.ROOT)
+                context.noteDataLimitation("Thiếu " + leg.name().toLowerCase(java.util.Locale.ROOT)
                         + "_endcall.log");
             }
         }

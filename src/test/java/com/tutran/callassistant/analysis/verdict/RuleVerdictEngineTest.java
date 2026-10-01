@@ -92,7 +92,7 @@ class RuleVerdictEngineTest {
                 SampleCalls.success(SampleCalls.SUCCESS_NO_CLIENT_LOGS), SampleCalls.SUCCESS_NO_CLIENT_LOGS);
 
         assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
-        assertThat(result.dataLimitations()).contains("Missing caller_endcall.log", "Missing callee_endcall.log");
+        assertThat(result.dataLimitations()).contains("Thiếu caller_endcall.log", "Thiếu callee_endcall.log");
         assertThat(result.evidence()).isEmpty();
     }
 
@@ -112,6 +112,31 @@ class RuleVerdictEngineTest {
     }
 
     @Test
+    void citesTheClientStateTimelineAsEvidenceOnAFailedCall() {
+        // Mục 4.2 nêu "End Call state timeline" là nguồn evidence chính cho SIGNALING_FAILURE.
+        // Cuộc gọi thật này có caller_endcall.log với trạng thái cuối là WAITING_INIT_CALL - tức chính
+        // thiết bị người dùng cũng ghi nhận cuộc gọi chưa bao giờ lên được.
+        RuleVerdictResult result = evaluateCall(
+                SampleCalls.fail(SampleCalls.FAIL_REJECTED_AFTER_INVITE), SampleCalls.FAIL_REJECTED_AFTER_INVITE);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.evidence()).anySatisfy(e -> {
+            assertThat(e.description()).contains("Client state timeline");
+            assertThat(e.description()).contains("chưa bao giờ đạt CONFIRMED");
+        });
+    }
+
+    @Test
+    void doesNotAddClientStateEvidenceToASuccessfulCall() {
+        // Cuộc gọi thành công đã có mốc OK_ACK_OK; thêm dòng state timeline chỉ làm nhiễu report.
+        RuleVerdictResult result = evaluateCall(
+                SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS), SampleCalls.SUCCESS_FULL_LOGS);
+
+        assertThat(result.evidence()).noneSatisfy(e ->
+                assertThat(e.description()).contains("Client state timeline"));
+    }
+
+    @Test
     void concludesIceFailureWhenMediaDiedDespiteACompleteSignalingFlow() {
         // Signaling của cuộc gọi này đi đủ INIT_CALL...OK_ACK_OK...BYE nên nhìn hệt một cuộc gọi
         // thành công; chỉ webrtc log của callee mới tiết lộ ICE "checking => failed".
@@ -124,7 +149,64 @@ class RuleVerdictEngineTest {
         assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
         assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
         assertThat(result.evidence())
-                .anySatisfy(e -> assertThat(e.description()).contains("ICE connectivity failed"));
+                .anySatisfy(e -> assertThat(e.description()).contains("ICE của CALLEE không kết nối được"));
+    }
+
+    @Test
+    void detectsTurnFailureWhenTheClientCouldNotEvenCreateASocket() {
+        // Cuộc gọi thật (nhãn fail): mọi TURN port đều "Failed to create TURN client socket", 0 request
+        // gửi đi. Signaling chỉ thấy CANCEL - nhưng CANCEL là hệ quả, TURN mới là nguyên nhân gốc.
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.fail(SampleCalls.FAIL_TURN_SOCKET), SampleCalls.FAIL_TURN_SOCKET);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.TURN_FAILURE);
+        assertThat(result.evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("không tạo được socket"));
+    }
+
+    @Test
+    void detectsTurnFailureWhenRequestsWereSentButNeverAnswered() {
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_TURN_NO_RESPONSE),
+                SampleCalls.FOR_TEST_TURN_NO_RESPONSE);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.TURN_FAILURE);
+        assertThat(result.evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("không nhận được phản hồi"));
+    }
+
+    @Test
+    void doesNotCallItATurnFailureWhenTheServerDidAnswer() {
+        // Bẫy false positive: cuộc gọi này có 24 dòng lỗi TURN, nhưng 40 request đã gửi và server CÓ
+        // trả lời. Lỗi ở đây là nhiễu giao thức theo từng candidate, không phải TURN hỏng.
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.forTest(SampleCalls.FOR_TEST_TURN_NOISY_BUT_OK),
+                SampleCalls.FOR_TEST_TURN_NOISY_BUT_OK);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.issueCategory()).isNotEqualTo(IssueCategory.TURN_FAILURE);
+    }
+
+    @Test
+    void neverFlagsTurnFailureOnAnyHealthyCall() {
+        // Bảo vệ chống hồi quy mạnh nhất: bản phát hiện TURN đầu tiên đã bị gỡ vì gắn TURN_FAILURE cho
+        // cả cuộc gọi tốt - mọi cuộc gọi SUCCESS trong data mẫu đều sẵn có 20 dòng "TURN probe error
+        // response" và 4 dòng "Received TURN allocate error response" hoàn toàn bình thường.
+        for (String callId : List.of(SampleCalls.SUCCESS_FULL_LOGS, SampleCalls.SUCCESS_NO_CLIENT_LOGS,
+                SampleCalls.SUCCESS_CALLER_LOG_ONLY, SampleCalls.SUCCESS_MISNAMED_FILE)) {
+            RuleVerdictResult result = evaluate(
+                    SampleCalls.timelineWithAllClientLogs(SampleCalls.success(callId), callId));
+
+            assertThat(result.verdict()).as(callId).isEqualTo(Verdict.SUCCESS);
+            assertThat(result.issueCategory()).as(callId).isNotEqualTo(IssueCategory.TURN_FAILURE);
+        }
     }
 
     @Test
@@ -147,7 +229,7 @@ class RuleVerdictEngineTest {
                 SampleCalls.success(SampleCalls.SUCCESS_CALLER_LOG_ONLY), SampleCalls.SUCCESS_CALLER_LOG_ONLY);
 
         assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
-        assertThat(result.dataLimitations()).containsExactly("Missing callee_endcall.log");
+        assertThat(result.dataLimitations()).containsExactly("Thiếu callee_endcall.log");
         assertThat(new DataCompletenessConfidencePolicy().confidenceFor(result))
                 .isEqualTo(ConfidenceLevel.MEDIUM);
     }
@@ -159,7 +241,7 @@ class RuleVerdictEngineTest {
         RuleVerdictResult result = evaluate(emptyTimeline);
 
         assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
-        assertThat(result.dataLimitations()).anyMatch(l -> l.contains("No signaling data"));
+        assertThat(result.dataLimitations()).anyMatch(l -> l.contains("Không có dữ liệu signaling"));
     }
 
     @Test
@@ -175,7 +257,7 @@ class RuleVerdictEngineTest {
         RuleVerdictResult result = evaluate(timeline);
 
         assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
-        assertThat(result.dataLimitations()).anyMatch(l -> l.contains("no BYE was found"));
+        assertThat(result.dataLimitations()).anyMatch(l -> l.contains("không thấy BYE"));
     }
 
     @Test

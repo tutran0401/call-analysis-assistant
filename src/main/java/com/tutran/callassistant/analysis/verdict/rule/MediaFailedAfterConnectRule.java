@@ -16,7 +16,7 @@ import java.util.Optional;
  *
  * <p>Đây là loại lỗi mà <b>chỉ signaling không bao giờ thấy được</b>: các lệnh vẫn đi qua đủ
  * {@code INIT_CALL → INVITE → RINGING → OK → OK_ACK_OK → BYE}, nhìn hệt một cuộc gọi hoàn hảo. Cuộc
- * gọi thật {@code 2D9057AA} trong tập ground truth {@code fail/} chính là ca đó: ICE của callee
+ * gọi thật {@code 2D9057AA} trong data mẫu chính là ca đó: ICE của callee
  * {@code checking => failed}, MOS = 0.000 trên cả 25 dòng periodic stats, nhưng trước khi có rule này
  * hệ thống kết luận SUCCESS - câu trả lời sai duy nhất trên toàn bộ tập có nhãn.
  *
@@ -47,13 +47,13 @@ public class MediaFailedAfterConnectRule implements VerdictRule {
         context.recordCallSetupStarted();
         context.recordCallConfirmed(context.callConfirmed().orElseThrow());
         context.recordEvidence(iceFailure.get(),
-                "WebRTC log reports ICE connectivity failed for " + iceFailure.get().leg()
-                        + " - that leg never had media");
+                "Log WebRTC báo ICE của " + iceFailure.get().leg()
+                        + " không kết nối được - bên đó chưa bao giờ có media");
         context.recordCallEnded(context.callEnded().orElseThrow());
 
         return Optional.of(context.fail(IssueCategory.ICE_FAILURE,
-                "Call was confirmed at the signaling layer but ICE connectivity failed for "
-                        + iceFailure.get().leg() + ", so that side never had media - the call did not "
-                        + "actually work despite a normal-looking signaling flow."));
+                "Cuộc gọi đã được xác nhận ở tầng signaling nhưng ICE của " + iceFailure.get().leg()
+                        + " không kết nối được, nên bên đó chưa bao giờ có media - cuộc gọi thực tế không "
+                        + "hoạt động dù luồng signaling nhìn bình thường."));
     }
 }

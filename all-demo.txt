@@ -1,6 +1,6 @@
-﻿2026-09-26T07:23:24.558+07:00  INFO 24076 --- [           main] c.t.c.CallAssistantApplication           : Starting CallAssistantApplication v0.1.0-SNAPSHOT using Java 17.0.17 with PID 24076 (C:\Users\Tutran\OneDrive\M�y t�nh\VSF\ThirdPRJ\target\call-analysis-assistant-0.1.0-SNAPSHOT.jar started by Tutran in C:\Users\Tutran\OneDrive\M�y t�nh\VSF\ThirdPRJ)
-2026-09-26T07:23:24.562+07:00  INFO 24076 --- [           main] c.t.c.CallAssistantApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-09-26T07:23:26.547+07:00  INFO 24076 --- [           main] c.t.c.CallAssistantApplication           : Started CallAssistantApplication in 2.798 seconds (process running for 3.324)
+2026-09-29T16:36:02.292+07:00  INFO 11856 --- [           main] c.t.c.CallAssistantApplication           : Starting CallAssistantApplication v0.1.0-SNAPSHOT using Java 17.0.17 with PID 11856 (C:\Users\Tutran\OneDrive\M�y t�nh\VSF\ThirdPRJ\target\call-analysis-assistant-0.1.0-SNAPSHOT.jar started by Tutran in C:\Users\Tutran\OneDrive\M�y t�nh\VSF\ThirdPRJ)
+2026-09-29T16:36:02.300+07:00  INFO 11856 --- [           main] c.t.c.CallAssistantApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-09-29T16:36:03.803+07:00  INFO 11856 --- [           main] c.t.c.CallAssistantApplication           : Started CallAssistantApplication in 2.085 seconds (process running for 2.536)
 ================================================================================
 Call folder: sample-data\success\5E0800AE-F9D4-497D-9FA1-CD56C3E901E8
 # Báo cáo phân tích cuộc gọi
@@ -8,43 +8,44 @@ Call-ID: 5E0800AE-F9D4-497D-9FA1-CD56C3E901E8
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:39:24.118] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-21 08:39:38.876] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-21 08:41:36.632] BYE from unknown side
+1. [EV001][signaling 2026-09-21 08:39:24.118] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-21 08:39:38.876] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-21 08:41:36.632] BYE từ CALLER
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 14.757 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 10.069 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 4 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 3.533 s | Signaling |
 | Thời lượng kết nối | 117.756 s | Signaling |
-| Bên kết thúc | N/A (BYE sender's appUserId did not match caller or callee identity from end-call logs) | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Bên kết thúc | CALLER | Signaling |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\success\6A7CE985-4A1A-44D1-84B1-DBB0B0B90448
@@ -53,43 +54,44 @@ Call-ID: 6A7CE985-4A1A-44D1-84B1-DBB0B0B90448
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:41:37.594] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-21 08:41:46.896] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-21 08:42:19.714] BYE from unknown side
+1. [EV001][signaling 2026-09-21 08:41:37.594] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-21 08:41:46.896] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-21 08:42:19.714] BYE từ CALLEE
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 9.301 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 3.685 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 4 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 4.818 s | Signaling |
 | Thời lượng kết nối | 32.818 s | Signaling |
-| Bên kết thúc | N/A (BYE sender's appUserId did not match caller or callee identity from end-call logs) | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Bên kết thúc | CALLEE | Signaling |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\success\70A1F889-9371-4179-8C27-125ED39BA415
@@ -98,42 +100,43 @@ Call-ID: 70A1F889-9371-4179-8C27-125ED39BA415
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-22 06:55:47.230] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-22 06:56:19.824] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-22 06:57:00.388] BYE from unknown side
+1. [EV001][signaling 2026-09-22 06:55:47.230] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-22 06:56:19.824] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-22 06:57:00.388] BYE từ CALLER
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 32.594 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 11.362 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 4 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 20.257 s | Signaling |
 | Thời lượng kết nối | 40.564 s | Signaling |
-| Bên kết thúc | N/A (BYE sender's appUserId did not match caller or callee identity from end-call logs) | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | 4.416 | End Call log |
-| Packet loss (callee) | 0.0 % | End Call log |
-| RTT (callee) | 104.0 ms | End Call log |
-| Jitter (callee) | 0.022 ms | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Bên kết thúc | CALLER | Signaling |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | 4.37638 | End Call log |
+| Packet loss cao nhất (callee) | 0.0 % | End Call log |
+| RTT cao nhất (callee) | 266.0 ms | End Call log |
+| Jitter cao nhất (callee) | 0.028 ms | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=52, TURN_ALLOCATE_RESPONSE=6 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
+- Thiếu caller_endcall.log
 
 ================================================================================
 Call folder: sample-data\success\C8CF631E-0C6B-46E4-92E7-280E7B6A5394
@@ -142,42 +145,43 @@ Call-ID: C8CF631E-0C6B-46E4-92E7-280E7B6A5394
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:39:26.775] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-21 08:39:38.733] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-21 08:39:54.542] BYE from CALLER
+1. [EV001][signaling 2026-09-21 08:39:26.775] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-21 08:39:38.733] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-21 08:39:54.542] BYE từ CALLER
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 11.958 s | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no TRYING event found after INVITE for time to reach callee) | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện TRYING nào sau INVITE để tính thời gian với tới callee) | Signaling |
+| Số lần gửi lại INVITE | 1 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 10.942 s | Signaling |
 | Thời lượng kết nối | 15.809 s | Signaling |
 | Bên kết thúc | CALLER | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | 4.42045 | End Call log |
-| Packet loss (caller) | 0.0 % | End Call log |
-| RTT (caller) | 84.0 ms | End Call log |
-| Jitter (caller) | 0.011 ms | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CANDIDATE=1, ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | 4.40396 | End Call log |
+| Packet loss cao nhất (caller) | 0.0 % | End Call log |
+| RTT cao nhất (caller) | 156.0 ms | End Call log |
+| Jitter cao nhất (caller) | 0.012 ms | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=40, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CANDIDATE=1, ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\success\DE7DD314-F432-45CB-BCB4-AE9103CC0919
@@ -186,36 +190,37 @@ Call-ID: DE7DD314-F432-45CB-BCB4-AE9103CC0919
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: HIGH
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-18 03:07:21.453] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-18 03:07:30.035] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-18 03:13:31.346] BYE from CALLEE
+1. [EV001][signaling 2026-09-18 03:07:21.453] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-18 03:07:30.035] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-18 03:13:31.346] BYE từ CALLEE
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 8.581 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 2.991 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 3 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 4.749 s | Signaling |
 | Thời lượng kết nối | 361.311 s | Signaling |
 | Bên kết thúc | CALLEE | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | 4.42397 | End Call log |
-| Packet loss (caller) | 0.0 % | End Call log |
-| RTT (caller) | 54.0 ms | End Call log |
-| Jitter (caller) | 0.006 ms | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=5 | WebRTC log |
-| MOS (callee) | 4.42201 | End Call log |
-| Packet loss (callee) | 0.0 % | End Call log |
-| RTT (callee) | 63.0 ms | End Call log |
-| Jitter (callee) | 0.01 ms | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | 4.41438 | End Call log |
+| Packet loss cao nhất (caller) | 2.04082 % | End Call log |
+| RTT cao nhất (caller) | 107.0 ms | End Call log |
+| Jitter cao nhất (caller) | 0.02 ms | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=5, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
+| MOS thấp nhất (callee) | 4.4013 | End Call log |
+| Packet loss cao nhất (callee) | 2.0 % | End Call log |
+| RTT cao nhất (callee) | 152.0 ms | End Call log |
+| Jitter cao nhất (callee) | 0.022 ms | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=30, TURN_ALLOCATE_RESPONSE=6 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
@@ -232,36 +237,37 @@ Call-ID: EE129C8F-EAD0-4302-AB68-920D32F8B8B7
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: HIGH
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:21:28.768] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-21 08:21:42.298] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-21 08:22:18.606] BYE from CALLEE
+1. [EV001][signaling 2026-09-21 08:21:28.768] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-21 08:21:42.298] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-21 08:22:18.606] BYE từ CALLEE
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 13.530 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 1.505 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 3 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 5.987 s | Signaling |
 | Thời lượng kết nối | 36.307 s | Signaling |
 | Bên kết thúc | CALLEE | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | 4.42133 | End Call log |
-| Packet loss (caller) | 0.0 % | End Call log |
-| RTT (caller) | 80.0 ms | End Call log |
-| Jitter (caller) | 0.005 ms | End Call log |
-| Sự kiện ICE/TURN (caller) | N/A (no webrtc log found for CALLER) | WebRTC log |
-| MOS (callee) | 4.41127 | End Call log |
-| Packet loss (callee) | 0.0 % | End Call log |
-| RTT (callee) | 69.0 ms | End Call log |
-| Jitter (callee) | 0.018 ms | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=9 | WebRTC log |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | 4.40913 | End Call log |
+| Packet loss cao nhất (caller) | 0.0 % | End Call log |
+| RTT cao nhất (caller) | 134.0 ms | End Call log |
+| Jitter cao nhất (caller) | 0.02 ms | End Call log |
+| Sự kiện ICE/TURN (caller) | N/A (không có webrtc log của CALLER) | WebRTC log |
+| MOS thấp nhất (callee) | 4.33531 | End Call log |
+| Packet loss cao nhất (callee) | 3.7037 % | End Call log |
+| RTT cao nhất (callee) | 181.0 ms | End Call log |
+| Jitter cao nhất (callee) | 0.026 ms | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=9, TURN_ALLOCATE_REQUEST=16, TURN_ALLOCATE_RESPONSE=8 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
@@ -276,43 +282,44 @@ Call-ID: F3D7914B-7270-4A53-AF2D-225B3AA5E8C6
 Kết luận: SUCCESS
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-22 07:49:44.336] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-22 07:49:51.308] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-22 07:50:26.743] BYE from unknown side
+1. [EV001][signaling 2026-09-22 07:49:44.336] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-22 07:49:51.308] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-22 07:50:26.743] BYE từ CALLER
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 6.972 s | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 1.458 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Số lần gửi lại INVITE | 3 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 4.719 s | Signaling |
 | Thời lượng kết nối | 35.434 s | Signaling |
-| Bên kết thúc | N/A (BYE sender's appUserId did not match caller or callee identity from end-call logs) | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=5 | WebRTC log |
+| Bên kết thúc | CALLER | Signaling |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=5, TURN_ALLOCATE_REQUEST=22, TURN_ALLOCATE_RESPONSE=2 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Khả dĩ khác: Không có evidence không đồng nghĩa với không có vấn đề: một bên thiếu end-call log thì không đóng góp chỉ số chất lượng nào, nên NONE chỉ có nghĩa là không tìm thấy gì trong phần dữ liệu thực sự có - cần đọc kèm mục Giới hạn dữ liệu
 
 ## Đề xuất
 - Không có đề xuất bổ sung.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\1B009D42-49CD-479E-B26C-3A2994AEB720
@@ -321,40 +328,42 @@ Call-ID: 1B009D42-49CD-479E-B26C-3A2994AEB720
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: no OK_ACK_OK (confirmed) event was observed at the signaling layer, and no ICE connection failure evidence was found, so the call is attributed to a signaling-layer failure.
+Tóm tắt: Cuộc gọi không thiết lập được: không quan sát được sự kiện OK_ACK_OK (đã xác nhận) ở tầng signaling, và cũng không có evidence nào về lỗi ICE, nên quy về lỗi tầng signaling.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:44:28.953] INIT_CALL: call setup started
+1. [EV001][signaling 2026-09-21 08:44:28.953] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][caller_endcall.log 2026-09-21 08:44:29.044] Client state timeline của CALLER dừng ở WAITING_INIT_CALL - chưa bao giờ đạt CONFIRMED
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | không có sự kiện đáng chú ý | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Khả dĩ khác: Cuộc gọi bị người dùng chủ động huỷ (CANCEL) cũng rơi vào category này, nhưng bản chất không phải lỗi hệ thống - mục 4.2 chưa có nhãn cho hành vi người dùng, đang chờ mentor xác nhận
 
 ## Đề xuất
 - Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\2D9057AA-C496-48B2-946A-98FA2896D086
@@ -363,43 +372,44 @@ Call-ID: 2D9057AA-C496-48B2-946A-98FA2896D086
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call was confirmed at the signaling layer but ICE connectivity failed for CALLEE, so that side never had media - the call did not actually work despite a normal-looking signaling flow.
+Tóm tắt: Cuộc gọi đã được xác nhận ở tầng signaling nhưng ICE của CALLEE không kết nối được, nên bên đó chưa bao giờ có media - cuộc gọi thực tế không hoạt động dù luồng signaling nhìn bình thường.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-17 23:43:01.013] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-17 23:43:07.787] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][callee_webrtc.log 2026-09-17 23:43:22.031] WebRTC log reports ICE connectivity failed for CALLEE - that leg never had media
-4. [EV004][signaling 2026-09-17 23:43:41.679] BYE from CALLEE
+1. [EV001][signaling 2026-09-17 23:43:01.013] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-17 23:43:07.787] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][callee_webrtc.log 2026-09-17 23:43:22.031] Log WebRTC báo ICE của CALLEE không kết nối được - bên đó chưa bao giờ có media
+4. [EV004][signaling 2026-09-17 23:43:41.679] BYE từ CALLEE
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 6.774 s | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no TRYING event found after INVITE for time to reach callee) | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện TRYING nào sau INVITE để tính thời gian với tới callee) | Signaling |
+| Số lần gửi lại INVITE | 1 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 5.565 s | Signaling |
 | Thời lượng kết nối | 33.892 s | Signaling |
 | Bên kết thúc | CALLEE | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | N/A (no webrtc log found for CALLER) | WebRTC log |
-| MOS (callee) | 0.0 | End Call log |
-| Packet loss (callee) | 0.0 % | End Call log |
-| RTT (callee) | 0.0 ms | End Call log |
-| Jitter (callee) | 0.0 ms | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Số lần gửi lại BYE | 4 lần | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | N/A (không có webrtc log của CALLER) | WebRTC log |
+| MOS thấp nhất (callee) | N/A (CALLEE chưa nhận được media nào (cả 25 dòng periodic stats đều có audio.bytesReceived = 0), giá trị 0 chỉ là giữ chỗ) | End Call log |
+| Packet loss cao nhất (callee) | N/A (CALLEE chưa nhận được media nào (cả 25 dòng periodic stats đều có audio.bytesReceived = 0), giá trị 0 chỉ là giữ chỗ) | End Call log |
+| RTT cao nhất (callee) | N/A (CALLEE chưa nhận được media nào (cả 25 dòng periodic stats đều có audio.bytesReceived = 0), giá trị 0 chỉ là giữ chỗ) | End Call log |
+| Jitter cao nhất (callee) | N/A (CALLEE chưa nhận được media nào (cả 25 dòng periodic stats đều có audio.bytesReceived = 0), giá trị 0 chỉ là giữ chỗ) | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: ICE_FAILURE - không thiết lập được kết nối media (ICE)
+- Khả dĩ khác: TURN_FAILURE - khó tách khỏi lỗi TURN nếu không có chi tiết theo từng candidate pair; khi có lỗi TURN rõ ràng trong cùng khoảng thời gian thì nên ưu tiên TURN_FAILURE
 
 ## Đề xuất
 - Bổ sung đầy đủ webrtc.log của cả hai bên để kiểm tra chi tiết quá trình ICE.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
+- Thiếu caller_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\703100CF-5742-467E-9E0E-34E45F60FF58
@@ -408,41 +418,46 @@ Call-ID: 703100CF-5742-467E-9E0E-34E45F60FF58
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-11 13:57:03.065] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-11 13:57:09.318] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-11 13:57:03.065] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-11 13:57:09.318] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_endcall.log 2026-09-11 13:57:08.117] Client state timeline của CALLER dừng ở INVITE_SENT - chưa bao giờ đạt CONFIRMED
+4. [EV004][caller_webrtc.log 2026-09-11 13:57:02.087] Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_SOCKET_ERROR=8 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\7B56D7AD-1FF1-4EDB-B212-06EC12CA73FB
@@ -451,42 +466,46 @@ Call-ID: 7B56D7AD-1FF1-4EDB-B212-06EC12CA73FB
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: đã gửi 20 request tới TURN server nhưng không nhận được phản hồi nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-22 03:19:54.784] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-22 03:20:01.163] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-22 03:19:54.784] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-22 03:20:01.163] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_webrtc.log 2026-09-22 03:20:34.394] Lỗi TURN phía CALLER: đã gửi 20 request tới TURN server nhưng không nhận được phản hồi nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_ALLOCATE_REQUEST=20 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\D114749E-BF76-4D25-9B22-B1F2B7DAD170
@@ -495,40 +514,42 @@ Call-ID: D114749E-BF76-4D25-9B22-B1F2B7DAD170
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: no OK_ACK_OK (confirmed) event was observed at the signaling layer, and no ICE connection failure evidence was found, so the call is attributed to a signaling-layer failure.
+Tóm tắt: Cuộc gọi không thiết lập được: không quan sát được sự kiện OK_ACK_OK (đã xác nhận) ở tầng signaling, và cũng không có evidence nào về lỗi ICE, nên quy về lỗi tầng signaling.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 08:44:20.858] INIT_CALL: call setup started
+1. [EV001][signaling 2026-09-21 08:44:20.858] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][caller_endcall.log 2026-09-21 08:44:20.977] Client state timeline của CALLER dừng ở WAITING_INIT_CALL - chưa bao giờ đạt CONFIRMED
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | N/A (no webrtc log found for CALLER) | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | none observed | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | N/A (không có webrtc log của CALLER) | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | không có sự kiện đáng chú ý | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Khả dĩ khác: Cuộc gọi bị người dùng chủ động huỷ (CANCEL) cũng rơi vào category này, nhưng bản chất không phải lỗi hệ thống - mục 4.2 chưa có nhãn cho hành vi người dùng, đang chờ mentor xác nhận
 
 ## Đề xuất
 - Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\fail\E9D6C112-20D4-4548-918F-7E6BC4BD1A15
@@ -537,42 +558,46 @@ Call-ID: E9D6C112-20D4-4548-918F-7E6BC4BD1A15
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: đã gửi 40 request tới TURN server nhưng không nhận được phản hồi nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-21 02:09:56.619] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-21 02:10:04.686] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-21 02:09:56.619] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-21 02:10:04.686] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_webrtc.log 2026-09-21 02:23:50.328] Lỗi TURN phía CALLER: đã gửi 40 request tới TURN server nhưng không nhận được phản hồi nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_ALLOCATE_REQUEST=40 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\0A6C2821-0A19-49F4-9C05-8F8BCEACD64F
@@ -581,41 +606,46 @@ Call-ID: 0A6C2821-0A19-49F4-9C05-8F8BCEACD64F
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-12 19:40:59.592] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-12 19:41:05.816] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-12 19:40:59.592] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-12 19:41:05.816] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_endcall.log 2026-09-12 19:41:04.609] Client state timeline của CALLER dừng ở INVITE_SENT - chưa bao giờ đạt CONFIRMED
+4. [EV004][caller_webrtc.log 2026-09-12 19:40:58.661] Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_SOCKET_ERROR=8 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\0EC7B700-6B5D-45A3-9BB6-1463B56C9634
@@ -624,82 +654,85 @@ Call-ID: 0EC7B700-6B5D-45A3-9BB6-1463B56C9634
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit FAIL_HARD before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: signaling ghi rõ FAIL_HARD trước khi cuộc gọi kịp được xác nhận (không quan sát được OK_ACK_OK), và log client không chỉ ra nguyên nhân tầng media nào.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-18 05:30:29.450] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-18 05:31:02.861] FAIL_HARD: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-18 05:30:29.450] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-18 05:31:02.861] FAIL_HARD: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][callee_endcall.log 2026-09-18 05:31:02.752] Client state timeline của CALLEE dừng ở ANSWERED - chưa bao giờ đạt CONFIRMED
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
 | Thời gian với tới callee (INVITE→TRYING) | 9.402 s | Signaling |
-| Số lần gửi lại INVITE | 0 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no OK event found after RINGING for ringing time) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CANDIDATE=4 | WebRTC log |
+| Số lần gửi lại INVITE | 4 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện OK nào sau RINGING để tính thời gian đổ chuông) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (end-call log của CALLEE có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (callee) | N/A (end-call log của CALLEE có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (callee) | N/A (end-call log của CALLEE có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (callee) | N/A (end-call log của CALLEE có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CANDIDATE=4, TURN_ALLOCATE_REQUEST=13, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Khả dĩ khác: Cuộc gọi bị người dùng chủ động huỷ (CANCEL) cũng rơi vào category này, nhưng bản chất không phải lỗi hệ thống - mục 4.2 chưa có nhãn cho hành vi người dùng, đang chờ mentor xác nhận
 
 ## Đề xuất
 - Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
+- Thiếu caller_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\271D1FAF-26D4-4150-AC3F-9204505BD84B
 # Báo cáo phân tích cuộc gọi
 Call-ID: 271D1FAF-26D4-4150-AC3F-9204505BD84B
 Kết luận: SUCCESS
-Cờ chất lượng: Không
+Cờ chất lượng: Có - NETWORK_PACKET_LOSS
 Độ tin cậy: HIGH
-Tóm tắt: Call established and ended normally with no quality issues detected.
+Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường, nhưng chất lượng bị giảm (NETWORK_PACKET_LOSS).
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-18 15:15:17.755] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-18 15:15:21.596] OK_ACK_OK: call confirmed, both legs connected
-3. [EV003][signaling 2026-09-18 15:16:41.954] BYE from CALLER
+1. [EV001][signaling 2026-09-18 15:15:17.755] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-18 15:15:21.596] OK_ACK_OK: cuộc gọi đã được xác nhận, cả hai bên đã kết nối
+3. [EV003][signaling 2026-09-18 15:16:41.954] BYE từ CALLER
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
 | Thời gian thiết lập | 3.840 s | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no TRYING event found after INVITE for time to reach callee) | Signaling |
-| Số lần gửi lại INVITE | 1 retransmits | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện TRYING nào sau INVITE để tính thời gian với tới callee) | Signaling |
+| Số lần gửi lại INVITE | 1 lần | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
 | Thời gian đổ chuông | 3.032 s | Signaling |
 | Thời lượng kết nối | 80.358 s | Signaling |
 | Bên kết thúc | CALLER | Signaling |
-| Số lần gửi lại BYE | 1 retransmits | Signaling |
-| MOS (caller) | 4.15346 | End Call log |
-| Packet loss (caller) | 0.0 % | End Call log |
-| RTT (caller) | 16.0 ms | End Call log |
-| Jitter (caller) | 0.012 ms | End Call log |
-| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
-| MOS (callee) | 4.37331 | End Call log |
-| Packet loss (callee) | 0.0 % | End Call log |
-| RTT (callee) | 18.0 ms | End Call log |
-| Jitter (callee) | 0.003 ms | End Call log |
-| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4 | WebRTC log |
+| Số lần gửi lại BYE | 1 lần | Signaling |
+| MOS thấp nhất (caller) | 4.10477 | End Call log |
+| Packet loss cao nhất (caller) | 11.3208 % | End Call log |
+| RTT cao nhất (caller) | 115.0 ms | End Call log |
+| Jitter cao nhất (caller) | 0.022 ms | End Call log |
+| Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
+| MOS thấp nhất (callee) | 4.34143 | End Call log |
+| Packet loss cao nhất (callee) | 7.54717 % | End Call log |
+| RTT cao nhất (callee) | 82.0 ms | End Call log |
+| Jitter cao nhất (callee) | 0.012 ms | End Call log |
+| Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: NONE - không phát hiện vấn đề chất lượng nào
+- Chính: NETWORK_PACKET_LOSS - mất gói trên đường truyền
+- Khả dĩ khác: NETWORK_DELAY_JITTER - mất gói cao và jitter/RTT cao thường đi cùng nhau; nếu log thiếu jitter/RTT thì không phân định được cái nào là nguyên nhân chính
 
 ## Đề xuất
-- Không có đề xuất bổ sung.
+- Kiểm tra chất lượng mạng của bên bị ảnh hưởng trong thời điểm cuộc gọi.
 
 ## Giới hạn dữ liệu
 - Không có.
@@ -711,41 +744,43 @@ Call-ID: 311A9B6A-0D30-4C30-9E01-9A42E4EF11E6
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: signaling ghi rõ CANCEL trước khi cuộc gọi kịp được xác nhận (không quan sát được OK_ACK_OK), và log client không chỉ ra nguyên nhân tầng media nào.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-19 08:01:00.142] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-19 08:01:06.802] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-19 08:01:00.142] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-19 08:01:06.802] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_endcall.log 2026-09-19 08:01:06.725] Client state timeline của CALLER dừng ở INVITE_SENT - chưa bao giờ đạt CONFIRMED
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_ALLOCATE_REQUEST=8, TURN_ALLOCATE_RESPONSE=4 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Khả dĩ khác: Cuộc gọi bị người dùng chủ động huỷ (CANCEL) cũng rơi vào category này, nhưng bản chất không phải lỗi hệ thống - mục 4.2 chưa có nhãn cho hành vi người dùng, đang chờ mentor xác nhận
 
 ## Đề xuất
 - Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\45AA3011-1034-4D13-82A4-634A72D432B6
@@ -754,41 +789,46 @@ Call-ID: 45AA3011-1034-4D13-82A4-634A72D432B6
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-12 04:51:11.274] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-12 04:51:17.602] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-12 04:51:11.274] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-12 04:51:17.602] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_endcall.log 2026-09-12 04:51:16.405] Client state timeline của CALLER dừng ở INVITE_SENT - chưa bao giờ đạt CONFIRMED
+4. [EV004][caller_webrtc.log 2026-09-12 04:51:10.275] Lỗi TURN phía CALLER: không tạo được socket tới TURN server nên chưa gửi đi được request nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_SOCKET_ERROR=8 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\9B556E56-24D3-43BA-853D-7972AD009865
@@ -797,40 +837,42 @@ Call-ID: 9B556E56-24D3-43BA-853D-7972AD009865
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: no OK_ACK_OK (confirmed) event was observed at the signaling layer, and no ICE connection failure evidence was found, so the call is attributed to a signaling-layer failure.
+Tóm tắt: Cuộc gọi không thiết lập được: không quan sát được sự kiện OK_ACK_OK (đã xác nhận) ở tầng signaling, và cũng không có evidence nào về lỗi ICE, nên quy về lỗi tầng signaling.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-19 08:01:55.680] INIT_CALL: call setup started
+1. [EV001][signaling 2026-09-19 08:01:55.680] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][caller_endcall.log 2026-09-19 08:01:55.394] Client state timeline của CALLER dừng ở WAITING_INIT_CALL - chưa bao giờ đạt CONFIRMED
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | N/A (no webrtc log found for CALLER) | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Packet loss cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| RTT cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Jitter cao nhất (caller) | N/A (end-call log của CALLER có nhưng không chứa dòng periodic stats nào (cuộc gọi chưa vào tầng media)) | End Call log |
+| Sự kiện ICE/TURN (caller) | N/A (không có webrtc log của CALLER) | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
 - Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Khả dĩ khác: Cuộc gọi bị người dùng chủ động huỷ (CANCEL) cũng rơi vào category này, nhưng bản chất không phải lỗi hệ thống - mục 4.2 chưa có nhãn cho hành vi người dùng, đang chờ mentor xác nhận
 
 ## Đề xuất
 - Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
 
 ## Giới hạn dữ liệu
-- Missing callee_endcall.log
+- Thiếu callee_endcall.log
 
 ================================================================================
 Call folder: sample-data\for_test\AA9791CE-13D8-4DD7-942D-4D78304FD458
@@ -839,40 +881,44 @@ Call-ID: AA9791CE-13D8-4DD7-942D-4D78304FD458
 Kết luận: FAIL
 Cờ chất lượng: Không
 Độ tin cậy: MEDIUM
-Tóm tắt: Call failed to establish: signaling shows an explicit CANCEL before the call was ever confirmed (no OK_ACK_OK observed).
+Tóm tắt: Cuộc gọi không thiết lập được: Lỗi TURN phía CALLER: đã gửi 60 request tới TURN server nhưng không nhận được phản hồi nào. Signaling ghi nhận CANCEL - đó là hệ quả, không phải nguyên nhân gốc.
 
 ## Evidence chính
-1. [EV001][signaling 2026-09-11 09:49:32.045] INIT_CALL: call setup started
-2. [EV002][signaling 2026-09-11 09:49:40.399] CANCEL: call terminated before it was ever confirmed
+1. [EV001][signaling 2026-09-11 09:49:32.045] INIT_CALL: bắt đầu thiết lập cuộc gọi
+2. [EV002][signaling 2026-09-11 09:49:40.399] CANCEL: cuộc gọi bị chấm dứt trước khi kịp được xác nhận
+3. [EV003][caller_webrtc.log 2026-09-11 09:49:32.157] Lỗi TURN phía CALLER: đã gửi 60 request tới TURN server nhưng không nhận được phản hồi nào
 
 ## Chỉ số cuộc gọi
 | Chỉ số | Giá trị | Nguồn |
-| Thời gian thiết lập | N/A (no OK_ACK_OK event found after INIT_CALL for Setup time) | Signaling |
-| Thời gian với tới callee (INVITE→TRYING) | N/A (no INVITE event found) | Signaling |
-| Số lần gửi lại INVITE | N/A (no INVITE event found) | Signaling |
-| Số lần "No sessions found" | 0 occurrences | Signaling/End Call log |
-| Thời gian đổ chuông | N/A (no RINGING event found) | Signaling |
-| Thời lượng kết nối | N/A (no OK_ACK_OK event found) | Signaling |
-| Bên kết thúc | N/A (no BYE command observed) | Signaling |
-| Số lần gửi lại BYE | N/A (no BYE event found) | Signaling |
-| MOS (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Packet loss (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| RTT (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Jitter (caller) | N/A (no periodic stats rows found for CALLER (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (caller) | none observed | WebRTC log |
-| MOS (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Packet loss (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| RTT (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Jitter (callee) | N/A (no periodic stats rows found for CALLEE (end-call log missing or leg not present)) | End Call log |
-| Sự kiện ICE/TURN (callee) | N/A (no webrtc log found for CALLEE) | WebRTC log |
+| Thời gian thiết lập | N/A (không tìm thấy sự kiện OK_ACK_OK nào sau INIT_CALL để tính thời gian thiết lập) | Signaling |
+| Thời gian với tới callee (INVITE→TRYING) | N/A (không tìm thấy sự kiện INVITE) | Signaling |
+| Số lần gửi lại INVITE | N/A (không có lệnh INVITE nào trong signaling) | Signaling |
+| Số lần "No sessions found" | 0 lần | Signaling/End Call log |
+| Thời gian đổ chuông | N/A (không tìm thấy sự kiện RINGING) | Signaling |
+| Thời lượng kết nối | N/A (không tìm thấy sự kiện OK_ACK_OK) | Signaling |
+| Bên kết thúc | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| Số lần gửi lại BYE | N/A (không có lệnh BYE nào trong signaling) | Signaling |
+| MOS thấp nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Packet loss cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| RTT cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Jitter cao nhất (caller) | N/A (không có end-call log của CALLER) | End Call log |
+| Sự kiện ICE/TURN (caller) | TURN_ALLOCATE_REQUEST=60 | WebRTC log |
+| MOS thấp nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Packet loss cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| RTT cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Jitter cao nhất (callee) | N/A (không có end-call log của CALLEE) | End Call log |
+| Sự kiện ICE/TURN (callee) | N/A (không có webrtc log của CALLEE) | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
-- Chính: SIGNALING_FAILURE - lỗi ở tầng signaling
+- Chính: TURN_FAILURE - client không đi hết được vòng request/response với TURN
+- Khả dĩ khác: Theo mục 9 của spec, chẩn đoán nghẽn hay quá tải TURN server nằm ngoài phạm vi - ở đây chỉ kết luận được là client không đi hết được vòng request/response với TURN, chứ không kết luận được lỗi nằm ở phía server hay phía mạng của thiết bị
 
 ## Đề xuất
-- Kiểm tra log signaling phía server quanh thời điểm INIT_CALL/INVITE để xác định nguyên nhân.
+- Đọc phần tóm tắt để biết TURN hỏng theo kiểu nào: không tạo được socket, hay gửi được request nhưng không có phản hồi.
+- Nếu không tạo được socket: kiểm tra mạng/định tuyến cục bộ của thiết bị (VPN, firewall, quyền truy cập mạng) - lỗi xảy ra trước khi có gói nào rời máy.
+- Nếu đã gửi request mà không có phản hồi: kiểm tra đường tới TURN server và khả năng gói UDP bị chặn trên đường đi.
 
 ## Giới hạn dữ liệu
-- Missing caller_endcall.log
-- Missing callee_endcall.log
+- Thiếu caller_endcall.log
+- Thiếu callee_endcall.log
 

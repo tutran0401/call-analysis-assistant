@@ -1,9 +1,11 @@
 package com.tutran.callassistant.report;
 
+import com.tutran.callassistant.analysis.verdict.IssueCategoryRegistry;
 import com.tutran.callassistant.domain.metrics.CallMetrics;
 import com.tutran.callassistant.domain.report.EvidenceItem;
 import com.tutran.callassistant.domain.report.Report;
 import com.tutran.callassistant.domain.verdict.Evidence;
+import com.tutran.callassistant.domain.verdict.IssueCategoryDefinition;
 import com.tutran.callassistant.domain.verdict.RuleVerdictResult;
 import com.tutran.callassistant.report.confidence.ConfidencePolicy;
 import com.tutran.callassistant.report.confidence.DataCompletenessConfidencePolicy;
@@ -25,19 +27,22 @@ public class RuleBasedReportAssembler implements ReportAssembler {
     private final ConfidencePolicy confidencePolicy;
     private final MetricRowCatalog metricRowCatalog;
     private final SuggestionCatalog suggestionCatalog;
+    private final IssueCategoryRegistry issueCategories;
 
     public RuleBasedReportAssembler(ConfidencePolicy confidencePolicy,
                                     MetricRowCatalog metricRowCatalog,
-                                    SuggestionCatalog suggestionCatalog) {
+                                    SuggestionCatalog suggestionCatalog,
+                                    IssueCategoryRegistry issueCategories) {
         this.confidencePolicy = confidencePolicy;
         this.metricRowCatalog = metricRowCatalog;
         this.suggestionCatalog = suggestionCatalog;
+        this.issueCategories = issueCategories;
     }
 
     /** Bộ mặc định, dùng cho test và chỗ nào không có Spring container. */
     public static RuleBasedReportAssembler withDefaults() {
         return new RuleBasedReportAssembler(new DataCompletenessConfidencePolicy(),
-                new MetricRowCatalog(), new SuggestionCatalog());
+                new MetricRowCatalog(), new SuggestionCatalog(), IssueCategoryRegistry.withDefaults());
     }
 
     @Override
@@ -51,6 +56,7 @@ public class RuleBasedReportAssembler implements ReportAssembler {
                 verdict.verdict().name(),
                 verdict.qualityFlag(),
                 verdict.issueCategory().name(),
+                alternativeCausesFor(verdict),
                 confidencePolicy.confidenceFor(verdict).name(),
                 verdict.summary(),
                 verdict.evidence().stream().map(this::toEvidenceItem).toList(),
@@ -58,6 +64,21 @@ public class RuleBasedReportAssembler implements ReportAssembler {
                 reportIssue ? suggestionCatalog.suggestionsFor(verdict.issueCategory()) : List.of(),
                 verdict.dataLimitations()
         );
+    }
+
+    /**
+     * Dòng "Khả dĩ khác" của mẫu report (mục 4.5): kết luận này còn có thể nhầm với cái gì.
+     *
+     * <p>Lấy thẳng từ phần "điểm mơ hồ đã biết" của taxonomy (T5) - nhờ vậy taxonomy không còn là tài
+     * liệu chết mà thật sự xuất hiện trong report, và hai nơi không thể nói khác nhau.
+     */
+    private List<String> alternativeCausesFor(RuleVerdictResult verdict) {
+        IssueCategoryDefinition definition = issueCategories.definitionOf(verdict.issueCategory());
+        if (definition == null || definition.knownAmbiguity() == null
+                || definition.knownAmbiguity().isBlank()) {
+            return List.of();
+        }
+        return List.of(definition.knownAmbiguity());
     }
 
     private EvidenceItem toEvidenceItem(Evidence evidence) {

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân tầng kiến trúc — Sprint 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&family=Noto+Serif:ital@0;1&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #f5f5f5;
+      --color-ink:     #2d3142;
+      --color-muted:   #4f5d75;
+      --color-accent:  #eb6c36;
+      --font-sans:  'Be Vietnam Pro', system-ui, sans-serif;
+      --font-serif: 'Lora', 'Noto Serif', 'Noto Serif KR', 'Noto Serif TC', serif;
+      --font-mono:  'Roboto Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1040px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print {
+      .diagram-container { overflow-x: visible; }
+      svg { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Layer stack · Kiến trúc Sprint 1</p>
+    <h1>Bốn tầng phụ thuộc một chiều</h1>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-layers-title arch-layers-desc">
+        <title id="arch-layers-title">Phân tầng kiến trúc Sprint 1</title>
+        <desc id="arch-layers-desc">Bốn tầng phụ thuộc một chiều từ ngoài vào trong — Adapters, Application, Analysis, Domain — trong đó tầng Analysis là lõi nghiệp vụ được cách li khỏi công nghệ cụ thể.</desc>
+        <defs>
+          <marker id="al-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+          </marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+        <!-- ===== connectors (drawn before boxes) ===== -->
+        <line x1="480" y1="164" x2="480" y2="180" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#al-arrow)"/>
+        <line x1="480" y1="280" x2="480" y2="296" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#al-arrow)"/>
+        <line x1="480" y1="396" x2="480" y2="412" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#al-arrow)"/>
+
+        <!-- ===== Row 1 — Adapters ===== -->
+        <rect x="112" y="72" width="736" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="136" y="96" fill="#4f5d75" font-size="8" font-weight="500" font-family="'Roboto Mono', monospace" letter-spacing="0.18em">L1</text>
+        <text x="136" y="120" fill="#2d3142" font-size="16" font-weight="600" font-family="'Be Vietnam Pro', sans-serif">Adapters</text>
+        <text x="136" y="140" fill="#4f5d75" font-size="10" font-family="'Roboto Mono', monospace">cli · ingest · report</text>
+        <text x="824" y="112" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">Biết I/O cụ thể:</text>
+        <text x="824" y="126" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">file, Elasticsearch, console</text>
+
+        <!-- ===== Row 2 — Application ===== -->
+        <rect x="112" y="188" width="736" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="136" y="212" fill="#4f5d75" font-size="8" font-weight="500" font-family="'Roboto Mono', monospace" letter-spacing="0.18em">L2</text>
+        <text x="136" y="236" fill="#2d3142" font-size="16" font-weight="600" font-family="'Be Vietnam Pro', sans-serif">Application</text>
+        <text x="136" y="256" fill="#4f5d75" font-size="10" font-family="'Roboto Mono', monospace">application</text>
+        <text x="824" y="228" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">Use case + port —</text>
+        <text x="824" y="242" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">chỉ biết interface</text>
+
+        <!-- ===== Row 3 — Analysis (focal) ===== -->
+        <rect x="112" y="304" width="736" height="88" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
+        <text x="136" y="328" fill="#eb6c36" font-size="8" font-weight="500" font-family="'Roboto Mono', monospace" letter-spacing="0.18em">L3</text>
+        <text x="136" y="352" fill="#2d3142" font-size="16" font-weight="600" font-family="'Be Vietnam Pro', sans-serif">Analysis</text>
+        <text x="136" y="372" fill="#4f5d75" font-size="10" font-family="'Roboto Mono', monospace">analysis</text>
+        <text x="824" y="344" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">Logic nghiệp vụ —</text>
+        <text x="824" y="358" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">timeline, metrics, verdict</text>
+
+        <!-- ===== Row 4 — Domain ===== -->
+        <rect x="112" y="420" width="736" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="136" y="444" fill="#4f5d75" font-size="8" font-weight="500" font-family="'Roboto Mono', monospace" letter-spacing="0.18em">L4</text>
+        <text x="136" y="468" fill="#2d3142" font-size="16" font-weight="600" font-family="'Be Vietnam Pro', sans-serif">Domain</text>
+        <text x="136" y="488" fill="#4f5d75" font-size="10" font-family="'Roboto Mono', monospace">domain</text>
+        <text x="824" y="460" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">Model thuần —</text>
+        <text x="824" y="474" fill="#7a8399" font-size="9" font-family="'Roboto Mono', monospace" text-anchor="end">không Spring, không IO</text>
+
+        <!-- ===== legend ===== -->
+        <line x1="112" y1="536" x2="848" y2="536" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="112" y="558" fill="#4f5d75" font-size="8" font-family="'Roboto Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <line x1="210" y1="554" x2="234" y2="554" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#al-arrow)"/>
+        <text x="242" y="558" fill="#4f5d75" font-size="8" font-family="'Roboto Mono', monospace" letter-spacing="0.06em">PHỤ THUỘC VÀO</text>
+
+        <rect x="470" y="548" width="14" height="14" rx="2" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
+        <text x="492" y="558" fill="#4f5d75" font-size="8" font-family="'Roboto Mono', monospace" letter-spacing="0.06em">TẦNG LÕI NGHIỆP VỤ — CÁCH LI KHỎI CÔNG NGHỆ CỤ THỂ</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

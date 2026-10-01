@@ -1,8 +1,7 @@
 package com.tutran.callassistant.analysis.verdict.rule;
 
-import com.tutran.callassistant.analysis.verdict.IceFailureDetector;
+import com.tutran.callassistant.analysis.verdict.FailureCauseClassifier;
 import com.tutran.callassistant.analysis.verdict.VerdictContext;
-import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.verdict.IssueCategory;
 import com.tutran.callassistant.domain.verdict.RuleVerdictResult;
 import org.springframework.core.annotation.Order;
@@ -22,10 +21,10 @@ import java.util.Optional;
 @Order(30)
 public class FailedToConnectRule implements VerdictRule {
 
-    private final IceFailureDetector iceFailureDetector;
+    private final FailureCauseClassifier causeClassifier;
 
-    public FailedToConnectRule(IceFailureDetector iceFailureDetector) {
-        this.iceFailureDetector = iceFailureDetector;
+    public FailedToConnectRule(FailureCauseClassifier causeClassifier) {
+        this.causeClassifier = causeClassifier;
     }
 
     @Override
@@ -34,16 +33,18 @@ public class FailedToConnectRule implements VerdictRule {
             return Optional.empty();
         }
         context.recordCallSetupStarted();
+        // Mục 4.2: client state timeline là nguồn evidence chính cho SIGNALING_FAILURE/ICE_FAILURE.
+        context.recordClientStateTimeline();
 
-        Optional<CanonicalEvent> iceFailure = iceFailureDetector.findFailure(context.timeline());
-        if (iceFailure.isPresent()) {
-            context.recordEvidence(iceFailure.get(), "WebRTC log reports an ICE connection failure");
-            return Optional.of(context.fail(IssueCategory.ICE_FAILURE,
-                    "Call failed to establish: ICE connectivity failed in the WebRTC log."));
+        Optional<FailureCauseClassifier.Cause> cause = causeClassifier.classify(context);
+        if (cause.isPresent()) {
+            context.recordEvidence(cause.get().evidence(), cause.get().description());
+            return Optional.of(context.fail(cause.get().category(),
+                    "Cuộc gọi không thiết lập được: " + cause.get().description() + "."));
         }
         return Optional.of(context.fail(IssueCategory.SIGNALING_FAILURE,
-                "Call failed to establish: no OK_ACK_OK (confirmed) event was observed at the "
-                        + "signaling layer, and no ICE connection failure evidence was found, so the call is "
-                        + "attributed to a signaling-layer failure."));
+                "Cuộc gọi không thiết lập được: không quan sát được sự kiện OK_ACK_OK (đã xác nhận) ở "
+                        + "tầng signaling, và cũng không có evidence nào về lỗi ICE, nên quy về lỗi tầng "
+                        + "signaling."));
     }
 }
