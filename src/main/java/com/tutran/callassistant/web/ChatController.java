@@ -44,7 +44,8 @@ public class ChatController {
 
     @PostMapping(path = "/chat", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ChatResponse chat(@RequestParam(value = "message", required = false, defaultValue = "") String message,
-                             @RequestParam(value = "files", required = false) List<MultipartFile> files)
+                             @RequestParam(value = "files", required = false) List<MultipartFile> files,
+                             @RequestParam(value = "callId", required = false) String callId)
             throws IOException {
         List<MultipartFile> attached = files == null ? List.of() : files;
         if (attached.size() > MAX_FILES) {
@@ -55,7 +56,7 @@ public class ChatController {
         for (MultipartFile file : attached) {
             uploads.add(new UploadedFile(file.getOriginalFilename(), file.getBytes()));
         }
-        return service.handle(new ChatRequest(message, uploads));
+        return service.handle(new ChatRequest(message, uploads, callId));
     }
 
     /** Trạng thái các phụ thuộc, để Web UI báo trước khi người dùng gửi (AI chưa cấu hình, ES chưa chạy). */

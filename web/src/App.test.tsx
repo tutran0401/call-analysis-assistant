@@ -126,6 +126,23 @@ describe('App', () => {
     expect(chatCall[1].method).toBe('POST')
   })
 
+  it('sends the optional Call-ID only when the user filled it in', async () => {
+    render(<App />)
+    await userEvent.type(screen.getByLabelText('Câu hỏi'), 'Phân tích')
+    await userEvent.type(screen.getByLabelText(/Call-ID/), '  DE7DD314-F432  ')
+    await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
+    await screen.findByRole('article')
+
+    const calls = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.filter((c) => c[0] === '/api/chat')
+    expect((calls[0][1].body as FormData).get('callId')).toBe('DE7DD314-F432')
+
+    await userEvent.clear(screen.getByLabelText(/Call-ID/))
+    await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(3))
+    const second = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.filter((c) => c[0] === '/api/chat')[1]
+    expect((second[1].body as FormData).has('callId')).toBe(false)
+  })
+
   it('shows the fixed refusal for out-of-scope questions and no report', async () => {
     mockFetch(() =>
       json(response({ intent: 'OUT_OF_SCOPE', report: null, message: 'Mình chỉ hỗ trợ phân tích cuộc gọi.' })),

@@ -62,20 +62,7 @@ class ChatAnalysisServiceTest {
     }
 
     private ChatAnalysisService service(AiProvider provider, long timeoutMillis, SignalingEventSource indexedStandIn) {
-        Map<SignalingSourcePreference, SignalingEventSource> sources = new EnumMap<>(SignalingSourcePreference.class);
-        sources.put(SignalingSourcePreference.INDEXED, indexedStandIn);
-
-        CallAnalysisPipeline pipeline = new CallAnalysisPipeline(new SignalingSourceResolver(sources),
-                DirectoryClientLogSource.withDefaults(), SampleCalls.timelineBuilder(),
-                CallMetricsCalculator.withDefaults(), RuleVerdictEngine.withDefaults(),
-                RuleBasedReportAssembler.withDefaults(), new ReportSchemaGuard());
-        AiPromptFactory prompts = new AiPromptFactory();
-        return new ChatAnalysisService(new RuleRequestParser(),
-                new ContentUploadValidator(ContentBasedLogFileTypeDetector.withDefaults(), 10 * 1024 * 1024),
-                pipeline, new AiContextBuilder(IssueCategoryRegistry.withDefaults()), new InputSanitizer(engine),
-                prompts, provider, new TimeLimitedAiCaller(timeoutMillis), new AiResponseGuard(prompts),
-                new AnalysisReportComposer(), new OutputSanitizer(engine), new ReportSchemaGuard(),
-                new TextReportRenderer(), pseudonymizer);
+        return com.tutran.callassistant.testsupport.ChatServices.create(provider, timeoutMillis, indexedStandIn);
     }
 
     private ChatAnalysisService service(AiProvider provider) {
@@ -275,6 +262,36 @@ class ChatAnalysisServiceTest {
         assertThat(response.warnings()).anyMatch(w -> w.contains("No signaling.json found in <upload>"));
         assertThat(response.warnings()).noneMatch(w -> w.contains(System.getProperty("java.io.tmpdir"))
                 || w.contains("call-upload-"));
+    }
+
+    @Test
+    void webRtcOnlyUploadNeedsAnExplicitCallIdToReachSignaling() throws IOException {
+        // WebRTC log không chứa Call-ID: không khai báo thì không có cách tra signaling -> UNKNOWN;
+        // khai báo (ô Call-ID / call_id của case) thì phân tích được như bình thường.
+        Path failDir = SampleCalls.fail(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS);
+        List<UploadedFile> webRtcOnly = logsOf(failDir);
+        SignalingEventSource stand = call -> call.callId().equals(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS)
+                ? LocalFileSignalingSource.withDefaults().fetch(new CallReference(call.callId(), failDir))
+                : com.tutran.callassistant.domain.event.NormalizedEvents.empty(); // như ES: không có Call-ID thì không có dữ liệu
+        ChatAnalysisService svc = service(new FakeAiProvider(), 5000, stand);
+
+        ChatResponse withoutId = svc.handle(new ChatRequest("Phân tích giúp mình", webRtcOnly));
+        ChatResponse withId = svc.handle(new ChatRequest("Phân tích giúp mình", webRtcOnly,
+                SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS));
+
+        assertThat(withoutId.report().callId()).isEqualTo("UNKNOWN");
+        assertThat(withoutId.report().verdict()).isEqualTo("UNKNOWN");
+        assertThat(withoutId.report().dataLimitations()).anyMatch(l -> l.contains("Call-ID"));
+        assertThat(withId.report().callId()).isEqualTo(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS);
+        assertThat(withId.report().verdict()).isEqualTo("FAIL");
+    }
+
+    @Test
+    void callIdWrittenInTheQuestionBeatsTheDeclaredOne() throws IOException {
+        ChatResponse response = service(new FakeAiProvider()).handle(new ChatRequest(
+                "Phân tích cuộc gọi " + CALL, logsOf(DIR), "SOME-OTHER-ID"));
+
+        assertThat(response.report().callId()).isEqualTo(CALL);
     }
 
     @Test
