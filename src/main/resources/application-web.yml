@@ -1,0 +1,9 @@
+# Profile "web": chạy Chat API cho Web UI (--spring.profiles.active=web).
+# Mặc định (không profile) vẫn là CLI không mở cổng nào, đúng như Sprint 1.
+spring:
+  main:
+    web-application-type: servlet
+
+server:
+  port: 8080
+  address: 127.0.0.1
