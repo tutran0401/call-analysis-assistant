@@ -13,6 +13,17 @@ elasticsearch:
   signaling-index: call-signaling-events
 
 call-analysis:
+  ai:
+    # none | fake | openai. Để openai thì đặt biến môi trường OPENAI_API_KEY (không commit key vào repo).
+    provider: ${CALL_ANALYSIS_AI_PROVIDER:none}
+    timeout-ms: 20000
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      model: gpt-4o-mini
+      timeout-ms: 15000
+  sanitizer:
+    # Đặt salt cố định khi chạy Evaluation Runner để pseudonym giống nhau giữa các lần chạy.
+    pseudonym-salt: ${CALL_ANALYSIS_PSEUDONYM_SALT:}
   # Ngưỡng cảnh báo chất lượng của rule baseline (Sprint 1). Data mẫu không kèm ground truth để
   # hiệu chỉnh, nên đây là giá trị baseline đã ghi trong tài liệu; việc siết chặt bằng dữ liệu
   # accuracy thật là công việc của Sprint 3 T1.
