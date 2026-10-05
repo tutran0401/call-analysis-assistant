@@ -1,0 +1,479 @@
+# Benchmark `dev` (PROJECT_SPEC.md mục 6.3). Định dạng: mỗi case = 1 cuộc gọi + 3-5 cách hỏi.
+#
+# NGUỒN NHÃN - đọc trước khi diễn giải accuracy:
+#   * expected_verdict của success/ và fail/ là nhãn do mentor gắn sẵn (theo tên thư mục).
+#   * expected_issue_category CHƯA có nhãn từ mentor. Giá trị ở đây là kết quả của rule engine Sprint 1,
+#     đã được kiểm tay với log thô (docs/sample-run-report.md) - nên "Issue Category Accuracy" của rule
+#     trên tập này là 100% theo cách xây, chỉ có ý nghĩa để so AI với rule, không phải độ chính xác thật.
+#   * for_test/ không có nhãn mentor: verdict + category là kiểm tay.
+#   * expected_evidence bỏ trống: chưa có ground truth Evidence ID từ mentor.
+#   * Các case var-* là biến thể file suy từ cuộc gọi gốc; label_source nói rõ nhãn đến từ đâu.
+# Tham chiếu file: <tên file> trong thư mục cuộc gọi, hoặc {from: <callId>/<tên file>, as: <tên đính kèm>}.
+
+cases:
+  - case_id: case-001
+    call_id: 5E0800AE-F9D4-497D-9FA1-CD56C3E901E8
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/5E0800AE"
+  - case_id: case-002
+    call_id: 6A7CE985-4A1A-44D1-84B1-DBB0B0B90448
+    files:
+      - callee_webrtc.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/6A7CE985"
+  - case_id: case-003
+    call_id: 70A1F889-9371-4179-8C27-125ED39BA415
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/70A1F889"
+  - case_id: case-004
+    call_id: C8CF631E-0C6B-46E4-92E7-280E7B6A5394
+    files:
+      - callee_webrtc.log
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/C8CF631E"
+  - case_id: case-005
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/DE7DD314"
+  - case_id: case-006
+    call_id: EE129C8F-EAD0-4302-AB68-920D32F8B8B7
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - calleer_webrtc.log
+      - caller_endcall.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/EE129C8F"
+  - case_id: case-007
+    call_id: F3D7914B-7270-4A53-AF2D-225B3AA5E8C6
+    files:
+      - callee_webrtc.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+      - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "success/F3D7914B"
+  - case_id: case-008
+    call_id: 1B009D42-49CD-479E-B26C-3A2994AEB720
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao cuộc gọi không kết nối được?"
+      - "Vì sao bên nhận không đổ chuông?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: SIGNALING_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/1B009D42"
+  - case_id: case-009
+    call_id: 2D9057AA-C496-48B2-946A-98FA2896D086
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: ICE_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/2D9057AA"
+  - case_id: case-010
+    call_id: 703100CF-5742-467E-9E0E-34E45F60FF58
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/703100CF"
+  - case_id: case-011
+    call_id: 7B56D7AD-1FF1-4EDB-B212-06EC12CA73FB
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/7B56D7AD"
+  - case_id: case-012
+    call_id: D114749E-BF76-4D25-9B22-B1F2B7DAD170
+    files:
+      - callee_webrtc.log
+      - caller_endcall.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao cuộc gọi không kết nối được?"
+      - "Vì sao bên nhận không đổ chuông?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: SIGNALING_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/D114749E"
+  - case_id: case-013
+    call_id: E9D6C112-20D4-4548-918F-7E6BC4BD1A15
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict=mentor-folder; category=rule-output-hand-verified (docs/sample-run-report.md)"
+    notes: "fail/E9D6C112"
+  - case_id: case-014
+    call_id: 0A6C2821-0A19-49F4-9C05-8F8BCEACD64F
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/0A6C2821"
+  - case_id: case-015
+    call_id: 0EC7B700-6B5D-45A3-9BB6-1463B56C9634
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao cuộc gọi không kết nối được?"
+      - "Vì sao bên nhận không đổ chuông?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: SIGNALING_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/0EC7B700"
+  - case_id: case-016
+    call_id: 271D1FAF-26D4-4150-AC3F-9204505BD84B
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao bên nhận nghe bị rè?"
+      - "Chất lượng âm thanh cuộc gọi này thế nào?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: true
+    expected_issue_category: NETWORK_PACKET_LOSS
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/271D1FAF"
+  - case_id: case-017
+    call_id: 311A9B6A-0D30-4C30-9E01-9A42E4EF11E6
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao cuộc gọi không kết nối được?"
+      - "Vì sao bên nhận không đổ chuông?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: SIGNALING_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/311A9B6A"
+  - case_id: case-018
+    call_id: 45AA3011-1034-4D13-82A4-634A72D432B6
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/45AA3011"
+  - case_id: case-019
+    call_id: 9B556E56-24D3-43BA-853D-7972AD009865
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao cuộc gọi không kết nối được?"
+      - "Vì sao bên nhận không đổ chuông?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: SIGNALING_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/9B556E56"
+  - case_id: case-020
+    call_id: AA9791CE-13D8-4DD7-942D-4D78304FD458
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: TURN_FAILURE
+    split: dev
+    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
+    notes: "for_test/AA9791CE"
+  - case_id: var-missing-callee-logs
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Chất lượng cuộc gọi này có ổn không?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "variant of a mentor-labelled call; the call itself is unchanged so its verdict/category still hold"
+    notes: "Thiếu callee_endcall.log + callee_webrtc.log; kỳ vọng vẫn kết luận được, kèm giới hạn dữ liệu"
+  - case_id: var-single-file
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Cuộc gọi này có ổn không?"
+    expected_verdict: UNKNOWN
+    split: dev
+    label_source: "spec section 10 scenario 5 ('chỉ đính kèm một file' -> UNKNOWN); OPEN QUESTION whether rule baseline agrees"
+    notes: "Scenario 5 của spec. Nếu rule trả SUCCESS (signaling từ ES vẫn đủ) thì case này lộ ra điểm cần hỏi mentor"
+  - case_id: var-no-client-files
+    call_id: C8CF631E-0C6B-46E4-92E7-280E7B6A5394
+    files: []
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Cuộc gọi này kết thúc thế nào?"
+    expected_verdict: UNKNOWN
+    split: dev
+    label_source: "spec 3.3: không đủ dữ liệu phải trả UNKNOWN (không đính kèm log client nào)"
+    notes: "Không đính kèm file nào"
+  - case_id: var-swapped-file-names
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: "caller_endcall.log"
+        as: "caller_webrtc.log"
+      - from: "caller_webrtc.log"
+        as: "caller_endcall.log"
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "variant of a mentor-labelled call; the call itself is unchanged so its verdict/category still hold"
+    notes: "F02: tên file đảo ngược loại; nhận diện theo nội dung phải cho cùng kết quả"
+  - case_id: var-foreign-call-file
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - caller_endcall.log
+      - caller_webrtc.log
+      - callee_webrtc.log
+      - from: "271D1FAF-26D4-4150-AC3F-9204505BD84B/callee_endcall.log"
+        as: "callee_endcall.log"
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "variant of a mentor-labelled call; the call itself is unchanged so its verdict/category still hold"
+    notes: "F03: callee_endcall.log thuộc cuộc gọi khác; phải bị loại và nêu ở giới hạn dữ liệu, không làm đổi verdict"
+  - case_id: var-media-failure-callee-only
+    call_id: 2D9057AA-C496-48B2-946A-98FA2896D086
+    files:
+      - callee_webrtc.log
+    questions:
+      - "Vì sao hai bên không nghe được nhau?"
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Có lỗi kết nối media không?"
+    expected_verdict: FAIL
+    expected_quality_flag: false
+    expected_issue_category: ICE_FAILURE
+    split: dev
+    label_source: "variant of a mentor-labelled call; the call itself is unchanged so its verdict/category still hold"
+  - case_id: var-sensitive-data
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: "caller_webrtc.log"
+        append:
+          - "[999:001][1] (RTCLogging.mm:34): Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          - "[999:002][1] (RTCLogging.mm:34): contact phone=0987654321 email=nguyen.van@example.com"
+          - "[999:003][1] (RTCLogging.mm:34): remote candidate ip=113.161.45.67 port=5000"
+          - "[999:004][1] (RTCLogging.mm:34): provider error api_key=sk-proj-abcdefghijklmnop1234"
+      - caller_endcall.log
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Cuộc gọi này có lỗi gì không?"
+      - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_verdict: SUCCESS
+    expected_quality_flag: false
+    expected_issue_category: NONE
+    split: dev
+    label_source: "variant of a mentor-labelled call; the call itself is unchanged so its verdict/category still hold"
+    notes: "Scenario 6: log chứa JWT, phone, email, IP, API key tổng hợp; không giá trị nào được lọt vào AI request / report / log"
+    sensitive_values:
+      - "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      - "0987654321"
+      - "113.161.45.67"
+      - "nguyen.van@example.com"
+      - "sk-proj-abcdefghijklmnop1234"
+  - case_id: oos-01
+    files: []
+    questions:
+      - "Viết giúp mình một email xin nghỉ phép"
+      - "Hôm nay thời tiết Hà Nội thế nào?"
+      - "Dịch câu 'good morning' sang tiếng Việt"
+    expected_intent: OUT_OF_SCOPE
+    split: dev
+    label_source: "spec mục 4.4"
+  - case_id: oos-02
+    files:
+      - from: "DE7DD314-F432-45CB-BCB4-AE9103CC0919/caller_endcall.log"
+    questions:
+      - "Kể cho mình một câu chuyện cười"
+      - "Giá vàng hôm nay là bao nhiêu?"
+      - "Bạn là ai vậy?"
+    expected_intent: OUT_OF_SCOPE
+    split: dev
+    label_source: "spec mục 4.4"
+    notes: "OOS dù có đính kèm log"
