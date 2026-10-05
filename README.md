@@ -1,13 +1,18 @@
-# AI Call Analysis Assistant — Sprint 1
+# AI Call Analysis Assistant — Sprint 2
 
-Bản rule-based baseline cho trợ lý phân tích cuộc gọi OJT AI 20K (xem `docs/PROJECT_SPEC.md`).
-Phạm vi Sprint 1: **với log của một cuộc gọi, tính được chỉ số, dựng được timeline, và
-ra verdict theo rule kèm evidence — chưa có AI.**
+Trợ lý phân tích cuộc gọi OJT AI 20K (xem `docs/PROJECT_SPEC.md`).
+
+- **Sprint 1** (rule-based baseline): với log của một cuộc gọi, tính chỉ số, dựng timeline, ra verdict theo
+  rule kèm evidence. Báo cáo: `docs/sprint1-report.md`.
+- **Sprint 2** (AI + Web UI + Sanitizer): người dùng hỏi tiếng Việt và đính kèm log trên web; hệ thống chạy
+  pipeline rule, gửi AI **chỉ context đã sanitize**, kiểm phản hồi AI bằng Guardrails, và fallback về rule khi AI
+  lỗi. Báo cáo: `docs/sprint2-report.md`. **Chưa chạy được AI thật vì chưa có API key** — xem báo cáo.
 
 ## Công nghệ sử dụng
 
-Java 17, Spring Boot 3.3.5 (chỉ chạy CLI, không có web server), Maven. Elasticsearch 8.15
-qua Docker Compose để lưu signaling log.
+Java 17, Spring Boot 3.3.5, Maven. Web UI: React 18 + Vite + TypeScript (thư mục `web/`). AI: OpenAI
+`gpt-4o-mini` qua cổng `AiProvider` (hoặc AI giả lập / không AI). Elasticsearch 8.15 qua Docker Compose để
+lưu signaling log. Mặc định chạy CLI (như Sprint 1); thêm profile `web` để chạy Chat API.
 
 ## Cài đặt
 
@@ -49,10 +54,57 @@ Mỗi cuộc gọi in ra report theo đúng bố cục cố định ở `PROJECT
 các cảnh báo của parser (thiếu file, dòng log lỗi định dạng...) — phần này không thuộc
 report chính thức nhưng hữu ích khi debug.
 
+## Chạy Web UI (Sprint 2)
+
+```bash
+# Backend (profile "web" mở Chat API ở 127.0.0.1:8080)
+export CALL_ANALYSIS_AI_PROVIDER=fake        # none (mặc định) | fake | openai
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar --spring.profiles.active=web
+
+# Chưa bật Elasticsearch? Lấy signaling từ cây data mẫu thay cho ES:
+#   thêm  --call-analysis.signaling-root=sample-data
+
+# Frontend (proxy /api sang backend)
+cd web && npm install && npm run dev         # http://localhost:5173
+```
+
+Trên UI: gõ câu hỏi, kéo thả các file `*_endcall.log` / `*_webrtc.log`, bấm **Phân tích**. Nếu chỉ đính kèm log
+WebRTC (loại log này không chứa Call-ID) thì điền thêm ô **Call-ID**. File nhận diện theo **nội dung**, không theo
+tên; file thuộc Call-ID khác, hỏng, rỗng hay quá 10 MB bị loại và được nêu ở mục "Giới hạn dữ liệu".
+
+Gọi API trực tiếp bằng curl: `curl -F "message=<cau-hoi.txt" -F "callId=..." -F "files=@caller_webrtc.log" http://127.0.0.1:8080/api/chat`.
+Trên Windows (Git Bash) đừng gõ tiếng Việt thẳng trên dòng lệnh curl — `curl.exe` đổi codepage làm mất dấu và câu
+hỏi có thể bị phân loại nhầm là ngoài phạm vi; lưu câu hỏi vào file UTF-8 rồi dùng `message=<file` như trên
+(Web UI không bị ảnh hưởng).
+
+**Cấu hình AI** (biến môi trường, không bao giờ commit key):
+
+| Biến | Ý nghĩa |
+| --- | --- |
+| `CALL_ANALYSIS_AI_PROVIDER` | `none` (mặc định, chỉ rule-based) · `fake` (giả lập, offline) · `openai` |
+| `OPENAI_API_KEY` | Key OpenAI; thiếu key thì `openai` tự rơi về `none` và báo rõ lý do |
+| `CALL_ANALYSIS_PSEUDONYM_SALT` | Salt cố định cho pseudonym (nên đặt khi chạy `evaluate`) |
+
+Khi AI không dùng được (chưa cấu hình, timeout, trả lời hỏng, bị Guardrails từ chối) report vẫn được trả ra từ
+rule-based, đánh dấu `degraded` và UI hiện banner kèm lý do.
+
+## Chạy Evaluation (benchmark)
+
+```bash
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar evaluate \
+    --cases benchmark/dev/cases.yaml --data-root sample-data --repeat 5 [--out reports/eval-x] [--signaling tree|es]
+```
+
+Ghi `summary.md` (metric mục 6.5, bảng AI vs Rule vs Ground truth, danh sách lần chạy sai, nguồn nhãn),
+`results.json` và `samples/<case>.md`. Để Mentor chạy `held-out`: đưa file case cùng định dạng (mục 6.3) qua
+`--cases`. Bộ `dev` có 29 case; **nguồn nhãn của từng case nằm ở `label_source`** — đọc `docs/sprint2-report.md`
+mục "Nguồn nhãn" trước khi diễn giải accuracy. Kết quả mẫu (AI giả lập): `docs/evaluation-run-dev-fake-ai.md`.
+
 ## Chạy test
 
 ```bash
-mvn test
+mvn test                              # backend
+cd web && npm install && npm test     # Web UI
 ```
 
 Toàn bộ test cho parser, timeline, metrics, evidence/rule-verdict và report-schema đều
@@ -95,12 +147,18 @@ src/main/java/com/tutran/callassistant/
     timeline/     CallTimeline (+ các truy vấn dùng chung cho metrics và rule)
     metrics/      CallMetrics, MetricResult (giá trị hoặc N/A kèm lý do)
     verdict/      Verdict, IssueCategory, Evidence, RuleVerdictResult
-    report/       Report Schema v1 dạng record + ConfidenceLevel
+    report/       Report Schema v2 dạng record + ConfidenceLevel
   application/    Use case + port (chỉ interface, không biết công nghệ nào)
     port/in/      AnalyzeCallUseCase, ImportSignalingUseCase
     port/out/     SignalingEventSource, ClientLogSource, SignalingEventArchive,
-                  CallDirectoryScanner, ReportPresenter, ImportProgressListener
-    CallAnalysisPipeline    <- đọc class này là thấy toàn bộ hệ thống (8 dòng)
+                  CallDirectoryScanner, ReportPresenter, ImportProgressListener,
+                  AiProvider, UploadValidator                          (Sprint 2)
+    CallAnalysisPipeline    <- pipeline rule-based Sprint 1 (8 dòng)
+    ChatAnalysisService     <- điều phối một lượt hỏi trên web: parser, validator, sanitizer, AI, guardrails, fallback
+    request/      Request Parser (intent, focus, Call-ID)             (Sprint 2)
+    validation/   Model của File Validator                            (Sprint 2)
+    ai/           AiContextBuilder, AiPromptFactory, TimeLimitedAiCaller
+    guardrail/    AiResponseGuard (G01-G05)
   analysis/       Logic nghiệp vụ
     timeline/     Timeline Builder (T4): loại trùng + neo thời gian + sắp thứ tự
     metrics/      Call Metrics Calculator (T6): facade gom 4 calculator chuyên trách
@@ -110,10 +168,19 @@ src/main/java/com/tutran/callassistant/
   ingest/         Adapter đầu vào
     file/         Log Normalizer (T3): 3 parser + nhận diện loại file theo nội dung
     es/           Import + query Elasticsearch (T1)
-  report/         Report Schema v1 + assembler + renderer + guard (T8)
-  cli/            Entrypoint: mỗi lệnh (import/analyze/demo) là một class riêng
+  report/         Report Schema v2 + assembler + renderer + guard (T8)
+  cli/            Entrypoint: mỗi lệnh (import/analyze/demo/evaluate) là một class riêng
+  web/            Chat API (ChatController) + xử lý lỗi thân thiện                (Sprint 2)
+  ai/             Adapter AI: openai/OpenAiProvider, FakeAiProvider, NoAiProvider (Sprint 2)
+  sanitize/       Sensitive Data Detector + Input/Output Sanitizer + bộ lọc log   (Sprint 2)
+  evaluation/     Evaluation Runner, metric mục 6.5, loader file case             (Sprint 2)
+web/              Web UI React + Vite + TypeScript                                (Sprint 2)
+benchmark/dev/    cases.yaml - bộ case `dev` (29 case)                            (Sprint 2)
 docs/
-  architecture-diagram-v1.md
+  architecture-diagram-v1.md, architecture-diagram-v2.md
+  sprint1-report.md, sprint2-report.md
+  prompt-strategy.md
+  evaluation-run-dev-fake-ai.md
   verdict-issue-taxonomy.md
   sensitive-data-inventory.md
   ai-provider-proposal.md
@@ -141,6 +208,20 @@ class, không phải sửa class đang chạy**:
 Chỉ những đường biên thật sự sẽ thay đổi mới có interface — `TimelineBuilder` hay
 `CallMetricsCalculator` vẫn là class thường, vì tạo interface cho mọi thứ cũng là một dạng
 rối rắm không cần thiết.
+
+## Giới hạn đã biết (Known Limitations) — Sprint 2
+
+Chi tiết và lý do ở `docs/sprint2-report.md`. Tóm tắt:
+
+- **Chưa đo được chất lượng AI thật** (chưa có API key); metric AI trong `docs/evaluation-run-dev-fake-ai.md`
+  chỉ chứng minh bộ đo chạy đúng.
+- **Nhãn issue category của tập `dev` là kết quả rule đã kiểm tay**, chưa phải ground truth từ Mentor; Evidence
+  ID kỳ vọng bỏ trống.
+- **Scenario 5 của spec ("chỉ một file" → `UNKNOWN`) chưa khớp**: nếu signaling vẫn có từ ES, rule vẫn kết luận.
+  Case `var-single-file` ghi lại; cần Mentor xác nhận.
+- **Chính sách "AI mâu thuẫn rule → `UNKNOWN`"** chưa được kiểm bằng số đo AI thật.
+- **Request Parser dựa trên từ khoá**; bản dùng AI chưa làm.
+- **Sanitizer dựa trên mẫu đã biết**; số điện thoại chỉ nhận dạng VN.
 
 ## Giới hạn đã biết (Known Limitations) — Sprint 1
 

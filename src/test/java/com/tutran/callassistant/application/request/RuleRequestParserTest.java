@@ -25,6 +25,14 @@ class RuleRequestParserTest {
     }
 
     @Test
+    void whyTheCallCouldNotConnectIsSetupFocus() {
+        ParsedRequest parsed = parser.parse("Vì sao cuộc gọi không kết nối được?", true);
+
+        assertThat(parsed.intent()).isEqualTo(Intent.ANALYZE_WITH_FOCUS);
+        assertThat(parsed.focus()).contains(CallFocus.SETUP);
+    }
+
+    @Test
     void whyCalleeCannotHearIsAudioQualityFocus() {
         ParsedRequest parsed = parser.parse("Vì sao bên nhận không nghe được?", true);
 
