@@ -101,7 +101,10 @@ public class ChatAnalysisService {
                     new CallReference(upload.callId(), upload.directory()), SignalingSourcePreference.INDEXED);
             Report rule = withLimitations(detail.report(), upload.limitations());
 
-            List<String> warnings = new ArrayList<>(detail.processingWarnings());
+            // Ghi chú xử lý của pipeline có thể nhắc tới thư mục tạm của lượt upload (có cả tên user của máy chủ).
+            String tempPath = upload.directory().toString();
+            List<String> warnings = new ArrayList<>(detail.processingWarnings().stream()
+                    .map(w -> w.replace(tempPath, "<upload>")).toList());
             AiAttempt attempt = attemptAi(requestId, parsed, detail.timeline(), rule, warnings);
             return finish(requestId, parsed, rule, attempt, warnings);
         }

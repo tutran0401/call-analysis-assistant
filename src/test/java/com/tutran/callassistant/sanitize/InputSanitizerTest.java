@@ -120,6 +120,15 @@ class InputSanitizerTest {
     }
 
     @Test
+    void loopbackAndWildcardAddressesOfTheServerItselfAreNotClientIps() {
+        String text = "Tomcat bind 127.0.0.1:8080 and 0.0.0.0:80 but client 127a.1.1.1x";
+
+        assertThat(clean("http-nio-127.0.0.1-8080 on 0.0.0.0")).isEqualTo("http-nio-127.0.0.1-8080 on 0.0.0.0");
+        assertThat(clean("client 10.0.0.5 and server 127.0.0.1")).isEqualTo("client [IP_REDACTED] and server 127.0.0.1");
+        assertThat(engine.countResidual(text)).isZero();
+    }
+
+    @Test
     void sanitizingTwiceChangesNothingMore() {
         String once = clean("user_id=123456 ip 1.2.3.4 turn:1.2.3.4:3478 Authorization: Bearer " + JWT + " a@b.com");
 
