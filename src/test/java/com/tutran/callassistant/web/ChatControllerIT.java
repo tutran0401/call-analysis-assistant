@@ -54,6 +54,18 @@ class ChatControllerIT {
     }
 
     @Test
+    void declaredCallIdIsUsedWhenTheFilesCarryNone() throws Exception {
+        Path dir = SampleCalls.fail(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS);
+
+        mvc.perform(multipart("/api/chat")
+                        .file(file("caller_webrtc.log", dir.resolve("caller_webrtc.log")))
+                        .param("message", "Phân tích giúp mình")
+                        .param("callId", SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.report.callId").value(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS));
+    }
+
+    @Test
     void outOfScopeQuestionGetsTheFixedRefusal() throws Exception {
         mvc.perform(multipart("/api/chat").param("message", "Viết giúp mình một email"))
                 .andExpect(status().isOk())

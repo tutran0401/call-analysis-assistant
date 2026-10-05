@@ -8,6 +8,7 @@ const EXAMPLE = 'Phân tích giúp mình cuộc gọi này, vì sao bên nhận 
 
 export default function App() {
   const [message, setMessage] = useState('')
+  const [callId, setCallId] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,7 +27,7 @@ export default function App() {
     setError(null)
     setCopied(false)
     try {
-      setResult(await sendChat(message, files))
+      setResult(await sendChat(message, files, callId))
     } catch (e) {
       setResult(null)
       setError(e instanceof ApiError ? e.message : 'Có lỗi không xác định. Vui lòng thử lại.')
@@ -72,6 +73,18 @@ export default function App() {
           onChange={(e) => setMessage(e.target.value)}
         />
         <FilePicker files={files} onChange={setFiles} disabled={loading} />
+        <label htmlFor="callId">
+          Call-ID <span className="muted">(tuỳ chọn - cần khi chỉ đính kèm log WebRTC, vì loại log này không chứa Call-ID)</span>
+        </label>
+        <input
+          id="callId"
+          type="text"
+          className="text-input mono"
+          value={callId}
+          placeholder="ví dụ DE7DD314-F432-45CB-BCB4-AE9103CC0919"
+          disabled={loading}
+          onChange={(e) => setCallId(e.target.value)}
+        />
         <div className="actions">
           <button type="submit" disabled={!canSubmit}>
             {loading ? 'Đang phân tích…' : 'Phân tích'}

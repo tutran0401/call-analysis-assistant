@@ -3,9 +3,10 @@ import type { ChatResponse, Health } from './types'
 /** Lỗi đã có thông báo thân thiện bằng tiếng Việt, hiển thị thẳng cho người dùng. */
 export class ApiError extends Error {}
 
-export async function sendChat(message: string, files: File[]): Promise<ChatResponse> {
+export async function sendChat(message: string, files: File[], callId = ''): Promise<ChatResponse> {
   const form = new FormData()
   form.append('message', message)
+  if (callId.trim()) form.append('callId', callId.trim())
   files.forEach((file) => form.append('files', file))
 
   let response: Response

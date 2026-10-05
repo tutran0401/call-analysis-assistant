@@ -87,6 +87,20 @@ public class ChatAnalysisService {
         this.pseudonymizer = pseudonymizer;
     }
 
+    /** Bản sao dùng pipeline khác (Evaluation Runner đổi nguồn signaling); mọi thành phần còn lại giữ nguyên. */
+    public ChatAnalysisService withPipeline(CallAnalysisPipeline other) {
+        return new ChatAnalysisService(requestParser, uploadValidator, other, contextBuilder, inputSanitizer,
+                promptFactory, aiProvider, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
+                pseudonymizer);
+    }
+
+    /** Bản sao dùng AI provider khác (Evaluation Runner bọc provider để ghi lại request, hoặc chạy rule-only). */
+    public ChatAnalysisService withAiProvider(AiProvider other) {
+        return new ChatAnalysisService(requestParser, uploadValidator, pipeline, contextBuilder, inputSanitizer,
+                promptFactory, other, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
+                pseudonymizer);
+    }
+
     public ChatResponse handle(ChatRequest request) {
         String requestId = "req-" + UUID.randomUUID().toString().substring(0, 8);
         ParsedRequest parsed = requestParser.parse(request.message(), !request.files().isEmpty());
@@ -96,7 +110,8 @@ public class ChatAnalysisService {
                     false, null, List.of(), "");
         }
 
-        try (ValidatedUpload upload = uploadValidator.validate(request.files(), parsed.callIdInText())) {
+        String requestedCallId = parsed.callIdInText() != null ? parsed.callIdInText() : request.callId();
+        try (ValidatedUpload upload = uploadValidator.validate(request.files(), requestedCallId)) {
             CallAnalysisDetail detail = pipeline.analyzeDetailed(
                     new CallReference(upload.callId(), upload.directory()), SignalingSourcePreference.INDEXED);
             Report rule = withLimitations(detail.report(), upload.limitations());

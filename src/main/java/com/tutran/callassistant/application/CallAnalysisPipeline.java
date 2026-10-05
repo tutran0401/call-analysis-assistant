@@ -58,6 +58,12 @@ public class CallAnalysisPipeline implements AnalyzeCallUseCase {
         this.reportGuard = reportGuard;
     }
 
+    /** Bản sao dùng nguồn signaling khác (ví dụ Evaluation Runner đọc signaling từ cây data mẫu thay vì Elasticsearch). */
+    public CallAnalysisPipeline withSignalingSources(SignalingSourceResolver other) {
+        return new CallAnalysisPipeline(other, clientLogSource, timelineBuilder, metricsCalculator, verdictEngine,
+                reportAssembler, reportGuard);
+    }
+
     @Override
     public AnalysisOutcome analyze(CallReference call, SignalingSourcePreference signalingSource) {
         return analyzeDetailed(call, signalingSource).toOutcome();
