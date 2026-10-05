@@ -1,0 +1,59 @@
+{
+  "title": "AI Analysis Output v1",
+  "description": "Structured output cua AI Analysis Engine (PROJECT_SPEC.md muc 6.1 T5). Enum khop report-schema-v1.json. Guardrails con kiem tra evidenceIds va so lieu o tang code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verdict",
+    "qualityFlag",
+    "issueCategory",
+    "confidenceLevel",
+    "summary",
+    "evidenceIds",
+    "analysis",
+    "suggestions"
+  ],
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["SUCCESS", "FAIL", "UNKNOWN"]
+    },
+    "qualityFlag": {
+      "type": "boolean"
+    },
+    "issueCategory": {
+      "type": "string",
+      "enum": [
+        "NETWORK_PACKET_LOSS",
+        "NETWORK_DELAY_JITTER",
+        "ICE_FAILURE",
+        "TURN_FAILURE",
+        "SIGNALING_FAILURE",
+        "NONE",
+        "UNKNOWN"
+      ]
+    },
+    "confidenceLevel": {
+      "type": "string",
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "analysis": {
+      "type": "string"
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
