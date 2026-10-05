@@ -1,9 +1,20 @@
 # AI Provider Proposal (T10)
 
-**Trạng thái: bản nháp, đang chờ Mentor duyệt (hạn cuối Sprint 1, PROJECT_SPEC.md mục 1.4).**
-Tài liệu này so sánh 2 phương án có thể chạy được từ máy cá nhân, theo đúng yêu cầu ở mục
-5.1 T10. Sprint 1 chưa có AI nào trong pipeline cả (mục 3.2/3.3); đề xuất này chỉ chuẩn
-bị trước cho những gì AI Analysis Engine của Sprint 2 sẽ gọi tới.
+**Cập nhật Sprint 2 (2026-10-05):** quyết định triển khai **OpenAI `gpt-4o-mini`** (Cloud API, structured
+output `json_schema` strict) - đã có adapter `ai/openai/OpenAiProvider` được test bằng HTTP giả lập; **chưa gọi
+mạng thật vì chưa có API key** và **chưa được Mentor duyệt** (xem `docs/sprint2-report.md`, câu hỏi 5). Bản so
+sánh bên dưới vẫn là bản của Sprint 1 (so Claude API với model local); lý do chọn Cloud API vẫn đúng với
+`gpt-4o-mini` ở hai tiêu chí quyết định (structured output đáng tin, latency ổn định). Khác biệt cần ghi nhận:
+dữ liệu rời máy sang OpenAI, nên Input Sanitizer là điều kiện bắt buộc chứ không phải tuỳ chọn - và đã được cài
+đặt (`sanitize/`), đo ở cửa ra bằng metric Security Leakage. Phương án local (Ollama) giữ làm dự phòng; kiến
+trúc `AiProvider` cho phép thêm bằng một class.
+
+Key chỉ đọc từ biến môi trường `OPENAI_API_KEY`, không commit (`.env` đã trong `.gitignore`); thiếu key thì hệ
+thống tự chạy rule-based và báo `degraded`.
+
+---
+
+## Bản gốc Sprint 1
 
 ## AI thực sự cần làm gì (theo mục 3.2 / mục 6.1 T5)
 
