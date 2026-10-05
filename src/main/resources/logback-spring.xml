@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mọi message và stack trace đều đi qua Sanitizer trước khi ghi (PROJECT_SPEC.md mục 6.2, S08). -->
+<configuration>
+    <conversionRule conversionWord="san"
+                    converterClass="com.tutran.callassistant.sanitize.logging.SanitizingMessageConverter"/>
+    <conversionRule conversionWord="sanEx"
+                    converterClass="com.tutran.callassistant.sanitize.logging.SanitizingThrowableConverter"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %san%n%sanEx</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
