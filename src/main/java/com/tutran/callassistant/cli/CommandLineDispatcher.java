@@ -1,6 +1,7 @@
 package com.tutran.callassistant.cli;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * sprint sau) là thêm đúng một class, không sửa ở đây.
  */
 @Component
+@Profile("!web")
 public class CommandLineDispatcher implements CommandLineRunner {
 
     private final Map<String, CliCommand> commandsByName;
