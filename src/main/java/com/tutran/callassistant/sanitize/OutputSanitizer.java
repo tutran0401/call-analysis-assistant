@@ -54,7 +54,9 @@ public class OutputSanitizer {
                         .map(m -> new MetricRow(m.name(), clean.apply(m.value()), m.source()))
                         .toList(),
                 mapAll(report.suggestions(), clean),
-                mapAll(report.dataLimitations(), clean));
+                mapAll(report.dataLimitations(), clean),
+                clean.apply(report.analysis()),
+                report.degraded());
     }
 
     /** Số giá trị nhạy cảm còn sót trong text; dùng cho metric Security Leakage (output). */

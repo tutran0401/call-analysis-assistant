@@ -9,7 +9,7 @@ bị trước cho những gì AI Analysis Engine của Sprint 2 sẽ gọi tới
 
 Input: intent/focus (từ Request Parser) + timeline + evidence + chỉ số đã tính + taxonomy
 — **không bao giờ** là log gốc (xem phần cuối của `docs/sensitive-data-inventory.md`).
-Output: một object có cấu trúc khớp với các field mà AI cần điền trong `report-schema-v1.json`
+Output: một object có cấu trúc khớp với các field mà AI cần điền trong `report-schema-v2.json`
 (gợi ý `verdict`, `qualityFlag`, `issueCategory`, `summary`, `evidenceIds`, `analysis`,
 `suggestions`), sau đó Guardrails sẽ đối chiếu với rule baseline. Vì vậy 2 tiêu chí quan
 trọng nhất khi chọn provider là: **structured/JSON output đáng tin cậy** (Guardrails cần
@@ -23,7 +23,7 @@ parse được một cách xác định) và **latency chấp nhận được** 
 | Dữ liệu gửi đi sau khi sanitize | Chỉ JSON đã sanitize (timeline/evidence/metrics, mục 6.2) rời khỏi máy, qua TLS tới API của Anthropic. Không có log gốc, không có field mức `SECRET` nào rời khỏi sanitizer. |
 | Chi phí | Trả theo token. Context đã sanitize cho một cuộc gọi (timeline + evidence + metrics, không phải log gốc) khá nhỏ — vài trăm đến vài nghìn token — nên chi phí mỗi lần phân tích chỉ vài phần nghìn đến vài xu tuỳ tier model. Cần có API key và ngân sách thật; free-tier/trial credit có thể đủ dùng cho khối lượng phát triển Sprint 2-3. |
 | Latency | Thường khoảng 1-3s cho một request structured-output cỡ nhỏ-trung bình ở tier model nhanh; ổn định, không phụ thuộc CPU/GPU máy cá nhân của người phát triển. |
-| Hỗ trợ structured output | Mạnh: hỗ trợ structured output dạng constrained/tool-based và JSON mode, khớp trực tiếp với việc validate theo `report-schema-v1.json` ở Guardrails. |
+| Hỗ trợ structured output | Mạnh: hỗ trợ structured output dạng constrained/tool-based và JSON mode, khớp trực tiếp với việc validate theo `report-schema-v2.json` ở Guardrails. |
 | Khác | Cần kết nối internet và API key (phải quản lý chi phí/secret); không chạy "ngoài hệ thống của team" theo đúng nghĩa vì đây là gọi API công khai — được phép theo mục 1.3 (chỉ cấm hệ thống *nội bộ team*), nhưng vẫn nên nói rõ với Mentor đây là một phụ thuộc mạng bên ngoài. |
 
 ## Phương án B: Model chạy local qua Ollama (ví dụ Llama 3.1 8B Instruct hoặc Qwen2.5 7B Instruct)

@@ -60,6 +60,11 @@ public class CallAnalysisPipeline implements AnalyzeCallUseCase {
 
     @Override
     public AnalysisOutcome analyze(CallReference call, SignalingSourcePreference signalingSource) {
+        return analyzeDetailed(call, signalingSource).toOutcome();
+    }
+
+    /** Như {@link #analyze} nhưng giữ lại timeline/metrics/verdict - AI Analysis Engine cần chúng để dựng context. */
+    public CallAnalysisDetail analyzeDetailed(CallReference call, SignalingSourcePreference signalingSource) {
         NormalizedEvents signaling = signalingSources.resolve(signalingSource).fetch(call);
         NormalizedEvents clientLogs = clientLogSource.load(call);
         NormalizedEvents ingested = signaling.combine(clientLogs);
@@ -70,6 +75,6 @@ public class CallAnalysisPipeline implements AnalyzeCallUseCase {
         Report report = reportAssembler.assemble(call.callId(), verdict, metrics);
 
         NormalizedEvents checked = ingested.withExtraWarnings(reportGuard.inspect(report));
-        return new AnalysisOutcome(report, checked.warnings());
+        return new CallAnalysisDetail(timeline, metrics, verdict, report, checked.warnings());
     }
 }

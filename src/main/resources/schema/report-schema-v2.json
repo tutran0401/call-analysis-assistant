@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tutran.com/call-analysis-assistant/report-schema-v1.json",
+  "$id": "https://tutran.com/call-analysis-assistant/report-schema-v2.json",
   "title": "Call Analysis Report v1",
   "description": "PROJECT_SPEC.md section 4.5 report template, as a validatable schema.",
   "type": "object",
@@ -16,7 +16,9 @@
     "evidence",
     "metrics",
     "suggestions",
-    "dataLimitations"
+    "dataLimitations",
+    "analysis",
+    "degraded"
   ],
   "properties": {
     "callId": {
@@ -136,6 +138,14 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "analysis": {
+      "type": "string",
+      "description": "Phan tich ngan gon cua AI (da qua Guardrails). Chuoi rong khi report do rule-based tao ra."
+    },
+    "degraded": {
+      "type": "boolean",
+      "description": "true khi AI khong dung duoc (timeout, loi, bi Guardrails tu choi) va report la ket qua rule-based."
     }
   }
 }
