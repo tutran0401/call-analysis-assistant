@@ -57,8 +57,11 @@ class ChatAnalysisServiceTest {
 
     private ChatAnalysisService service(AiProvider provider, long timeoutMillis) {
         // Chỗ của Elasticsearch: đọc signaling.json của cuộc gọi mẫu theo Call-ID, như ES sẽ trả về.
-        SignalingEventSource indexedStandIn = call ->
-                LocalFileSignalingSource.withDefaults().fetch(new CallReference(call.callId(), DIR));
+        return service(provider, timeoutMillis, call ->
+                LocalFileSignalingSource.withDefaults().fetch(new CallReference(call.callId(), DIR)));
+    }
+
+    private ChatAnalysisService service(AiProvider provider, long timeoutMillis, SignalingEventSource indexedStandIn) {
         Map<SignalingSourcePreference, SignalingEventSource> sources = new EnumMap<>(SignalingSourcePreference.class);
         sources.put(SignalingSourcePreference.INDEXED, indexedStandIn);
 
@@ -259,6 +262,19 @@ class ChatAnalysisServiceTest {
                 .anyMatch(l -> l.contains("broken_endcall.log"))
                 .anyMatch(l -> l.contains("other_endcall.log") && l.contains("AAAAAAAA"))
                 .anyMatch(l -> l.contains("callee_webrtc.log"));
+    }
+
+    @Test
+    void processingWarningsDoNotRevealTheServersTempDirectory() throws IOException {
+        SignalingEventSource noisy = call -> com.tutran.callassistant.domain.event.NormalizedEvents.unreadable(
+                "No signaling.json found in " + call.directory());
+
+        ChatResponse response = service(new FakeAiProvider(), 5000, noisy).handle(
+                new ChatRequest("Phân tích giúp mình", logsOf(DIR)));
+
+        assertThat(response.warnings()).anyMatch(w -> w.contains("No signaling.json found in <upload>"));
+        assertThat(response.warnings()).noneMatch(w -> w.contains(System.getProperty("java.io.tmpdir"))
+                || w.contains("call-upload-"));
     }
 
     @Test

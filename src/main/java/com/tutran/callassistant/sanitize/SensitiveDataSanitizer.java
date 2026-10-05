@@ -89,7 +89,9 @@ public class SensitiveDataSanitizer {
             Rule.of(SensitiveKind.PHONE,
                     "(?<![\\w.])(?:\\+84|84|0)[\\s.-]?[2-9](?:[\\s.-]?\\d){8}(?![\\w])", 0),
             Rule.of(SensitiveKind.IP_ADDRESS,
-                    "(?<![\\w.])(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET + "(?![\\w.]*\\d)", 0),
+                    // Loopback / 0.0.0.0 là địa chỉ bind của chính máy chủ, không phải IP của client.
+                    "(?<![\\w.])(?!127\\.|0\\.0\\.0\\.0)(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET
+                            + "(?![\\w.]*\\d)", 0),
             Rule.of(SensitiveKind.IP_ADDRESS, "(?<![\\w:])(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}(?![\\w:])", 0),
             Rule.of(SensitiveKind.IP_ADDRESS,
                     "(?<![\\w:])(?:[0-9a-fA-F]{1,4}:){1,7}:(?:[0-9a-fA-F]{1,4}(?::[0-9a-fA-F]{1,4}){0,6})?(?![\\w:])", 0),
