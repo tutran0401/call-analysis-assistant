@@ -46,6 +46,11 @@ public class TextReportRenderer implements ReportRenderer {
                     .append(evidence.source()).append(' ').append(evidence.timestamp()).append("] ")
                     .append(evidence.description()).append('\n');
         }
+        // Phân tích của AI (đã qua Guardrails) nằm ngay dưới evidence nó dựa vào, không thêm mục mới
+        // nên bố cục vẫn đúng mẫu mục 4.5.
+        if (!report.analysis().isBlank()) {
+            out.append("Phân tích: ").append(report.analysis()).append('\n');
+        }
         out.append('\n');
     }
 

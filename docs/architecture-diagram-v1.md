@@ -85,7 +85,7 @@ flowchart TD
     subgraph report["report — T8"]
         Assembler["RuleBasedReportAssembler<br/>+ MetricRowCatalog<br/>+ SuggestionCatalog"]
         Confidence["ConfidencePolicy"]
-        Guard["ReportSchemaGuard<br/>(report-schema-v1.json)"]
+        Guard["ReportSchemaGuard<br/>(report-schema-v2.json)"]
         Renderer["TextReportRenderer<br/>(bố cục mục 4.5)"]
         Assembler --> Confidence
     end
