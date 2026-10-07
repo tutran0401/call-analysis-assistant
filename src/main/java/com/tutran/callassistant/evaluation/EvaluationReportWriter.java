@@ -30,6 +30,7 @@ public final class EvaluationReportWriter {
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("model", result.model());
+        json.put("contextMode", result.contextMode());
         json.put("repeat", result.repeat());
         json.put("metrics", result.metrics());
         json.put("ruleBaselines", result.rules());
@@ -51,7 +52,7 @@ public final class EvaluationReportWriter {
         out.append("- Dữ liệu: `").append(dataRoot).append("`\n");
         out.append("- Model AI: `").append(r.model()).append("`; mỗi câu hỏi trong ")
                 .append(MetricsCalculator.CONSISTENCY_QUESTIONS).append(" câu đầu chạy lặp ").append(r.repeat())
-                .append(" lần\n");
+                .append(" lần; cách dựng context: `").append(r.contextMode()).append("`\n");
         if ("none".equals(r.model())) {
             out.append("- **Cảnh báo:** không có AI provider - mọi kết quả dưới đây là rule-based (degraded).\n");
         }
@@ -80,6 +81,9 @@ public final class EvaluationReportWriter {
                 m.unsupportedClaims().measured() ? (m.unsupportedClaims().hit() == 0 ? "Đạt" : "Chưa đạt") : "Chưa đo");
         row(out, "Pipeline Success Rate", m.pipelineSuccess(), "≥ 95%", "Báo cáo", atLeast(m.pipelineSuccess(), 95));
         row(out, "Tỉ lệ fallback (degraded)", m.degradedRate(), "—", "Báo cáo", "—");
+        out.append("| Token AI trung bình / lần gọi | ")
+                .append(m.avgAiTokens() == null ? "—" : String.format(Locale.ROOT, "%.0f", m.avgAiTokens()))
+                .append(" | | — | Báo cáo | — |\n");
         out.append("| Latency P50 / P95 | ").append(ms(m.latencyP50Millis())).append(" / ").append(ms(m.latencyP95Millis()))
                 .append(" | | — | Báo cáo | — |\n\n");
 

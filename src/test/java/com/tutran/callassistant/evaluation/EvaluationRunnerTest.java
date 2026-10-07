@@ -77,7 +77,7 @@ class EvaluationRunnerTest {
         List<String> progress = new ArrayList<>();
         return new EvaluationRunner(base.withAiProvider(recorder), base.withAiProvider(new NoAiProvider("rule")),
                 recorder, new CaseMaterializer(new CallDirectoryIndex(DATA)), ChatServices.ENGINE, repeat, 5,
-                progress::add).run(cases);
+                "structured", progress::add).run(cases);
     }
 
     @Test
@@ -100,6 +100,7 @@ class EvaluationRunnerTest {
         assertThat(m.degradedRate()).isEqualTo(new Ratio(0, 18));
         assertThat(m.latencyP95Millis()).isNotNull();
         assertThat(result.samples()).containsKeys("ok", "failed-webrtc-only", "secrets").doesNotContainKey("oos");
+        assertThat(result.contextMode()).isEqualTo("structured");
     }
 
     @Test
@@ -171,7 +172,7 @@ class EvaluationRunnerTest {
 
         EvaluationResult result = new EvaluationRunner(base.withAiProvider(recorder),
                 base.withAiProvider(new NoAiProvider("rule")), recorder,
-                new CaseMaterializer(new CallDirectoryIndex(DATA)), ChatServices.ENGINE, 1, 5, s -> { })
+                new CaseMaterializer(new CallDirectoryIndex(DATA)), ChatServices.ENGINE, 1, 5, "structured", s -> { })
                 .run(new CaseLoader().load(file));
 
         assertThat(result.records()).filteredOn(r -> r.caseId().equals("broken")).singleElement()

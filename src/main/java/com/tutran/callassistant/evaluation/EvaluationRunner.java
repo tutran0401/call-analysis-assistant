@@ -36,6 +36,7 @@ public final class EvaluationRunner {
     private final ObjectMapper mapper = new ObjectMapper();
     private final int repeat;
     private final int maxQuestions;
+    private final String contextMode;
     private final Consumer<String> progress;
 
     /**
@@ -45,7 +46,7 @@ public final class EvaluationRunner {
     public EvaluationRunner(ChatAnalysisService aiService, ChatAnalysisService ruleService,
                             RecordingAiProvider recorder, CaseMaterializer materializer,
                             SensitiveDataSanitizer detector, int repeat, int maxQuestions,
-                            Consumer<String> progress) {
+                            String contextMode, Consumer<String> progress) {
         this.aiService = aiService;
         this.ruleService = ruleService;
         this.recorder = recorder;
@@ -53,6 +54,7 @@ public final class EvaluationRunner {
         this.detector = detector;
         this.repeat = Math.max(1, repeat);
         this.maxQuestions = Math.max(1, maxQuestions);
+        this.contextMode = contextMode;
         this.progress = progress;
     }
 
@@ -73,7 +75,7 @@ public final class EvaluationRunner {
             rawMentions = logs.rawMentions(allProbes);
         }
         EvaluationMetrics metrics = calculator.compute(cases, records, rules, logLeakage);
-        return new EvaluationResult(recorder.modelName(), repeat, cases, records, rules, metrics, samples, rawMentions);
+        return new EvaluationResult(recorder.modelName(), contextMode, repeat, cases, records, rules, metrics, samples, rawMentions);
     }
 
     private void runCase(EvaluationCase c, List<RunRecord> records, Map<String, RuleBaseline> rules,
@@ -136,7 +138,7 @@ public final class EvaluationRunner {
                     LogCapture.countProbes(aiRequest, c.sensitiveValues()),
                     aiRequest == null ? 0 : detector.countResidual(aiRequest),
                     LogCapture.countProbes(output, c.sensitiveValues()), detector.countResidual(output),
-                    response.warnings(), report, response.renderedText());
+                    response.warnings(), report, response.renderedText(), response.aiTokens());
         } catch (RuntimeException e) {
             return failed(c, q, run, question, e.getClass().getSimpleName());
         }
@@ -144,7 +146,7 @@ public final class EvaluationRunner {
 
     private static RunRecord failed(EvaluationCase c, int q, int run, String question, String error) {
         return new RunRecord(c.caseId(), q, question, run, null, null, null, false, null, false, null, 0, false,
-                error, false, 0, 0, 0, 0, List.of(), null, null);
+                error, false, 0, 0, 0, 0, List.of(), null, null, null);
     }
 
     /** Mọi thứ người dùng nhìn thấy trong một response, để quét rò rỉ. */

@@ -9,8 +9,11 @@ import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.report.Report;
 import com.tutran.callassistant.domain.timeline.CallTimeline;
 import com.tutran.callassistant.domain.verdict.IssueCategoryDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -21,16 +24,44 @@ import java.util.Objects;
  *
  * <p>Timeline cố tình không mang mốc thời gian: mọi con số AI được phép nhắc đã nằm trong metrics và
  * evidence, giúp Guardrails G05 kiểm "số liệu ngoài bộ chỉ số" một cách đơn giản và chặt.
+ *
+ * <p>Hai cách dựng (T11, {@code call-analysis.ai.context-mode}): {@code structured} (mặc định) - evidence, chỉ số,
+ * timeline, taxonomy là các mảng JSON; {@code semi} - cùng nội dung nhưng viết thành một đoạn văn bản trong field
+ * {@code narrative}. {@code ruleBaseline}, intent và focus luôn ở dạng có cấu trúc. Dùng để đo cách nào cho
+ * accuracy / consistency / token / latency tốt hơn.
  */
 @Component
 public class AiContextBuilder {
 
     static final int MAX_TIMELINE_ENTRIES = 80;
 
+    /** Cách đưa evidence / chỉ số cho AI. */
+    public enum Mode { STRUCTURED, SEMI }
+
     private final IssueCategoryRegistry taxonomy;
+    private final Mode mode;
 
     public AiContextBuilder(IssueCategoryRegistry taxonomy) {
+        this(taxonomy, "structured");
+    }
+
+    @Autowired
+    public AiContextBuilder(IssueCategoryRegistry taxonomy,
+                            @Value("${call-analysis.ai.context-mode:structured}") String mode) {
         this.taxonomy = taxonomy;
+        this.mode = parse(mode);
+    }
+
+    private static Mode parse(String value) {
+        try {
+            return Mode.valueOf(value.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("call-analysis.ai.context-mode must be structured or semi: " + value);
+        }
+    }
+
+    public Mode mode() {
+        return mode;
     }
 
     /** @param ruleReport report rule-based đã assemble - nguồn duy nhất của verdict baseline, evidence và chỉ số */
@@ -48,6 +79,11 @@ public class AiContextBuilder {
         baseline.put("issueCategory", ruleReport.issueCategory());
         baseline.put("confidenceLevel", ruleReport.confidenceLevel());
         baseline.put("summary", ruleReport.summary());
+
+        if (mode == Mode.SEMI) {
+            root.put("narrative", narrative(timeline, ruleReport));
+            return root;
+        }
 
         ArrayNode evidence = root.putArray("evidence");
         ruleReport.evidence().forEach(e -> evidence.addObject()
@@ -95,5 +131,43 @@ public class AiContextBuilder {
                 node.put("knownAmbiguity", definition.knownAmbiguity());
             }
         }
+    }
+
+    /** Cùng dữ kiện với dạng có cấu trúc, trình bày như một đoạn báo cáo văn bản. */
+    private String narrative(CallTimeline timeline, Report report) {
+        StringBuilder text = new StringBuilder();
+        line(text, "Evidence:");
+        if (report.evidence().isEmpty()) {
+            line(text, "(không có)");
+        }
+        report.evidence().forEach(e -> line(text, "[" + e.id() + "][" + e.source() + " " + e.timestamp() + "] "
+                + e.description()));
+
+        line(text, "");
+        line(text, "Chỉ số:");
+        report.metrics().forEach(m -> line(text, "- " + m.name() + ": " + m.value() + " (" + m.source() + ")"));
+
+        line(text, "");
+        line(text, "Giới hạn dữ liệu:");
+        if (report.dataLimitations().isEmpty()) {
+            line(text, "(không có)");
+        }
+        report.dataLimitations().forEach(l -> line(text, "- " + l));
+
+        line(text, "");
+        line(text, "Diễn biến:");
+        ArrayNode events = JsonNodeFactory.instance.arrayNode();
+        addTimeline(events, timeline);
+        events.forEach(e -> line(text, e.get("leg").asText() + "/" + e.get("source").asText() + ": "
+                + e.get("event").asText()));
+
+        line(text, "");
+        line(text, "Các nhóm vấn đề:");
+        taxonomy.all().values().forEach(d -> line(text, "- " + d.category().name() + ": " + d.definition()));
+        return text.toString();
+    }
+
+    private static void line(StringBuilder text, String value) {
+        text.append(value).append('\n');
     }
 }

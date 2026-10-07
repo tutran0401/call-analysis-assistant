@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = "call-analysis.ai.provider=fake")
 @AutoConfigureMockMvc
 @ActiveProfiles("web")
-class ChatControllerIT {
+class ChatControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;

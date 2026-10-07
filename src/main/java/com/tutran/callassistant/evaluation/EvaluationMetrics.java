@@ -20,6 +20,7 @@ package com.tutran.callassistant.evaluation;
  * @param outputLeakage         giá trị nhạy cảm còn sót trong response trả người dùng (mục tiêu 0)
  * @param logLeakage            giá trị nhạy cảm còn sót trong application log sau bộ lọc logback (mục tiêu 0)
  * @param latencyP50Millis      {@code null} nếu chưa có request nào
+ * @param avgAiTokens           token trung bình mỗi lần gọi phân tích AI; {@code null} nếu chưa có lần nào báo token
  */
 public record EvaluationMetrics(Ratio verdictAccuracy,
                                 Ratio ruleVerdictAccuracy,
@@ -38,5 +39,6 @@ public record EvaluationMetrics(Ratio verdictAccuracy,
                                 int logLeakage,
                                 int sensitiveValuesInjected,
                                 Long latencyP50Millis,
-                                Long latencyP95Millis) {
+                                Long latencyP95Millis,
+                                Double avgAiTokens) {
 }

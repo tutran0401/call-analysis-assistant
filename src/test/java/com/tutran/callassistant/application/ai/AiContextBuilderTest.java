@@ -73,6 +73,33 @@ class AiContextBuilderTest {
     }
 
     @Test
+    void semiModeCarriesTheSameFactsAsOneNarrativeAndNoStructuredArrays() {
+        AiContextBuilder semi = new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "semi");
+
+        JsonNode ctx = semi.build(new ParsedRequest(Intent.ANALYZE_CALL, Set.of(), null), timelineOf(2),
+                TestReports.successWithPacketLoss());
+
+        assertThat(semi.mode()).isEqualTo(AiContextBuilder.Mode.SEMI);
+        assertThat(ctx.has("evidence")).isFalse();
+        assertThat(ctx.has("metrics")).isFalse();
+        assertThat(ctx.has("taxonomy")).isFalse();
+        assertThat(ctx.at("/ruleBaseline/verdict").asText()).isEqualTo("SUCCESS");
+        String narrative = ctx.get("narrative").asText();
+        assertThat(narrative).contains("[EV002][callee_endcall.log 10:00:41.000] Packet loss phía callee = 9.8%")
+                .contains("MOS (callee): 2.9 (End Call)").contains("Thiếu callee_webrtc.log")
+                .contains("NETWORK_PACKET_LOSS:").contains("INVITE");
+    }
+
+    @Test
+    void unknownContextModeFailsFast() {
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () -> new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "weird"))
+                .isInstanceOf(IllegalStateException.class);
+        assertThat(new AiContextBuilder(IssueCategoryRegistry.withDefaults()).mode())
+                .isEqualTo(AiContextBuilder.Mode.STRUCTURED);
+    }
+
+    @Test
     void rawLinesAndAttributesNeverReachTheContext() {
         CanonicalEvent secretEvent = Events.endCall(Leg.CALLER, "SIGNALING_CMD", "2026-09-18T03:07:21Z", 1,
                 java.util.Map.of("sdpOffer", "v=0 SECRET-SDP", "ip", "113.161.45.67"));
