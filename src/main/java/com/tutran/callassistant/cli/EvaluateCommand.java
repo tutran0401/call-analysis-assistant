@@ -1,5 +1,6 @@
 package com.tutran.callassistant.cli;
 
+import com.tutran.callassistant.application.ai.AiContextBuilder;
 import com.tutran.callassistant.application.CallAnalysisPipeline;
 import com.tutran.callassistant.application.ChatAnalysisService;
 import com.tutran.callassistant.application.SignalingSourcePreference;
@@ -48,16 +49,19 @@ public class EvaluateCommand implements CliCommand {
     private final AiProvider aiProvider;
     private final SensitiveDataSanitizer detector;
     private final ConsoleWriter console;
+    private final AiContextBuilder contextBuilder;
 
     public EvaluateCommand(ChatAnalysisService service, CallAnalysisPipeline pipeline,
                            LocalFileSignalingSource localFile, AiProvider aiProvider,
-                           SensitiveDataSanitizer detector, ConsoleWriter console) {
+                           SensitiveDataSanitizer detector, ConsoleWriter console,
+                           AiContextBuilder contextBuilder) {
         this.service = service;
         this.pipeline = pipeline;
         this.localFile = localFile;
         this.aiProvider = aiProvider;
         this.detector = detector;
         this.console = console;
+        this.contextBuilder = contextBuilder;
     }
 
     @Override
@@ -68,7 +72,8 @@ public class EvaluateCommand implements CliCommand {
     @Override
     public String usage() {
         return "evaluate --cases <cases.yaml> --data-root <dir> [--repeat 5] [--max-questions 5] "
-                + "[--out <dir>] [--signaling tree|es]";
+                + "[--out <dir>] [--signaling tree|es]  (đổi cách dựng context: "
+                + "--call-analysis.ai.context-mode=semi)";
     }
 
     @Override
@@ -97,7 +102,8 @@ public class EvaluateCommand implements CliCommand {
             console.line("CẢNH BÁO: chưa có AI provider (call-analysis.ai.provider=none) - chỉ đo được rule-based.");
         }
         EvaluationResult result = new EvaluationRunner(aiService, ruleService, recorder,
-                new CaseMaterializer(index), detector, repeat, maxQuestions, console::line).run(cases);
+                new CaseMaterializer(index), detector, repeat, maxQuestions,
+                contextBuilder.mode().name().toLowerCase(), console::line).run(cases);
         try {
             new EvaluationReportWriter().write(outDir, result, casesFile.toString(), dataRoot.toString());
         } catch (IOException e) {

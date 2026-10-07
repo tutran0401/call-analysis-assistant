@@ -8,9 +8,11 @@ import java.util.Map;
  *
  * @param model     model AI đã dùng ({@code none} nghĩa là cả lần chạy là rule-based)
  * @param samples   caseId -> báo cáo đã render của câu hỏi đầu tiên, lần chạy đầu, để người đọc soi bằng mắt
+ * @param contextMode cách dựng context đã dùng ({@code structured} hoặc {@code semi}) - biến số của T11
  * @param logProbeMentionsRaw số log event còn chứa giá trị nhạy cảm ở dạng gốc (trước bộ lọc) - chứng tỏ bộ lọc log thực sự được thử
  */
 public record EvaluationResult(String model,
+                               String contextMode,
                                int repeat,
                                List<EvaluationCase> cases,
                                List<RunRecord> records,

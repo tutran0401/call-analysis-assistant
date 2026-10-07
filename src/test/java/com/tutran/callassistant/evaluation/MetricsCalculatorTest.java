@@ -29,7 +29,7 @@ class MetricsCalculatorTest {
                                     long latency) {
         return new RunRecord(caseId, question, "q" + question, run, "ANALYZE_CALL", verdict, category,
                 "PACKET".equals(category), "MEDIUM", false, null, latency, true, null, true, 0, 0, 0, 0,
-                List.of(), RULE_REPORT, GOOD_TEXT);
+                List.of(), RULE_REPORT, GOOD_TEXT, null);
     }
 
     private static RunRecord with(RunRecord r, java.util.function.UnaryOperator<RunRecordBuilder> change) {
@@ -49,6 +49,7 @@ class MetricsCalculatorTest {
         List<String> warnings;
         Report report;
         String renderedText;
+        Integer aiTokens;
 
         RunRecordBuilder(RunRecord r) {
             this.r = r;
@@ -62,13 +63,14 @@ class MetricsCalculatorTest {
             warnings = r.warnings();
             report = r.report();
             renderedText = r.renderedText();
+            aiTokens = r.aiTokens();
         }
 
         RunRecord build() {
             return new RunRecord(r.caseId(), r.questionIndex(), r.question(), r.run(), intent, r.verdict(),
                     r.issueCategory(), r.qualityFlag(), r.confidenceLevel(), degraded, fallbackReason,
                     r.latencyMillis(), pipelineOk, pipelineOk ? null : "boom", aiCalled, inputProbeHits, 0, 0,
-                    outputResidual, warnings, report, renderedText);
+                    outputResidual, warnings, report, renderedText, aiTokens);
         }
     }
 
@@ -139,6 +141,21 @@ class MetricsCalculatorTest {
         // nearest-rank trên 100..900 ms
         assertThat(m.latencyP50Millis()).isEqualTo(500);
         assertThat(m.latencyP95Millis()).isEqualTo(900);
+    }
+
+    @Test
+    void averagesTokensOnlyOverCallsThatReportedThem() {
+        List<EvaluationCase> cases = List.of(testCase("c1", "SUCCESS", false, "NONE", null, List.of()));
+        List<RunRecord> records = List.of(
+                with(record("c1", 0, 0, "SUCCESS", "NONE", 10), b -> { b.aiTokens = 3000; return b; }),
+                with(record("c1", 0, 1, "SUCCESS", "NONE", 10), b -> { b.aiTokens = 4000; return b; }),
+                record("c1", 0, 2, "SUCCESS", "NONE", 10));
+
+        EvaluationMetrics m = calculator.compute(cases, records, Map.of(), 0);
+
+        assertThat(m.avgAiTokens()).isEqualTo(3500.0);
+        assertThat(calculator.compute(cases, List.of(record("c1", 0, 0, "SUCCESS", "NONE", 10)), Map.of(), 0)
+                .avgAiTokens()).isNull();
     }
 
     @Test

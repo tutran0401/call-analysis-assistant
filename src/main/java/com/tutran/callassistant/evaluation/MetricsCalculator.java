@@ -50,7 +50,8 @@ public final class MetricsCalculator {
                 logLeakage,
                 cases.stream().mapToInt(c -> c.sensitiveValues().size()).sum(),
                 percentile(records, 50),
-                percentile(records, 95));
+                percentile(records, 95),
+                averageTokens(records));
     }
 
     private Ratio verdictAccuracy(List<RunRecord> records, Map<String, EvaluationCase> byId) {
@@ -215,6 +216,11 @@ public final class MetricsCalculator {
 
     private static String codeOf(String warning) {
         return warning.length() >= 3 ? warning.substring(0, 3) : warning;
+    }
+
+    private Double averageTokens(List<RunRecord> records) {
+        return records.stream().map(RunRecord::aiTokens).filter(java.util.Objects::nonNull)
+                .mapToInt(Integer::intValue).average().stream().boxed().findFirst().orElse(null);
     }
 
     private Long percentile(List<RunRecord> records, int percent) {

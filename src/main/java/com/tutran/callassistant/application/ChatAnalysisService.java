@@ -107,7 +107,7 @@ public class ChatAnalysisService {
 
         if (parsed.isOutOfScope()) {
             return new ChatResponse(requestId, parsed.intent(), Set.of(), null, ParsedRequest.REFUSAL_MESSAGE,
-                    false, null, List.of(), "");
+                    false, null, List.of(), "", null);
         }
 
         String requestedCallId = parsed.callIdInText() != null ? parsed.callIdInText() : request.callId();
@@ -147,7 +147,7 @@ public class ChatAnalysisService {
             warnings.addAll(decision.flags());
             logAiCall(requestId, callRef, result.model(), started, decision.flags().isEmpty() ? "ACCEPTED"
                     : "ACCEPTED_WITH_FLAGS", result.totalTokens(), null);
-            return new AiAttempt(composer.fromAi(rule, decision), null);
+            return new AiAttempt(composer.fromAi(rule, decision), null, result.totalTokens());
         } catch (AiProviderException e) {
             warnings.add("AI: " + e.getMessage());
             return fallback(requestId, callRef, aiProvider.modelName(), started, "AI_" + e.kind().name(), null);
@@ -162,7 +162,7 @@ public class ChatAnalysisService {
                                AiResult result) {
         logAiCall(requestId, callRef, model, started, "FALLBACK", result == null ? null : result.totalTokens(),
                 reason);
-        return new AiAttempt(null, reason);
+        return new AiAttempt(null, reason, result == null ? null : result.totalTokens());
     }
 
     private ChatResponse finish(String requestId, ParsedRequest parsed, Report rule, AiAttempt attempt,
@@ -182,7 +182,7 @@ public class ChatAnalysisService {
 
         List<String> cleanWarnings = warnings.stream().map(outputSanitizer::sanitize).distinct().toList();
         return new ChatResponse(requestId, parsed.intent(), parsed.focus(), safe, null, safe.degraded(),
-                fallbackReason, cleanWarnings, renderer.render(safe));
+                fallbackReason, cleanWarnings, renderer.render(safe), attempt.tokens());
     }
 
     private void logAiCall(String requestId, String callRef, String model, long startedNanos, String status,
@@ -200,6 +200,6 @@ public class ChatAnalysisService {
                 report.metrics(), report.suggestions(), merged, report.analysis(), report.degraded());
     }
 
-    private record AiAttempt(Report report, String fallbackReason) {
+    private record AiAttempt(Report report, String fallbackReason, Integer tokens) {
     }
 }

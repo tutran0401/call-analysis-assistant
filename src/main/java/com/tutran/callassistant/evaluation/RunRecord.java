@@ -17,6 +17,7 @@ import java.util.List;
  * @param outputProbeHits  như trên nhưng cho response trả người dùng (report, ghi chú, message)
  * @param outputResidual   như trên
  * @param report           chỉ để tính metric trong bộ nhớ, không ghi vào {@code results.json} (đã có {@code samples/})
+ * @param aiTokens         tổng token của lần gọi phân tích AI, {@code null} nếu không có
  * @param aiCalled         request có thực sự tới AI provider hay không
  */
 public record RunRecord(String caseId,
@@ -40,7 +41,8 @@ public record RunRecord(String caseId,
                         int outputResidual,
                         List<String> warnings,
                         @JsonIgnore Report report,
-                        @JsonIgnore String renderedText) {
+                        @JsonIgnore String renderedText,
+                        Integer aiTokens) {
 
     public RunRecord {
         warnings = warnings == null ? List.of() : List.copyOf(warnings);

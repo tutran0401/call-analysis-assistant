@@ -94,6 +94,27 @@ class ChatAnalysisServiceTest {
     }
 
     @Test
+    void tokenUsageOfTheAnalysisCallIsReportedAndAbsentWithoutAi() throws IOException {
+        AiProvider counting = new AiProvider() {
+            @Override
+            public String modelName() {
+                return "counting";
+            }
+
+            @Override
+            public AiResult analyze(AiPrompt prompt) {
+                AiResult plain = new FakeAiProvider().analyze(prompt);
+                return new AiResult(plain.rawJson(), "counting", 5, 700, 120);
+            }
+        };
+
+        assertThat(service(counting).handle(new ChatRequest("Phân tích giúp mình", logsOf(DIR))).aiTokens())
+                .isEqualTo(820);
+        assertThat(service(new NoAiProvider("x")).handle(new ChatRequest("Phân tích giúp mình", logsOf(DIR)))
+                .aiTokens()).isNull();
+    }
+
+    @Test
     void questionIsUnderstoodAndFocusIsReturned() throws IOException {
         ChatResponse response = service(new FakeAiProvider()).handle(
                 new ChatRequest("Vì sao bên nhận không nghe được?", logsOf(DIR)));

@@ -14,6 +14,8 @@ import java.util.Set;
  * @param degraded       AI không dùng được; report là kết quả rule-based
  * @param fallbackReason mã lý do fallback ({@code AI_TIMEOUT}, {@code GUARDRAIL_REJECTED}, ...), {@code null} nếu không fallback
  * @param renderedText   report đã render theo bố cục mục 4.5, để Web UI có bản sao chép nguyên văn
+ * @param aiTokens       tổng token của lần gọi phân tích AI (prompt + completion), {@code null} nếu không gọi AI
+ *                       hoặc provider không báo - dùng đo chi phí khi so sánh cách dựng context
  */
 public record ChatResponse(String requestId,
                            Intent intent,
@@ -23,7 +25,8 @@ public record ChatResponse(String requestId,
                            boolean degraded,
                            String fallbackReason,
                            List<String> warnings,
-                           String renderedText) {
+                           String renderedText,
+                           Integer aiTokens) {
 
     public ChatResponse {
         focus = Set.copyOf(focus);
