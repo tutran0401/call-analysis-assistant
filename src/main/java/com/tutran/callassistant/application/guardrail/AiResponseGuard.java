@@ -37,6 +37,10 @@ import java.util.regex.Pattern;
  * <p><b>Về G05:</b> số nguyên một chữ số đứng một mình ("2 bên", "1 lần") không bị coi là số liệu vì AI
  * dùng chúng như đếm thông thường; mọi số thập phân, số từ hai chữ số trở lên, hay số kèm đơn vị
  * ({@code %}, {@code ms}, {@code s}, giây, gói, lần) đều phải xuất hiện trong dữ liệu đầu vào.
+ * <b>Làm tròn trung thực được chấp nhận</b>: {@code 4.4} là hợp lệ khi chỉ số thật là {@code 4.40337}, vì đó
+ * không phải số liệu mới. Số đã cho được coi là bản làm tròn của một giá trị có thật khi nó ít chữ số thập phân
+ * hơn giá trị đó và lệch không quá nửa đơn vị ở chữ số cuối cùng của nó. Đo thực tế với gpt-4o-mini: nếu bắt
+ * khớp chuỗi tuyệt đối thì khoảng 40% report hợp lệ bị loại chỉ vì AI viết MOS 4.4 thay vì 4.40337.
  */
 @Component
 public class AiResponseGuard {
@@ -128,6 +132,7 @@ public class AiResponseGuard {
 
     private List<String> unsupportedNumbers(AiAnalysis analysis, Report rule) {
         Set<String> allowed = allowedNumbers(rule);
+        List<BigDecimal> sourceValues = allowed.stream().map(BigDecimal::new).toList();
         List<String> unsupported = new ArrayList<>();
         List<String> texts = new ArrayList<>(List.of(analysis.summary(), analysis.analysis()));
         texts.addAll(analysis.suggestions());
@@ -138,12 +143,30 @@ public class AiResponseGuard {
                 String token = matcher.group();
                 boolean decimal = token.contains(".") || token.contains(",");
                 boolean unit = UNIT_AFTER.matcher(cleaned.substring(matcher.end())).find();
-                if ((decimal || token.length() >= 2 || unit) && !allowed.contains(normalise(token))) {
+                if ((decimal || token.length() >= 2 || unit) && !allowed.contains(normalise(token))
+                        && !isFaithfulRounding(token, sourceValues)) {
                     unsupported.add(token);
                 }
             }
         }
         return unsupported.stream().distinct().toList();
+    }
+
+    /**
+     * {@code token} là bản làm tròn của một giá trị nguồn: ít chữ số thập phân hơn nguồn và lệch không quá nửa
+     * đơn vị ở chữ số cuối của chính nó (ví dụ 4.4 ~ 4.40337; 11 ~ 11.3208; nhưng 4.5 !~ 4.40337).
+     */
+    private static boolean isFaithfulRounding(String token, List<BigDecimal> sourceValues) {
+        BigDecimal rounded = new BigDecimal(token.replace(',', '.'));
+        int decimals = Math.max(0, rounded.scale());
+        BigDecimal halfUnit = BigDecimal.valueOf(5, decimals + 1);
+        for (BigDecimal source : sourceValues) {
+            if (source.stripTrailingZeros().scale() > decimals
+                    && source.subtract(rounded).abs().compareTo(halfUnit) <= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Mọi số xuất hiện trong dữ liệu code đã tính: chỉ số, evidence, giới hạn dữ liệu và tóm tắt của rule. */

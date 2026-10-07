@@ -137,6 +137,25 @@ class AiResponseGuardTest {
     }
 
     @Test
+    void g05_faithfulRoundingOfAComputedMetricIsAcceptedButNothingElse() throws Exception {
+        Report precise = new Report("CALL-1", "SUCCESS", true, "NETWORK_PACKET_LOSS", java.util.List.of(), "MEDIUM", "s",
+                TestReports.successWithPacketLoss().evidence(),
+                java.util.List.of(new com.tutran.callassistant.domain.report.MetricRow("MOS thấp nhất (caller)", "4.40337", "End Call"),
+                        new com.tutran.callassistant.domain.report.MetricRow("Packet loss cao nhất", "11.3208 %", "End Call")),
+                java.util.List.of(), java.util.List.of());
+
+        assertThat(guard.check(with("analysis", "MOS thấp nhất 4.4 (EV002) và mất gói khoảng 11.32% hay 11%."), precise)
+                .isRejected()).isFalse();
+        // lệch quá nửa đơn vị ở chữ số cuối -> không phải làm tròn của giá trị nào
+        assertThat(guard.check(with("analysis", "MOS thấp nhất 4.5 (EV002)."), precise).isRejected()).isTrue();
+        assertThat(guard.check(with("analysis", "Mất gói 11.4%."), precise).isRejected()).isTrue();
+        // làm tròn không được mượn từ giá trị nguồn không có thêm chữ số (không phải làm tròn)
+        assertThat(guard.check(with("analysis", "MOS 4.3 (EV002)."), precise).isRejected()).isTrue();
+        // số bịa hoàn toàn vẫn bị bắt
+        assertThat(guard.check(with("analysis", "Packet loss 77.7% (EV002)."), precise).isRejected()).isTrue();
+    }
+
+    @Test
     void g05_unitlessSingleDigitCountsAreTolerated_butSingleDigitWithUnitIsNot() throws Exception {
         assertThat(guard.check(with("summary", "Cả 2 bên đều kết nối, gặp 1 vấn đề chính."), rule).isRejected())
                 .isFalse();
