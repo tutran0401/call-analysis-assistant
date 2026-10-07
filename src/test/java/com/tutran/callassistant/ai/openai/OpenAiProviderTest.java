@@ -145,6 +145,56 @@ class OpenAiProviderTest {
         server.verify();
     }
 
+    /** Header về bình thường nhưng body treo rồi hết thời gian chờ - lỗi thực tế gặp khi gọi OpenAI thật. */
+    private RestClient clientWhoseBodyTimesOut(int[] attempts, String goodBodyAfter) {
+        return RestClient.builder().baseUrl("https://api.openai.com").requestFactory((uri, method) -> {
+            org.springframework.http.client.ClientHttpRequest request =
+                    new org.springframework.mock.http.client.MockClientHttpRequest(method, uri) {
+                        @Override
+                        protected org.springframework.http.client.ClientHttpResponse executeInternal() {
+                            org.springframework.mock.http.client.MockClientHttpResponse response;
+                            if (attempts[0]++ == 0 || goodBodyAfter == null) {
+                                response = new org.springframework.mock.http.client.MockClientHttpResponse(
+                                        new java.io.InputStream() {
+                                            @Override
+                                            public int read() throws java.io.IOException {
+                                                throw new SocketTimeoutException("Read timed out");
+                                            }
+                                        }, HttpStatus.OK);
+                            } else {
+                                response = new org.springframework.mock.http.client.MockClientHttpResponse(
+                                        goodBodyAfter.getBytes(java.nio.charset.StandardCharsets.UTF_8), HttpStatus.OK);
+                            }
+                            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                            return response;
+                        }
+                    };
+            return request;
+        }).build();
+    }
+
+    @Test
+    void aBodyThatTimesOutWhileBeingReadIsATimeoutAndIsRetried() throws Exception {
+        int[] attempts = {0};
+        OpenAiProvider retrying = new OpenAiProvider(
+                clientWhoseBodyTimesOut(attempts, envelope("{\"verdict\":\"SUCCESS\"}", "stop")), "gpt-4o-mini", 2);
+
+        AiResult result = retrying.analyze(prompt);
+
+        assertThat(result.rawJson()).isEqualTo("{\"verdict\":\"SUCCESS\"}");
+        assertThat(attempts[0]).isEqualTo(2);
+    }
+
+    @Test
+    void aBodyThatKeepsTimingOutEndsAsATimeoutAfterTheLastAttempt() {
+        int[] attempts = {0};
+        OpenAiProvider retrying = new OpenAiProvider(clientWhoseBodyTimesOut(attempts, null), "gpt-4o-mini", 2);
+
+        assertThatThrownBy(() -> retrying.analyze(prompt)).isInstanceOfSatisfying(AiProviderException.class,
+                e -> assertThat(e.kind()).isEqualTo(Kind.TIMEOUT));
+        assertThat(attempts[0]).isEqualTo(2);
+    }
+
     @Test
     void gatewayTimeoutAndSocketTimeoutAreTimeouts() {
         server.expect(requestTo(URL)).andRespond(withStatus(HttpStatus.GATEWAY_TIMEOUT));
