@@ -12,7 +12,7 @@ class AiConfigurationTest {
     private final AiConfiguration config = new AiConfiguration();
 
     private AiProvider choose(String provider, String key) {
-        return config.aiProvider(provider, key, "gpt-4o-mini", "https://api.openai.com", 1000);
+        return config.aiProvider(provider, key, "gpt-4o-mini", "https://api.openai.com", 1000, 2);
     }
 
     @Test

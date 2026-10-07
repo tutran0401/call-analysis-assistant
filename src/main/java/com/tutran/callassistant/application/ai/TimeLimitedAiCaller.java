@@ -26,7 +26,7 @@ public class TimeLimitedAiCaller {
     });
     private final long timeoutMillis;
 
-    public TimeLimitedAiCaller(@Value("${call-analysis.ai.timeout-ms:20000}") long timeoutMillis) {
+    public TimeLimitedAiCaller(@Value("${call-analysis.ai.timeout-ms:30000}") long timeoutMillis) {
         this.timeoutMillis = timeoutMillis;
     }
 

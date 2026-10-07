@@ -16,18 +16,31 @@ public class AiProviderException extends RuntimeException {
     }
 
     private final Kind kind;
+    private final boolean retryable;
 
     public AiProviderException(Kind kind, String message) {
+        this(kind, message, false);
+    }
+
+    /** @param retryable lỗi mang tính tạm thời (đáng thử lại): 429, 5xx, mất kết nối */
+    public AiProviderException(Kind kind, String message, boolean retryable) {
         super(message);
         this.kind = kind;
+        this.retryable = retryable;
     }
 
     public AiProviderException(Kind kind, String message, Throwable cause) {
         super(message, cause);
         this.kind = kind;
+        this.retryable = false;
     }
 
     public Kind kind() {
         return kind;
+    }
+
+    /** {@code true} khi thử lại có thể thành công (lỗi tạm thời); {@code false} với lỗi cấu hình / phản hồi hỏng. */
+    public boolean isRetryable() {
+        return retryable;
     }
 }
