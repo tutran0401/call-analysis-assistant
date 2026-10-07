@@ -28,13 +28,15 @@ public class AiConfiguration {
             @Value("${call-analysis.ai.openai.api-key:}") String openAiKey,
             @Value("${call-analysis.ai.openai.model:gpt-4o-mini}") String openAiModel,
             @Value("${call-analysis.ai.openai.base-url:https://api.openai.com}") String openAiBaseUrl,
-            @Value("${call-analysis.ai.openai.timeout-ms:15000}") long openAiTimeoutMillis) {
+            @Value("${call-analysis.ai.openai.timeout-ms:12000}") long openAiTimeoutMillis,
+            @Value("${call-analysis.ai.openai.max-attempts:2}") int openAiMaxAttempts) {
         return switch (provider.trim().toLowerCase()) {
             case "fake" -> new FakeAiProvider();
             case "none" -> new NoAiProvider("Chưa cấu hình AI provider (call-analysis.ai.provider=none)");
             case "openai" -> openAiKey.isBlank()
                     ? new NoAiProvider("Chưa đặt OPENAI_API_KEY nên không dùng được OpenAI")
-                    : new OpenAiProvider(openAiClient(openAiBaseUrl, openAiKey, openAiTimeoutMillis), openAiModel);
+                    : new OpenAiProvider(openAiClient(openAiBaseUrl, openAiKey, openAiTimeoutMillis), openAiModel,
+                            openAiMaxAttempts);
             default -> throw new IllegalStateException("Unknown call-analysis.ai.provider: " + provider);
         };
     }

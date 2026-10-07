@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
@@ -87,6 +88,61 @@ class OpenAiProviderTest {
                                 .doesNotContain("sk-test-secret");
                     });
         }
+    }
+
+    @Test
+    void transientFailureIsRetriedOnceAndThenSucceeds() throws Exception {
+        OpenAiProvider retrying = new OpenAiProvider(builder.build(), "gpt-4o-mini", 2);
+        server.expect(requestTo(URL)).andRespond(withException(new SocketTimeoutException("Read timed out")));
+        server.expect(requestTo(URL)).andRespond(withSuccess(envelope("{\"verdict\":\"FAIL\"}", "stop"),
+                MediaType.APPLICATION_JSON));
+
+        AiResult result = retrying.analyze(prompt);
+
+        assertThat(result.rawJson()).isEqualTo("{\"verdict\":\"FAIL\"}");
+        server.verify();
+    }
+
+    @Test
+    void retriesStopAfterMaxAttemptsAndKeepTheLastErrorKind() {
+        OpenAiProvider retrying = new OpenAiProvider(builder.build(), "gpt-4o-mini", 3);
+        server.expect(ExpectedCount.times(3), requestTo(URL)).andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
+
+        assertThatThrownBy(() -> retrying.analyze(prompt))
+                .isInstanceOfSatisfying(AiProviderException.class, e -> {
+                    assertThat(e.kind()).isEqualTo(Kind.UNAVAILABLE);
+                    assertThat(e.getMessage()).contains("503");
+                });
+        server.verify();
+    }
+
+    @Test
+    void permanentErrorsAreNeverRetried() throws Exception {
+        OpenAiProvider retrying = new OpenAiProvider(builder.build(), "gpt-4o-mini", 3);
+        server.expect(ExpectedCount.once(), requestTo(URL)).andRespond(withStatus(HttpStatus.UNAUTHORIZED));
+
+        assertThatThrownBy(() -> retrying.analyze(prompt)).isInstanceOf(AiProviderException.class);
+        server.verify();
+
+        server.reset();
+        server.expect(ExpectedCount.once(), requestTo(URL))
+                .andRespond(withSuccess("not json at all", MediaType.APPLICATION_JSON));
+        assertThatThrownBy(() -> retrying.analyze(prompt)).isInstanceOfSatisfying(AiProviderException.class,
+                e -> assertThat(e.kind()).isEqualTo(Kind.INVALID_RESPONSE));
+        server.verify();
+    }
+
+    @Test
+    void rateLimitIsRetriedButBadRequestIsNot() {
+        OpenAiProvider retrying = new OpenAiProvider(builder.build(), "gpt-4o-mini", 2);
+        server.expect(ExpectedCount.times(2), requestTo(URL)).andRespond(withStatus(HttpStatus.TOO_MANY_REQUESTS));
+        assertThatThrownBy(() -> retrying.analyze(prompt)).isInstanceOf(AiProviderException.class);
+        server.verify();
+
+        server.reset();
+        server.expect(ExpectedCount.once(), requestTo(URL)).andRespond(withStatus(HttpStatus.BAD_REQUEST));
+        assertThatThrownBy(() -> retrying.analyze(prompt)).isInstanceOf(AiProviderException.class);
+        server.verify();
     }
 
     @Test

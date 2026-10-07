@@ -16,11 +16,13 @@ call-analysis:
   ai:
     # none | fake | openai. Để openai thì đặt biến môi trường OPENAI_API_KEY (không commit key vào repo).
     provider: ${CALL_ANALYSIS_AI_PROVIDER:none}
-    timeout-ms: 20000
+    # Hạn chót cứng cho cả lần gọi (gồm retry); phải >= openai.timeout-ms * openai.max-attempts.
+    timeout-ms: 30000
     openai:
       api-key: ${OPENAI_API_KEY:}
       model: gpt-4o-mini
-      timeout-ms: 15000
+      timeout-ms: 12000
+      max-attempts: 2
   sanitizer:
     # Đặt salt cố định khi chạy Evaluation Runner để pseudonym giống nhau giữa các lần chạy.
     pseudonym-salt: ${CALL_ANALYSIS_PSEUDONYM_SALT:}
