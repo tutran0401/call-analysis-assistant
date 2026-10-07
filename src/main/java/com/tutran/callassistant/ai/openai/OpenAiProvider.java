@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClient;
 
 import java.io.InterruptedIOException;
@@ -136,6 +137,15 @@ public class OpenAiProvider implements AiProvider {
             throw new AiProviderException(timeout ? Kind.TIMEOUT : Kind.UNAVAILABLE,
                     (timeout ? "OpenAI quá thời gian phản hồi" : "Không kết nối được tới OpenAI") + " (" + cause + ")",
                     true);
+        } catch (RestClientException e) {
+            // Lỗi I/O xảy ra khi ĐỌC body (header đã về nhưng body treo / bị ngắt) được Spring bọc thành
+            // RestClientException chứ không phải ResourceAccessException - phải phân loại như lỗi mạng,
+            // nếu không sẽ không bao giờ được retry.
+            boolean timeout = hasCause(e, InterruptedIOException.class);
+            boolean io = timeout || hasCause(e, java.io.IOException.class);
+            throw new AiProviderException(timeout ? Kind.TIMEOUT : Kind.UNAVAILABLE,
+                    (timeout ? "OpenAI quá thời gian phản hồi khi đọc kết quả" : "Lỗi khi đọc phản hồi OpenAI")
+                            + " (" + e.getClass().getSimpleName() + ")", io);
         } catch (RuntimeException e) {
             throw new AiProviderException(Kind.UNAVAILABLE, "Lỗi khi gọi OpenAI: " + e.getClass().getSimpleName());
         }
