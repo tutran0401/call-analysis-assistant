@@ -96,8 +96,8 @@ public class ChatAnalysisService {
 
     /** Bản sao dùng AI provider khác (Evaluation Runner bọc provider để ghi lại request, hoặc chạy rule-only). */
     public ChatAnalysisService withAiProvider(AiProvider other) {
-        return new ChatAnalysisService(requestParser, uploadValidator, pipeline, contextBuilder, inputSanitizer,
-                promptFactory, other, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
+        return new ChatAnalysisService(requestParser.withAiProvider(other), uploadValidator, pipeline, contextBuilder,
+                inputSanitizer, promptFactory, other, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
                 pseudonymizer);
     }
 
