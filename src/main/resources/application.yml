@@ -1,4 +1,7 @@
 spring:
+  config:
+    # Đọc file .env (KEY=VALUE) ở thư mục chạy nếu có; không có thì bỏ qua. .env nằm trong .gitignore.
+    import: optional:file:.env[.properties]
   main:
     web-application-type: none
     banner-mode: off
