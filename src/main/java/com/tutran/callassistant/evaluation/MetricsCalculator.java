@@ -1,5 +1,7 @@
 package com.tutran.callassistant.evaluation;
 
+import com.tutran.callassistant.application.guardrail.AiResponseGuard;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public final class MetricsCalculator {
                 metricCorrectness(okAnalysed, rules),
                 templateCompliance(okAnalysed),
                 unsupportedClaims(okAnalysed),
+                deliveredUnsupportedClaims(okAnalysed),
                 new Ratio((int) records.stream().filter(RunRecord::pipelineOk).count(), records.size()),
                 new Ratio((int) analysed.stream().filter(RunRecord::degraded).count(), analysed.size()),
                 records.stream().mapToInt(r -> r.inputProbeHits() + r.inputResidual()).sum(),
@@ -212,6 +215,20 @@ public final class MetricsCalculator {
             unsupported += r.warnings().stream().anyMatch(w -> UNSUPPORTED_CODES.contains(codeOf(w))) ? 1 : 0;
         }
         return new Ratio(unsupported, reachedGuard);
+    }
+
+    /** Mẫu số = report có phần lời văn của AI đã tới người dùng (không degraded). */
+    private Ratio deliveredUnsupportedClaims(List<RunRecord> records) {
+        int delivered = 0;
+        int withClaims = 0;
+        for (RunRecord r : records) {
+            if (r.report() == null || r.degraded() || r.report().analysis().isBlank()) {
+                continue;
+            }
+            delivered++;
+            withClaims += AiResponseGuard.unsupportedClaimsIn(r.report()).isEmpty() ? 0 : 1;
+        }
+        return new Ratio(withClaims, delivered);
     }
 
     private static String codeOf(String warning) {

@@ -85,6 +85,10 @@ hỏi có thể bị phân loại nhầm là ngoài phạm vi; lưu câu hỏi v
 | `OPENAI_API_KEY` | Key OpenAI; thiếu key thì `openai` tự rơi về `none` và báo rõ lý do |
 | `CALL_ANALYSIS_PSEUDONYM_SALT` | Salt cố định cho pseudonym (nên đặt khi chạy `evaluate`) |
 
+Tham số khác trong `application.yml` (`call-analysis.ai.*`): `context-mode` (`structured` \| `semi`),
+`timeout-ms` (hạn chót cứng, 30000), `openai.timeout-ms` (12000 mỗi lần), `openai.max-attempts` (2 = thử lại 1 lần
+với lỗi tạm thời), `openai.model` (`gpt-4o-mini`).
+
 Khi AI không dùng được (chưa cấu hình, timeout, trả lời hỏng, bị Guardrails từ chối) report vẫn được trả ra từ
 rule-based, đánh dấu `degraded` và UI hiện banner kèm lý do.
 
@@ -103,7 +107,7 @@ mục "Nguồn nhãn" trước khi diễn giải accuracy. Kết quả mẫu (AI
 ## Chạy test
 
 ```bash
-mvn test                              # backend
+mvn test                              # backend (test tích hợp ES tự bỏ qua nếu Elasticsearch không chạy)
 cd web && npm install && npm test     # Web UI
 ```
 

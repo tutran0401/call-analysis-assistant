@@ -50,8 +50,8 @@ category, cờ chất lượng, độ tin cậy, evidence, chỉ số luôn từ
 | `temperature` | 0 | Giảm dao động giữa các lần chạy (metric Consistency) |
 | `seed` | cố định | Như trên; OpenAI chỉ cam kết "cố gắng", không đảm bảo tuyệt đối |
 | `response_format` | `json_schema`, `strict: true` | Ép đúng schema; Guardrails vẫn kiểm lại |
-| Timeout | 15 s (HTTP) + 20 s (cứng, `TimeLimitedAiCaller`) | Provider treo không được giữ request |
-| Retry | không | Retry có kiểm soát là Sprint 3 T8 |
+| Timeout | 12 s mỗi lần (HTTP) + 30 s cứng cho cả lần gọi (`TimeLimitedAiCaller`) | Provider treo không được giữ request; 30 s ≥ 2 lần thử |
+| Retry | 1 lần thử lại (`max-attempts: 2`), chỉ với lỗi tạm thời | Timeout, mất kết nối, HTTP 408/429/5xx. Không bao giờ retry 400/401/403, phản hồi hỏng hay bị từ chối. Đo thực tế: khoảng 1/10 lần gọi OpenAI treo quá hạn rồi lần sau chạy 3-4 giây bình thường |
 
 ## Guardrails (code, không phải prompt)
 
@@ -68,6 +68,27 @@ category, cờ chất lượng, độ tin cậy, evidence, chỉ số luôn từ
 phân, số từ hai chữ số, hay số kèm đơn vị (`%`, `ms`, `s`, giây, gói, lần) đều phải có trong dữ liệu đầu vào.
 Định dạng được chuẩn hoá (`6.20` = `6.2`, `2,9` = `2.9`).
 
+**Làm tròn trung thực được chấp nhận** (bài học từ lần chạy OpenAI thật đầu tiên): `gpt-4o-mini` thường viết
+"MOS 4.4" khi chỉ số là `4.40337`. Bản G05 đầu bắt khớp chuỗi tuyệt đối nên loại khoảng 40% report hoàn toàn đúng,
+chỉ vì làm tròn. Giờ một số được chấp nhận nếu nó là bản làm tròn của một giá trị có thật: ít chữ số thập phân hơn
+nguồn và lệch không quá nửa đơn vị ở chữ số cuối của nó (4.4 ~ 4.40337 hợp lệ; 4.5 hay 11.4 so với 11.3208 thì không).
+Số bịa hoàn toàn vẫn bị bắt. Prompt cũng nói rõ quy tắc này. Sau sửa, 12/12 lần chạy liên tiếp cùng một case đều được chấp nhận.
+
+## Request Parser (T4)
+
+`AiRequestParser` bọc `RuleRequestParser`, rule chạy **trước**: nếu rule xác định được câu hỏi trong phạm vi thì giữ
+nguyên và không gọi AI (cùng câu hỏi luôn cùng intent, không tốn lượt gọi). Chỉ khi rule trả `OUT_OF_SCOPE` cho câu
+hỏi không rỗng thì AI được hỏi, và AI chỉ có thể *cứu* nó thành trong phạm vi - không bao giờ biến câu trong phạm vi thành
+bị từ chối. Call-ID luôn do regex trích. Câu hỏi qua Input Sanitizer trước khi gửi. Mọi lỗi AI → dùng kết quả của rule.
+Đã thử với OpenAI thật: câu diễn đạt lạ ("... đang nói dở thì mất hút, sao vậy?") được cứu thành `DISCONNECT`; câu về
+nấu phở / chọn quà sinh nhật vẫn bị từ chối.
+
+## Hai cách dựng context (T11)
+
+`call-analysis.ai.context-mode`: `structured` (mặc định - evidence, chỉ số, timeline, taxonomy là mảng JSON) hoặc
+`semi` (cùng dữ kiện viết thành một đoạn văn bản `narrative`; `ruleBaseline`, intent, focus vẫn có cấu trúc). So sánh
+trên cùng bộ case ở `docs/context-mode-comparison.md`.
+
 ## Chính sách khi AI và rule mâu thuẫn - cần Mentor xác nhận
 
 Spec cho hai lựa chọn: "`UNKNOWN` hoặc gắn cờ cần kiểm tra". Đang dùng **`UNKNOWN`** vì khi hai nguồn mâu
@@ -78,6 +99,5 @@ sang "giữ verdict rule + gắn cờ". Đổi chỉ cần sửa `AiResponseGuar
 
 ## Chưa làm
 
-- **Request Parser bằng AI**: hiện chỉ có `RuleRequestParser` (từ khoá, xác định). Bản AI cần provider thật và
-  chỉ đáng làm nếu đo thấy từ khoá không đủ trên câu hỏi lạ.
-- **So sánh cách dựng context** (T11 "Nếu kịp"): semi-structured vs structured evidence.
+- Đo đầy đủ Request Parser AI trên một bộ câu hỏi diễn đạt lạ do Mentor viết (bộ `dev` do chính tôi viết nên Intent
+  Accuracy 100% chưa phản ánh câu hỏi lạ).

@@ -77,8 +77,11 @@ public final class EvaluationReportWriter {
         row(out, "Consistency (theo lần chạy)", m.consistencyRuns(), "—", "Báo cáo", "—");
         row(out, "Template Compliance", m.templateCompliance(), "100%", "Báo cáo", atLeast(m.templateCompliance(), 100));
         row(out, "Intent Accuracy", m.intentAccuracy(), "≥ 90%", "Báo cáo", atLeast(m.intentAccuracy(), 90));
-        row(out, "Unsupported Claim Rate (AI bị Guardrails bắt)", m.unsupportedClaims(), "0%", "Báo cáo",
-                m.unsupportedClaims().measured() ? (m.unsupportedClaims().hit() == 0 ? "Đạt" : "Chưa đạt") : "Chưa đo");
+        row(out, "Unsupported Claim Rate - report giao cho người dùng (kiểm lại độc lập)", m.deliveredUnsupportedClaims(),
+                "0%", "Báo cáo", m.deliveredUnsupportedClaims().measured()
+                        ? (m.deliveredUnsupportedClaims().hit() == 0 ? "Đạt" : "Chưa đạt") : "Chưa đo");
+        row(out, "Phản hồi AI thô bị Guardrails bắt vì G01/G05 (đã fallback, không tới người dùng)",
+                m.unsupportedClaims(), "—", "Báo cáo", "—");
         row(out, "Pipeline Success Rate", m.pipelineSuccess(), "≥ 95%", "Báo cáo", atLeast(m.pipelineSuccess(), 95));
         row(out, "Tỉ lệ fallback (degraded)", m.degradedRate(), "—", "Báo cáo", "—");
         out.append("| Token AI trung bình / lần gọi | ")
