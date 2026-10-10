@@ -77,7 +77,9 @@ Trên Windows (Git Bash) đừng gõ tiếng Việt thẳng trên dòng lệnh c
 hỏi có thể bị phân loại nhầm là ngoài phạm vi; lưu câu hỏi vào file UTF-8 rồi dùng `message=<file` như trên
 (Web UI không bị ảnh hưởng).
 
-**Cấu hình AI** (biến môi trường, không bao giờ commit key):
+**Cấu hình AI**: cách dễ nhất là sao chép `.env.example` thành `.env` ở thư mục gốc repo và điền `OPENAI_API_KEY`
+(file `.env` nằm trong `.gitignore`, ứng dụng tự đọc khi chạy từ thư mục gốc). Hoặc dùng biến môi trường cùng tên.
+Không bao giờ commit key:
 
 | Biến | Ý nghĩa |
 | --- | --- |
