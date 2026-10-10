@@ -131,11 +131,37 @@ public class AiResponseGuard {
     }
 
     private List<String> unsupportedNumbers(AiAnalysis analysis, Report rule) {
+        List<String> texts = new ArrayList<>(List.of(analysis.summary(), analysis.analysis()));
+        texts.addAll(analysis.suggestions());
+        return unsupportedNumbersIn(texts, rule);
+    }
+
+    /**
+     * Kiểm tra độc lập <b>report đã giao cho người dùng</b> (Unsupported Claim Rate, mục 6.5): trả về mọi số liệu và
+     * evidence ID trong summary / analysis / suggestions mà không có trong chính chỉ số, evidence, giới hạn dữ liệu
+     * của report đó. Không đi qua đường của AI nên là phép kiểm lại thật sự, không phải Guardrails tự chấm.
+     */
+    public static List<String> unsupportedClaimsIn(Report delivered) {
+        List<String> texts = new ArrayList<>(List.of(delivered.summary(), delivered.analysis()));
+        texts.addAll(delivered.suggestions());
+        List<String> claims = new ArrayList<>(unsupportedNumbersIn(texts, delivered));
+        Set<String> knownIds = new LinkedHashSet<>();
+        delivered.evidence().forEach(e -> knownIds.add(e.id()));
+        for (String text : texts) {
+            Matcher matcher = EVIDENCE_ID.matcher(text);
+            while (matcher.find()) {
+                if (!knownIds.contains(matcher.group())) {
+                    claims.add(matcher.group());
+                }
+            }
+        }
+        return claims.stream().distinct().toList();
+    }
+
+    private static List<String> unsupportedNumbersIn(List<String> texts, Report rule) {
         Set<String> allowed = allowedNumbers(rule);
         List<BigDecimal> sourceValues = allowed.stream().map(BigDecimal::new).toList();
         List<String> unsupported = new ArrayList<>();
-        List<String> texts = new ArrayList<>(List.of(analysis.summary(), analysis.analysis()));
-        texts.addAll(analysis.suggestions());
         for (String text : texts) {
             String cleaned = EVIDENCE_ID.matcher(text).replaceAll(" ");
             Matcher matcher = NUMBER.matcher(cleaned);
@@ -170,7 +196,7 @@ public class AiResponseGuard {
     }
 
     /** Mọi số xuất hiện trong dữ liệu code đã tính: chỉ số, evidence, giới hạn dữ liệu và tóm tắt của rule. */
-    private Set<String> allowedNumbers(Report rule) {
+    private static Set<String> allowedNumbers(Report rule) {
         Set<String> allowed = new LinkedHashSet<>();
         List<String> sources = new ArrayList<>();
         sources.add(rule.summary());

@@ -132,6 +132,8 @@ class MetricsCalculatorTest {
         assertThat(m.templateCompliance()).isEqualTo(new Ratio(5, 6));
         // tới Guardrails: c1 r0, c1 r1, c1 q1 (G05), c3 -> 1/4 (c2 không gọi AI / timeout không tính)
         assertThat(m.unsupportedClaims()).isEqualTo(new Ratio(1, 4));
+        // report giao đi có phần phân tích AI: record c1/c3 có analysis rỗng (RULE_REPORT) nên không tính
+        assertThat(m.deliveredUnsupportedClaims()).isEqualTo(new Ratio(0, 0));
         assertThat(m.pipelineSuccess()).isEqualTo(new Ratio(8, 9));
         assertThat(m.degradedRate()).isEqualTo(new Ratio(2, 7));
         assertThat(m.inputLeakage()).isEqualTo(1);
@@ -170,6 +172,31 @@ class MetricsCalculatorTest {
         assertThat(m.issueCategoryAccuracy().measured()).isFalse();
         assertThat(m.metricCorrectness().measured()).isFalse();
         assertThat(m.pipelineSuccess()).isEqualTo(new Ratio(1, 1));
+    }
+
+    @Test
+    void deliveredReportsAreRecheckedForInventedNumbersAndEvidenceIds() {
+        List<EvaluationCase> cases = List.of(testCase("c1", "SUCCESS", false, "NONE", null, List.of()));
+        Report clean = withAnalysis("Packet loss 9.8% (EV002), MOS 2.9.");
+        Report inventedNumber = withAnalysis("Packet loss 77.7% (EV002).");
+        Report inventedEvidence = withAnalysis("Theo EV009 thì mất gói 9.8%.");
+        List<RunRecord> records = List.of(
+                with(record("c1", 0, 0, "SUCCESS", "NONE", 10), b -> { b.report = clean; return b; }),
+                with(record("c1", 0, 1, "SUCCESS", "NONE", 10), b -> { b.report = inventedNumber; return b; }),
+                with(record("c1", 0, 2, "SUCCESS", "NONE", 10), b -> { b.report = inventedEvidence; return b; }),
+                // degraded: lời văn AI không tới người dùng nên không nằm trong mẫu số
+                with(record("c1", 1, 0, "SUCCESS", "NONE", 10), b -> { b.report = inventedNumber; b.degraded = true; return b; }));
+
+        EvaluationMetrics m = calculator.compute(cases, records, Map.of(), 0);
+
+        assertThat(m.deliveredUnsupportedClaims()).isEqualTo(new Ratio(2, 3));
+    }
+
+    private static Report withAnalysis(String analysis) {
+        return new Report(RULE_REPORT.callId(), RULE_REPORT.verdict(), RULE_REPORT.qualityFlag(),
+                RULE_REPORT.issueCategory(), RULE_REPORT.alternativeCauses(), RULE_REPORT.confidenceLevel(),
+                RULE_REPORT.summary(), RULE_REPORT.evidence(), RULE_REPORT.metrics(), RULE_REPORT.suggestions(),
+                RULE_REPORT.dataLimitations(), analysis, false);
     }
 
     @Test

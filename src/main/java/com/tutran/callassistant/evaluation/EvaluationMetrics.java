@@ -14,6 +14,8 @@ package com.tutran.callassistant.evaluation;
  * @param metricCorrectness     bảng chỉ số trong report trùng khớp bảng do Metrics Calculator tính
  * @param templateCompliance    report đủ mục, đúng thứ tự theo mẫu 4.5
  * @param unsupportedClaims     phản hồi AI bị Guardrails bắt vì evidence ID / số liệu không có trong input (mục tiêu 0)
+ * @param deliveredUnsupportedClaims report cuối cùng giao cho người dùng có chứa số liệu / evidence ID không có trong
+ *                              dữ liệu của chính nó (kiểm lại độc lập, mục tiêu 0) - đo thứ người dùng thực sự thấy
  * @param pipelineSuccess       request trả report hợp lệ (kể cả degraded)
  * @param degradedRate          tỉ lệ request phải fallback về rule
  * @param inputLeakage          giá trị nhạy cảm còn sót trong request gửi AI (mục tiêu 0)
@@ -32,6 +34,7 @@ public record EvaluationMetrics(Ratio verdictAccuracy,
                                 Ratio metricCorrectness,
                                 Ratio templateCompliance,
                                 Ratio unsupportedClaims,
+                                Ratio deliveredUnsupportedClaims,
                                 Ratio pipelineSuccess,
                                 Ratio degradedRate,
                                 int inputLeakage,
