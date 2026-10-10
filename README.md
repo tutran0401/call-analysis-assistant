@@ -6,7 +6,7 @@ Trợ lý phân tích cuộc gọi OJT AI 20K (xem `docs/PROJECT_SPEC.md`).
   rule kèm evidence. Báo cáo: `docs/sprint1-report.md`.
 - **Sprint 2** (AI + Web UI + Sanitizer): người dùng hỏi tiếng Việt và đính kèm log trên web; hệ thống chạy
   pipeline rule, gửi AI **chỉ context đã sanitize**, kiểm phản hồi AI bằng Guardrails, và fallback về rule khi AI
-  lỗi. Báo cáo: `docs/sprint2-report.md`. **Chưa chạy được AI thật vì chưa có API key** — xem báo cáo.
+  lỗi. Báo cáo: `docs/sprint2-report.md`. Đã chạy benchmark với `gpt-4o-mini` thật — xem báo cáo.
 
 ## Công nghệ sử dụng
 
@@ -102,7 +102,7 @@ java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar evaluate \
 Ghi `summary.md` (metric mục 6.5, bảng AI vs Rule vs Ground truth, danh sách lần chạy sai, nguồn nhãn),
 `results.json` và `samples/<case>.md`. Để Mentor chạy `held-out`: đưa file case cùng định dạng (mục 6.3) qua
 `--cases`. Bộ `dev` có 29 case; **nguồn nhãn của từng case nằm ở `label_source`** — đọc `docs/sprint2-report.md`
-mục "Nguồn nhãn" trước khi diễn giải accuracy. Kết quả mẫu (AI giả lập): `docs/evaluation-run-dev-fake-ai.md`.
+mục "Nguồn nhãn" trước khi diễn giải accuracy. Kết quả với `gpt-4o-mini` thật: `docs/evaluation-run-dev-gpt-4o-mini.md`; so sánh cách dựng context: `docs/context-mode-comparison.md`.
 
 ## Chạy test
 
@@ -184,7 +184,7 @@ docs/
   architecture-diagram-v1.md, architecture-diagram-v2.md
   sprint1-report.md, sprint2-report.md
   prompt-strategy.md
-  evaluation-run-dev-fake-ai.md
+  evaluation-run-dev-gpt-4o-mini.md, context-mode-comparison.md
   verdict-issue-taxonomy.md
   sensitive-data-inventory.md
   ai-provider-proposal.md
@@ -217,14 +217,13 @@ rối rắm không cần thiết.
 
 Chi tiết và lý do ở `docs/sprint2-report.md`. Tóm tắt:
 
-- **Chưa đo được chất lượng AI thật** (chưa có API key); metric AI trong `docs/evaluation-run-dev-fake-ai.md`
-  chỉ chứng minh bộ đo chạy đúng.
+- **Chưa đo được AI độc lập với rule** (AI thấy kết luận của rule trong input) và chưa chấm chất lượng lời văn;
+  chính sách "AI mâu thuẫn rule → `UNKNOWN`" chưa từng được kích hoạt trên AI thật.
 - **Nhãn issue category của tập `dev` là kết quả rule đã kiểm tay**, chưa phải ground truth từ Mentor; Evidence
   ID kỳ vọng bỏ trống.
 - **Scenario 5 của spec ("chỉ một file" → `UNKNOWN`) chưa khớp**: nếu signaling vẫn có từ ES, rule vẫn kết luận.
   Case `var-single-file` ghi lại; cần Mentor xác nhận.
-- **Chính sách "AI mâu thuẫn rule → `UNKNOWN`"** chưa được kiểm bằng số đo AI thật.
-- **Request Parser dựa trên từ khoá**; bản dùng AI chưa làm.
+- **Request Parser**: rule từ khoá là chính, AI chỉ cứu câu bị từ chối; Intent Accuracy đo trên câu hỏi do chính tôi viết.
 - **Sanitizer dựa trên mẫu đã biết**; số điện thoại chỉ nhận dạng VN.
 
 ## Giới hạn đã biết (Known Limitations) — Sprint 1
