@@ -1,13 +1,15 @@
 # AI Provider Proposal (T10)
 
-**Cập nhật Sprint 2 (2026-10-05):** quyết định triển khai **OpenAI `gpt-4o-mini`** (Cloud API, structured
-output `json_schema` strict) - đã có adapter `ai/openai/OpenAiProvider` được test bằng HTTP giả lập; **chưa gọi
-mạng thật vì chưa có API key** và **chưa được Mentor duyệt** (xem `docs/sprint2-report.md`, câu hỏi 5). Bản so
-sánh bên dưới vẫn là bản của Sprint 1 (so Claude API với model local); lý do chọn Cloud API vẫn đúng với
-`gpt-4o-mini` ở hai tiêu chí quyết định (structured output đáng tin, latency ổn định). Khác biệt cần ghi nhận:
-dữ liệu rời máy sang OpenAI, nên Input Sanitizer là điều kiện bắt buộc chứ không phải tuỳ chọn - và đã được cài
-đặt (`sanitize/`), đo ở cửa ra bằng metric Security Leakage. Phương án local (Ollama) giữ làm dự phòng; kiến
-trúc `AiProvider` cho phép thêm bằng một class.
+**Cập nhật Sprint 2 (2026-10-10):** đã triển khai **OpenAI `gpt-4o-mini`** (Cloud API, structured output `json_schema`
+strict, temperature 0, retry 1 lần với lỗi tạm thời) qua `ai/openai/OpenAiProvider`, và **đã chạy thật** benchmark
+`dev` 461 request: 2.5 s P50 / 3.1 s P95 mỗi request đầu-cuối, ~3400 token mỗi lần phân tích, 0 rò rỉ dữ liệu, 0 số liệu
+bịa tới người dùng (số liệu ở `docs/evaluation-run-dev-gpt-4o-mini.md`). Quan sát thực tế: khoảng 1/10 lần gọi treo quá
+hạn rồi lần sau bình thường (đã xử lý bằng retry + fallback). **Chưa được Mentor duyệt** (`docs/sprint2-report.md`,
+câu hỏi 5). Bản so sánh bên dưới là bản của Sprint 1 (so Claude API với model local); lý do chọn Cloud API vẫn đúng với
+`gpt-4o-mini` ở hai tiêu chí quyết định (structured output đáng tin, latency ổn định). Khác biệt cần ghi nhận: dữ liệu
+rời máy sang OpenAI, nên Input Sanitizer là điều kiện bắt buộc chứ không phải tuỳ chọn - và đã được cài đặt
+(`sanitize/`), đo ở cửa ra bằng metric Security Leakage. Phương án local (Ollama) giữ làm dự phòng; kiến trúc
+`AiProvider` cho phép thêm bằng một class.
 
 Key chỉ đọc từ biến môi trường `OPENAI_API_KEY`, không commit (`.env` đã trong `.gitignore`); thiếu key thì hệ
 thống tự chạy rule-based và báo `degraded`.

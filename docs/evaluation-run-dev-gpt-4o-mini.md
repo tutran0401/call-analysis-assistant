@@ -1,14 +1,13 @@
-> **Lần chạy này dùng `FakeAiProvider` (AI giả lập, luôn đồng ý với rule), không phải `gpt-4o-mini`.**
-> Nó chứng minh Evaluation Runner đo đúng và bộ lọc rò rỉ chạy được; các metric phụ thuộc hành vi AI
-> (Consistency, Unsupported Claim, tỉ lệ degraded, Issue Category của AI) **chưa có ý nghĩa**. Chạy thật:
-> đặt `OPENAI_API_KEY`, `CALL_ANALYSIS_AI_PROVIDER=openai`, rồi lệnh `evaluate` ở `docs/sprint2-report.md`.
-> Ngày chạy: 2026-10-05. Sinh tự động bởi `evaluate`; chỉ thêm đoạn này.
+> **Lần chạy này dùng OpenAI `gpt-4o-mini` thật**, ngày 2026-10-10, bộ `benchmark/dev/cases.yaml`, `--repeat 5`,
+> context `structured`, signaling lấy từ cây `sample-data/`. Sinh tự động bởi `evaluate`; chỉ thêm đoạn này.
+> Đọc kèm `docs/sprint2-report.md` (mục "Nguồn nhãn" và "Điều cần đọc kỹ trước khi diễn giải"): nhãn issue category là
+> kết quả rule đã kiểm tay chứ chưa phải ground truth của Mentor, và AI được nhìn thấy kết luận của rule trong input.
 
 # Báo cáo đánh giá
 
 - Bộ case: `benchmark\dev\cases.yaml` (29 case, 461 lần chạy)
 - Dữ liệu: `sample-data`
-- Model AI: `fake-agree`; mỗi câu hỏi trong 3 câu đầu chạy lặp 5 lần
+- Model AI: `gpt-4o-mini`; mỗi câu hỏi trong 3 câu đầu chạy lặp 5 lần; cách dựng context: `structured`
 
 ## Metric (PROJECT_SPEC.md mục 6.5)
 
@@ -26,10 +25,12 @@
 | Consistency (theo lần chạy) | 100.0% | 405/405 | — | Báo cáo | — |
 | Template Compliance | 100.0% | 431/431 | 100% | Báo cáo | Đạt |
 | Intent Accuracy | 100.0% | 461/461 | ≥ 90% | Báo cáo | Đạt |
-| Unsupported Claim Rate (AI bị Guardrails bắt) | 0.0% | 0/431 | 0% | Báo cáo | Đạt |
+| Unsupported Claim Rate - report giao cho người dùng (kiểm lại độc lập) | 0.0% | 0/422 | 0% | Báo cáo | Đạt |
+| Phản hồi AI thô bị Guardrails bắt vì G01/G05 (đã fallback, không tới người dùng) | 2.1% | 9/431 | — | Báo cáo | — |
 | Pipeline Success Rate | 100.0% | 461/461 | ≥ 95% | Báo cáo | Đạt |
-| Tỉ lệ fallback (degraded) | 0.0% | 0/431 | — | Báo cáo | — |
-| Latency P50 / P95 | 24 ms / 80 ms | | — | Báo cáo | — |
+| Tỉ lệ fallback (degraded) | 2.1% | 9/431 | — | Báo cáo | — |
+| Token AI trung bình / lần gọi | 3437 | | — | Báo cáo | — |
+| Latency P50 / P95 | 2532 ms / 3123 ms | | — | Báo cáo | — |
 
 ## So sánh AI vs Rule vs Ground truth
 
@@ -51,7 +52,7 @@ AI = kết luận cuối (sau Guardrails) ở câu hỏi đầu tiên, lần ch�
 | case-012 | FAIL | FAIL | FAIL | không |
 | case-013 | FAIL | FAIL | FAIL | không |
 | case-014 | FAIL | FAIL | FAIL | không |
-| case-015 | FAIL | FAIL | FAIL | không |
+| case-015 | FAIL | FAIL | FAIL | có |
 | case-016 | SUCCESS | SUCCESS | SUCCESS | không |
 | case-017 | FAIL | FAIL | FAIL | không |
 | case-018 | FAIL | FAIL | FAIL | không |

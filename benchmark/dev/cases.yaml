@@ -367,7 +367,7 @@ cases:
     expected_verdict: UNKNOWN
     split: dev
     label_source: "spec section 10 scenario 5 ('chỉ đính kèm một file' -> UNKNOWN); OPEN QUESTION whether rule baseline agrees"
-    notes: "Scenario 5 của spec. Nếu rule trả SUCCESS (signaling từ ES vẫn đủ) thì case này lộ ra điểm cần hỏi mentor"
+    notes: "Scenario 5 của spec. XUNG ĐỘT NHÃN: cuộc gọi success/5E0800AE (nhãn SUCCESS của mentor, case-001) cũng chỉ có đúng một file client (caller_webrtc.log) - nên không thể đồng thời đúng cả 'một file -> UNKNOWN' lẫn nhãn của case-001 với cùng một quy tắc. Đang giữ rule theo nhãn thật của mentor; cần mentor xác nhận ý nghĩa scenario 5."
   - case_id: var-no-client-files
     call_id: C8CF631E-0C6B-46E4-92E7-280E7B6A5394
     files: []
