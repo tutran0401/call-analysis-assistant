@@ -12,3 +12,8 @@ sample-data/
 
 # Kết quả chạy Evaluation Runner (mỗi lần chạy một thư mục eval-*); chỉ commit bản tóm tắt chọn lọc vào docs/
 reports/
+
+# Báo cáo nộp dạng Word và script sinh chúng: giữ ở máy, không đẩy lên repo
+*.docx
+~$*
+build_sprint*_report.py
