@@ -164,7 +164,8 @@ class RuleVerdictEngineTest {
         assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
         assertThat(result.evidence())
                 .anySatisfy(e -> assertThat(e.description()).contains("không nhận được byte audio nào trong 9 s"))
-                .anySatisfy(e -> assertThat(e.description()).contains("CALLER mất kết nối với bên kia"));
+                .anySatisfy(e -> assertThat(e.description()).contains("phía CALLEE mất mạng"));
+        assertThat(result.summary()).contains("CALLEE mất mạng, CALLER không nhận được tiếng trong 9 s");
     }
 
     @Test

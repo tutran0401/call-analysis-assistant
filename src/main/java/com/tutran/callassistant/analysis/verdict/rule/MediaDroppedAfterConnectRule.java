@@ -47,21 +47,18 @@ public class MediaDroppedAfterConnectRule implements VerdictRule {
         context.recordEvidence(drop.lastMediaSample(),
                 "Lần cuối " + drop.leg() + " còn nhận được audio; sau đó không nhận được byte audio nào trong "
                         + drop.silentSeconds() + " s cho tới lúc kết thúc");
-        context.recordEvidence(drop.connectionLost(),
-                drop.leg() + " mất kết nối với bên kia trước khi cúp máy (" + describe(drop) + ")");
+        context.recordEvidence(drop.connectionLost(), drop.partnerLostNetwork()
+                ? "Client " + drop.leg() + " nhận tín hiệu PARTNER_LOST_NETWORK: phía " + drop.partner()
+                        + " mất mạng, trước khi " + drop.leg() + " cúp máy"
+                : "Kết nối media (ICE) phía " + drop.leg() + " chuyển sang DISCONNECTED trước khi " + drop.leg()
+                        + " cúp máy; log không cho biết bên nào mất mạng");
         context.recordCallEnded(context.callEnded().orElseThrow());
 
+        String cause = drop.partnerLostNetwork()
+                ? drop.partner() + " mất mạng, " + drop.leg()
+                : "kết nối media giữa hai bên bị đứt (chưa xác định được bên nào mất mạng), " + drop.leg();
         return Optional.of(context.fail(IssueCategory.ICE_FAILURE,
-                "Cuộc gọi đã kết nối và có media nhưng bị ngắt bất thường giữa chừng: " + drop.leg()
-                        + " mất kết nối với bên kia và không nhận được tiếng trong " + drop.silentSeconds()
-                        + " s cuối trước khi cúp máy."));
-    }
-
-    private String describe(MediaDrop drop) {
-        String signal = drop.connectionLost().attribute("signal");
-        if (signal != null) {
-            return "signal " + signal;
-        }
-        return drop.connectionLost().attribute("msg");
+                "Cuộc gọi đã kết nối và có media nhưng bị ngắt bất thường giữa chừng: " + cause
+                        + " không nhận được tiếng trong " + drop.silentSeconds() + " s cuối trước khi cúp máy."));
     }
 }

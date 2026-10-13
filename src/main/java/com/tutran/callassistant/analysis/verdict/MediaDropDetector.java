@@ -50,8 +50,17 @@ public class MediaDropDetector {
     private static final String FIELD_BYTES_RECEIVED = "audio.bytesReceived";
     private static final String FIELD_BYTES_RECEIVED_IN_PERIOD = "audio.bytesReceivedPts";
 
-    public record MediaDrop(Leg leg, CanonicalEvent connectionLost, CanonicalEvent lastMediaSample,
-                            long silentSeconds) {
+    /**
+     * @param leg                bên có log ghi nhận vụ ngắt (bên bị mất tiếng)
+     * @param partnerLostNetwork {@code true} khi client báo chính <b>đối phương</b> mất mạng - khi đó biết được
+     *                           bên nào rớt; {@code false} khi chỉ có ICE DISCONNECTED, chưa biết lỗi ở bên nào
+     */
+    public record MediaDrop(Leg leg, CanonicalEvent connectionLost, boolean partnerLostNetwork,
+                            CanonicalEvent lastMediaSample, long silentSeconds) {
+
+        public Leg partner() {
+            return leg == Leg.CALLER ? Leg.CALLEE : Leg.CALLER;
+        }
     }
 
     public Optional<MediaDrop> find(CallTimeline timeline) {
@@ -93,11 +102,18 @@ public class MediaDropDetector {
         }
 
         Instant silenceStart = silent.get(0).timestamp().minus(SILENCE_START_TOLERANCE);
-        return events.stream()
+        List<CanonicalEvent> lost = events.stream()
                 .filter(this::indicatesConnectionLost)
                 .filter(e -> !e.timestamp().isBefore(silenceStart) && e.timestamp().isBefore(end))
-                .findFirst()
-                .map(lost -> new MediaDrop(leg, lost, lastMedia.get(), silentSeconds));
+                .toList();
+        // Ưu tiên tín hiệu "đối phương mất mạng" dù tới sau ICE DISCONNECTED: nó cho biết bên nào rớt, còn
+        // DISCONNECTED thì không - nêu nhầm bên sẽ dẫn đề xuất đi kiểm tra mạng của bên không có lỗi.
+        Optional<CanonicalEvent> partnerLost = lost.stream().filter(this::reportsPartnerLostNetwork).findFirst();
+        if (partnerLost.isPresent()) {
+            return Optional.of(new MediaDrop(leg, partnerLost.get(), true, lastMedia.get(), silentSeconds));
+        }
+        return lost.stream().findFirst()
+                .map(e -> new MediaDrop(leg, e, false, lastMedia.get(), silentSeconds));
     }
 
     /** Dòng stats cuối cùng còn nhận được audio; không có thì bên này chưa từng có media (đã có rule khác lo). */
@@ -144,14 +160,21 @@ public class MediaDropDetector {
     }
 
     private boolean indicatesConnectionLost(CanonicalEvent e) {
+        return reportsPartnerLostNetwork(e) || upperMsg(e).contains("ONICECONNECTIONCHANGE: DISCONNECTED");
+    }
+
+    private boolean reportsPartnerLostNetwork(CanonicalEvent e) {
         if (SIGNAL.equals(e.eventType())) {
             return "network_lost".equals(e.attribute(FIELD_SIGNAL));
         }
+        return upperMsg(e).contains("PARTNER_LOST_NETWORK");
+    }
+
+    private String upperMsg(CanonicalEvent e) {
         if (!LOG_MESSAGE.equals(e.eventType()) || e.attribute(FIELD_MSG) == null) {
-            return false;
+            return "";
         }
-        String msg = e.attribute(FIELD_MSG).toUpperCase(Locale.ROOT);
-        return msg.contains("PARTNER_LOST_NETWORK") || msg.contains("ONICECONNECTIONCHANGE: DISCONNECTED");
+        return e.attribute(FIELD_MSG).toUpperCase(Locale.ROOT);
     }
 
     private boolean startsWith(String value, String prefix) {
