@@ -33,6 +33,13 @@ public class LegQualityCalculator {
     private static final String FIELD_PACKET_LOSS = "audio.packetLostPercent";
     private static final String FIELD_RTT = "transport.currentRttMs";
     private static final String FIELD_JITTER = "audio.jitter";
+    /**
+     * {@code audio.jitter} lấy từ WebRTC stats, đơn vị <b>giây</b> (W3C RTCInboundRtpStreamStats.jitter);
+     * report và ngưỡng {@code jitterMs} dùng ms. Trên data mẫu giá trị thô 0.012-0.028 tức 12-28 ms - mức
+     * jitter bình thường của Opus; đọc thẳng thành "0.02 ms" là phi thực tế và khiến ngưỡng 30 ms
+     * không bao giờ bật được.
+     */
+    private static final double JITTER_SECONDS_TO_MS = 1000.0;
     private static final String FIELD_BYTES_RECEIVED = "audio.bytesReceived";
 
     public LegQualityMetrics calculate(CallTimeline timeline, Leg leg) {
@@ -69,10 +76,10 @@ public class LegQualityCalculator {
         }
 
         return new LegQualityMetrics(
-                worstOf(withMedia, FIELD_MOS, "", Worst.LOWEST),
-                worstOf(withMedia, FIELD_PACKET_LOSS, "%", Worst.HIGHEST),
-                worstOf(withMedia, FIELD_RTT, "ms", Worst.HIGHEST),
-                worstOf(withMedia, FIELD_JITTER, "ms", Worst.HIGHEST),
+                worstOf(withMedia, FIELD_MOS, "", Worst.LOWEST, 1.0),
+                worstOf(withMedia, FIELD_PACKET_LOSS, "%", Worst.HIGHEST, 1.0),
+                worstOf(withMedia, FIELD_RTT, "ms", Worst.HIGHEST, 1.0),
+                worstOf(withMedia, FIELD_JITTER, "ms", Worst.HIGHEST, JITTER_SECONDS_TO_MS),
                 webrtcKeyEvents(timeline, leg));
     }
 
@@ -107,7 +114,8 @@ public class LegQualityCalculator {
      * cuộc có tới 18 mẫu vượt ngưỡng, đỉnh 11.32% (caller) và 7.55% (callee) - tức cách lấy dòng cuối
      * đã giấu mất một cuộc gọi chất lượng kém thật sự.
      */
-    private MetricResult<Double> worstOf(List<CanonicalEvent> samples, String attribute, String unit, Worst worst) {
+    private MetricResult<Double> worstOf(List<CanonicalEvent> samples, String attribute, String unit, Worst worst,
+                                         double scale) {
         List<Double> values = new ArrayList<>();
         String lastNonNumeric = null;
         boolean mosPlaceholderSeen = false;
@@ -140,7 +148,9 @@ public class LegQualityCalculator {
         double picked = worst == Worst.LOWEST
                 ? values.stream().mapToDouble(Double::doubleValue).min().orElseThrow()
                 : values.stream().mapToDouble(Double::doubleValue).max().orElseThrow();
-        return MetricResult.of(picked, unit, MetricSources.END_CALL);
+        // Làm tròn sau khi đổi đơn vị để 0.022 s không thành 22.000000000000004 ms.
+        double scaled = scale == 1.0 ? picked : Math.round(picked * scale * 1000.0) / 1000.0;
+        return MetricResult.of(scaled, unit, MetricSources.END_CALL);
     }
 
     /** Đếm các sự kiện WebRTC đã được phân loại (bỏ {@code ENGINE_LOG} là phần log nền chung). */

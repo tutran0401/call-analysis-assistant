@@ -164,19 +164,24 @@ thấp nhất" sẽ luôn là 0.
 Ô dạng `giá trị (dòng N)`: N là số dòng trong `*_endcall.log` (tính từ 1, gồm cả header `#H…`) nơi giá
 trị đó xuất hiện. "mọi dòng" nghĩa là mọi dòng có media đều bằng giá trị đó.
 
-| Cuộc gọi | Bên | Số dòng có media | MOS thấp nhất | Packet loss cao nhất | RTT cao nhất | Jitter cao nhất |
+| Cuộc gọi | Bên | Số dòng có media | MOS thấp nhất | Packet loss cao nhất | RTT cao nhất | Jitter cao nhất (giây trong log → ms) |
 | --- | --- | --- | --- | --- | --- | --- |
-| for_test/271D1FAF | caller | 80/80 | 4.10477 (170) | 11.3208 % (108) | 115 ms (170) | 0.022 (98) |
-| for_test/271D1FAF | callee | 80/80 | 4.34143 (97) | 7.54717 % (119) | 82 ms (166) | 0.012 (159) |
-| success/DE7DD314 | caller | 359/359 | 4.41438 (595) | 2.04082 % (274) | 107 ms (209) | 0.02 (158) |
-| success/DE7DD314 | callee | 359/359 | 4.4013 (568) | 2.0 % (455) | 152 ms (569) | 0.022 (215) |
-| success/EE129C8F | caller | 36/36 | 4.40913 (101) | 0 % (mọi dòng) | 134 ms (101) | 0.02 (142) |
-| success/EE129C8F | callee | 35/36 | 4.33531 (91) | 3.7037 % (91) | 181 ms (129) | 0.026 (126) |
-| success/C8CF631E | caller | 15/15 | 4.40396 (82) | 0 % (mọi dòng) | 156 ms (82) | 0.012 (87) |
-| success/70A1F889 | callee | 39/39 | 4.37638 (84) | 0 % (mọi dòng) | 266 ms (84) | 0.028 (96) |
+| for_test/271D1FAF | caller | 80/80 | 4.10477 (170) | 11.3208 % (108) | 115 ms (170) | 0.022 s = 22 ms (98) |
+| for_test/271D1FAF | callee | 80/80 | 4.34143 (97) | 7.54717 % (119) | 82 ms (166) | 0.012 s = 12 ms (159) |
+| success/DE7DD314 | caller | 359/359 | 4.41438 (595) | 2.04082 % (274) | 107 ms (209) | 0.02 s = 20 ms (158) |
+| success/DE7DD314 | callee | 359/359 | 4.4013 (568) | 2.0 % (455) | 152 ms (569) | 0.022 s = 22 ms (215) |
+| success/EE129C8F | caller | 36/36 | 4.40913 (101) | 0 % (mọi dòng) | 134 ms (101) | 0.02 s = 20 ms (142) |
+| success/EE129C8F | callee | 35/36 | 4.33531 (91) | 3.7037 % (91) | 181 ms (129) | 0.026 s = 26 ms (126) |
+| success/C8CF631E | caller | 15/15 | 4.40396 (82) | 0 % (mọi dòng) | 156 ms (82) | 0.012 s = 12 ms (87) |
+| success/70A1F889 | callee | 39/39 | 4.37638 (84) | 0 % (mọi dòng) | 266 ms (84) | 0.028 s = 28 ms (96) |
 
 Các dòng `END_CALL_SUMMARY` (có field `endCall.*`/`setup.*`/`answer.*`) cũng khai báo
 `audio.audioMos` nhưng không phải periodic stats, nên không được xét.
+
+`audio.jitter` lấy từ WebRTC stats nên có đơn vị **giây** (W3C `RTCInboundRtpStreamStats.jitter`); report
+và ngưỡng `jitterMs` (30 ms) dùng ms, nên giá trị được nhân 1000. Trước 13/10/2026 report in thẳng giá trị
+thô kèm đơn vị "ms" (ví dụ "0.022 ms"), khiến ngưỡng jitter không bao giờ bật được. Trên toàn bộ data mẫu
+việc sửa đơn vị không làm đổi verdict hay category của cuộc gọi nào.
 
 ## 5. Các ca phải ra N/A (không được mặc định về 0)
 

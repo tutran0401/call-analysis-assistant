@@ -74,13 +74,13 @@ class CallMetricsCalculatorTest {
         assertThat(caller.mos().value()).isCloseTo(4.10477, within(0.00001));
         assertThat(caller.packetLossPercent().value()).isCloseTo(11.3208, within(0.0001));
         assertThat(caller.rttMs().value()).isEqualTo(115.0);
-        assertThat(caller.jitterMs().value()).isCloseTo(0.022, within(0.0001));
+        assertThat(caller.jitterMs().value()).isCloseTo(22.0, within(0.0001));
 
         LegQualityMetrics callee = metrics.qualityOf(Leg.CALLEE);
         assertThat(callee.mos().value()).isCloseTo(4.34143, within(0.00001));
         assertThat(callee.packetLossPercent().value()).isCloseTo(7.54717, within(0.0001));
         assertThat(callee.rttMs().value()).isEqualTo(82.0);
-        assertThat(callee.jitterMs().value()).isCloseTo(0.012, within(0.0001));
+        assertThat(callee.jitterMs().value()).isCloseTo(12.0, within(0.0001));
 
         // timelineWithEndCallLogs() cố tình không nạp webrtc log (xem Javadoc của nó) - xác nhận N/A
         // tường minh, không phải giá trị rỗng âm thầm.
@@ -224,17 +224,18 @@ class CallMetricsCalculatorTest {
     /**
      * MOS / packet loss / RTT / jitter tính tay: giá trị TỆ NHẤT (MOS thấp nhất, còn lại cao nhất) trong
      * các dòng PERIODIC_STATS đã có media của end-call log từng bên. Comment cuối dòng là số dòng trong
-     * file gốc nơi xuất hiện giá trị đó (mos / loss / rtt / jitter), "-" là mọi dòng đều bằng 0.
+     * file gốc nơi xuất hiện giá trị đó (mos / loss / rtt / jitter), "-" là mọi dòng đều bằng 0. Jitter
+     * trong log là giây (vd 0.02), report đổi sang ms (20).
      */
     @ParameterizedTest(name = "{1} {2}")
     @CsvSource({
-            // folder, callId,                                leg,    mos,     loss,    rtt,  jitter
-            "success, DE7DD314-F432-45CB-BCB4-AE9103CC0919, CALLER, 4.41438, 2.04082, 107,  0.02",   // 595 / 274 / 209 / 158
-            "success, DE7DD314-F432-45CB-BCB4-AE9103CC0919, CALLEE, 4.4013,  2.0,     152,  0.022",  // 568 / 455 / 569 / 215
-            "success, EE129C8F-EAD0-4302-AB68-920D32F8B8B7, CALLER, 4.40913, 0,       134,  0.02",   // 101 / -   / 101 / 142
-            "success, EE129C8F-EAD0-4302-AB68-920D32F8B8B7, CALLEE, 4.33531, 3.7037,  181,  0.026",  //  91 /  91 / 129 / 126
-            "success, C8CF631E-0C6B-46E4-92E7-280E7B6A5394, CALLER, 4.40396, 0,       156,  0.012",  //  82 / -   /  82 /  87
-            "success, 70A1F889-9371-4179-8C27-125ED39BA415, CALLEE, 4.37638, 0,       266,  0.028",  //  84 / -   /  84 /  96
+            // folder, callId,                                leg,    mos,     loss,    rtt,  jitterMs
+            "success, DE7DD314-F432-45CB-BCB4-AE9103CC0919, CALLER, 4.41438, 2.04082, 107,  20",   // 595 / 274 / 209 / 158
+            "success, DE7DD314-F432-45CB-BCB4-AE9103CC0919, CALLEE, 4.4013,  2.0,     152,  22",  // 568 / 455 / 569 / 215
+            "success, EE129C8F-EAD0-4302-AB68-920D32F8B8B7, CALLER, 4.40913, 0,       134,  20",   // 101 / -   / 101 / 142
+            "success, EE129C8F-EAD0-4302-AB68-920D32F8B8B7, CALLEE, 4.33531, 3.7037,  181,  26",  //  91 /  91 / 129 / 126
+            "success, C8CF631E-0C6B-46E4-92E7-280E7B6A5394, CALLER, 4.40396, 0,       156,  12",  //  82 / -   /  82 /  87
+            "success, 70A1F889-9371-4179-8C27-125ED39BA415, CALLEE, 4.37638, 0,       266,  28",  //  84 / -   /  84 /  96
     })
     void qualityMetricsMatchHandCalculation(String folder, String callId, Leg leg, double mos, double loss,
                                             double rtt, double jitter) {

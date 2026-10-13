@@ -402,12 +402,12 @@ Tóm tắt: Cuộc gọi thiết lập được và kết thúc bình thường,
 | MOS thấp nhất (caller) | 4.10477 | End Call log |
 | Packet loss cao nhất (caller) | 11.3208 % | End Call log |
 | RTT cao nhất (caller) | 115.0 ms | End Call log |
-| Jitter cao nhất (caller) | 0.022 ms | End Call log |
+| Jitter cao nhất (caller) | 22.0 ms | End Call log |
 | Sự kiện ICE/TURN (caller) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
 | MOS thấp nhất (callee) | 4.34143 | End Call log |
 | Packet loss cao nhất (callee) | 7.54717 % | End Call log |
 | RTT cao nhất (callee) | 82.0 ms | End Call log |
-| Jitter cao nhất (callee) | 0.012 ms | End Call log |
+| Jitter cao nhất (callee) | 12.0 ms | End Call log |
 | Sự kiện ICE/TURN (callee) | ICE_CONNECTION_STATE_CHANGE=4, TURN_ALLOCATE_REQUEST=15, TURN_ALLOCATE_RESPONSE=3 | WebRTC log |
 
 ## Vấn đề chất lượng / nguyên nhân khả dĩ
