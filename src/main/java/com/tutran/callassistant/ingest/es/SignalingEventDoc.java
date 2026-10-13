@@ -20,6 +20,7 @@ public record SignalingEventDoc(
         String asn,
         String countryCode,
         Integer latencyMs,
+        String message,
         String rawEvent
 ) {
 }

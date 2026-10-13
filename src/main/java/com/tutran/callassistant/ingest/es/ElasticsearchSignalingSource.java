@@ -79,6 +79,8 @@ public class ElasticsearchSignalingSource implements SignalingEventSource {
         putIfPresent(attributes, "isp", doc.isp());
         putIfPresent(attributes, "asn", doc.asn());
         putIfPresent(attributes, "countryCode", doc.countryCode());
+        // Text tự do của server (chỉ có ở export dạng mới) - cần cho phép đếm "No sessions found".
+        putIfPresent(attributes, "message", doc.message());
         if (doc.latencyMs() != null) {
             attributes.put("latencyMs", String.valueOf(doc.latencyMs()));
         }

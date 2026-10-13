@@ -78,6 +78,32 @@ class ElasticsearchSignalingTest {
     }
 
     @Test
+    void archiveImportsNewLogsExportFormatKeepingCmdServiceAndMessage(@TempDir Path dir) throws IOException {
+        Path export = dir.resolve("signaling.json");
+        Files.writeString(export, """
+                {"call_id": "NEW-1", "logs": [{
+                  "@timestamp": "2026-10-13T07:50:17.803Z", "grpcMethod": "INVITE",
+                  "service": {"name": "S46TQW3OJDW"}, "log": {"level": "INFO"},
+                  "message": "[OUT][NATs][INVITE][CALLEE] No sessions found for Call-ID: NEW-1"
+                }]}
+                """);
+        ElasticsearchClient client = mock(ElasticsearchClient.class);
+        BulkResponse response = mock(BulkResponse.class);
+        when(response.errors()).thenReturn(false);
+        ArgumentCaptor<BulkRequest> captor = ArgumentCaptor.forClass(BulkRequest.class);
+        when(client.bulk(captor.capture())).thenReturn(response);
+
+        assertThat(new ElasticsearchSignalingArchive(client, properties).index(export)).isEqualTo(1);
+
+        SignalingEventDoc doc = (SignalingEventDoc) captor.getValue().operations().get(0).index().document();
+        assertThat(doc.callId()).isEqualTo("NEW-1");
+        assertThat(doc.cmd()).isEqualTo("INVITE");
+        assertThat(doc.service()).isEqualTo("S46TQW3OJDW");
+        assertThat(doc.level()).isEqualTo("INFO");
+        assertThat(doc.message()).contains("No sessions found");
+    }
+
+    @Test
     void archiveSkipsFilesWithoutEvents(@TempDir Path dir) throws IOException {
         Path empty = dir.resolve("signaling.json");
         Files.writeString(empty, "{\"callId\":\"X\",\"events\":[]}");

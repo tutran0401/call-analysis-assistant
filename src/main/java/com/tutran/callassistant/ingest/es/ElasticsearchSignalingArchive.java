@@ -78,6 +78,7 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
                 .properties("asn", Property.of(p -> p.keyword(k -> k)))
                 .properties("countryCode", Property.of(p -> p.keyword(k -> k)))
                 .properties("latencyMs", Property.of(p -> p.integer(i -> i)))
+                .properties("message", Property.of(p -> p.text(t -> t)))
                 .properties("rawEvent", Property.of(p -> p.text(t -> t))));
     }
 
@@ -136,6 +137,7 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
                 textOrNull(event, "asn"),
                 textOrNull(event, "countryCode"),
                 event.hasNonNull("latencyMs") ? event.get("latencyMs").asInt() : null,
+                textOrNull(event, "message"),
                 event.toString());
     }
 
