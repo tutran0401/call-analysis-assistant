@@ -77,6 +77,52 @@ class SignalingExportParserTest {
     }
 
     @Test
+    void parsesNewLogsExportFormatIntoTheSameShapeAsTheOldOne(@TempDir Path tempDir) throws IOException {
+        // Dạng export của new_dataset: logs[] + grpcMethod + field lồng (service.name, log.level, kubernetes).
+        Path file = tempDir.resolve("signaling.json");
+        Files.writeString(file, """
+                {
+                  "call_id": "06BCA48C-6861-8A9F-19E3-0923EAD71440",
+                  "logs": [
+                    {
+                      "callId": "06BCA48C-6861-8A9F-19E3-0923EAD71440",
+                      "kubernetes": {"container_name": "S46TQW3OJDW", "pod_name": "S46TQW3OJDW-5999cb47b8-cpgrp"},
+                      "grpcMethod": "INIT_CALL",
+                      "log": {"level": "INFO"},
+                      "isp": "VIETTEL",
+                      "message": "[IN][NATs][INIT_CALL][CALLER] Current dialog state: No dialog",
+                      "@timestamp": "2026-10-13T07:50:17.803396571Z",
+                      "service": {"name": "S46TQW3OJDW"},
+                      "appUserId": "UHKMFKVGDIG"
+                    }
+                  ]
+                }
+                """);
+
+        NormalizedEvents result = parser.parse(LogFile.of(file));
+
+        assertThat(result.events()).singleElement().satisfies(e -> {
+            assertThat(e.callId()).isEqualTo("06BCA48C-6861-8A9F-19E3-0923EAD71440");
+            assertThat(e.eventType()).isEqualTo("INIT_CALL");
+            assertThat(e.attribute("service")).isEqualTo("S46TQW3OJDW");
+            assertThat(e.attribute("level")).isEqualTo("INFO");
+            assertThat(e.attribute("appUserId")).isEqualTo("UHKMFKVGDIG");
+            assertThat(e.attribute("grpcMethod")).isNull();
+            assertThat(e.attribute("kubernetes")).isNull();
+        });
+    }
+
+    @Test
+    void oldFormatEventsPassThroughNormalizationUnchanged() {
+        Path file = SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS).resolve("signaling.json");
+
+        NormalizedEvents result = parser.parse(LogFile.of(file));
+
+        assertThat(result.events().get(0).attribute("service")).isEqualTo("S46TQW3OJDW");
+        assertThat(result.events().get(0).attribute("level")).isEqualTo("INFO");
+    }
+
+    @Test
     void missingEventsArrayProducesWarningNotCrash(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("signaling.json");
         Files.writeString(file, "{\"callId\": \"CALL-1\"}");

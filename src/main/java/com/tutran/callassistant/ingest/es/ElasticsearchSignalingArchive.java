@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutran.callassistant.application.port.out.SignalingEventArchive;
+import com.tutran.callassistant.ingest.file.SignalingExportFormat;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -83,8 +84,8 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
     @Override
     public int index(Path signalingExportFile) throws IOException {
         JsonNode root = objectMapper.readTree(signalingExportFile.toFile());
-        String callId = root.path("callId").asText();
-        JsonNode events = root.path("events");
+        String callId = SignalingExportFormat.callId(root, "");
+        JsonNode events = SignalingExportFormat.events(root);
         if (!events.isArray() || events.isEmpty()) {
             return 0;
         }
@@ -95,7 +96,7 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
             if (timestamp == null) {
                 continue;
             }
-            SignalingEventDoc doc = toDocument(callId, timestamp, event);
+            SignalingEventDoc doc = toDocument(callId, timestamp, SignalingExportFormat.normalize(event));
             documents.add(new IndexedDocument(deterministicId(callId, doc), doc));
         }
         if (documents.isEmpty()) {

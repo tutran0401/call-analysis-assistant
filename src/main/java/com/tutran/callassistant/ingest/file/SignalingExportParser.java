@@ -21,7 +21,8 @@ import java.util.Map;
 
 /**
  * Parse định dạng export Elasticsearch mà mentor cung cấp cho signaling log
- * ({@code signaling.json}: {@code {callId, events: [...] }}).
+ * ({@code signaling.json}: {@code {callId, events: [...] }}, hoặc dạng mới {@code {call_id, logs: [...]}} -
+ * xem {@link SignalingExportFormat}).
  *
  * <p>Dùng cho cả script import ES local (T1) lẫn bất kỳ đâu cần view chuẩn hoá của signaling một
  * cuộc gọi mà không cần query ES thật (test, chạy offline - xem {@link LocalFileSignalingSource}).
@@ -61,9 +62,9 @@ public class SignalingExportParser implements LogParser {
         }
 
         String callId = resolveCallId(file, root);
-        JsonNode eventsNode = root.path("events");
+        JsonNode eventsNode = SignalingExportFormat.events(root);
         if (!eventsNode.isArray()) {
-            return NormalizedEvents.unreadable("No 'events' array found in " + path);
+            return NormalizedEvents.unreadable("No 'events' or 'logs' array found in " + path);
         }
 
         List<CanonicalEvent> events = new ArrayList<>();
@@ -72,7 +73,7 @@ public class SignalingExportParser implements LogParser {
         for (JsonNode eventNode : eventsNode) {
             index++;
             try {
-                events.add(toEvent(eventNode, callId, path, index));
+                events.add(toEvent(SignalingExportFormat.normalize(eventNode), callId, path, index));
             } catch (RuntimeException e) {
                 warnings.add("Skipped malformed signaling event #" + index + " in " + path
                         + " - " + e.getMessage());
@@ -93,7 +94,7 @@ public class SignalingExportParser implements LogParser {
         }
         Path parent = file.path().getParent();
         String fallback = parent != null ? parent.getFileName().toString() : "UNKNOWN";
-        return root.path("callId").asText(fallback);
+        return SignalingExportFormat.callId(root, fallback);
     }
 
     private CanonicalEvent toEvent(JsonNode eventNode, String callId, Path path, int sequenceNumber) {
