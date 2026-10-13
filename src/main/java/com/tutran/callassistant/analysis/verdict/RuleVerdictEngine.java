@@ -5,6 +5,7 @@ import com.tutran.callassistant.analysis.verdict.rule.ConnectedSuccessfullyRule;
 import com.tutran.callassistant.analysis.verdict.rule.ConnectedWithoutByeRule;
 import com.tutran.callassistant.analysis.verdict.rule.ExplicitTerminationRule;
 import com.tutran.callassistant.analysis.verdict.rule.FailedToConnectRule;
+import com.tutran.callassistant.analysis.verdict.rule.MediaDroppedAfterConnectRule;
 import com.tutran.callassistant.analysis.verdict.rule.MediaFailedAfterConnectRule;
 import com.tutran.callassistant.analysis.verdict.rule.MissingClientLogsRule;
 import com.tutran.callassistant.analysis.verdict.rule.MissingSignalingDataRule;
@@ -34,6 +35,7 @@ import java.util.Optional;
  *   <li>{@link FailedToConnectRule} - chưa từng CONFIRMED thì FAIL</li>
  *   <li>{@link ConnectedWithoutByeRule} - đã kết nối mà không thấy kết thúc thì UNKNOWN</li>
  *   <li>{@link MediaFailedAfterConnectRule} - đã kết nối nhưng ICE của một bên failed thì FAIL</li>
+ *   <li>{@link MediaDroppedAfterConnectRule} - đã có media rồi bị ngắt bất thường giữa chừng thì FAIL</li>
  *   <li>{@link ConnectedSuccessfullyRule} - kết nối và kết thúc bình thường thì SUCCESS</li>
  * </ol>
  */
@@ -62,6 +64,7 @@ public class RuleVerdictEngine implements VerdictEngine {
                         new FailedToConnectRule(causeClassifier),
                         new ConnectedWithoutByeRule(),
                         new MediaFailedAfterConnectRule(iceFailureDetector),
+                        new MediaDroppedAfterConnectRule(new MediaDropDetector()),
                         new ConnectedSuccessfullyRule(QualityInspector.withDefaults(thresholds))));
     }
 

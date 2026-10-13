@@ -153,6 +153,101 @@ class RuleVerdictEngineTest {
     }
 
     @Test
+    void failsACallThatWasDroppedMidCallEvenThoughSignalingEndsWithBye() {
+        // Spec 4.1: FAIL gồm cả "bị ngắt bất thường". Signaling đi đủ tới BYE nên trước đây ra SUCCESS.
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.newDataset(SampleCalls.NEW_DROPPED_MID_CALL), SampleCalls.NEW_DROPPED_MID_CALL);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
+        assertThat(result.evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("không nhận được byte audio nào trong 9 s"))
+                .anySatisfy(e -> assertThat(e.description()).contains("CALLER mất kết nối với bên kia"));
+    }
+
+    @Test
+    void failsACallWhoseMediaDiedRightAfterConnecting() {
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.newDataset(SampleCalls.NEW_DROPPED_RIGHT_AFTER_CONNECT),
+                SampleCalls.NEW_DROPPED_RIGHT_AFTER_CONNECT);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
+        assertThat(result.evidence())
+                .anySatisfy(e -> assertThat(e.description()).contains("PARTNER_LOST_NETWORK"));
+    }
+
+    @Test
+    void shortAudioGapsMidCallAreAQualityIssueNotADroppedCall() {
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.newDataset(SampleCalls.NEW_SHORT_GAPS_NOT_DROPPED), SampleCalls.NEW_SHORT_GAPS_NOT_DROPPED);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+        assertThat(result.qualityFlag()).isTrue();
+    }
+
+    @Test
+    void iceDisconnectedAloneDoesNotMeanTheCallWasDropped() {
+        // Audio vẫn tới tận lúc cúp máy: DISCONNECTED chỉ là nhiễu thoáng qua, không phải rớt cuộc gọi.
+        RuleVerdictResult result = evaluate(callWithCallerEnding(
+                "onIceConnectionChange: DISCONNECTED", null, List.of("3000", "3000", "3000", "3000", "3000")));
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+    }
+
+    @Test
+    void silenceWithoutAnyConnectionLossIsNotADroppedCall() {
+        // Bên kia tắt mic thì cũng không nhận được audio - thiếu dấu hiệu mất kết nối thì không được kết luận rớt.
+        RuleVerdictResult result = evaluate(callWithCallerEnding(
+                null, null, List.of("3000", "0", "0", "0", "0")));
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+    }
+
+    @Test
+    void connectionLostFollowedBySilenceUntilHangUpIsADroppedCall() {
+        RuleVerdictResult result = evaluate(callWithCallerEnding(
+                null, "network_lost", List.of("3000", "0", "0", "0", "0")));
+
+        assertThat(result.verdict()).isEqualTo(Verdict.FAIL);
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.ICE_FAILURE);
+    }
+
+    /**
+     * Cuộc gọi kết nối lúc 00:00:05, caller có periodic stats mỗi giây từ 00:00:10 (bytes nhận trong từng chu kỳ
+     * do test chỉ định), một dấu hiệu tuỳ chọn lúc 00:00:12, rồi caller cúp máy lúc 00:00:15.
+     */
+    private CallTimeline callWithCallerEnding(String logMessage, String signal, List<String> bytesPerPeriod) {
+        List<CanonicalEvent> events = new java.util.ArrayList<>(List.of(
+                Events.signaling("INIT_CALL", "2026-01-01T00:00:00Z", 1),
+                Events.signaling("OK_ACK_OK", "2026-01-01T00:00:05Z", 2),
+                Events.signaling("BYE", "2026-01-01T00:00:15.500Z", 3),
+                Events.endCall(Leg.CALLER, "CALL_SUMMARY", "2026-01-01T00:00:00Z", 4, Map.of("role", "caller"))));
+        int seq = 10;
+        for (int i = 0; i < bytesPerPeriod.size(); i++) {
+            events.add(Events.endCall(Leg.CALLER, "PERIODIC_STATS", "2026-01-01T00:00:1" + i + "Z", seq++,
+                    Map.of("audio.bytesReceived", "50000", "audio.bytesReceivedPts", bytesPerPeriod.get(i),
+                            "audio.audioMos", "4.2", "audio.packetLostPercent", "0.0")));
+        }
+        if (logMessage != null) {
+            events.add(Events.endCall(Leg.CALLER, "LOG_MESSAGE", "2026-01-01T00:00:12Z", seq++, Map.of("msg", logMessage)));
+        }
+        if (signal != null) {
+            events.add(Events.endCall(Leg.CALLER, "SIGNAL", "2026-01-01T00:00:12Z", seq++,
+                    Map.of("originator", "remote", "signal", signal)));
+        }
+        events.add(Events.endCall(Leg.CALLER, "SIGNAL", "2026-01-01T00:00:15Z", seq,
+                Map.of("originator", "local", "signal", "user_end_call")));
+        return SampleCalls.timelineBuilder().build(Events.CALL_ID, events);
+    }
+
+    @Test
     void detectsTurnFailureWhenTheClientCouldNotEvenCreateASocket() {
         // Cuộc gọi thật (nhãn fail): mọi TURN port đều "Failed to create TURN client socket", 0 request
         // gửi đi. Signaling chỉ thấy CANCEL - nhưng CANCEL là hệ quả, TURN mới là nguyên nhân gốc.

@@ -86,7 +86,7 @@ public class TextReportRenderer implements ReportRenderer {
             case "NONE" -> "không phát hiện vấn đề chất lượng nào";
             case "NETWORK_PACKET_LOSS" -> "mất gói trên đường truyền";
             case "NETWORK_DELAY_JITTER" -> "độ trễ hoặc jitter mạng cao";
-            case "ICE_FAILURE" -> "không thiết lập được kết nối media (ICE)";
+            case "ICE_FAILURE" -> "kết nối media (ICE) không thiết lập được hoặc bị ngắt giữa chừng";
             // Cố tình KHÔNG viết "lỗi phía TURN server": evidence chỉ chứng minh được client không đi
             // hết vòng request/response, chưa đủ để nói lỗi nằm ở server hay ở mạng của thiết bị -
             // đúng như dòng "Khả dĩ khác" ngay bên dưới, và đúng giới hạn phạm vi ở mục 9 của spec.

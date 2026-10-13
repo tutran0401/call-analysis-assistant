@@ -80,6 +80,16 @@ public final class SampleCalls {
      */
     public static final String FOR_TEST_TURN_NOISY_BUT_OK = "311A9B6A-0D30-4C30-9E01-9A42E4EF11E6";
 
+    /**
+     * new_dataset (13/10/2026, chưa có nhãn mentor): kết nối được, nói ~30 s, rồi cả hai bên cùng ngừng nhận
+     * audio; caller nhận ICE DISCONNECTED + PARTNER_LOST_NETWORK rồi mới cúp - bị ngắt bất thường giữa chừng.
+     */
+    public static final String NEW_DROPPED_MID_CALL = "FE4EF5E7-58F8-F41B-298B-1985541B3CFC";
+    /** new_dataset: caller chỉ nhận audio đúng giây đầu, rồi PARTNER_LOST_NETWORK, im lặng 11 s tới lúc cúp. */
+    public static final String NEW_DROPPED_RIGHT_AFTER_CONNECT = "70C388AD-4CE1-06A5-34E4-13DAD07C1EEC";
+    /** new_dataset: có vài khoảng 3-4 s không nhận audio giữa cuộc rồi có tiếng lại - không phải rớt cuộc gọi. */
+    public static final String NEW_SHORT_GAPS_NOT_DROPPED = "06BCA48C-6861-8A9F-19E3-0923EAD71440";
+
     private static final Path SAMPLE_DATA = Path.of("sample-data");
     private static final String SIGNALING_FILE = "signaling.json";
 
@@ -96,6 +106,11 @@ public final class SampleCalls {
 
     public static Path forTest(String callId) {
         return SAMPLE_DATA.resolve("for_test").resolve(callId);
+    }
+
+    /** Thư mục của new_dataset đặt tên chữ thường. */
+    public static Path newDataset(String callId) {
+        return SAMPLE_DATA.resolve("new_dataset").resolve(callId.toLowerCase(java.util.Locale.ROOT));
     }
 
     public static TimelineBuilder timelineBuilder() {

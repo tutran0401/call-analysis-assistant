@@ -5,7 +5,7 @@ const CATEGORY_EXPLANATION: Record<string, string> = {
   NONE: 'không phát hiện vấn đề chất lượng nào',
   NETWORK_PACKET_LOSS: 'mất gói trên đường truyền',
   NETWORK_DELAY_JITTER: 'độ trễ hoặc jitter mạng cao',
-  ICE_FAILURE: 'không thiết lập được kết nối media (ICE)',
+  ICE_FAILURE: 'kết nối media (ICE) không thiết lập được hoặc bị ngắt giữa chừng',
   TURN_FAILURE: 'client không đi hết được vòng request/response với TURN',
   SIGNALING_FAILURE: 'lỗi ở tầng signaling',
   UNKNOWN: 'chưa quy được nguyên nhân cụ thể',

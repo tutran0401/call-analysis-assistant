@@ -22,7 +22,11 @@ public class SuggestionCatalog {
             IssueCategory.NETWORK_DELAY_JITTER, List.of(
                     "Kiểm tra độ trễ/jitter mạng của bên bị ảnh hưởng; bổ sung RTT/jitter nếu log hiện thiếu."),
             IssueCategory.ICE_FAILURE, List.of(
-                    "Bổ sung đầy đủ webrtc.log của cả hai bên để kiểm tra chi tiết quá trình ICE."),
+                    "Xem evidence để biết bên nào mất kết nối media và vào lúc nào (ICE failed khi thiết "
+                            + "lập, hay DISCONNECTED/PARTNER_LOST_NETWORK giữa cuộc gọi); kiểm tra mạng của bên "
+                            + "đó tại thời điểm này.",
+                    "Nếu thiếu webrtc.log/end-call log của bên nào thì bổ sung để đối chiếu trạng thái ICE "
+                            + "của cả hai bên."),
             // Đề xuất cho TURN cố tình KHÔNG nhắc credential hay cổng 3478: hai hình thái lỗi TURN cần
             // hai hướng điều tra khác hẳn nhau (không tạo nổi socket là vấn đề mạng/định tuyến cục bộ,
             // còn gửi được mà không có phản hồi mới là vấn đề đường tới server). Phần tóm tắt của

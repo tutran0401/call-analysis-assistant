@@ -69,16 +69,24 @@ public class IssueCategoryRegistry {
                 ),
                 IssueCategory.ICE_FAILURE, new IssueCategoryDefinition(
                         IssueCategory.ICE_FAILURE,
-                        "Không thiết lập được kết nối media vì ICE connectivity check thất bại "
-                                + "(gathering/checking/connecting không bao giờ đạt trạng thái connected).",
+                        "Kết nối media (ICE) không thiết lập được - connectivity check thất bại, không bao giờ "
+                                + "đạt connected - HOẶC đã có media rồi bị ngắt bất thường giữa chừng (spec 4.1: "
+                                + "FAIL gồm cả cuộc gọi bị ngắt bất thường; 4.2 không có category riêng cho ca này).",
                         List.of("Trạng thái ICE trong log WebRTC chuyển sang failed",
-                                "Client state timeline không bao giờ đạt CONFIRMED sau INVITE/OK"),
+                                "Client state timeline không bao giờ đạt CONFIRMED sau INVITE/OK",
+                                "Giữa cuộc gọi: client báo PARTNER_LOST_NETWORK hoặc ICE DISCONNECTED trước khi "
+                                        + "chính bên đó cúp máy, và không nhận được audio cho tới lúc kết thúc"),
                         List.of("WebRTC log (ICE_CONNECTION_STATE_CHANGE)",
                                 "End-call log: client state timeline"),
                         "Một sự kiện ICE_CONNECTION_STATE_CHANGE chuyển sang trạng thái failed, "
-                                + "hoặc client state timeline không bao giờ đạt CONFIRMED",
+                                + "hoặc client state timeline không bao giờ đạt CONFIRMED, "
+                                + "hoặc (sau OK_ACK_OK) end-call log của một bên có PARTNER_LOST_NETWORK/ICE "
+                                + "DISCONNECTED trước khi bên đó cúp máy VÀ audio.bytesReceivedPts = 0 liên tục >= 3 s "
+                                + "tới lúc kết thúc. DISCONNECTED đơn lẻ không tính - lúc cúp máy bình thường cũng có",
                         "TURN_FAILURE - khó tách khỏi lỗi TURN nếu không có chi tiết theo từng candidate pair; "
-                                + "khi có lỗi TURN rõ ràng trong cùng khoảng thời gian thì nên ưu tiên TURN_FAILURE"
+                                + "khi có lỗi TURN rõ ràng trong cùng khoảng thời gian thì nên ưu tiên TURN_FAILURE. "
+                                + "Với ca bị ngắt giữa chừng: log chỉ cho biết một bên mất mạng, không cho biết vì sao "
+                                + "(sóng yếu, đổi mạng, tắt app...)"
                 ),
                 IssueCategory.TURN_FAILURE, new IssueCategoryDefinition(
                         IssueCategory.TURN_FAILURE,

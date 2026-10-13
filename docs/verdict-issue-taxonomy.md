@@ -14,7 +14,7 @@ Thứ tự quyết định verdict nằm ở danh sách rule trong `RuleVerdictE
 | Verdict | Tiêu chí `RuleVerdictEngine` kiểm tra |
 | --- | --- |
 | `UNKNOWN` | Không có signaling data nào cả; hoặc không có log client nào (end-call **lẫn** WebRTC) ở cả hai bên; hoặc cuộc gọi có vẻ đã kết nối (thấy `OK_ACK_OK`) nhưng chưa từng thấy `BYE` (nhiều khả năng do data bị cắt/thiếu, không phải cuộc gọi thật đang diễn ra) |
-| `FAIL` | Một trong ba trường hợp: (a) signaling ghi rõ `CANCEL`/`FAIL_HARD` trước khi đạt `OK_ACK_OK` — bằng chứng này đủ mạnh nên **không cần** log client; (b) có log client và chưa từng quan sát được `OK_ACK_OK`; (c) đã đạt `OK_ACK_OK` và có `BYE`, nhưng log WebRTC cho thấy ICE của một bên `=> failed` nên bên đó không hề có media |
+| `FAIL` | Một trong ba trường hợp: (a) signaling ghi rõ `CANCEL`/`FAIL_HARD` trước khi đạt `OK_ACK_OK` — bằng chứng này đủ mạnh nên **không cần** log client; (b) có log client và chưa từng quan sát được `OK_ACK_OK`; (c) đã đạt `OK_ACK_OK` và có `BYE`, nhưng log WebRTC cho thấy ICE của một bên `=> failed` nên bên đó không hề có media; (d) **bị ngắt bất thường giữa chừng** (spec 4.1): đã có media, rồi end-call log của một bên báo `PARTNER_LOST_NETWORK` hoặc ICE `DISCONNECTED` trước khi chính bên đó cúp máy, và bên đó không nhận được audio (`audio.bytesReceivedPts = 0`) liên tục ≥ 3 s cho tới lúc kết thúc |
 | `SUCCESS` | Đã thấy `OK_ACK_OK` và sau đó có `BYE` — có thể kèm cờ chất lượng kém (xem bên dưới) |
 
 Cờ chất lượng (chỉ áp dụng cho `SUCCESS`) được gắn khi **một trong hai bên** vượt ngưỡng,
@@ -66,13 +66,21 @@ không tìm thấy vấn đề" với "hệ thống chưa kiểm tra / không c�
 ### ICE_FAILURE
 
 - **Định nghĩa**: không thiết lập được kết nối media vì quá trình kiểm tra kết nối ICE
-  thất bại.
+  thất bại, **hoặc** media đã lên rồi bị ngắt bất thường giữa chừng (FAIL loại (d) ở trên). Mục 4.2
+  của spec không có category riêng cho "rớt cuộc gọi"; ICE_FAILURE là category có nguồn evidence khớp
+  (trạng thái kết nối media trong log client).
 - **Triệu chứng**: `onIceConnectionChange` trong WebRTC log chuyển sang `FAILED`/
   `DISCONNECTED`; state timeline của end-call log không bao giờ đạt `CONFIRMED`.
 - **Evidence cần có**: sự kiện `ICE_CONNECTION_STATE_CHANGE` trong WebRTC log; state
   timeline của end-call log.
-- **Điều kiện phát hiện**: có sự kiện `ICE_CONNECTION_STATE_CHANGE` với message nhắc đến
-  `FAILED`/`DISCONNECTED`.
+- **Điều kiện phát hiện**: (1) có sự kiện `ICE_CONNECTION_STATE_CHANGE` chuyển sang `failed`; hoặc
+  (2) sau `OK_ACK_OK`, end-call log của một bên có `PARTNER_LOST_NETWORK` (`signal = network_lost`) hoặc
+  `onIceConnectionChange: DISCONNECTED` **trước** lúc bên đó cúp máy (`user_end_call`), **và** các dòng
+  periodic stats cuối có `audio.bytesReceivedPts = 0` liên tục ≥ 3 s tới lúc kết thúc.
+  `DISCONNECTED` **đơn lẻ không tính**: nó xuất hiện cả lúc cúp máy bình thường. Im lặng đơn lẻ cũng không
+  tính: có thể chỉ là bên kia tắt mic. Trên 30 cuộc gọi mẫu, điều kiện (2) chỉ khớp `new_dataset/70C388AD`
+  và `new_dataset/FE4EF5E7`, không khớp cuộc gọi SUCCESS nào mentor đã gán nhãn.
+  (Bản trước ghi `FAILED`/`DISCONNECTED` nhưng code chỉ bắt `failed` - đã thống nhất lại như trên.)
 - **Điểm mơ hồ đã biết**: khó tách biệt với `TURN_FAILURE` nếu thiếu chi tiết theo từng
   candidate pair — xem thêm bên dưới.
 
