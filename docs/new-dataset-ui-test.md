@@ -43,7 +43,9 @@ Test: 272/272 pass (gồm 2 test tích hợp với ES thật), thêm test cho đ
 | 7 | FE4EF5E7 | 4 file đủ 2 bên | SUCCESS | NETWORK_PACKET_LOSS | HIGH | callee: MOS 1.0, loss 27.6 %, RTT 1253 ms | OK | 3.8 s |
 
 "AI OK" nghĩa là không case nào bị degraded/fallback về rule. Guardrails nhận cả 7 phản hồi, không có cảnh
-báo xử lý. Kết luận của AI trùng rule baseline ở cả 7 case.
+báo xử lý. Kết luận, cờ chất lượng và độ tin cậy trên UI (có AI) trùng với bản chạy rule-only bằng CLI
+(`cli-after-fix.txt`) ở cả 7 case. Lưu ý như Sprint 2: AI có thấy rule baseline nên sự trùng này không phải
+bằng chứng độc lập.
 
 ## Nhận xét (cần mentor xác nhận)
 
