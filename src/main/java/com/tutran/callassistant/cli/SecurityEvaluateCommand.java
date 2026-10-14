@@ -34,6 +34,7 @@ import java.util.Map;
  *   <li>AI provider đang cấu hình (OpenAI thật nếu có; chưa cấu hình thì AI giả) - đo leakage input/output/log
  *       của S01-S06, S08.</li>
  *   <li>AI giả cố tình chèn mọi giá trị nhạy cảm vào câu trả lời (S07) - đo khả năng chặn ở phía output.</li>
+ *   <li>Như lượt 2 nhưng chỉ các giá trị không có chữ số, để vượt qua Guardrails G05 và thử riêng Output Sanitizer.</li>
  * </ol>
  */
 @Component
@@ -95,8 +96,16 @@ public class SecurityEvaluateCommand implements CliCommand {
                 "Lượt 1 - S01-S06, S08 với AI provider đang cấu hình", run(cases, index, base, ruleService, configured));
         SecurityReportWriter.Pass leaking = new SecurityReportWriter.Pass(
                 "Lượt 2 - S07: AI cố tình trả lại mọi giá trị nhạy cảm", run(cases, index, base, ruleService, leaky));
+        // Lượt 2 thường bị Guardrails G05 chặn trước (giá trị có chữ số = "số liệu lạ"), nên Output Sanitizer chưa
+        // thật sự được thử. Lượt 3 chỉ rò các giá trị không có chữ số (email) - lọt qua Guardrails, buộc Output
+        // Sanitizer phải tự che.
+        List<String> digitFree = allValues.stream().filter(v -> v.chars().noneMatch(Character::isDigit)).toList();
+        SecurityReportWriter.Pass pastGuardrails = new SecurityReportWriter.Pass(
+                "Lượt 3 - S07: AI trả lại giá trị không có chữ số (vượt qua Guardrails, chỉ còn Output Sanitizer chặn)",
+                run(cases, index, base, ruleService, new LeakyAiProvider(new FakeAiProvider(), digitFree)));
         try {
-            Path summary = new SecurityReportWriter().write(outDir, casesFile.toString(), List.of(normal, leaking));
+            Path summary = new SecurityReportWriter().write(outDir, casesFile.toString(),
+                    List.of(normal, leaking, pastGuardrails));
             console.line("Đã ghi báo cáo bảo mật vào " + summary.toAbsolutePath());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot write security report to " + outDir, e);

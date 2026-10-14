@@ -70,6 +70,19 @@ class SecurityEvaluationTest {
     }
 
     @Test
+    void s07_leakThatPassesGuardrailsIsStillMaskedByTheOutputSanitizer() {
+        List<String> digitFree = cases.stream().flatMap(c -> c.sensitiveValues().stream())
+                .filter(v -> v.chars().noneMatch(Character::isDigit)).distinct().toList();
+        assertThat(digitFree).isNotEmpty();
+
+        EvaluationResult result = run(new LeakyAiProvider(new FakeAiProvider(), digitFree));
+
+        // Guardrails không chặn (không có số lạ) -> report AI được giao, và Output Sanitizer là lớp duy nhất còn lại.
+        assertThat(result.records()).anyMatch(r -> !r.degraded());
+        assertThat(result.records()).allMatch(r -> r.outputProbeHits() == 0 && r.outputResidual() == 0);
+    }
+
+    @Test
     void reportSaysPassOnlyWhenEveryColumnIsZero(@TempDir Path dir) throws Exception {
         EvaluationResult clean = run(new FakeAiProvider());
 
