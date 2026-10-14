@@ -122,6 +122,24 @@ class ChatAnalysisServiceTest {
     }
 
     @Test
+    void everyRequestIsArchivedAsASanitizedSummary() throws IOException {
+        List<com.tutran.callassistant.application.port.out.AnalysisResultRecord> archived = new ArrayList<>();
+        ChatAnalysisService service = service(new FakeAiProvider()).withResultArchive(archived::add, "batch");
+
+        ChatResponse ok = service.handle(new ChatRequest("Phân tích cuộc gọi này giúp mình", logsOf(DIR)));
+        service.handle(new ChatRequest("Viết giúp mình một email", List.of()));
+
+        assertThat(archived).hasSize(2);
+        var first = archived.get(0);
+        assertThat(first.requestId()).isEqualTo(ok.requestId());
+        assertThat(first.channel()).isEqualTo("batch");
+        assertThat(first.result()).isEqualTo("OK");
+        assertThat(first.verdict()).isEqualTo(ok.report().verdict());
+        assertThat(first.callRef()).startsWith("CALL_").isNotEqualTo(CALL);
+        assertThat(archived.get(1).result()).isEqualTo("REFUSED");
+    }
+
+    @Test
     void s03_apiKeyInAnAiExceptionNeverReachesTheResponse() throws IOException {
         String key = "sk-proj-Qq1Ww2Ee3Rr4Tt5Yy6Uu7Ii8";
         AiProvider failing = new AiProvider() {

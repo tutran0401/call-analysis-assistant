@@ -4,6 +4,11 @@ spring:
   main:
     web-application-type: servlet
 
+call-analysis:
+  results:
+    # Ghi kết quả mỗi lượt phân tích (đã sanitize) vào index call-analysis-results cho Kibana (Sprint 3 T9).
+    archive: es
+
 server:
   port: 8080
   address: 127.0.0.1

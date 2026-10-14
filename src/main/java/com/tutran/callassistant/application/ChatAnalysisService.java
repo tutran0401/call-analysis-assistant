@@ -10,6 +10,8 @@ import com.tutran.callassistant.application.ai.TimeLimitedAiCaller;
 import com.tutran.callassistant.application.guardrail.AiResponseGuard;
 import com.tutran.callassistant.application.guardrail.GuardDecision;
 import com.tutran.callassistant.application.port.out.AiProvider;
+import com.tutran.callassistant.application.port.out.AnalysisResultArchive;
+import com.tutran.callassistant.application.port.out.AnalysisResultRecord;
 import com.tutran.callassistant.application.port.out.SignalingFetchError;
 import com.tutran.callassistant.application.port.out.UploadValidator;
 import com.tutran.callassistant.application.request.ParsedRequest;
@@ -26,8 +28,10 @@ import com.tutran.callassistant.sanitize.SanitizedContext;
 import com.tutran.callassistant.sanitize.InputSanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -66,13 +70,40 @@ public class ChatAnalysisService {
     private final ReportGuard reportGuard;
     private final ReportRenderer renderer;
     private final Pseudonymizer pseudonymizer;
+    private final AnalysisResultArchive resultArchive;
+    private final String channel;
 
+    @Autowired
+    public ChatAnalysisService(RequestParser requestParser, UploadValidator uploadValidator,
+                               CallAnalysisPipeline pipeline, AiContextBuilder contextBuilder,
+                               InputSanitizer inputSanitizer, AiPromptFactory promptFactory,
+                               AiProvider aiProvider, TimeLimitedAiCaller aiCaller, AiResponseGuard aiGuard,
+                               AnalysisReportComposer composer, OutputSanitizer outputSanitizer,
+                               ReportGuard reportGuard, ReportRenderer renderer, Pseudonymizer pseudonymizer,
+                               AnalysisResultArchive resultArchive) {
+        this(requestParser, uploadValidator, pipeline, contextBuilder, inputSanitizer, promptFactory, aiProvider,
+                aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer, pseudonymizer, resultArchive, "web");
+    }
+
+    /** Không lưu kết quả (test, chỗ không có Spring container). */
     public ChatAnalysisService(RequestParser requestParser, UploadValidator uploadValidator,
                                CallAnalysisPipeline pipeline, AiContextBuilder contextBuilder,
                                InputSanitizer inputSanitizer, AiPromptFactory promptFactory,
                                AiProvider aiProvider, TimeLimitedAiCaller aiCaller, AiResponseGuard aiGuard,
                                AnalysisReportComposer composer, OutputSanitizer outputSanitizer,
                                ReportGuard reportGuard, ReportRenderer renderer, Pseudonymizer pseudonymizer) {
+        this(requestParser, uploadValidator, pipeline, contextBuilder, inputSanitizer, promptFactory, aiProvider,
+                aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer, pseudonymizer,
+                AnalysisResultArchive.NONE, "web");
+    }
+
+    private ChatAnalysisService(RequestParser requestParser, UploadValidator uploadValidator,
+                                CallAnalysisPipeline pipeline, AiContextBuilder contextBuilder,
+                                InputSanitizer inputSanitizer, AiPromptFactory promptFactory,
+                                AiProvider aiProvider, TimeLimitedAiCaller aiCaller, AiResponseGuard aiGuard,
+                                AnalysisReportComposer composer, OutputSanitizer outputSanitizer,
+                                ReportGuard reportGuard, ReportRenderer renderer, Pseudonymizer pseudonymizer,
+                                AnalysisResultArchive resultArchive, String channel) {
         this.requestParser = requestParser;
         this.uploadValidator = uploadValidator;
         this.pipeline = pipeline;
@@ -87,20 +118,29 @@ public class ChatAnalysisService {
         this.reportGuard = reportGuard;
         this.renderer = renderer;
         this.pseudonymizer = pseudonymizer;
+        this.resultArchive = resultArchive;
+        this.channel = channel;
     }
 
     /** Bản sao dùng pipeline khác (Evaluation Runner đổi nguồn signaling); mọi thành phần còn lại giữ nguyên. */
     public ChatAnalysisService withPipeline(CallAnalysisPipeline other) {
         return new ChatAnalysisService(requestParser, uploadValidator, other, contextBuilder, inputSanitizer,
                 promptFactory, aiProvider, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
-                pseudonymizer);
+                pseudonymizer, resultArchive, channel);
     }
 
     /** Bản sao dùng AI provider khác (Evaluation Runner bọc provider để ghi lại request, hoặc chạy rule-only). */
     public ChatAnalysisService withAiProvider(AiProvider other) {
         return new ChatAnalysisService(requestParser.withAiProvider(other), uploadValidator, pipeline, contextBuilder,
                 inputSanitizer, promptFactory, other, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
-                pseudonymizer);
+                pseudonymizer, resultArchive, channel);
+    }
+
+    /** Bản sao ghi kết quả vào kho khác, gắn nhãn kênh khác (lệnh batch dùng {@code "batch"}). */
+    public ChatAnalysisService withResultArchive(AnalysisResultArchive archive, String newChannel) {
+        return new ChatAnalysisService(requestParser, uploadValidator, pipeline, contextBuilder, inputSanitizer,
+                promptFactory, aiProvider, aiCaller, aiGuard, composer, outputSanitizer, reportGuard, renderer,
+                pseudonymizer, archive, newChannel);
     }
 
     /**
@@ -113,10 +153,15 @@ public class ChatAnalysisService {
         try {
             ChatResponse response = handle(requestId, request);
             logRequest(response, started);
+            archive(response, elapsedMillis(started));
             return response;
         } catch (RuntimeException e) {
+            long latency = elapsedMillis(started);
             log.warn("chat_request request_id={} result=ERROR error_kind={} latency_ms={}", requestId,
-                    e.getClass().getSimpleName(), elapsedMillis(started));
+                    e.getClass().getSimpleName(), latency);
+            resultArchive.record(new AnalysisResultRecord(Instant.now(), requestId, channel, "ERROR", null, null,
+                    null, null, null, null, false, null, aiProvider.modelName(), null, latency, 0,
+                    e.getClass().getSimpleName()));
             throw e;
         }
     }
@@ -214,6 +259,18 @@ public class ChatAnalysisService {
                 report == null ? null : report.verdict(), report == null ? null : report.issueCategory(),
                 report == null ? null : report.confidenceLevel(), response.degraded(), response.fallbackReason(),
                 response.warnings().size(), elapsedMillis(startedNanos));
+    }
+
+    /** Chỉ field tóm tắt đã sanitize (Call-ID dạng pseudonym) - xem {@link AnalysisResultRecord}. */
+    private void archive(ChatResponse response, long latencyMs) {
+        Report report = response.report();
+        resultArchive.record(new AnalysisResultRecord(Instant.now(), response.requestId(), channel,
+                report == null ? "REFUSED" : "OK", response.intent().name(),
+                report == null ? null : pseudonymizer.pseudonym("CALL", report.callId()),
+                report == null ? null : report.verdict(), report == null ? null : report.issueCategory(),
+                report == null ? null : report.qualityFlag(), report == null ? null : report.confidenceLevel(),
+                response.degraded(), response.fallbackReason(), aiProvider.modelName(), response.aiTokens(),
+                latencyMs, response.warnings().size(), null));
     }
 
     private static long elapsedMillis(long startedNanos) {

@@ -83,6 +83,18 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
     }
 
     @Override
+    public List<String> callIds(int limit) throws IOException {
+        var response = client.search(search -> search
+                        .index(name())
+                        .size(0)
+                        .aggregations("calls", agg -> agg.terms(t -> t.field("callId").size(limit))),
+                Void.class);
+        return response.aggregations().get("calls").sterms().buckets().array().stream()
+                .map(bucket -> bucket.key().stringValue())
+                .toList();
+    }
+
+    @Override
     public int index(Path signalingExportFile) throws IOException {
         JsonNode root = objectMapper.readTree(signalingExportFile.toFile());
         String callId = SignalingExportFormat.callId(root, "");
