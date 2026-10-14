@@ -86,11 +86,13 @@ public class SensitiveDataSanitizer {
             Rule.ofIgnoreCase(SensitiveKind.DEVICE_ID, idRule("device[_-]?id"), 1),
             Rule.ofIgnoreCase(SensitiveKind.SESSION_ID, idRule("session[_-]?id|csid"), 1),
             Rule.ofIgnoreCase(SensitiveKind.TURN_SESSION, idRule("turn[_-]?session[_-]?info|turn[_-]?logging[_-]?id"), 1),
+            // "_" được coi là dấu phân cách (không dùng \w ở biên): số điện thoại / IP hay nằm trong tên file
+            // ("0933444555_webrtc.log") hoặc khoá ghép ("ip_113.161.45.67") - security-eval S08 lộ ra lỗ này.
             Rule.of(SensitiveKind.PHONE,
-                    "(?<![\\w.])(?:\\+84|84|0)[\\s.-]?[2-9](?:[\\s.-]?\\d){8}(?![\\w])", 0),
+                    "(?<![A-Za-z0-9.])(?:\\+84|84|0)[\\s.-]?[2-9](?:[\\s.-]?\\d){8}(?![A-Za-z0-9])", 0),
             Rule.of(SensitiveKind.IP_ADDRESS,
                     // Loopback / 0.0.0.0 là địa chỉ bind của chính máy chủ, không phải IP của client.
-                    "(?<![\\w.])(?!127\\.|0\\.0\\.0\\.0)(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET
+                    "(?<![A-Za-z0-9.])(?!127\\.|0\\.0\\.0\\.0)(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET
                             + "(?![\\w.]*\\d)", 0),
             Rule.of(SensitiveKind.IP_ADDRESS, "(?<![\\w:])(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}(?![\\w:])", 0),
             Rule.of(SensitiveKind.IP_ADDRESS,

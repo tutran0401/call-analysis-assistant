@@ -1,0 +1,128 @@
+# Bộ case bảo mật S01-S08 (PROJECT_SPEC.md mục 6.4) cho lệnh `security-eval` (Sprint 3 T6).
+#
+# Mọi giá trị nhạy cảm dưới đây là TỔNG HỢP (không phải dữ liệu thật). Mỗi case chèn chúng vào log của một cuộc
+# gọi mẫu bình thường (hoặc vào câu hỏi / tên file), rồi `security-eval` kiểm chúng không xuất hiện ở:
+#   - request gửi sang AI (Security Leakage input)
+#   - report / response trả về Web UI (output)
+#   - application log, cả dạng text lẫn JSON (output)
+# S07 (AI trả lại giá trị nhạy cảm) được đo bằng lượt chạy thứ hai với AI giả cố tình chèn mọi giá trị vào câu trả lời.
+#
+# Trường `notes` bắt đầu bằng mã S0x để báo cáo gom theo mã.
+cases:
+  - case_id: sec-s01-jwt
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: caller_webrtc.log
+        append:
+          - "[999:001][1] (RTCLogging.mm:34): session token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyLTQyIiwiaWF0IjoxNzAwMDAwMDAwfQ.Zm9vYmFyYmF6cXV4cXV1eHh5enp5"
+      - caller_endcall.log
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S01 - JWT trong log"
+    sensitive_values:
+      - "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyLTQyIiwiaWF0IjoxNzAwMDAwMDAwfQ.Zm9vYmFyYmF6cXV4cXV1eHh5enp5"
+
+  - case_id: sec-s02-authorization
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: callee_webrtc.log
+        append:
+          - "[999:002][1] (RTCLogging.mm:34): HTTP request headers Authorization: Bearer 9f8e7d6c5b4a39281706f5e4d3c2b1a0ffeeddcc"
+          - "[999:003][1] (RTCLogging.mm:34): Authorization: Basic dXNlcjpzM2NyZXQtcGFzc3dvcmQ="
+      - caller_endcall.log
+      - callee_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S02 - Authorization header"
+    sensitive_values:
+      - "9f8e7d6c5b4a39281706f5e4d3c2b1a0ffeeddcc"
+      - "dXNlcjpzM2NyZXQtcGFzc3dvcmQ="
+
+  - case_id: sec-s03-api-key-exception
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: caller_webrtc.log
+        append:
+          - "[999:004][1] (RTCLogging.mm:34): java.lang.IllegalStateException: TURN allocate failed for api_key=sk-proj-Zz9Yy8Xx7Ww6Vv5Uu4Tt3Ss2"
+          - "[999:005][1] (RTCLogging.mm:34): at com.example.Client.call(Client.java:42) caused by apiKey: AKIAEXAMPLEKEY12345678"
+      - caller_endcall.log
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S03 - API key trong exception"
+    sensitive_values:
+      - "sk-proj-Zz9Yy8Xx7Ww6Vv5Uu4Tt3Ss2"
+      - "AKIAEXAMPLEKEY12345678"
+
+  - case_id: sec-s04-phone-email
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: caller_webrtc.log
+        append:
+          - "[999:006][1] (RTCLogging.mm:34): contact phone=0987654321 email=tran.thi.b@example.com"
+          - "[999:007][1] (RTCLogging.mm:34): callee msisdn +84912345678"
+      - caller_endcall.log
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      # Người dùng dán nhầm số điện thoại vào câu hỏi: câu hỏi gốc không bao giờ được gửi sang AI.
+      - "Số 0987654321 gọi bị lỗi, phân tích cuộc gọi này giúp mình"
+    notes: "S04 - Phone / email (trong log và trong câu hỏi)"
+    sensitive_values:
+      - "0987654321"
+      - "tran.thi.b@example.com"
+      - "+84912345678"
+
+  - case_id: sec-s05-ip-device
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: callee_webrtc.log
+        append:
+          - "[999:008][1] (RTCLogging.mm:34): local candidate ip=171.244.10.25 port=50000 deviceId=DEV-8C1F64A2B7E9"
+          - "[999:009][1] (RTCLogging.mm:34): user_id=777123 connected from 14.161.22.33"
+      - caller_endcall.log
+      - callee_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S05 - Client IP / device ID / user ID"
+    sensitive_values:
+      - "171.244.10.25"
+      - "DEV-8C1F64A2B7E9"
+      - "14.161.22.33"
+
+  - case_id: sec-s06-nested-json
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      - from: caller_webrtc.log
+        append:
+          - "[999:010][1] (RTCLogging.mm:34): payload {\"user\":{\"profile\":{\"phone\":\"0911222333\",\"email\":\"nested.user@example.com\"},\"auth\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJuZXN0ZWQiOnRydWV9.bmVzdGVkLXNpZ25hdHVyZQ\"}}}"
+      - caller_endcall.log
+      - callee_endcall.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S06 - Sensitive data trong nested JSON"
+    sensitive_values:
+      - "0911222333"
+      - "nested.user@example.com"
+      - "eyJhbGciOiJIUzI1NiJ9.eyJuZXN0ZWQiOnRydWV9.bmVzdGVkLXNpZ25hdHVyZQ"
+
+  - case_id: sec-s08-error-message
+    call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
+    files:
+      # Tên file chứa số điện thoại và gợi ý sai loại -> tên file đi vào "Giới hạn dữ liệu", ghi chú xử lý và log.
+      - from: caller_endcall.log
+        as: "0933444555_webrtc.log"
+      - callee_endcall.log
+      - caller_webrtc.log
+      - callee_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+    notes: "S08 - Sensitive data trong error message / application log"
+    sensitive_values:
+      - "0933444555"

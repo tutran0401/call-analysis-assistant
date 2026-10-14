@@ -122,6 +122,30 @@ class ChatAnalysisServiceTest {
     }
 
     @Test
+    void s03_apiKeyInAnAiExceptionNeverReachesTheResponse() throws IOException {
+        String key = "sk-proj-Qq1Ww2Ee3Rr4Tt5Yy6Uu7Ii8";
+        AiProvider failing = new AiProvider() {
+            @Override
+            public String modelName() {
+                return "failing";
+            }
+
+            @Override
+            public AiResult analyze(AiPrompt prompt) {
+                throw new com.tutran.callassistant.application.ai.AiProviderException(
+                        com.tutran.callassistant.application.ai.AiProviderException.Kind.UNAVAILABLE,
+                        "401 Unauthorized: invalid api_key=" + key + " (Authorization: Bearer " + key + ")");
+            }
+        };
+
+        ChatResponse response = service(failing).handle(new ChatRequest("Phân tích cuộc gọi này giúp mình", logsOf(DIR)));
+
+        assertThat(response.degraded()).isTrue();
+        assertThat(response.warnings()).anyMatch(w -> w.startsWith("AI:"));
+        assertThat(String.join("\n", response.warnings()) + response.renderedText()).doesNotContain(key);
+    }
+
+    @Test
     void elasticsearchOutageIsExplainedInDataLimitationsNotA500() throws IOException {
         ChatAnalysisService service = service(new FakeAiProvider(), 5000, call -> com.tutran.callassistant.domain.event
                 .NormalizedEvents.unreadable("ES_TIMEOUT: could not query Elasticsearch index x"));

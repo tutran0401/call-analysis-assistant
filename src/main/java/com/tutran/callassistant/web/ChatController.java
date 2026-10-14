@@ -31,6 +31,8 @@ import java.util.Map;
 public class ChatController {
 
     static final int MAX_FILES = 8;
+    /** Câu hỏi phân tích cuộc gọi chỉ vài câu; giới hạn để một request không đẩy văn bản tuỳ ý vào parser / log. */
+    static final int MAX_MESSAGE_CHARS = 2000;
 
     private final ChatAnalysisService service;
     private final AiProvider aiProvider;
@@ -47,6 +49,10 @@ public class ChatController {
                              @RequestParam(value = "files", required = false) List<MultipartFile> files,
                              @RequestParam(value = "callId", required = false) String callId)
             throws IOException {
+        if (message.length() > MAX_MESSAGE_CHARS) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Câu hỏi quá dài (tối đa " + MAX_MESSAGE_CHARS + " ký tự). Hãy mô tả ngắn gọn yêu cầu phân tích.");
+        }
         List<MultipartFile> attached = files == null ? List.of() : files;
         if (attached.size() > MAX_FILES) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

@@ -93,7 +93,7 @@ public class EvaluateCommand implements CliCommand {
         CallDirectoryIndex index = new CallDirectoryIndex(dataRoot);
 
         ChatAnalysisService base = "es".equals(options.get("signaling")) ? service
-                : service.withPipeline(pipeline.withSignalingSources(treeResolver(index)));
+                : service.withPipeline(pipeline.withSignalingSources(treeResolver(index, localFile)));
         RecordingAiProvider recorder = new RecordingAiProvider(aiProvider);
         ChatAnalysisService aiService = base.withAiProvider(recorder);
         ChatAnalysisService ruleService = base.withAiProvider(new NoAiProvider("rule baseline"));
@@ -112,7 +112,8 @@ public class EvaluateCommand implements CliCommand {
         console.line("Đã ghi kết quả vào " + outDir.toAbsolutePath() + " (summary.md, results.json, samples/)");
     }
 
-    private SignalingSourceResolver treeResolver(CallDirectoryIndex index) {
+    /** Signaling đọc từ cây data mẫu (offline) - dùng chung với {@code security-eval}. */
+    static SignalingSourceResolver treeResolver(CallDirectoryIndex index, LocalFileSignalingSource localFile) {
         Map<SignalingSourcePreference, SignalingEventSource> sources = new EnumMap<>(SignalingSourcePreference.class);
         SignalingEventSource tree = new TreeSignalingSource(index, localFile);
         sources.put(SignalingSourcePreference.INDEXED, tree);

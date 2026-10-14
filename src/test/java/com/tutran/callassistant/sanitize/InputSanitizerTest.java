@@ -51,6 +51,15 @@ class InputSanitizerTest {
     }
 
     @Test
+    void s08_phoneAndIpGluedToUnderscoreAreStillMasked() {
+        // Lỗ do security-eval (Sprint 3 T6) tìm ra: tên file "0933444555_webrtc.log" lọt nguyên số điện thoại.
+        String out = clean("Tên file 0933444555_webrtc.log; key ip_113.161.45.67; user_0987654321_x");
+
+        assertThat(out).doesNotContain("0933444555").doesNotContain("113.161.45.67").doesNotContain("0987654321");
+        assertThat(out).contains("[PHONE_REDACTED]_webrtc.log");
+    }
+
+    @Test
     void s05_clientIpAndDeviceIdAreMaskedOrPseudonymized() {
         String out = clean("candidate ip=113.161.45.67 port 5000, ipv6 2001:db8::1, deviceId=ABCD-1234-EFGH");
 

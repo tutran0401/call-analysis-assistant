@@ -102,6 +102,28 @@ class ChatControllerIntegrationTest {
     }
 
     @Test
+    void oversizedQuestionIsAFriendly400() throws Exception {
+        mvc.perform(multipart("/api/chat").param("message", "a".repeat(ChatController.MAX_MESSAGE_CHARS + 1)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("quá dài")));
+    }
+
+    @Test
+    void fileOverTenMegabytesIsRejectedByTheValidatorEvenIfTheContainerLetItThrough() throws Exception {
+        // MockMvc bỏ qua giới hạn multipart của Tomcat (413 được kiểm ở UploadSizeLimitTest trên cổng thật);
+        // lớp thứ hai là File Validator (F04): file vẫn bị loại và được nêu trong "Giới hạn dữ liệu".
+        byte[] big = new byte[10 * 1024 * 1024 + 1];
+
+        mvc.perform(multipart("/api/chat")
+                        .file(new MockMultipartFile("files", "caller_endcall.log", "text/plain", big))
+                        .param("message", "Phân tích")
+                        .param("callId", SampleCalls.SUCCESS_FULL_LOGS))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.report.dataLimitations").value(
+                        org.hamcrest.Matchers.hasItem(org.hamcrest.Matchers.containsString("caller_endcall.log"))));
+    }
+
+    @Test
     void requestIdInTheBodyMatchesTheHeader() throws Exception {
         var result = mvc.perform(multipart("/api/chat").param("message", "Viết giúp mình một email"))
                 .andExpect(status().isOk())
