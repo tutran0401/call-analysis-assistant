@@ -76,7 +76,7 @@ public class RuleVerdictEngine implements VerdictEngine {
         for (VerdictRule rule : rules) {
             Optional<RuleVerdictResult> result = rule.apply(context);
             if (result.isPresent()) {
-                return result.get();
+                return result.get().withCriterion(rule.criterion());
             }
         }
         // Rule cuối chuỗi luôn khớp, nên tới đây là chuỗi rule đã bị cấu hình sai chứ không

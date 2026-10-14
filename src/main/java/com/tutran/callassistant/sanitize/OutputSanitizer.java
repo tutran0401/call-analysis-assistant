@@ -57,7 +57,8 @@ public class OutputSanitizer {
                 mapAll(report.dataLimitations(), clean),
                 clean.apply(report.analysis()),
                 report.degraded(),
-                mapAll(report.confidenceReasons(), clean));
+                mapAll(report.confidenceReasons(), clean),
+                mapAll(report.explanation(), clean));
     }
 
     /** Số giá trị nhạy cảm còn sót trong text; dùng cho metric Security Leakage (output). */

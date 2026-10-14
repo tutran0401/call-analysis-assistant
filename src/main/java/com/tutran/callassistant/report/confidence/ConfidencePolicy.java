@@ -2,6 +2,8 @@ package com.tutran.callassistant.report.confidence;
 
 import com.tutran.callassistant.domain.verdict.RuleVerdictResult;
 
+import java.util.List;
+
 /**
  * Suy ra độ tin cậy của một kết luận (Strategy).
  *
@@ -19,4 +21,7 @@ public interface ConfidencePolicy {
     ConfidenceAssessment assess(RuleVerdictResult verdict);
 
     ConfidenceAssessment withAi(ConfidenceAssessment ruleBased, AiAgreement agreement);
+
+    /** Giới hạn dữ liệu phát hiện sau khi rule đã chạy (tầng upload) - thiếu dữ liệu thì không thể còn HIGH. */
+    ConfidenceAssessment withExtraLimitations(ConfidenceAssessment assessment, List<String> limitations);
 }

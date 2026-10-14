@@ -19,7 +19,8 @@ import java.util.List;
  * (constructor 11 tham số); {@code degraded = true} nghĩa là AI không dùng được và đây là kết quả fallback.
  *
  * <p>{@code confidenceReasons} (v3, Sprint 3 T3) giải thích vì sao độ tin cậy là HIGH/MEDIUM/LOW; do
- * {@code ConfidencePolicy} sinh ra, không bao giờ do AI.
+ * {@code ConfidencePolicy} sinh ra, không bao giờ do AI. {@code explanation} (v3, T2) là phần giải thích
+ * xác định do code viết: chuyện gì xảy ra, vì sao kết luận vậy, evidence nào, điều tra gì tiếp.
  */
 public record Report(
         String callId,
@@ -35,12 +36,14 @@ public record Report(
         List<String> dataLimitations,
         String analysis,
         boolean degraded,
-        List<String> confidenceReasons
+        List<String> confidenceReasons,
+        List<String> explanation
 ) {
 
     public Report {
         analysis = analysis == null ? "" : analysis;
         confidenceReasons = confidenceReasons == null ? List.of() : List.copyOf(confidenceReasons);
+        explanation = explanation == null ? List.of() : List.copyOf(explanation);
     }
 
     /** Report chưa kèm lý do độ tin cậy (dùng ở test và chỗ dựng report từng phần). */
@@ -49,7 +52,7 @@ public record Report(
                   List<EvidenceItem> evidence, List<MetricRow> metrics, List<String> suggestions,
                   List<String> dataLimitations, String analysis, boolean degraded) {
         this(callId, verdict, qualityFlag, issueCategory, alternativeCauses, confidenceLevel, summary,
-                evidence, metrics, suggestions, dataLimitations, analysis, degraded, List.of());
+                evidence, metrics, suggestions, dataLimitations, analysis, degraded, List.of(), List.of());
     }
 
     /** Report rule-based: không có phần phân tích AI, không degraded. */
@@ -58,16 +61,21 @@ public record Report(
                   List<EvidenceItem> evidence, List<MetricRow> metrics, List<String> suggestions,
                   List<String> dataLimitations) {
         this(callId, verdict, qualityFlag, issueCategory, alternativeCauses, confidenceLevel, summary,
-                evidence, metrics, suggestions, dataLimitations, "", false, List.of());
+                evidence, metrics, suggestions, dataLimitations, "", false, List.of(), List.of());
     }
 
     public Report withConfidence(String level, List<String> reasons) {
         return new Report(callId, verdict, qualityFlag, issueCategory, alternativeCauses, level, summary,
-                evidence, metrics, suggestions, dataLimitations, analysis, degraded, reasons);
+                evidence, metrics, suggestions, dataLimitations, analysis, degraded, reasons, explanation);
     }
 
-    public Report withDataLimitations(List<String> limitations) {
+    public Report withExplanation(List<String> lines) {
         return new Report(callId, verdict, qualityFlag, issueCategory, alternativeCauses, confidenceLevel, summary,
-                evidence, metrics, suggestions, limitations, analysis, degraded, confidenceReasons);
+                evidence, metrics, suggestions, dataLimitations, analysis, degraded, confidenceReasons, lines);
+    }
+
+    public Report withDataLimitations(List<String> limitations, List<String> newSuggestions) {
+        return new Report(callId, verdict, qualityFlag, issueCategory, alternativeCauses, confidenceLevel, summary,
+                evidence, metrics, newSuggestions, limitations, analysis, degraded, confidenceReasons, explanation);
     }
 }

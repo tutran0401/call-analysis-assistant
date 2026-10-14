@@ -19,9 +19,18 @@
     "dataLimitations",
     "analysis",
     "degraded",
-    "confidenceReasons"
+    "confidenceReasons",
+    "explanation"
   ],
   "properties": {
+    "explanation": {
+      "type": "array",
+      "description": "Giai thich xac dinh do code viet (Sprint 3 T2): chuyen gi xay ra, vi sao ket luan vay, evidence nao, dieu tra gi tiep.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
     "confidenceReasons": {
       "type": "array",
       "description": "Ly do do tin cay (Sprint 3 T3, muc 7.2), do code tinh - khong bao gio do AI sinh.",

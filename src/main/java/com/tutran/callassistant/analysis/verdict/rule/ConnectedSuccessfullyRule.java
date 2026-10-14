@@ -45,4 +45,9 @@ public class ConnectedSuccessfullyRule implements VerdictRule {
                 "Cuộc gọi thiết lập được và kết thúc bình thường, nhưng chất lượng bị giảm ("
                         + category + ")."));
     }
+
+    @Override
+    public String criterion() {
+        return "Cuộc gọi đạt CONFIRMED và kết thúc bằng BYE (SUCCESS); cờ chất lượng chỉ bật khi chỉ số End Call vượt ngưỡng trong taxonomy.";
+    }
 }

@@ -114,7 +114,7 @@ public class ChatAnalysisService {
         try (ValidatedUpload upload = uploadValidator.validate(request.files(), requestedCallId)) {
             CallAnalysisDetail detail = pipeline.analyzeDetailed(
                     new CallReference(upload.callId(), upload.directory()), SignalingSourcePreference.INDEXED);
-            Report rule = withLimitations(detail.report(), upload.limitations());
+            Report rule = composer.withUploadLimitations(detail.report(), upload.limitations());
 
             // Ghi chú xử lý của pipeline có thể nhắc tới thư mục tạm của lượt upload (có cả tên user của máy chủ).
             String tempPath = upload.directory().toString();
@@ -190,12 +190,6 @@ public class ChatAnalysisService {
         log.info("ai_call request_id={} call_id={} model={} latency_ms={} result_status={} token_usage={} "
                         + "fallback_reason={}", requestId, callRef, model, (System.nanoTime() - startedNanos) / 1_000_000,
                 status, tokens, fallbackReason);
-    }
-
-    private static Report withLimitations(Report report, List<String> extra) {
-        List<String> merged = new ArrayList<>(report.dataLimitations());
-        extra.stream().filter(item -> !merged.contains(item)).forEach(merged::add);
-        return report.withDataLimitations(merged);
     }
 
     private record AiAttempt(Report report, String fallbackReason, Integer tokens) {

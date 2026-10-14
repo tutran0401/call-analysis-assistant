@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 @Component
 public class EvidenceBasedConfidencePolicy implements ConfidencePolicy {
 
+    private static final String STRONG_REASON_PREFIX = "Evidence mạnh từ nguồn chính (";
+
     private static final Map<IssueCategory, Set<EventSource>> PRIMARY_SOURCES = Map.of(
             IssueCategory.NETWORK_PACKET_LOSS, EnumSet.of(EventSource.END_CALL),
             IssueCategory.NETWORK_DELAY_JITTER, EnumSet.of(EventSource.END_CALL),
@@ -76,7 +78,7 @@ public class EvidenceBasedConfidencePolicy implements ConfidencePolicy {
         if (!medium.isEmpty()) {
             return new ConfidenceAssessment(ConfidenceLevel.MEDIUM, reasons);
         }
-        reasons.add("Evidence mạnh từ nguồn chính (" + primarySourceText(verdict) + ") và đủ file log.");
+        reasons.add(STRONG_REASON_PREFIX + primarySourceText(verdict) + ") và đủ file log.");
         return new ConfidenceAssessment(ConfidenceLevel.HIGH, reasons);
     }
 
@@ -100,6 +102,19 @@ public class EvidenceBasedConfidencePolicy implements ConfidencePolicy {
                         ? ConfidenceLevel.MEDIUM : ruleBased.level(), reasons);
             }
         };
+    }
+
+    @Override
+    public ConfidenceAssessment withExtraLimitations(ConfidenceAssessment assessment, List<String> limitations) {
+        if (limitations.isEmpty()) {
+            return assessment;
+        }
+        List<String> reasons = new ArrayList<>(assessment.reasons());
+        // Lý do "evidence mạnh ... và đủ file log" không còn đúng nữa.
+        reasons.removeIf(r -> r.startsWith(STRONG_REASON_PREFIX));
+        reasons.add("Thiếu một phần dữ liệu: " + String.join("; ", limitations) + ".");
+        ConfidenceLevel level = assessment.level() == ConfidenceLevel.HIGH ? ConfidenceLevel.MEDIUM : assessment.level();
+        return new ConfidenceAssessment(level, reasons);
     }
 
     EvidenceStrength strengthOf(RuleVerdictResult verdict) {

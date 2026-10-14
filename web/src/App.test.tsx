@@ -23,6 +23,7 @@ const report: Report = {
   analysis: 'Packet loss 9.8% (EV001).',
   degraded: false,
   confidenceReasons: ['Thiếu một phần dữ liệu: Thiếu callee_webrtc.log.'],
+  explanation: ['Vì sao kết luận SUCCESS: cuộc gọi đạt CONFIRMED và kết thúc bằng BYE.'],
 }
 
 const response = (overrides: Partial<ChatResponse> = {}): ChatResponse => ({
@@ -88,6 +89,13 @@ describe('ReportView', () => {
 
     expect(screen.queryByText(/Phân tích:/)).toBeNull()
     expect(screen.getByText('Không')).toBeInTheDocument()
+  })
+
+  it('shows the deterministic explanation under the evidence', () => {
+    render(<ReportView report={report} />)
+
+    expect(screen.getByText('Căn cứ kết luận:')).toBeInTheDocument()
+    expect(screen.getByText(/Vì sao kết luận SUCCESS/)).toBeInTheDocument()
   })
 
   it('lists why the confidence level was chosen', () => {

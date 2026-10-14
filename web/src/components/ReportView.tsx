@@ -83,6 +83,16 @@ export function ReportView({ report }: { report: Report }) {
             ))}
           </ol>
         )}
+        {report.explanation?.length > 0 && (
+          <div className="explanation">
+            <strong>Căn cứ kết luận:</strong>
+            <ul>
+              {report.explanation.map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         {report.analysis && (
           <p className="analysis">
             <strong>Phân tích: </strong>

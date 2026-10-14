@@ -38,4 +38,9 @@ public class MissingClientLogsRule implements VerdictRule {
                 "Không đủ evidence để kết luận: không có log phía client (end-call hoặc WebRTC) "
                         + "của bên nào."));
     }
+
+    @Override
+    public String criterion() {
+        return "Không có log phía client (end-call hoặc WebRTC) của bên nào, nên không kiểm tra được media và chất lượng; thiếu dữ liệu thì phải trả UNKNOWN.";
+    }
 }

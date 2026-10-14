@@ -30,6 +30,7 @@ export interface Report {
   analysis: string
   degraded: boolean
   confidenceReasons: string[]
+  explanation: string[]
 }
 
 export interface ChatResponse {

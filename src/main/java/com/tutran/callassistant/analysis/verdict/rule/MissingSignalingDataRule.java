@@ -24,4 +24,9 @@ public class MissingSignalingDataRule implements VerdictRule {
         return Optional.of(context.unknown(
                 "Không đủ evidence để kết luận: không tìm thấy dữ liệu signaling nào cho cuộc gọi này."));
     }
+
+    @Override
+    public String criterion() {
+        return "Không có dữ liệu signaling nào cho Call-ID này, nên không biết cuộc gọi có đạt CONFIRMED hay không; thiếu dữ liệu thì phải trả UNKNOWN (mục 4.1).";
+    }
 }

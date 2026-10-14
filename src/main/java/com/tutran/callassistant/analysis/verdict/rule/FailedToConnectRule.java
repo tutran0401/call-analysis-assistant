@@ -47,4 +47,9 @@ public class FailedToConnectRule implements VerdictRule {
                         + "tầng signaling, và cũng không có evidence nào về lỗi ICE, nên quy về lỗi tầng "
                         + "signaling."));
     }
+
+    @Override
+    public String criterion() {
+        return "Signaling không bao giờ ghi nhận OK_ACK_OK (CONFIRMED), tức là cuộc gọi không thiết lập được (FAIL); nguyên nhân lấy từ evidence ICE/TURN nếu có, không có thì quy về tầng signaling.";
+    }
 }

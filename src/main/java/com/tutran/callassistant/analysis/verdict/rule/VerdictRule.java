@@ -20,4 +20,12 @@ import java.util.Optional;
 public interface VerdictRule {
 
     Optional<RuleVerdictResult> apply(VerdictContext context);
+
+    /**
+     * Tiêu chí xác định mà rule này kiểm tra, viết cho người đọc report ("vì sao kết luận vậy" - Sprint 3 T2).
+     * Được gắn vào kết luận khi rule khớp.
+     */
+    default String criterion() {
+        return "";
+    }
 }

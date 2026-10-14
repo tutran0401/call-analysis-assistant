@@ -67,4 +67,9 @@ public class ExplicitTerminationRule implements VerdictRule {
                         + " trước khi cuộc gọi kịp được xác nhận (không quan sát được OK_ACK_OK), "
                         + "và log client không chỉ ra nguyên nhân tầng media nào."));
     }
+
+    @Override
+    public String criterion() {
+        return "Signaling ghi nhận lệnh chấm dứt tường minh (FAIL_HARD/CANCEL) trước khi cuộc gọi đạt CONFIRMED, tức là cuộc gọi không thiết lập được (FAIL).";
+    }
 }

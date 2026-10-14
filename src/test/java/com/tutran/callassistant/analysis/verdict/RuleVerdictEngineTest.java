@@ -337,6 +337,8 @@ class RuleVerdictEngineTest {
         RuleVerdictResult result = evaluate(emptyTimeline);
 
         assertThat(result.verdict()).isEqualTo(Verdict.UNKNOWN);
+        // Tiêu chí của rule đã khớp đi kèm kết luận, để report giải thích được "vì sao" (Sprint 3 T2).
+        assertThat(result.criterion()).contains("signaling");
         assertThat(result.dataLimitations()).anyMatch(l -> l.contains("Không có dữ liệu signaling"));
     }
 

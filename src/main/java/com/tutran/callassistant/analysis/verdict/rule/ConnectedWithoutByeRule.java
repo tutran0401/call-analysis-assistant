@@ -31,4 +31,9 @@ public class ConnectedWithoutByeRule implements VerdictRule {
                 "Không đủ evidence để kết luận: cuộc gọi đã kết nối nhưng không quan sát được lúc "
                         + "kết thúc."));
     }
+
+    @Override
+    public String criterion() {
+        return "Cuộc gọi đã đạt CONFIRMED nhưng không quan sát được BYE, nên không phân biệt được kết thúc bình thường hay bị ngắt (UNKNOWN).";
+    }
 }

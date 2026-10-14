@@ -61,4 +61,9 @@ public class MediaDroppedAfterConnectRule implements VerdictRule {
                 "Cuộc gọi đã kết nối và có media nhưng bị ngắt bất thường giữa chừng: " + cause
                         + " không nhận được tiếng trong " + drop.silentSeconds() + " s cuối trước khi cúp máy."));
     }
+
+    @Override
+    public String criterion() {
+        return "Cuộc gọi đã có media nhưng một bên báo mất mạng (PARTNER_LOST_NETWORK) hoặc ICE DISCONNECTED trước khi chính bên đó cúp máy, và không nhận được audio cho tới lúc kết thúc - bị ngắt bất thường (FAIL, mục 4.1).";
+    }
 }

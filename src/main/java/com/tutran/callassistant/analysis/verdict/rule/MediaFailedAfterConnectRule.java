@@ -56,4 +56,9 @@ public class MediaFailedAfterConnectRule implements VerdictRule {
                         + " không kết nối được, nên bên đó chưa bao giờ có media - cuộc gọi thực tế không "
                         + "hoạt động dù luồng signaling nhìn bình thường."));
     }
+
+    @Override
+    public String criterion() {
+        return "Signaling đã CONFIRMED nhưng ICE của một bên chuyển sang failed, nên bên đó không bao giờ có media - cuộc gọi thực tế không dùng được (FAIL).";
+    }
 }

@@ -35,6 +35,47 @@ class AnalysisReportComposerTest {
     }
 
     @Test
+    void duplicateAiSuggestionsAreDropped() {
+        AiAnalysis echo = new AiAnalysis("SUCCESS", true, "NETWORK_PACKET_LOSS", "HIGH", "x", List.of("EV001"), "y",
+                List.of("Kiểm tra chất lượng mạng phía callee.", " "));
+        GuardDecision decision = new GuardDecision(GuardDecision.Outcome.ACCEPT, echo, List.of(), List.of(), null);
+
+        assertThat(composer.fromAi(rule, decision).suggestions()).containsExactly("Kiểm tra chất lượng mạng phía callee.");
+    }
+
+    @Test
+    void conflictKeepsRuleExplanationAndSaysWhatTheAiProposed() {
+        Report explained = rule.withExplanation(List.of("Chuyện gì đã xảy ra: x"));
+        GuardDecision decision = new GuardDecision(GuardDecision.Outcome.ACCEPT_WITH_FLAGS, ai("FAIL"), List.of(),
+                List.of("G04: AI lệch rule"), "UNKNOWN");
+
+        Report report = composer.fromAi(explained, decision);
+
+        assertThat(report.analysis()).isEmpty();
+        assertThat(report.explanation()).hasSize(2).last().asString().contains("AI đề xuất FAIL");
+    }
+
+    @Test
+    void degradedReportKeepsTheDeterministicExplanation() {
+        Report explained = rule.withExplanation(List.of("Vì sao kết luận SUCCESS: y"));
+
+        assertThat(composer.degraded(explained).explanation()).containsExactly("Vì sao kết luận SUCCESS: y");
+    }
+
+    @Test
+    void uploadLimitationsAddDataSuggestionsAndLowerConfidence() {
+        Report high = rule.withConfidence("HIGH", List.of("Evidence mạnh từ nguồn chính (SIGNALING) và đủ file log."));
+
+        Report report = composer.withUploadLimitations(high, List.of("Thiếu caller_webrtc.log"));
+
+        assertThat(report.dataLimitations()).contains("Thiếu caller_webrtc.log");
+        assertThat(report.suggestions()).last().asString().startsWith("Bổ sung caller_webrtc.log");
+        assertThat(report.confidenceLevel()).isEqualTo("MEDIUM");
+        assertThat(report.confidenceReasons()).noneMatch(r -> r.startsWith("Evidence mạnh"));
+        assertThat(composer.withUploadLimitations(high, List.of())).isSameAs(high);
+    }
+
+    @Test
     void degradedReportIsNeverHighConfidenceAndSaysWhy() {
         Report high = rule.withConfidence("HIGH", List.of("Evidence mạnh"));
 
@@ -64,7 +105,8 @@ class AnalysisReportComposerTest {
         assertThat(report.degraded()).isFalse();
         assertThat(report.summary()).isEqualTo("Tóm tắt AI");
         assertThat(report.analysis()).isEqualTo("Phân tích AI");
-        assertThat(report.suggestions()).containsExactly("Đề xuất AI");
+        // Bộ đề xuất chuẩn đứng trước, đề xuất AI nối thêm sau.
+        assertThat(report.suggestions()).containsExactly("Kiểm tra chất lượng mạng phía callee.", "Đề xuất AI");
         assertThat(report.verdict()).isEqualTo("SUCCESS");
         assertThat(report.issueCategory()).isEqualTo("NETWORK_PACKET_LOSS");
         assertThat(report.confidenceLevel()).isEqualTo("MEDIUM");

@@ -12,6 +12,7 @@ import com.tutran.callassistant.report.confidence.ConfidencePolicy;
 import com.tutran.callassistant.report.confidence.EvidenceBasedConfidencePolicy;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,21 +30,25 @@ public class RuleBasedReportAssembler implements ReportAssembler {
     private final MetricRowCatalog metricRowCatalog;
     private final SuggestionCatalog suggestionCatalog;
     private final IssueCategoryRegistry issueCategories;
+    private final VerdictExplainer explainer;
 
     public RuleBasedReportAssembler(ConfidencePolicy confidencePolicy,
                                     MetricRowCatalog metricRowCatalog,
                                     SuggestionCatalog suggestionCatalog,
-                                    IssueCategoryRegistry issueCategories) {
+                                    IssueCategoryRegistry issueCategories,
+                                    VerdictExplainer explainer) {
         this.confidencePolicy = confidencePolicy;
         this.metricRowCatalog = metricRowCatalog;
         this.suggestionCatalog = suggestionCatalog;
         this.issueCategories = issueCategories;
+        this.explainer = explainer;
     }
 
     /** Bộ mặc định, dùng cho test và chỗ nào không có Spring container. */
     public static RuleBasedReportAssembler withDefaults() {
         return new RuleBasedReportAssembler(new EvidenceBasedConfidencePolicy(),
-                new MetricRowCatalog(), new SuggestionCatalog(), IssueCategoryRegistry.withDefaults());
+                new MetricRowCatalog(), new SuggestionCatalog(), IssueCategoryRegistry.withDefaults(),
+                new VerdictExplainer());
     }
 
     @Override
@@ -53,6 +58,10 @@ public class RuleBasedReportAssembler implements ReportAssembler {
         // kèm khi thật sự có vấn đề, tránh bịa việc cho một cuộc gọi hoàn toàn bình thường.
         boolean reportIssue = verdict.hasIssueToReport();
         ConfidenceAssessment confidence = confidencePolicy.assess(verdict);
+        List<String> suggestions = new ArrayList<>(reportIssue
+                ? suggestionCatalog.suggestionsFor(verdict.issueCategory()) : List.of());
+        suggestionCatalog.forDataLimitations(verdict.dataLimitations()).stream()
+                .filter(s -> !suggestions.contains(s)).forEach(suggestions::add);
         return new Report(
                 callId,
                 verdict.verdict().name(),
@@ -63,11 +72,12 @@ public class RuleBasedReportAssembler implements ReportAssembler {
                 verdict.summary(),
                 verdict.evidence().stream().map(this::toEvidenceItem).toList(),
                 metricRowCatalog.rowsFor(metrics),
-                reportIssue ? suggestionCatalog.suggestionsFor(verdict.issueCategory()) : List.of(),
+                suggestions,
                 verdict.dataLimitations(),
                 "",
                 false,
-                confidence.reasons()
+                confidence.reasons(),
+                explainer.explain(verdict, suggestions)
         );
     }
 
