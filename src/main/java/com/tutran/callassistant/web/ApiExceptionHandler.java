@@ -1,8 +1,10 @@
 package com.tutran.callassistant.web;
 
+import com.tutran.callassistant.application.RequestIds;
 import com.tutran.callassistant.sanitize.OutputSanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,12 +45,13 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> unexpected(Exception e) {
-        log.error("Unhandled error while serving request", e);
+        log.error("error kind={} message={}", e.getClass().getSimpleName(), e.getMessage(), e);
         return respond(HttpStatus.INTERNAL_SERVER_ERROR,
                 "Hệ thống gặp sự cố khi phân tích. Vui lòng thử lại; nếu vẫn lỗi, kiểm tra lại file log đính kèm.");
     }
 
     private ResponseEntity<ApiError> respond(HttpStatus status, String message) {
-        return ResponseEntity.status(status).body(new ApiError(sanitizer.sanitize(message)));
+        return ResponseEntity.status(status)
+                .body(new ApiError(sanitizer.sanitize(message), MDC.get(RequestIds.MDC_KEY)));
     }
 }

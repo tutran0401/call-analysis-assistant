@@ -15,6 +15,7 @@ import java.nio.file.Path;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,7 +95,21 @@ class ChatControllerIntegrationTest {
 
         mvc.perform(request.param("message", "Phân tích"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("tối đa")));
+                .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("tối đa")))
+                // Lỗi cũng mang mã tương quan để đối chiếu log (Sprint 3 T5).
+                .andExpect(jsonPath("$.requestId").value(org.hamcrest.Matchers.startsWith("req-")))
+                .andExpect(header().exists(RequestCorrelationFilter.HEADER));
+    }
+
+    @Test
+    void requestIdInTheBodyMatchesTheHeader() throws Exception {
+        var result = mvc.perform(multipart("/api/chat").param("message", "Viết giúp mình một email"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String header = result.getResponse().getHeader(RequestCorrelationFilter.HEADER);
+        org.assertj.core.api.Assertions.assertThat(result.getResponse().getContentAsString())
+                .contains("\"requestId\":\"" + header + "\"");
     }
 
     @Test

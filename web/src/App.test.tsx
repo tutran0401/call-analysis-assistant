@@ -176,17 +176,23 @@ describe('App', () => {
     await userEvent.type(screen.getByLabelText('Câu hỏi'), 'Phân tích')
     await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
 
-    expect(await screen.findByText(/AI_TIMEOUT/)).toBeInTheDocument()
+    expect(await screen.findByText(/AI phản hồi quá lâu/)).toBeInTheDocument()
     expect(screen.getByText(/kết quả rule-based/)).toBeInTheDocument()
+    expect(screen.getByText(/\[AI_TIMEOUT\]/)).toBeInTheDocument()
   })
 
   it('shows the friendly server error instead of crashing', async () => {
-    mockFetch(() => json({ error: 'File đính kèm vượt giới hạn kích thước cho phép (10 MB mỗi file).' }, 413))
+    mockFetch(() =>
+      json({ error: 'File đính kèm vượt giới hạn kích thước cho phép (10 MB mỗi file).', requestId: 'req-feedbeef' }, 413),
+    )
     render(<App />)
     await userEvent.type(screen.getByLabelText('Câu hỏi'), 'Phân tích')
     await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('vượt giới hạn kích thước')
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent('vượt giới hạn kích thước')
+    // Mã yêu cầu để đối chiếu log server (Sprint 3 T5).
+    expect(alert).toHaveTextContent('req-feedbeef')
   })
 
   it('explains when the backend cannot be reached', async () => {
@@ -212,5 +218,24 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Bỏ a.log' }))
 
     expect(screen.queryByText(/a.log/)).toBeNull()
+  })
+})
+
+describe('sendChat', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('gives up with a friendly message when the server does not answer in time', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        (_url: string, init: RequestInit) =>
+          new Promise((_resolve, reject) =>
+            init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))),
+          ),
+      ),
+    )
+    const { sendChat } = await import('./api')
+
+    await expect(sendChat('Phân tích', [], '', 20)).rejects.toThrow(/không phản hồi sau/)
   })
 })

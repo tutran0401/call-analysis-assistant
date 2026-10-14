@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -19,11 +21,18 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class TimeLimitedAiCaller {
 
-    private final ExecutorService executor = Executors.newCachedThreadPool(runnable -> {
-        Thread thread = new Thread(runnable, "ai-call");
-        thread.setDaemon(true);
-        return thread;
-    });
+    /**
+     * Số lời gọi AI chạy đồng thời tối đa. Pool không giới hạn (như Sprint 2) để một provider treo kéo theo
+     * số thread tăng mãi; vượt mức này thì request mới fallback ngay về rule thay vì xếp hàng chờ.
+     */
+    static final int MAX_CONCURRENT_CALLS = 16;
+
+    private final ExecutorService executor = new ThreadPoolExecutor(0, MAX_CONCURRENT_CALLS, 60, TimeUnit.SECONDS,
+            new SynchronousQueue<>(), runnable -> {
+                Thread thread = new Thread(runnable, "ai-call");
+                thread.setDaemon(true);
+                return thread;
+            });
     private final long timeoutMillis;
 
     public TimeLimitedAiCaller(@Value("${call-analysis.ai.timeout-ms:30000}") long timeoutMillis) {
@@ -31,7 +40,13 @@ public class TimeLimitedAiCaller {
     }
 
     public AiResult call(AiProvider provider, AiPrompt prompt) {
-        CompletableFuture<AiResult> future = CompletableFuture.supplyAsync(() -> provider.analyze(prompt), executor);
+        CompletableFuture<AiResult> future;
+        try {
+            future = CompletableFuture.supplyAsync(() -> provider.analyze(prompt), executor);
+        } catch (RejectedExecutionException e) {
+            throw new AiProviderException(AiProviderException.Kind.UNAVAILABLE,
+                    "Đang có quá nhiều lời gọi AI đồng thời", e);
+        }
         try {
             return future.get(timeoutMillis, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {

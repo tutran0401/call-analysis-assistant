@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ApiError, getHealth, sendChat } from './api'
 import { FilePicker } from './components/FilePicker'
 import { ReportView } from './components/ReportView'
+import { fallbackMessage } from './messages'
 import type { ChatResponse, Health } from './types'
 
 const EXAMPLE = 'Phân tích giúp mình cuộc gọi này, vì sao bên nhận không nghe được?'
@@ -11,7 +12,7 @@ export default function App() {
   const [callId, setCallId] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<{ message: string; requestId: string | null } | null>(null)
   const [result, setResult] = useState<ChatResponse | null>(null)
   const [health, setHealth] = useState<Health | null>(null)
   const [copied, setCopied] = useState(false)
@@ -30,7 +31,11 @@ export default function App() {
       setResult(await sendChat(message, files, callId))
     } catch (e) {
       setResult(null)
-      setError(e instanceof ApiError ? e.message : 'Có lỗi không xác định. Vui lòng thử lại.')
+      setError(
+        e instanceof ApiError
+          ? { message: e.message, requestId: e.requestId }
+          : { message: 'Có lỗi không xác định. Vui lòng thử lại.', requestId: null },
+      )
     } finally {
       setLoading(false)
     }
@@ -100,7 +105,8 @@ export default function App() {
 
       {error && (
         <div className="banner banner-error" role="alert">
-          {error}
+          {error.message}
+          {error.requestId && <span className="muted mono"> (mã yêu cầu: {error.requestId})</span>}
         </div>
       )}
 
@@ -114,7 +120,8 @@ export default function App() {
         <>
           {result.degraded && (
             <div className="banner banner-warn" role="status">
-              Phân tích AI không khả dụng ({result.fallbackReason ?? 'không rõ lý do'}) — đây là kết quả rule-based.
+              {fallbackMessage(result.fallbackReason)} — đây là kết quả rule-based.
+              {result.fallbackReason && <span className="muted mono"> [{result.fallbackReason}]</span>}
             </div>
           )}
           <div className="toolbar">

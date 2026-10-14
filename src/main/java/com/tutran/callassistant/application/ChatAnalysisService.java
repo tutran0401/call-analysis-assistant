@@ -10,10 +10,12 @@ import com.tutran.callassistant.application.ai.TimeLimitedAiCaller;
 import com.tutran.callassistant.application.guardrail.AiResponseGuard;
 import com.tutran.callassistant.application.guardrail.GuardDecision;
 import com.tutran.callassistant.application.port.out.AiProvider;
+import com.tutran.callassistant.application.port.out.SignalingFetchError;
 import com.tutran.callassistant.application.port.out.UploadValidator;
 import com.tutran.callassistant.application.request.ParsedRequest;
 import com.tutran.callassistant.application.request.RequestParser;
 import com.tutran.callassistant.application.validation.ValidatedUpload;
+import com.tutran.callassistant.domain.event.EventSource;
 import com.tutran.callassistant.domain.report.Report;
 import com.tutran.callassistant.domain.timeline.CallTimeline;
 import com.tutran.callassistant.report.ReportGuard;
@@ -28,8 +30,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Điều phối một lượt hỏi trên Web UI - kiến trúc mục tiêu mục 3.1, từ trên xuống:
@@ -102,7 +104,7 @@ public class ChatAnalysisService {
     }
 
     public ChatResponse handle(ChatRequest request) {
-        String requestId = "req-" + UUID.randomUUID().toString().substring(0, 8);
+        String requestId = RequestIds.current();
         ParsedRequest parsed = requestParser.parse(request.message(), !request.files().isEmpty());
 
         if (parsed.isOutOfScope()) {
@@ -114,7 +116,8 @@ public class ChatAnalysisService {
         try (ValidatedUpload upload = uploadValidator.validate(request.files(), requestedCallId)) {
             CallAnalysisDetail detail = pipeline.analyzeDetailed(
                     new CallReference(upload.callId(), upload.directory()), SignalingSourcePreference.INDEXED);
-            Report rule = composer.withUploadLimitations(detail.report(), upload.limitations());
+            Report rule = composer.withUploadLimitations(detail.report(),
+                    withSignalingFetchError(upload.limitations(), detail));
 
             // Ghi chú xử lý của pipeline có thể nhắc tới thư mục tạm của lượt upload (có cả tên user của máy chủ).
             String tempPath = upload.directory().toString();
@@ -190,6 +193,24 @@ public class ChatAnalysisService {
         log.info("ai_call request_id={} call_id={} model={} latency_ms={} result_status={} token_usage={} "
                         + "fallback_reason={}", requestId, callRef, model, (System.nanoTime() - startedNanos) / 1_000_000,
                 status, tokens, fallbackReason);
+    }
+
+    /**
+     * Không lấy được signaling vì Elasticsearch lỗi (và nguồn dự phòng cũng không có): nêu rõ lý do trong
+     * "Giới hạn dữ liệu", thay vì chỉ một câu "không có signaling" khiến người dùng tưởng Call-ID sai.
+     */
+    private static List<String> withSignalingFetchError(List<String> limitations, CallAnalysisDetail detail) {
+        if (!detail.timeline().forSource(EventSource.SIGNALING).isEmpty()) {
+            return limitations;
+        }
+        List<String> merged = new ArrayList<>(limitations);
+        detail.processingWarnings().stream()
+                .map(SignalingFetchError::fromWarning)
+                .flatMap(Optional::stream)
+                .map(SignalingFetchError::limitation)
+                .distinct()
+                .forEach(merged::add);
+        return merged;
     }
 
     private record AiAttempt(Report report, String fallbackReason, Integer tokens) {

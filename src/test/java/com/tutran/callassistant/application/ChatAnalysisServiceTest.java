@@ -94,6 +94,18 @@ class ChatAnalysisServiceTest {
     }
 
     @Test
+    void elasticsearchOutageIsExplainedInDataLimitationsNotA500() throws IOException {
+        ChatAnalysisService service = service(new FakeAiProvider(), 5000, call -> com.tutran.callassistant.domain.event
+                .NormalizedEvents.unreadable("ES_TIMEOUT: could not query Elasticsearch index x"));
+
+        ChatResponse response = service.handle(new ChatRequest("Phân tích cuộc gọi này giúp mình", logsOf(DIR)));
+
+        assertThat(response.report().verdict()).isEqualTo("UNKNOWN");
+        assertThat(response.report().dataLimitations())
+                .contains(com.tutran.callassistant.application.port.out.SignalingFetchError.ES_TIMEOUT.limitation());
+    }
+
+    @Test
     void tokenUsageOfTheAnalysisCallIsReportedAndAbsentWithoutAi() throws IOException {
         AiProvider counting = new AiProvider() {
             @Override

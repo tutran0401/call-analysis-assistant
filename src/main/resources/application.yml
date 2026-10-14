@@ -14,6 +14,9 @@ elasticsearch:
   host: localhost
   port: 9200
   signaling-index: call-signaling-events
+  # Timeout cho mọi lời gọi ES (Sprint 3 T4)
+  connect-timeout-ms: 2000
+  socket-timeout-ms: 5000
 
 call-analysis:
   ai:

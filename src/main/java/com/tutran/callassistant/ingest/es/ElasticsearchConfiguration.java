@@ -9,7 +9,7 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/** Khởi tạo client Elasticsearch single-node local từ {@link ElasticsearchProperties}. */
+/** Khởi tạo client Elasticsearch single-node local từ {@link ElasticsearchProperties}, có timeout cho mọi lời gọi. */
 @Configuration
 public class ElasticsearchConfiguration {
 
@@ -17,6 +17,10 @@ public class ElasticsearchConfiguration {
     public ElasticsearchClient elasticsearchClient(ElasticsearchProperties properties) {
         RestClient restClient = RestClient
                 .builder(new HttpHost(properties.host(), properties.port(), "http"))
+                .setRequestConfigCallback(config -> config
+                        .setConnectTimeout(properties.connectTimeoutMs())
+                        .setConnectionRequestTimeout(properties.connectTimeoutMs())
+                        .setSocketTimeout(properties.socketTimeoutMs()))
                 .build();
         ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);
