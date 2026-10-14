@@ -91,6 +91,21 @@ class AiContextBuilderTest {
     }
 
     @Test
+    void taxonomyIsSentInAFixedOrderWithItsRequiredEvidence() {
+        JsonNode context = builder.build(new ParsedRequest(Intent.ANALYZE_CALL, Set.of(), null), timelineOf(1),
+                TestReports.successWithPacketLoss());
+
+        List<String> order = new ArrayList<>();
+        context.path("taxonomy").forEach(t -> order.add(t.path("category").asText()));
+        // Thứ tự enum, không phụ thuộc thứ tự lặp của Map (đổi giữa các lần khởi động JVM).
+        List<String> expected = java.util.Arrays.stream(com.tutran.callassistant.domain.verdict.IssueCategory.values())
+                .map(Enum::name).filter(order::contains).toList();
+        assertThat(order).isEqualTo(expected).isNotEmpty();
+        assertThat(context.path("taxonomy")).filteredOn(t -> !"UNKNOWN".equals(t.path("category").asText()))
+                .allMatch(t -> t.path("requiredEvidence").size() > 0);
+    }
+
+    @Test
     void ruleBaselineCanBeLeftOutToMeasureTheAiOnItsOwn() {
         AiContextBuilder blind = new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "structured", false);
         com.tutran.callassistant.domain.report.Report rule = TestReports.successWithPacketLoss();

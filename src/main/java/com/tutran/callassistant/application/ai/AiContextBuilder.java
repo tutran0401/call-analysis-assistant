@@ -8,11 +8,14 @@ import com.tutran.callassistant.application.request.ParsedRequest;
 import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.report.Report;
 import com.tutran.callassistant.domain.timeline.CallTimeline;
+import com.tutran.callassistant.domain.verdict.IssueCategory;
 import com.tutran.callassistant.domain.verdict.IssueCategoryDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -138,13 +141,24 @@ public class AiContextBuilder {
         }
     }
 
+    /**
+     * Thứ tự cố định theo enum (Sprint 3 T1): {@code taxonomy.all()} là {@code Map.of}, thứ tự lặp đổi giữa các lần
+     * khởi động JVM - tức là cùng một cuộc gọi có thể nhận prompt khác nhau, làm giảm Consistency.
+     */
+    private List<IssueCategoryDefinition> orderedTaxonomy() {
+        return Arrays.stream(IssueCategory.values()).map(taxonomy::definitionOf).filter(Objects::nonNull).toList();
+    }
+
     private void addTaxonomy(ArrayNode out) {
-        for (IssueCategoryDefinition definition : taxonomy.all().values()) {
+        for (IssueCategoryDefinition definition : orderedTaxonomy()) {
             ObjectNode node = out.addObject();
             node.put("category", definition.category().name());
             node.put("definition", definition.definition());
             ArrayNode symptoms = node.putArray("symptoms");
             definition.symptoms().forEach(symptoms::add);
+            // Nguồn evidence bắt buộc (không chứa ngưỡng số, nên không gợi AI nhắc số liệu ngoài bộ chỉ số - G05).
+            ArrayNode required = node.putArray("requiredEvidence");
+            definition.requiredEvidence().forEach(required::add);
             if (definition.knownAmbiguity() != null) {
                 node.put("knownAmbiguity", definition.knownAmbiguity());
             }
@@ -181,7 +195,8 @@ public class AiContextBuilder {
 
         line(text, "");
         line(text, "Các nhóm vấn đề:");
-        taxonomy.all().values().forEach(d -> line(text, "- " + d.category().name() + ": " + d.definition()));
+        orderedTaxonomy().forEach(d -> line(text, "- " + d.category().name() + ": " + d.definition()
+                + " Evidence cần có: " + String.join("; ", d.requiredEvidence()) + "."));
         return text.toString();
     }
 
