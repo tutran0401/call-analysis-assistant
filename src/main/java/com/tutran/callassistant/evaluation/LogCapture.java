@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.tutran.callassistant.sanitize.SensitiveDataSanitizer;
+import com.tutran.callassistant.sanitize.logging.SanitizingJsonLayout;
 import com.tutran.callassistant.sanitize.logging.SanitizingMessageConverter;
 import com.tutran.callassistant.sanitize.logging.SanitizingThrowableConverter;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,13 @@ final class LogCapture implements AutoCloseable {
         List<String> lines = new ArrayList<>();
         SanitizingMessageConverter message = new SanitizingMessageConverter();
         SanitizingThrowableConverter throwable = new SanitizingThrowableConverter();
+        // Log JSON (profile jsonlog, Sprint 3 T5) cũng phải sạch: kiểm luôn đúng dòng mà nó sẽ ghi ra.
+        SanitizingJsonLayout json = new SanitizingJsonLayout();
+        json.start();
         for (ILoggingEvent event : new ArrayList<>(appender.list)) {
             lines.add(message.convert(event));
             lines.add(throwable.convert(event));
+            lines.add(json.doLayout(event));
         }
         return lines;
     }

@@ -17,3 +17,6 @@ reports/
 *.docx
 ~$*
 build_sprint*_report.py
+
+# Structured log (profile jsonlog)
+logs/

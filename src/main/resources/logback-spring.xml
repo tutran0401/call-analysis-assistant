@@ -6,14 +6,31 @@
     <conversionRule conversionWord="sanEx"
                     class="com.tutran.callassistant.sanitize.logging.SanitizingThrowableConverter"/>
 
+    <!-- request_id (Sprint 3 T5) do RequestCorrelationFilter đặt vào MDC; "-" khi không nằm trong request web. -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %san%n%sanEx</pattern>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] [%X{request_id:--}] %logger{36} - %san%n%sanEx</pattern>
         </encoder>
     </appender>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
+
+    <!-- Profile "jsonlog": thêm structured log, mỗi dòng một JSON (đã sanitize), cho Kibana / phân tích sau. -->
+    <springProfile name="jsonlog">
+        <springProperty scope="context" name="jsonLogFile" source="call-analysis.log.json-file"
+                        defaultValue="logs/app.jsonl"/>
+        <appender name="JSON_FILE" class="ch.qos.logback.core.FileAppender">
+            <file>${jsonLogFile}</file>
+            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                <charset>UTF-8</charset>
+                <layout class="com.tutran.callassistant.sanitize.logging.SanitizingJsonLayout"/>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="JSON_FILE"/>
+        </root>
+    </springProfile>
 </configuration>

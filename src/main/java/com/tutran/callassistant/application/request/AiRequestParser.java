@@ -3,11 +3,14 @@ package com.tutran.callassistant.application.request;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutran.callassistant.application.ai.AiPrompt;
+import com.tutran.callassistant.application.ai.AiProviderException;
 import com.tutran.callassistant.application.ai.AiResult;
 import com.tutran.callassistant.application.ai.TimeLimitedAiCaller;
 import com.tutran.callassistant.application.port.out.AiProvider;
 import com.tutran.callassistant.sanitize.InputSanitizer;
 import com.tutran.callassistant.sanitize.SanitizationSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +45,8 @@ public class AiRequestParser implements RequestParser {
     private static final String SYSTEM_PROMPT_RESOURCE = "/ai/prompts/intent-system.vi.txt";
     private static final String SCHEMA_RESOURCE = "/ai/intent-schema-v1.json";
 
+    private static final Logger log = LoggerFactory.getLogger(AiRequestParser.class);
+
     private final RuleRequestParser rules;
     private final AiProvider ai;
     private final InputSanitizer sanitizer;
@@ -64,17 +69,28 @@ public class AiRequestParser implements RequestParser {
         }
     }
 
+    /** Cùng định dạng dòng {@code ai_call} của phân tích, thêm {@code purpose=intent}; không ghi câu hỏi. */
+    private void logCall(String model, long startedNanos, String status, Integer tokens, String fallbackReason) {
+        log.info("ai_call purpose=intent model={} latency_ms={} result_status={} token_usage={} fallback_reason={}",
+                model, (System.nanoTime() - startedNanos) / 1_000_000, status, tokens, fallbackReason);
+    }
+
     @Override
     public ParsedRequest parse(String message, boolean hasAttachments) {
         ParsedRequest byRules = rules.parse(message, hasAttachments);
         if (!byRules.isOutOfScope() || message == null || message.isBlank()) {
             return byRules;
         }
+        long started = System.nanoTime();
         try {
             String question = sanitizer.sanitizeText(message, new SanitizationSummary());
             AiResult result = caller.call(ai, new AiPrompt(systemPrompt, question, schema));
-            return fromAi(mapper.readTree(result.rawJson()), byRules);
+            ParsedRequest parsed = fromAi(mapper.readTree(result.rawJson()), byRules);
+            logCall(result.model(), started, "ACCEPTED", result.totalTokens(), null);
+            return parsed;
         } catch (IOException | RuntimeException e) {
+            logCall(ai.modelName(), started, "FALLBACK", null, e instanceof AiProviderException known
+                    ? "AI_" + known.kind().name() : e.getClass().getSimpleName());
             return byRules;
         }
     }

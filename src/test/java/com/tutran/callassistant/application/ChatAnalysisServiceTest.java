@@ -94,6 +94,34 @@ class ChatAnalysisServiceTest {
     }
 
     @Test
+    void everyRequestLeavesOneChatRequestLineWithTheMdcRequestId() throws IOException {
+        ch.qos.logback.classic.Logger logger =
+                (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ChatAnalysisService.class);
+        ch.qos.logback.core.read.ListAppender<ch.qos.logback.classic.spi.ILoggingEvent> appender =
+                new ch.qos.logback.core.read.ListAppender<>();
+        appender.start();
+        logger.addAppender(appender);
+        org.slf4j.MDC.put(RequestIds.MDC_KEY, "req-cafebabe");
+        try {
+            ChatResponse response = service(new FakeAiProvider()).handle(
+                    new ChatRequest("Phân tích cuộc gọi này giúp mình", logsOf(DIR)));
+
+            assertThat(response.requestId()).isEqualTo("req-cafebabe");
+            List<String> lines = appender.list.stream()
+                    .map(ch.qos.logback.classic.spi.ILoggingEvent::getFormattedMessage)
+                    .filter(m -> m.startsWith("chat_request")).toList();
+            assertThat(lines).singleElement().asString()
+                    .contains("request_id=req-cafebabe", "result=OK", "verdict=SUCCESS", "latency_ms=")
+                    // Call-ID chỉ xuất hiện dạng pseudonym.
+                    .doesNotContain(CALL);
+            assertThat(appender.list).allMatch(e -> "req-cafebabe".equals(e.getMDCPropertyMap().get(RequestIds.MDC_KEY)));
+        } finally {
+            org.slf4j.MDC.remove(RequestIds.MDC_KEY);
+            logger.detachAppender(appender);
+        }
+    }
+
+    @Test
     void elasticsearchOutageIsExplainedInDataLimitationsNotA500() throws IOException {
         ChatAnalysisService service = service(new FakeAiProvider(), 5000, call -> com.tutran.callassistant.domain.event
                 .NormalizedEvents.unreadable("ES_TIMEOUT: could not query Elasticsearch index x"));

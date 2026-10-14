@@ -103,8 +103,25 @@ public class ChatAnalysisService {
                 pseudonymizer);
     }
 
+    /**
+     * Xử lý một lượt hỏi và ghi đúng một dòng {@code chat_request} tóm tắt kết quả (Sprint 3 T5) - kể cả khi
+     * request bị lỗi, để mọi request đều có dấu vết đo latency / tỉ lệ fallback / lỗi.
+     */
     public ChatResponse handle(ChatRequest request) {
         String requestId = RequestIds.current();
+        long started = System.nanoTime();
+        try {
+            ChatResponse response = handle(requestId, request);
+            logRequest(response, started);
+            return response;
+        } catch (RuntimeException e) {
+            log.warn("chat_request request_id={} result=ERROR error_kind={} latency_ms={}", requestId,
+                    e.getClass().getSimpleName(), elapsedMillis(started));
+            throw e;
+        }
+    }
+
+    private ChatResponse handle(String requestId, ChatRequest request) {
         ParsedRequest parsed = requestParser.parse(request.message(), !request.files().isEmpty());
 
         if (parsed.isOutOfScope()) {
@@ -188,10 +205,25 @@ public class ChatAnalysisService {
                 fallbackReason, cleanWarnings, renderer.render(safe), attempt.tokens());
     }
 
+    private void logRequest(ChatResponse response, long startedNanos) {
+        Report report = response.report();
+        log.info("chat_request request_id={} result={} intent={} call_id={} verdict={} issue_category={} "
+                        + "confidence={} degraded={} fallback_reason={} warnings={} latency_ms={}",
+                response.requestId(), report == null ? "REFUSED" : "OK", response.intent(),
+                report == null ? null : pseudonymizer.pseudonym("CALL", report.callId()),
+                report == null ? null : report.verdict(), report == null ? null : report.issueCategory(),
+                report == null ? null : report.confidenceLevel(), response.degraded(), response.fallbackReason(),
+                response.warnings().size(), elapsedMillis(startedNanos));
+    }
+
+    private static long elapsedMillis(long startedNanos) {
+        return (System.nanoTime() - startedNanos) / 1_000_000;
+    }
+
     private void logAiCall(String requestId, String callRef, String model, long startedNanos, String status,
                            Integer tokens, String fallbackReason) {
         log.info("ai_call request_id={} call_id={} model={} latency_ms={} result_status={} token_usage={} "
-                        + "fallback_reason={}", requestId, callRef, model, (System.nanoTime() - startedNanos) / 1_000_000,
+                        + "fallback_reason={}", requestId, callRef, model, elapsedMillis(startedNanos),
                 status, tokens, fallbackReason);
     }
 
