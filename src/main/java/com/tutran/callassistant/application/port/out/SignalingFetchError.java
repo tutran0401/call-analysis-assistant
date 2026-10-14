@@ -42,9 +42,9 @@ public enum SignalingFetchError {
     public String limitation() {
         return switch (this) {
             case ES_UNAVAILABLE -> "Không kết nối được Elasticsearch local nên không lấy được signaling; "
-                    + "kết luận chỉ dựa trên log client.";
+                    + "không xác định được cuộc gọi đã thiết lập và kết thúc ra sao.";
             case ES_TIMEOUT -> "Elasticsearch phản hồi quá chậm (timeout) nên không lấy được signaling; "
-                    + "kết luận chỉ dựa trên log client.";
+                    + "không xác định được cuộc gọi đã thiết lập và kết thúc ra sao.";
             case ES_INDEX_MISSING -> "Elasticsearch chưa có index signaling (chưa chạy import) nên không lấy được "
                     + "signaling.";
             case ES_ERROR -> "Truy vấn signaling từ Elasticsearch bị lỗi nên không lấy được signaling.";

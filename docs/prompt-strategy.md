@@ -1,4 +1,4 @@
-# Prompt Strategy (Sprint 2)
+# Prompt Strategy (Sprint 2, cập nhật Sprint 3)
 
 Tài liệu cho phần AI Analysis Engine: AI nhận gì, được phép làm gì, bị kiểm gì. Nguồn thật:
 `src/main/resources/ai/prompts/analysis-system.vi.txt`, `src/main/resources/ai/ai-output-schema-v1.json`,
@@ -37,11 +37,13 @@ Tài liệu cho phần AI Analysis Engine: AI nhận gì, được phép làm g�
 ## Output (`ai-output-schema-v1.json`)
 
 `verdict`, `qualityFlag`, `issueCategory`, `confidenceLevel`, `summary`, `evidenceIds`, `analysis`,
-`suggestions`. Enum khớp `report-schema-v2.json`.
+`suggestions`. Enum khớp `report-schema-v3.json`.
 
 AI đưa ra đủ các field theo spec (mục 6.1 T5), nhưng **không field nào của AI được ghi thẳng vào report**:
 `AnalysisReportComposer` chỉ lấy `summary`, `analysis`, `suggestions` và thứ tự evidence được trích; verdict,
-category, cờ chất lượng, độ tin cậy, evidence, chỉ số luôn từ rule.
+category, cờ chất lượng, evidence, chỉ số luôn từ rule. Từ Sprint 3, đề xuất của AI được **nối sau** bộ đề xuất chuẩn
+theo category (không thay thế), và `confidenceLevel` của AI bị bỏ qua: độ tin cậy do `EvidenceBasedConfidencePolicy`
+tính từ độ mạnh evidence, dữ liệu thiếu và kết quả đối chiếu AI-vs-rule.
 
 ## Tham số gọi (OpenAI `gpt-4o-mini`)
 
@@ -101,3 +103,18 @@ sang "giữ verdict rule + gắn cờ". Đổi chỉ cần sửa `AiResponseGuar
 
 - Đo đầy đủ Request Parser AI trên một bộ câu hỏi diễn đạt lạ do Mentor viết (bộ `dev` do chính tôi viết nên Intent
   Accuracy 100% chưa phản ánh câu hỏi lạ).
+
+
+## Thay đổi Sprint 3 (T1 - từ phân tích lỗi trên `dev`)
+
+Chạy `dev` với `call-analysis.ai.include-rule-baseline=false` (AI không thấy kết luận rule) lộ ra AI tự kết luận chỉ
+đạt 61.7% verdict, 40.7% consistency. Ba nguyên nhân và cách sửa:
+
+| Lỗi quan sát | Nguyên nhân | Sửa |
+| --- | --- | --- |
+| AI trả `UNKNOWN` khi thiếu log một bên (case-001/003/019, `var-foreign-call-file`) | Prompt chưa từng định nghĩa SUCCESS / FAIL / UNKNOWN (mục 4.1); "có dataLimitations" bị hiểu là "không đủ dữ liệu" | Quy tắc 4a: tiêu chí từng verdict + "thiếu một vài file không làm verdict thành UNKNOWN nếu signaling đủ" |
+| Lỗi TURN bị gọi là `SIGNALING_FAILURE` (case-010/014/018/020) | Taxonomy gửi AI thiếu nguồn evidence bắt buộc | Taxonomy kèm `requiredEvidence`; quy tắc 4b: evidence TURN/ICE ưu tiên hơn signaling |
+| Cùng cuộc gọi có thể nhận prompt khác nhau giữa các lần chạy | `taxonomy.all()` là `Map.of`, thứ tự lặp đổi theo mỗi lần khởi động JVM | Gửi taxonomy theo thứ tự enum `IssueCategory` |
+
+`requiredEvidence` cố ý không kèm ngưỡng số (5%, 300 ms...). Nếu AI nhắc ngưỡng đó, Guardrails G05 sẽ coi là
+"số liệu ngoài bộ chỉ số" và từ chối. Kết quả trước / sau: `docs/accuracy-consistency-analysis.md`.

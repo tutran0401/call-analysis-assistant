@@ -20,3 +20,6 @@ build_sprint*_report.py
 
 # Structured log (profile jsonlog)
 logs/
+
+# Output của demo/run_demo.py
+demo/out/

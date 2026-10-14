@@ -1,4 +1,4 @@
-# AI Call Analysis Assistant — Sprint 2
+# AI Call Analysis Assistant — Sprint 3
 
 Trợ lý phân tích cuộc gọi OJT AI 20K (xem `docs/PROJECT_SPEC.md`).
 
@@ -7,6 +7,13 @@ Trợ lý phân tích cuộc gọi OJT AI 20K (xem `docs/PROJECT_SPEC.md`).
 - **Sprint 2** (AI + Web UI + Sanitizer): người dùng hỏi tiếng Việt và đính kèm log trên web; hệ thống chạy
   pipeline rule, gửi AI **chỉ context đã sanitize**, kiểm phản hồi AI bằng Guardrails, và fallback về rule khi AI
   lỗi. Báo cáo: `docs/sprint2-report.md`. Đã chạy benchmark với `gpt-4o-mini` thật — xem báo cáo.
+- **Sprint 3** (hardening, consistency, handover): độ tin cậy xác định kèm căn cứ, phần giải thích "vì sao kết
+  luận" do code viết, bộ đề xuất chuẩn, timeout + phân loại lỗi Elasticsearch, `request_id` xuyên suốt log / API /
+  UI, structured log JSON, `security-eval` (S01-S08), batch analysis + dashboard Kibana. Báo cáo:
+  `docs/sprint3-report.md`.
+
+**Tài liệu bàn giao:** `docs/architecture-security-design.md` (kiến trúc & bảo mật), `docs/runbook.md` (dựng và chạy
+lại toàn bộ), `docs/final-evaluation-report.md` (đánh giá cuối + Known Limitations). Demo: `demo/README.md`.
 
 ## Công nghệ sử dụng
 
@@ -26,7 +33,7 @@ docker compose up -d
 mvn clean package
 
 # 3. Import data mẫu (signaling log) mentor cung cấp vào Elasticsearch
-java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar import success fail for_test
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar import sample-data/success sample-data/fail sample-data/for_test
 ```
 
 Elasticsearch cần khoảng 1-2 GB heap (đã cấu hình trong `docker-compose.yml`); Kibana
@@ -106,6 +113,17 @@ Ghi `summary.md` (metric mục 6.5, bảng AI vs Rule vs Ground truth, danh sác
 `--cases`. Bộ `dev` có 29 case; **nguồn nhãn của từng case nằm ở `label_source`** — đọc `docs/sprint2-report.md`
 mục "Nguồn nhãn" trước khi diễn giải accuracy. Kết quả với `gpt-4o-mini` thật: `docs/evaluation-run-dev-gpt-4o-mini.md`; so sánh cách dựng context: `docs/context-mode-comparison.md`.
 
+## Kiểm tra bảo mật, batch, Kibana (Sprint 3)
+
+```bash
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar security-eval --data-root sample-data   # S01-S08
+java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar batch --data-root sample-data [--with-ai]
+sh kibana/import-dashboard.sh     # dashboard: http://localhost:5601/app/dashboards#/view/ca-dashboard
+python demo/run_demo.py           # 6 scenario của Final Demo (cần backend profile web đang chạy)
+```
+
+Chi tiết từng lệnh và xử lý sự cố: `docs/runbook.md`.
+
 ## Chạy test
 
 ```bash
@@ -153,7 +171,7 @@ src/main/java/com/tutran/callassistant/
     timeline/     CallTimeline (+ các truy vấn dùng chung cho metrics và rule)
     metrics/      CallMetrics, MetricResult (giá trị hoặc N/A kèm lý do)
     verdict/      Verdict, IssueCategory, Evidence, RuleVerdictResult
-    report/       Report Schema v2 dạng record + ConfidenceLevel
+    report/       Report Schema v3 dạng record + ConfidenceLevel
   application/    Use case + port (chỉ interface, không biết công nghệ nào)
     port/in/      AnalyzeCallUseCase, ImportSignalingUseCase
     port/out/     SignalingEventSource, ClientLogSource, SignalingEventArchive,
@@ -180,9 +198,17 @@ src/main/java/com/tutran/callassistant/
   ai/             Adapter AI: openai/OpenAiProvider, FakeAiProvider, NoAiProvider (Sprint 2)
   sanitize/       Sensitive Data Detector + Input/Output Sanitizer + bộ lọc log   (Sprint 2)
   evaluation/     Evaluation Runner, metric mục 6.5, loader file case             (Sprint 2)
+                  + Security report, LeakyAiProvider, BatchStatistics             (Sprint 3)
+  report/confidence/  EvidenceBasedConfidencePolicy - độ tin cậy mục 7.2          (Sprint 3)
 web/              Web UI React + Vite + TypeScript                                (Sprint 2)
 benchmark/dev/    cases.yaml - bộ case `dev` (29 case)                            (Sprint 2)
+benchmark/security/ cases.yaml - S01-S08 cho security-eval                        (Sprint 3)
+kibana/           Saved objects (data view, visualization, dashboard) + import    (Sprint 3)
+demo/             run_demo.py - 6 scenario Final Demo                             (Sprint 3)
 docs/
+  architecture-security-design.md, runbook.md, final-evaluation-report.md  (bàn giao)
+  security-evaluation-report.md, accuracy-consistency-analysis.md, sprint3-report.md
+  peer-evaluation-report.md (khung, chờ repo của bạn còn lại)
   architecture-diagram-v1.md, architecture-diagram-v2.md
   sprint1-report.md, sprint2-report.md
   prompt-strategy.md
@@ -214,6 +240,10 @@ class, không phải sửa class đang chạy**:
 Chỉ những đường biên thật sự sẽ thay đổi mới có interface — `TimelineBuilder` hay
 `CallMetricsCalculator` vẫn là class thường, vì tạo interface cho mọi thứ cũng là một dạng
 rối rắm không cần thiết.
+
+## Giới hạn đã biết (Known Limitations) — Sprint 3
+
+Danh sách đầy đủ, kèm lý do, ở `docs/final-evaluation-report.md` mục "Known Limitations".
 
 ## Giới hạn đã biết (Known Limitations) — Sprint 2
 
