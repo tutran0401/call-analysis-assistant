@@ -91,6 +91,22 @@ class AiContextBuilderTest {
     }
 
     @Test
+    void ruleBaselineCanBeLeftOutToMeasureTheAiOnItsOwn() {
+        AiContextBuilder blind = new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "structured", false);
+        com.tutran.callassistant.domain.report.Report rule = TestReports.successWithPacketLoss();
+
+        JsonNode context = blind.build(new ParsedRequest(Intent.ANALYZE_CALL, Set.of(), null), timelineOf(1), rule);
+
+        assertThat(blind.includesRuleBaseline()).isFalse();
+        assertThat(context.has("ruleBaseline")).isFalse();
+        // Evidence và chỉ số vẫn đủ để AI tự kết luận.
+        assertThat(context.path("evidence")).hasSize(rule.evidence().size());
+        assertThat(context.path("metrics")).hasSize(rule.metrics().size());
+        assertThat(builder.build(new ParsedRequest(Intent.ANALYZE_CALL, Set.of(), null), timelineOf(1), rule)
+                .has("ruleBaseline")).isTrue();
+    }
+
+    @Test
     void unknownContextModeFailsFast() {
         org.assertj.core.api.Assertions.assertThatThrownBy(
                         () -> new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "weird"))

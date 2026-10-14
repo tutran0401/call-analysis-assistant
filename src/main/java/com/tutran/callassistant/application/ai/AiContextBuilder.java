@@ -40,16 +40,32 @@ public class AiContextBuilder {
 
     private final IssueCategoryRegistry taxonomy;
     private final Mode mode;
+    private final boolean includeRuleBaseline;
 
     public AiContextBuilder(IssueCategoryRegistry taxonomy) {
         this(taxonomy, "structured");
     }
 
+    public AiContextBuilder(IssueCategoryRegistry taxonomy, String mode) {
+        this(taxonomy, mode, true);
+    }
+
+    /**
+     * @param includeRuleBaseline {@code false} để đo AI độc lập với rule (Sprint 3 T1): AI không thấy kết luận
+     *                            của rule, chỉ thấy evidence / chỉ số / timeline. Guardrails vẫn đối chiếu với
+     *                            rule như cũ, nên chính sách G04 lần đầu được thử thật.
+     */
     @Autowired
     public AiContextBuilder(IssueCategoryRegistry taxonomy,
-                            @Value("${call-analysis.ai.context-mode:structured}") String mode) {
+                            @Value("${call-analysis.ai.context-mode:structured}") String mode,
+                            @Value("${call-analysis.ai.include-rule-baseline:true}") boolean includeRuleBaseline) {
         this.taxonomy = taxonomy;
         this.mode = parse(mode);
+        this.includeRuleBaseline = includeRuleBaseline;
+    }
+
+    public boolean includesRuleBaseline() {
+        return includeRuleBaseline;
     }
 
     private static Mode parse(String value) {
@@ -73,12 +89,14 @@ public class AiContextBuilder {
         ArrayNode focus = root.putArray("focus");
         request.focus().stream().map(Enum::name).sorted().forEach(focus::add);
 
-        ObjectNode baseline = root.putObject("ruleBaseline");
-        baseline.put("verdict", ruleReport.verdict());
-        baseline.put("qualityFlag", ruleReport.qualityFlag());
-        baseline.put("issueCategory", ruleReport.issueCategory());
-        baseline.put("confidenceLevel", ruleReport.confidenceLevel());
-        baseline.put("summary", ruleReport.summary());
+        if (includeRuleBaseline) {
+            ObjectNode baseline = root.putObject("ruleBaseline");
+            baseline.put("verdict", ruleReport.verdict());
+            baseline.put("qualityFlag", ruleReport.qualityFlag());
+            baseline.put("issueCategory", ruleReport.issueCategory());
+            baseline.put("confidenceLevel", ruleReport.confidenceLevel());
+            baseline.put("summary", ruleReport.summary());
+        }
 
         if (mode == Mode.SEMI) {
             root.put("narrative", narrative(timeline, ruleReport));
