@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Validate report theo {@code schema/report-schema-v2.json} (T8).
+ * Validate report theo {@code schema/report-schema-v3.json} (T8).
  *
  * <p>Khác với bản trước: validator này giờ <b>thật sự nằm trong pipeline</b> chứ không chỉ được gọi
  * trong test. Một report sai schema sẽ hiện thành ghi chú xử lý ngay lúc chạy, thay vì chỉ bị phát
@@ -25,7 +25,7 @@ import java.util.Set;
 @Component
 public class ReportSchemaGuard implements ReportGuard {
 
-    private static final String SCHEMA_RESOURCE = "/schema/report-schema-v2.json";
+    private static final String SCHEMA_RESOURCE = "/schema/report-schema-v3.json";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final JsonSchema schema = loadSchema();

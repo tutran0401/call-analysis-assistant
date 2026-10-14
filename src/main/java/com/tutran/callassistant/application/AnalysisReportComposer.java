@@ -2,8 +2,14 @@ package com.tutran.callassistant.application;
 
 import com.tutran.callassistant.application.guardrail.AiAnalysis;
 import com.tutran.callassistant.application.guardrail.GuardDecision;
+import com.tutran.callassistant.domain.report.ConfidenceLevel;
 import com.tutran.callassistant.domain.report.EvidenceItem;
 import com.tutran.callassistant.domain.report.Report;
+import com.tutran.callassistant.report.confidence.AiAgreement;
+import com.tutran.callassistant.report.confidence.ConfidenceAssessment;
+import com.tutran.callassistant.report.confidence.ConfidencePolicy;
+import com.tutran.callassistant.report.confidence.EvidenceBasedConfidencePolicy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,10 +22,23 @@ import java.util.Set;
  *
  * <p>Nguyên tắc phân vai (mục 3.2): AI chỉ được thay <b>lời văn</b> - summary, analysis, suggestions.
  * Verdict, issue category, cờ chất lượng, evidence, chỉ số, độ tin cậy luôn là của code; riêng khi AI
- * mâu thuẫn rule thì verdict thành {@code UNKNOWN} và độ tin cậy hạ xuống {@code LOW}.
+ * mâu thuẫn rule thì verdict thành {@code UNKNOWN}. Độ tin cậy do {@link ConfidencePolicy} tính lại theo
+ * kết quả đối chiếu AI-vs-rule (mục 7.2) - {@code confidenceLevel} AI tự đề xuất bị bỏ qua.
  */
 @Component
 public class AnalysisReportComposer {
+
+    private final ConfidencePolicy confidencePolicy;
+
+    @Autowired
+    public AnalysisReportComposer(ConfidencePolicy confidencePolicy) {
+        this.confidencePolicy = confidencePolicy;
+    }
+
+    /** Bộ mặc định cho test và chỗ không có Spring container. */
+    public AnalysisReportComposer() {
+        this(new EvidenceBasedConfidencePolicy());
+    }
 
     static final String DEGRADED_NOTE =
             "Phân tích AI không khả dụng; báo cáo này hoàn toàn dựa trên rule-based.";
@@ -28,9 +47,10 @@ public class AnalysisReportComposer {
     public Report degraded(Report rule) {
         List<String> limitations = new ArrayList<>(rule.dataLimitations());
         addIfAbsent(limitations, DEGRADED_NOTE);
+        ConfidenceAssessment confidence = adjust(rule, AiAgreement.UNAVAILABLE);
         return new Report(rule.callId(), rule.verdict(), rule.qualityFlag(), rule.issueCategory(),
-                rule.alternativeCauses(), rule.confidenceLevel(), rule.summary(), rule.evidence(),
-                rule.metrics(), rule.suggestions(), limitations, "", true);
+                rule.alternativeCauses(), confidence.level().name(), rule.summary(), rule.evidence(),
+                rule.metrics(), rule.suggestions(), limitations, "", true, confidence.reasons());
     }
 
     /** @param decision phải khác REJECT */
@@ -47,7 +67,8 @@ public class AnalysisReportComposer {
         String verdict = conflict ? decision.verdictOverride() : rule.verdict();
         String category = conflict ? "UNKNOWN" : rule.issueCategory();
         boolean qualityFlag = !conflict && rule.qualityFlag();
-        String confidence = decision.flags().isEmpty() ? rule.confidenceLevel() : "LOW";
+        ConfidenceAssessment confidence = adjust(rule,
+                decision.flags().isEmpty() ? AiAgreement.AGREES : AiAgreement.DISAGREES);
 
         // Khi mâu thuẫn, lời văn AI đang bảo vệ đúng cái verdict bị bác nên không dùng; dùng câu cố định.
         String summary = conflict
@@ -61,9 +82,15 @@ public class AnalysisReportComposer {
             suggestions = rule.suggestions();
         }
 
-        return new Report(rule.callId(), verdict, qualityFlag, category, rule.alternativeCauses(), confidence,
-                summary, citedFirst(rule.evidence(), ai.evidenceIds()), rule.metrics(), suggestions, limitations,
-                analysis, false);
+        return new Report(rule.callId(), verdict, qualityFlag, category, rule.alternativeCauses(),
+                confidence.level().name(), summary, citedFirst(rule.evidence(), ai.evidenceIds()), rule.metrics(),
+                suggestions, limitations, analysis, false, confidence.reasons());
+    }
+
+    private ConfidenceAssessment adjust(Report rule, AiAgreement agreement) {
+        ConfidenceAssessment ruleBased = new ConfidenceAssessment(
+                ConfidenceLevel.valueOf(rule.confidenceLevel()), rule.confidenceReasons());
+        return confidencePolicy.withAi(ruleBased, agreement);
     }
 
     private static List<EvidenceItem> citedFirst(List<EvidenceItem> evidence, List<String> citedIds) {

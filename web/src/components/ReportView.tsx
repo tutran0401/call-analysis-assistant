@@ -50,7 +50,16 @@ export function ReportView({ report }: { report: Report }) {
           )}
         </dd>
         <dt>Độ tin cậy</dt>
-        <dd>{report.confidenceLevel}</dd>
+        <dd>
+          {report.confidenceLevel}
+          {report.confidenceReasons?.length > 0 && (
+            <ul className="confidence-reasons muted">
+              {report.confidenceReasons.map((reason, index) => (
+                <li key={index}>{reason}</li>
+              ))}
+            </ul>
+          )}
+        </dd>
       </dl>
       <p className="summary">
         <strong>Tóm tắt: </strong>

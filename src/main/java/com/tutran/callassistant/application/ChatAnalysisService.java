@@ -195,9 +195,7 @@ public class ChatAnalysisService {
     private static Report withLimitations(Report report, List<String> extra) {
         List<String> merged = new ArrayList<>(report.dataLimitations());
         extra.stream().filter(item -> !merged.contains(item)).forEach(merged::add);
-        return new Report(report.callId(), report.verdict(), report.qualityFlag(), report.issueCategory(),
-                report.alternativeCauses(), report.confidenceLevel(), report.summary(), report.evidence(),
-                report.metrics(), report.suggestions(), merged, report.analysis(), report.degraded());
+        return report.withDataLimitations(merged);
     }
 
     private record AiAttempt(Report report, String fallbackReason, Integer tokens) {

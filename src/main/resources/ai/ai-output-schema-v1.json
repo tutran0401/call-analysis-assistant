@@ -1,6 +1,6 @@
 {
   "title": "AI Analysis Output v1",
-  "description": "Structured output cua AI Analysis Engine (PROJECT_SPEC.md muc 6.1 T5). Enum khop report-schema-v2.json. Guardrails con kiem tra evidenceIds va so lieu o tang code.",
+  "description": "Structured output cua AI Analysis Engine (PROJECT_SPEC.md muc 6.1 T5). Enum khop report-schema-v3.json. Guardrails con kiem tra evidenceIds va so lieu o tang code.",
   "type": "object",
   "additionalProperties": false,
   "required": [

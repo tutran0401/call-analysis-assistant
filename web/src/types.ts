@@ -1,4 +1,4 @@
-// Khớp với ChatResponse / Report (report-schema-v2.json) của backend.
+// Khớp với ChatResponse / Report (report-schema-v3.json) của backend.
 
 export type Verdict = 'SUCCESS' | 'FAIL' | 'UNKNOWN'
 
@@ -29,6 +29,7 @@ export interface Report {
   dataLimitations: string[]
   analysis: string
   degraded: boolean
+  confidenceReasons: string[]
 }
 
 export interface ChatResponse {

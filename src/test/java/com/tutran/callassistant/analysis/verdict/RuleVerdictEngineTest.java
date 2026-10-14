@@ -9,7 +9,7 @@ import com.tutran.callassistant.domain.timeline.CallTimeline;
 import com.tutran.callassistant.domain.verdict.IssueCategory;
 import com.tutran.callassistant.domain.verdict.RuleVerdictResult;
 import com.tutran.callassistant.domain.verdict.Verdict;
-import com.tutran.callassistant.report.confidence.DataCompletenessConfidencePolicy;
+import com.tutran.callassistant.report.confidence.EvidenceBasedConfidencePolicy;
 import com.tutran.callassistant.testsupport.Events;
 import com.tutran.callassistant.testsupport.SampleCalls;
 import org.junit.jupiter.api.Test;
@@ -326,7 +326,7 @@ class RuleVerdictEngineTest {
 
         assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
         assertThat(result.dataLimitations()).containsExactly("Thiếu callee_endcall.log");
-        assertThat(new DataCompletenessConfidencePolicy().confidenceFor(result))
+        assertThat(new EvidenceBasedConfidencePolicy().assess(result).level())
                 .isEqualTo(ConfidenceLevel.MEDIUM);
     }
 

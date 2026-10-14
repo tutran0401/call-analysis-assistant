@@ -35,6 +35,27 @@ class AnalysisReportComposerTest {
     }
 
     @Test
+    void degradedReportIsNeverHighConfidenceAndSaysWhy() {
+        Report high = rule.withConfidence("HIGH", List.of("Evidence mạnh"));
+
+        Report report = composer.degraded(high);
+
+        assertThat(report.confidenceLevel()).isEqualTo("MEDIUM");
+        assertThat(report.confidenceReasons()).contains("Evidence mạnh").anyMatch(r -> r.contains("degraded"));
+    }
+
+    @Test
+    void agreeingAiKeepsRuleConfidenceAndAddsReason() {
+        Report high = rule.withConfidence("HIGH", List.of("Evidence mạnh"));
+        GuardDecision decision = new GuardDecision(GuardDecision.Outcome.ACCEPT, ai("SUCCESS"), List.of(), List.of(), null);
+
+        Report report = composer.fromAi(high, decision);
+
+        assertThat(report.confidenceLevel()).isEqualTo("HIGH");
+        assertThat(report.confidenceReasons()).last().asString().contains("cùng kết luận");
+    }
+
+    @Test
     void acceptedAiOnlyReplacesWordingAndOrdersCitedEvidenceFirst() {
         GuardDecision decision = new GuardDecision(GuardDecision.Outcome.ACCEPT, ai("SUCCESS"), List.of(), List.of(), null);
 

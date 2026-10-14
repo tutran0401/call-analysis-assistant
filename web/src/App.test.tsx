@@ -22,6 +22,7 @@ const report: Report = {
   dataLimitations: ['Thiếu callee_webrtc.log'],
   analysis: 'Packet loss 9.8% (EV001).',
   degraded: false,
+  confidenceReasons: ['Thiếu một phần dữ liệu: Thiếu callee_webrtc.log.'],
 }
 
 const response = (overrides: Partial<ChatResponse> = {}): ChatResponse => ({
@@ -87,6 +88,12 @@ describe('ReportView', () => {
 
     expect(screen.queryByText(/Phân tích:/)).toBeNull()
     expect(screen.getByText('Không')).toBeInTheDocument()
+  })
+
+  it('lists why the confidence level was chosen', () => {
+    render(<ReportView report={report} />)
+
+    expect(screen.getByText('Thiếu một phần dữ liệu: Thiếu callee_webrtc.log.')).toBeInTheDocument()
   })
 })
 

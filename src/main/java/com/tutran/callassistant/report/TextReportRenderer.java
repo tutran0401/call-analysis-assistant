@@ -34,6 +34,9 @@ public class TextReportRenderer implements ReportRenderer {
                 .append(report.qualityFlag() ? "Có - " + report.issueCategory() : "Không")
                 .append('\n');
         out.append("Độ tin cậy: ").append(report.confidenceLevel()).append('\n');
+        if (!report.confidenceReasons().isEmpty()) {
+            out.append("Căn cứ độ tin cậy: ").append(String.join(" ", report.confidenceReasons())).append('\n');
+        }
         out.append("Tóm tắt: ").append(report.summary()).append('\n');
         out.append('\n');
     }

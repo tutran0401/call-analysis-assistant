@@ -7,8 +7,9 @@ import com.tutran.callassistant.domain.report.Report;
 import com.tutran.callassistant.domain.verdict.Evidence;
 import com.tutran.callassistant.domain.verdict.IssueCategoryDefinition;
 import com.tutran.callassistant.domain.verdict.RuleVerdictResult;
+import com.tutran.callassistant.report.confidence.ConfidenceAssessment;
 import com.tutran.callassistant.report.confidence.ConfidencePolicy;
-import com.tutran.callassistant.report.confidence.DataCompletenessConfidencePolicy;
+import com.tutran.callassistant.report.confidence.EvidenceBasedConfidencePolicy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class RuleBasedReportAssembler implements ReportAssembler {
 
     /** Bộ mặc định, dùng cho test và chỗ nào không có Spring container. */
     public static RuleBasedReportAssembler withDefaults() {
-        return new RuleBasedReportAssembler(new DataCompletenessConfidencePolicy(),
+        return new RuleBasedReportAssembler(new EvidenceBasedConfidencePolicy(),
                 new MetricRowCatalog(), new SuggestionCatalog(), IssueCategoryRegistry.withDefaults());
     }
 
@@ -51,18 +52,22 @@ public class RuleBasedReportAssembler implements ReportAssembler {
         // biệt được "đã kiểm tra, không có vấn đề" với "chưa kiểm tra". Riêng đề xuất thì vẫn chỉ
         // kèm khi thật sự có vấn đề, tránh bịa việc cho một cuộc gọi hoàn toàn bình thường.
         boolean reportIssue = verdict.hasIssueToReport();
+        ConfidenceAssessment confidence = confidencePolicy.assess(verdict);
         return new Report(
                 callId,
                 verdict.verdict().name(),
                 verdict.qualityFlag(),
                 verdict.issueCategory().name(),
                 alternativeCausesFor(verdict),
-                confidencePolicy.confidenceFor(verdict).name(),
+                confidence.level().name(),
                 verdict.summary(),
                 verdict.evidence().stream().map(this::toEvidenceItem).toList(),
                 metricRowCatalog.rowsFor(metrics),
                 reportIssue ? suggestionCatalog.suggestionsFor(verdict.issueCategory()) : List.of(),
-                verdict.dataLimitations()
+                verdict.dataLimitations(),
+                "",
+                false,
+                confidence.reasons()
         );
     }
 
