@@ -15,7 +15,7 @@
 | T4 Reliability Hardening | Core | Xong | timeout ES/AI, `SignalingFetchError`, UI |
 | T5 Observability | Core | Xong | `request_id`, `chat_request` / `ai_call` / `es_query`, `logs/app.jsonl` |
 | T6 Security Evaluation Report | Core | Xong | `docs/security-evaluation-report.md` |
-| T7 Peer Evaluation | Core | **Chưa làm** - cần repo của bạn còn lại | `docs/peer-evaluation-report.md` (khung) |
+| T7 Peer Evaluation | Core | Xong (2026-10-20) | `docs/peer-evaluation-report.md` |
 | T8 Retry & Error Classification | Nếu kịp | Xong | OpenAI (Sprint 2) + Elasticsearch (Sprint 3) |
 | T9 Kibana View | Nếu kịp | Xong | index `call-analysis-results`, `kibana/` |
 | T10 Batch Analysis | Nếu kịp | Xong | lệnh `batch` |
@@ -110,7 +110,9 @@ Final Demo (spec mục 10), chạy trên app thật 2026-10-14:
 
 ## Chưa làm / cần đầu vào
 
-- **Peer Evaluation (T7):** cần quyền đọc repo và Runbook của bạn còn lại.
+- **Peer Evaluation (T7):** đã làm 2026-10-20 trên repo `hason0510/call-analysis-assistant`. Hai issue tìm được
+  (WebRTC log của cuộc gọi khác, log có BOM / UTF-16) nhiều khả năng cũng có ở sản phẩm này; đã ghi vào Known
+  Limitations, chưa sửa.
 - **Từ Mentor:** chạy `held-out`; nhãn issue category / evidence; xác nhận scenario 5; category cho cuộc gọi bị huỷ.
 - **AI tự đánh giá category / cờ chất lượng còn yếu** (khoảng 55% khớp rule khi không thấy baseline). Đã phân tích
   nguyên nhân; cách sửa cần đổi Guardrails G05 nên để lại, không làm vội cuối sprint.

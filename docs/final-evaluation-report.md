@@ -101,7 +101,7 @@ giữ đúng category của rule.
 
 | Giới hạn | Lý do | Ảnh hưởng / giảm thiểu |
 | --- | --- | --- |
-| **Peer Evaluation (T7) chưa thực hiện** | Cần repo và Runbook của bạn còn lại; chưa có trong phiên làm việc | `docs/peer-evaluation-report.md` mới là khung, kèm danh sách chỗ nên thử |
+| **Peer Evaluation (T7): đã làm (2026-10-20)** | — | `docs/peer-evaluation-report.md`: Runbook của bạn còn lại dựng lại được hoàn toàn; 2 issue có tái hiện; 3 điểm thiết kế học được. Hai issue đó có khả năng cũng có ở sản phẩm này (xem "Thiết kế / dữ liệu") |
 | **Kết quả `held-out` chưa có** | Mentor chạy cuối sprint | Mục 4 để trống |
 | **Runbook chưa được người khác chạy thử** | Phụ thuộc Peer Evaluation | Đã tự chạy các lệnh chính của Runbook (import, evaluate, security-eval, batch, import dashboard, web + demo) trên máy phát triển, chưa thử trên máy mới; lúc chạy đã phát hiện và sửa lệnh `import` sai trong README cũ |
 | **Nhãn issue category và evidence ID chưa phải ground truth của Mentor** | Mentor chưa cung cấp | Accuracy category chỉ là đối chiếu với rule; `expected_evidence` để trống |
@@ -111,6 +111,14 @@ giữ đúng category của rule.
 | **Chỉ số "Nếu kịp" ở 4.3 chưa đưa vào report** (khoảng trống PAIR_PING, latency API nội bộ, WARN/ERROR theo service, ISP/ASN theo leg) | Ưu tiên Core và hardening | Không ảnh hưởng mức tối thiểu |
 
 ### Thiết kế / dữ liệu
+
+- **WebRTC log của cuộc gọi khác được nhận theo loại** (phát hiện khi làm Peer Evaluation: sản phẩm của bạn còn lại
+  ra verdict sai, MEDIUM, khi Call-ID trong câu hỏi khác cuộc gọi của file). `ContentUploadValidator` của sản phẩm
+  này có cùng quy ước: WebRTC log không mang Call-ID nên "luôn được nhận theo loại". Rất có thể cùng lỗi, **chưa
+  kiểm bằng chạy thật**. Hướng sửa: end call log trong cùng lượt upload lệch Call-ID thì coi WebRTC log đi kèm là
+  nghi vấn.
+- **Log có BOM UTF-8 hoặc lưu UTF-16 chưa được xử lý** (cùng nguồn phát hiện). Code không có chỗ nào bỏ BOM hay giải
+  mã UTF-16, nên file kiểu này nhiều khả năng bị nhận diện sai loại. **Chưa kiểm bằng chạy thật.**
 
 - **Sanitizer dựa trên mẫu đã biết** (regex + tên field); số điện thoại chỉ nhận dạng dạng VN. Giảm thiểu: AI không
   nhận log gốc hay câu hỏi gốc; context còn sót một giá trị thì không gửi. `security-eval` đã tìm và sửa một lỗ
