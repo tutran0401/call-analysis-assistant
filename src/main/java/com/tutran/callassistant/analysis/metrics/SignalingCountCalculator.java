@@ -11,10 +11,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Các chỉ số dạng đếm (mục 4.3): số lần gửi lại INVITE/BYE, và số lần gặp
@@ -48,8 +48,8 @@ public class SignalingCountCalculator {
     private static final String APP_USER_ID = "appUserId";
     private static final String UNKNOWN_SENDER = "";
     private static final String NO_SESSIONS_MARKER = "no session";
-    /** Hai field text tự do duy nhất trong data mẫu: {@code msg} (end-call log), {@code message} (WebRTC log). */
-    private static final List<String> FREE_TEXT_FIELDS = List.of("msg", "message");
+    /** Text tự do của server trong signaling (chỉ có ở bản export dạng mới). */
+    private static final String SIGNALING_MESSAGE_FIELD = "message";
 
     public MetricResult<Integer> inviteRetransmitCount(CallTimeline timeline) {
         return retransmitCount(timeline, SignalingCommands.INVITE);
@@ -97,25 +97,23 @@ public class SignalingCountCalculator {
      * gặp lỗi session". Nếu signaling export sau này có field text tự do, field đó cũng được
      * tìm vì phép tìm chạy trên mọi nguồn.
      */
+    /**
+     * "No sessions found" là thông báo của <b>server</b> (field {@code message} của signaling), nên chỉ đếm trên
+     * signaling - đúng nguồn ở mục 4.3. Bản export dạng gọn (data mẫu Sprint 1) không có {@code message}: khi đó
+     * không ai biết giá trị thật, nên trả N/A chứ không phải 0. Trước đây phép đếm tìm cả field {@code msg} của
+     * end-call log - log máy không bao giờ chứa chuỗi này, nên cứ đính kèm log máy là ra 0 (peer evaluation).
+     */
     public MetricResult<Integer> noSessionsFoundCount(CallTimeline timeline) {
-        List<CanonicalEvent> events = timeline.events();
-        boolean anyFreeTextField = events.stream().anyMatch(this::hasFreeTextField);
-        if (!anyFreeTextField) {
-            return MetricResult.notAvailable(UNIT_COUNT, MetricSources.SIGNALING_OR_END_CALL,
-                    "các log được cung cấp không có field text tự do (msg/message) nào để tìm");
+        List<CanonicalEvent> signaling = timeline.forSource(EventSource.SIGNALING);
+        if (signaling.stream().noneMatch(e -> e.attribute(SIGNALING_MESSAGE_FIELD) != null)) {
+            return MetricResult.notAvailable(UNIT_COUNT, MetricSources.SIGNALING,
+                    signaling.isEmpty() ? "không có dữ liệu signaling"
+                            : "bản export signaling dạng gọn không có nội dung thông báo (message) của server");
         }
-        long count = events.stream()
-                .flatMap(this::freeTextValues)
-                .filter(text -> text != null && text.toLowerCase().contains(NO_SESSIONS_MARKER))
+        long count = signaling.stream()
+                .map(e -> e.attribute(SIGNALING_MESSAGE_FIELD))
+                .filter(text -> text != null && text.toLowerCase(Locale.ROOT).contains(NO_SESSIONS_MARKER))
                 .count();
-        return MetricResult.of((int) count, UNIT_COUNT, MetricSources.SIGNALING_OR_END_CALL);
-    }
-
-    private boolean hasFreeTextField(CanonicalEvent event) {
-        return FREE_TEXT_FIELDS.stream().anyMatch(field -> event.attribute(field) != null);
-    }
-
-    private Stream<String> freeTextValues(CanonicalEvent event) {
-        return FREE_TEXT_FIELDS.stream().map(event::attribute);
+        return MetricResult.of((int) count, UNIT_COUNT, MetricSources.SIGNALING);
     }
 }

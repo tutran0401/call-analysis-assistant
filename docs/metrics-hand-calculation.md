@@ -189,7 +189,7 @@ việc sửa đơn vị không làm đổi verdict hay category của cuộc g�
 | --- | --- | --- |
 | fail/2D9057AA (callee) | 25 dòng periodic stats **toàn số 0**, kể cả `audio.bytesReceived` — callee chưa từng nhận media (ICE failed) | MOS, packet loss, RTT, jitter. Nếu không lọc thì report sẽ in "MOS 0, Packet loss 0 %, RTT 0 ms" |
 | for_test/0EC7B700 | FAIL_HARD sau RINGING | thiết lập, đổ chuông, kết nối, gửi lại BYE, bên kết thúc; chất lượng cả hai bên. Vẫn có: với tới callee 9402 ms, gửi lại INVITE 4 |
-| for_test/9B556E56 | chỉ có INIT_CALL | mọi chỉ số Core, kể cả "No sessions found" (không có field text tự do nào để tìm) |
+| for_test/9B556E56 | chỉ có INIT_CALL | mọi chỉ số Core, kể cả "No sessions found" (signaling không có field message) |
 | for_test/0A6C2821, 45AA3011 | caller huỷ trong INIT_CALL | mọi chỉ số signaling và chất lượng |
 
 ## 6. "No sessions found"
@@ -197,6 +197,8 @@ việc sửa đơn vị không làm đổi verdict hay category của cuộc g�
 Mục 4.3 ghi nguồn là Signaling, nhưng signaling export mẫu chỉ có field có cấu trúc (`cmd`,
 `service`, `csid`, `requestId`, `appUserId`, `isp`, `asn`, `countryCode`, `latencyMs`,
 `callSessionId`, `level`), **không có field message nào**. Chuỗi "no session" không xuất hiện ở bất
-kỳ file nào trong 20 cuộc gọi mẫu. Code tìm trong mọi field text tự do (`msg`, `message`) của **mọi
-nguồn**: nếu signaling export thật có field message thì cũng được tìm. Không có field nào để tìm thì
-trả N/A chứ không trả 0.
+kỳ file nào trong 20 cuộc gọi mẫu. Code **chỉ đếm field `message` của signaling** (thông báo của
+server, đúng nguồn ở mục 4.3). Signaling không có field này (export dạng gọn) thì trả N/A ("bản export
+signaling dạng gọn không có nội dung thông báo"), không trả 0. Trước 2026-10-20 code tìm cả `msg` của
+end-call log; log máy không bao giờ chứa chuỗi này, nên cứ có end-call log là ra 0 - lỗi do peer evaluation
+tìm ra. Với `new_dataset` (export dạng mới có `message`), `06BCA48C` ra 3 lần.

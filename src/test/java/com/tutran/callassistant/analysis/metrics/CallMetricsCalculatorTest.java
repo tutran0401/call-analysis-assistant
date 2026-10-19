@@ -63,8 +63,9 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.terminator().isAvailable()).isTrue();
         assertThat(metrics.terminator().value()).isEqualTo(Leg.CALLER);
 
-        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
-        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+        // Export dạng gọn không có message của server -> không biết, N/A (mục 4.3), không phải 0.
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("dạng gọn");
 
         // Chỉ số chất lượng lấy giá trị TỆ NHẤT quan sát được trong cả cuộc gọi, không phải dòng
         // periodic stats cuối cùng. Chính cuộc gọi này cho thấy vì sao: dòng cuối báo packet loss
@@ -119,8 +120,9 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
         assertThat(metrics.qualityOf(Leg.CALLEE).mos().isAvailable()).isFalse();
 
-        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
-        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+        // Export dạng gọn không có message của server -> không biết, N/A (mục 4.3), không phải 0.
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("dạng gọn");
     }
 
     /**
@@ -141,9 +143,9 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.byeRetransmitCount().isAvailable()).isFalse();
         assertThat(metrics.terminator().isAvailable()).isFalse();
 
-        // Signaling export hoàn toàn có cấu trúc, không có field msg/message nào để tìm.
+        // Signaling export hoàn toàn có cấu trúc, không có field message nào để tìm.
         assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
-        assertThat(metrics.noSessionsFoundCount().naReason()).contains("không có field text tự do");
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("dạng gọn");
     }
 
     /**
@@ -161,8 +163,9 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
         assertThat(metrics.terminator().isAvailable()).isFalse();
 
-        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
-        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+        // Export dạng gọn không có message của server -> không biết, N/A (mục 4.3), không phải 0.
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("dạng gọn");
 
         assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
     }
@@ -181,8 +184,9 @@ class CallMetricsCalculatorTest {
         assertThat(metrics.inviteRetransmitCount().isAvailable()).isFalse();
         assertThat(metrics.terminator().isAvailable()).isFalse();
 
-        assertThat(metrics.noSessionsFoundCount().isAvailable()).isTrue();
-        assertThat(metrics.noSessionsFoundCount().value()).isEqualTo(0);
+        // Export dạng gọn không có message của server -> không biết, N/A (mục 4.3), không phải 0.
+        assertThat(metrics.noSessionsFoundCount().isAvailable()).isFalse();
+        assertThat(metrics.noSessionsFoundCount().naReason()).contains("dạng gọn");
 
         assertThat(metrics.qualityOf(Leg.CALLER).mos().isAvailable()).isFalse();
     }
@@ -293,5 +297,37 @@ class CallMetricsCalculatorTest {
         } else {
             assertThat(metric.value().toMillis()).isEqualTo(expectedMs);
         }
+    }
+
+    /** Peer evaluation issue 1: chỉ đếm message của server trong signaling; log máy không bao giờ chứa chuỗi này. */
+    @Test
+    void noSessionsFoundIsCountedOnServerMessagesOnly() {
+        java.util.function.BiFunction<String, Long, com.tutran.callassistant.domain.event.CanonicalEvent> server =
+                (message, seq) -> new com.tutran.callassistant.domain.event.CanonicalEvent("CALL-1", Leg.SERVER,
+                        com.tutran.callassistant.domain.event.EventSource.SIGNALING, "signaling.json",
+                        Instant.parse("2026-10-13T07:50:17Z").plusSeconds(seq), "t", 
+                        com.tutran.callassistant.domain.event.TimestampConfidence.EXACT, seq, "INVITE",
+                        java.util.Map.of("message", message), "raw-" + seq);
+        com.tutran.callassistant.domain.event.CanonicalEvent clientMsg = com.tutran.callassistant.testsupport.Events
+                .endCall(Leg.CALLER, "LOG_MESSAGE", "2026-10-13T07:50:30Z", 9,
+                        java.util.Map.of("msg", "No sessions found (client text must not be counted)"));
+        CallTimeline timeline = SampleCalls.timelineBuilder().build("CALL-1", List.of(
+                server.apply("No sessions found for user", 1L), server.apply("forwarded", 2L),
+                server.apply("no sessions found", 3L), clientMsg));
+
+        MetricResult<Integer> count = calculator.calculate(timeline).noSessionsFoundCount();
+
+        assertThat(count.isAvailable()).isTrue();
+        assertThat(count.value()).isEqualTo(2);
+        assertThat(count.source()).isEqualTo("Signaling");
+    }
+
+    @Test
+    void clientLogTextAloneNeverTurnsNoSessionsFoundIntoZero() {
+        CallTimeline timeline = SampleCalls.timelineBuilder().build("CALL-1", List.of(
+                com.tutran.callassistant.testsupport.Events.endCall(Leg.CALLER, "LOG_MESSAGE", "2026-10-13T07:50:30Z", 1,
+                        java.util.Map.of("msg", "hello"))));
+
+        assertThat(calculator.calculate(timeline).noSessionsFoundCount().isAvailable()).isFalse();
     }
 }
