@@ -17,7 +17,7 @@ class BatchStatisticsTest {
         Report base = TestReports.successWithPacketLoss();
         Report report = new Report(base.callId(), verdict, false, category, List.of(), "MEDIUM", "s", List.of(),
                 List.of(), List.of(), List.of());
-        return new ChatResponse("req-1", Intent.ANALYZE_CALL, Set.of(), report, null, degraded, null, List.of(), "", null);
+        return new ChatResponse("req-1", Intent.ANALYZE_CALL, Set.of(), report, null, degraded, null, List.of(), "", null, List.of());
     }
 
     @Test

@@ -97,6 +97,7 @@ class ChatAnalysisServiceTest {
         assertThat(response.report().analysis()).isNotBlank();
         assertThat(response.renderedText()).contains("# Báo cáo phân tích cuộc gọi").contains("Phân tích:");
         assertThat(response.requestId()).startsWith("req-");
+        assertThat(response.reviewFlags()).as("AI khớp rule: không cần kiểm tra").isEmpty();
     }
 
     @Test
@@ -283,6 +284,8 @@ class ChatAnalysisServiceTest {
         assertThat(response.report().confidenceLevel()).isEqualTo("LOW");
         assertThat(response.report().dataLimitations()).anyMatch(l -> l.startsWith("G04"));
         assertThat(response.warnings()).anyMatch(w -> w.startsWith("G04"));
+        assertThat(response.reviewFlags()).as("UI dựa vào đây để hiện banner cần kiểm tra")
+                .isNotEmpty().allMatch(f -> f.startsWith("G04"));
     }
 
     @Test

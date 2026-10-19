@@ -16,6 +16,9 @@ import java.util.Set;
  * @param renderedText   report đã render theo bố cục mục 4.5, để Web UI có bản sao chép nguyên văn
  * @param aiTokens       tổng token của lần gọi phân tích AI (prompt + completion), {@code null} nếu không gọi AI
  *                       hoặc provider không báo - dùng đo chi phí khi so sánh cách dựng context
+ * @param reviewFlags    cờ Guardrails G04 khi AI lệch rule (verdict, nhóm vấn đề hoặc cờ chất lượng); khác rỗng nghĩa
+ *                       là report <b>cần kiểm tra thủ công</b> - Web UI hiện banner. Rỗng khi AI khớp rule hoặc không
+ *                       dùng AI.
  */
 public record ChatResponse(String requestId,
                            Intent intent,
@@ -26,10 +29,12 @@ public record ChatResponse(String requestId,
                            String fallbackReason,
                            List<String> warnings,
                            String renderedText,
-                           Integer aiTokens) {
+                           Integer aiTokens,
+                           List<String> reviewFlags) {
 
     public ChatResponse {
         focus = Set.copyOf(focus);
         warnings = List.copyOf(warnings);
+        reviewFlags = List.copyOf(reviewFlags);
     }
 }

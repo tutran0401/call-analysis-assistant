@@ -43,6 +43,8 @@ export interface ChatResponse {
   fallbackReason: string | null
   warnings: string[]
   renderedText: string
+  /** Cờ Guardrails G04 khi AI lệch rule; khác rỗng = cần kiểm tra thủ công. Bản backend cũ không có trường này. */
+  reviewFlags?: string[]
 }
 
 export interface Health {

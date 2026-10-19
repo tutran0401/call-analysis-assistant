@@ -212,6 +212,42 @@ describe('App', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Elasticsearch chưa chạy')
   })
 
+  it('flags the report for manual review when the AI disagreed with the rules', async () => {
+    mockFetch(() =>
+      json(response({ reviewFlags: ['G04: AI đề xuất nhóm vấn đề ICE_FAILURE khác rule (NETWORK_PACKET_LOSS)'] })),
+    )
+    render(<App />)
+    await userEvent.type(screen.getByLabelText('Câu hỏi'), 'Phân tích')
+    await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
+
+    const banner = await screen.findByRole('alert')
+    expect(banner).toHaveTextContent('Cần kiểm tra thủ công')
+    expect(banner).toHaveTextContent('ICE_FAILURE khác rule')
+  })
+
+  it('shows no review banner when the AI agreed with the rules', async () => {
+    render(<App />)
+    await userEvent.type(screen.getByLabelText('Câu hỏi'), 'Phân tích')
+    await userEvent.click(screen.getByRole('button', { name: 'Phân tích' }))
+    await screen.findByRole('article')
+
+    expect(screen.queryByText(/Cần kiểm tra thủ công/)).toBeNull()
+  })
+
+  it('says which files were left out instead of silently dropping the ninth', async () => {
+    render(<App />)
+    const nine = Array.from({ length: 9 }, (_, i) => new File([String(i)], `log${i + 1}.log`))
+    await userEvent.upload(screen.getByLabelText('Đính kèm file log'), nine)
+
+    expect(screen.getByText('log8.log')).toBeInTheDocument()
+    expect(screen.queryByText('log9.log')).toBeNull()
+    expect(screen.getByRole('alert')).toHaveTextContent('tối đa 8 file')
+    expect(screen.getByRole('alert')).toHaveTextContent('log9.log')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Bỏ log1.log' }))
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
   it('lets the user remove an attached file', async () => {
     render(<App />)
     await userEvent.upload(screen.getByLabelText('Đính kèm file log'), new File(['x'], 'a.log'))

@@ -124,6 +124,17 @@ export default function App() {
               {result.fallbackReason && <span className="muted mono"> [{result.fallbackReason}]</span>}
             </div>
           )}
+          {(result.reviewFlags?.length ?? 0) > 0 && (
+            <div className="banner banner-review" role="alert">
+              <strong>Cần kiểm tra thủ công:</strong> AI và rule-based không cùng kết luận. Đừng dùng báo cáo này làm
+              kết luận cuối trước khi xem lại evidence.
+              <ul>
+                {result.reviewFlags!.map((flag, index) => (
+                  <li key={index}>{flag}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="toolbar">
             <span className="muted mono">{result.requestId}</span>
             <button type="button" className="secondary" onClick={copyReport}>

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 
+// Khớp ChatController.MAX_FILES của backend.
 export const MAX_FILES = 8
 
 interface Props {
@@ -8,16 +9,21 @@ interface Props {
   disabled?: boolean
 }
 
-/** Chọn hoặc kéo-thả nhiều file log; trùng tên + kích thước thì chỉ giữ một. */
+/**
+ * Chọn hoặc kéo-thả nhiều file log; trùng tên + kích thước thì chỉ giữ một. Quá {@link MAX_FILES} thì không nhận
+ * phần dư và <b>nói rõ</b> file nào bị bỏ, thay vì cắt im lặng.
+ */
 export function FilePicker({ files, onChange, disabled }: Props) {
   const input = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
+  const [rejected, setRejected] = useState<string[]>([])
 
   function add(incoming: FileList | File[]) {
     const merged = [...files]
     for (const file of Array.from(incoming)) {
       if (!merged.some((f) => f.name === file.name && f.size === file.size)) merged.push(file)
     }
+    setRejected(merged.slice(MAX_FILES).map((f) => f.name))
     onChange(merged.slice(0, MAX_FILES))
   }
 
@@ -52,6 +58,12 @@ export function FilePicker({ files, onChange, disabled }: Props) {
           }}
         />
       </div>
+      {rejected.length > 0 && (
+        <div className="banner banner-warn" role="alert">
+          Chỉ nhận tối đa {MAX_FILES} file mỗi lần phân tích. Không đính kèm: {rejected.join(', ')}. Bỏ bớt file
+          khác nếu cần phân tích các file này.
+        </div>
+      )}
       {files.length > 0 && (
         <ul className="files">
           {files.map((file) => (
@@ -64,7 +76,10 @@ export function FilePicker({ files, onChange, disabled }: Props) {
                 className="link"
                 disabled={disabled}
                 aria-label={`Bỏ ${file.name}`}
-                onClick={() => onChange(files.filter((f) => f !== file))}
+                onClick={() => {
+                  setRejected([])
+                  onChange(files.filter((f) => f !== file))
+                }}
               >
                 Bỏ
               </button>

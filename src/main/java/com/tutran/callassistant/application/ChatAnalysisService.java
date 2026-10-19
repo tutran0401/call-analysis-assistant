@@ -171,7 +171,7 @@ public class ChatAnalysisService {
 
         if (parsed.isOutOfScope()) {
             return new ChatResponse(requestId, parsed.intent(), Set.of(), null, ParsedRequest.REFUSAL_MESSAGE,
-                    false, null, List.of(), "", null);
+                    false, null, List.of(), "", null, List.of());
         }
 
         String requestedCallId = parsed.callIdInText() != null ? parsed.callIdInText() : request.callId();
@@ -212,7 +212,7 @@ public class ChatAnalysisService {
             warnings.addAll(decision.flags());
             logAiCall(requestId, callRef, result.model(), started, decision.flags().isEmpty() ? "ACCEPTED"
                     : "ACCEPTED_WITH_FLAGS", result.totalTokens(), null);
-            return new AiAttempt(composer.fromAi(rule, decision), null, result.totalTokens());
+            return new AiAttempt(composer.fromAi(rule, decision), null, result.totalTokens(), decision.flags());
         } catch (AiProviderException e) {
             warnings.add("AI: " + e.getMessage());
             return fallback(requestId, callRef, aiProvider.modelName(), started, "AI_" + e.kind().name(), null);
@@ -227,7 +227,7 @@ public class ChatAnalysisService {
                                AiResult result) {
         logAiCall(requestId, callRef, model, started, "FALLBACK", result == null ? null : result.totalTokens(),
                 reason);
-        return new AiAttempt(null, reason, result == null ? null : result.totalTokens());
+        return new AiAttempt(null, reason, result == null ? null : result.totalTokens(), List.of());
     }
 
     private ChatResponse finish(String requestId, ParsedRequest parsed, Report rule, AiAttempt attempt,
@@ -246,8 +246,11 @@ public class ChatAnalysisService {
         warnings.addAll(violations);
 
         List<String> cleanWarnings = warnings.stream().map(outputSanitizer::sanitize).distinct().toList();
+        // Report rơi về rule-based (kể cả do schema hỏng) thì không còn gì của AI để kiểm tra.
+        List<String> reviewFlags = safe.degraded() ? List.of()
+                : attempt.reviewFlags().stream().map(outputSanitizer::sanitize).distinct().toList();
         return new ChatResponse(requestId, parsed.intent(), parsed.focus(), safe, null, safe.degraded(),
-                fallbackReason, cleanWarnings, renderer.render(safe), attempt.tokens());
+                fallbackReason, cleanWarnings, renderer.render(safe), attempt.tokens(), reviewFlags);
     }
 
     private void logRequest(ChatResponse response, long startedNanos) {
@@ -302,6 +305,6 @@ public class ChatAnalysisService {
         return merged;
     }
 
-    private record AiAttempt(Report report, String fallbackReason, Integer tokens) {
+    private record AiAttempt(Report report, String fallbackReason, Integer tokens, List<String> reviewFlags) {
     }
 }
