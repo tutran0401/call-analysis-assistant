@@ -6,6 +6,9 @@ package com.tutran.callassistant.ingest.es;
  * <p>Denormalize {@code callId} vào từng sự kiện (file export mentor cung cấp chỉ có nó một lần, ở
  * đầu file) để việc query "theo Call-ID" - cách truy cập mà cả hệ thống dựa vào - chỉ đơn giản là
  * một term filter.
+ *
+ * <p>{@code exportTruncated} ({@code "<returned>/<total>"}) cũng được denormalize vào từng sự kiện khi bản export bị
+ * cắt bớt, để "Giới hạn dữ liệu" vẫn biết điều này khi signaling lấy từ ES.
  */
 public record SignalingEventDoc(
         String callId,
@@ -21,6 +24,7 @@ public record SignalingEventDoc(
         String countryCode,
         Integer latencyMs,
         String message,
-        String rawEvent
+        String rawEvent,
+        String exportTruncated
 ) {
 }

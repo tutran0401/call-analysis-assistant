@@ -283,6 +283,23 @@ cases:
     split: dev
     label_source: "verdict=hand-verified-against-raw-logs; quality flag/category relabelled 2026-10-20 after the peer evaluation: whole-call packet loss 1.83 % (caller) / 0.52 % (callee) from the cumulative counters, below 5 %; the old label used the 11.32 % peak of one stats interval. No mentor label"
     notes: "for_test/271D1FAF - mất gói đỉnh 11,32 % một khoảng đo, cả cuộc 1,83 %"
+  - case_id: case-021
+    call_id: B5F19381-9733-8C14-F148-3DD427CFF29A
+    files:
+      - callee_endcall.log
+      - callee_webrtc.log
+      - caller_endcall.log
+      - caller_webrtc.log
+    questions:
+      - "Phân tích cuộc gọi này giúp mình"
+      - "Vì sao bên gọi nghe tiếng bị rè và ngắt quãng?"
+      - "Chất lượng âm thanh cuộc gọi này có ổn không?"
+    expected_verdict: SUCCESS
+    expected_quality_flag: true
+    expected_issue_category: NETWORK_PACKET_LOSS
+    split: dev
+    label_source: "rule output hand-verified 2026-10-20: whole-call packet loss caller 8.48 % (packetsLost/(packetsLost+packetsReceived), above 5 %), callee 1.8 %; no mentor label (new_dataset is unlabelled)"
+    notes: "new_dataset/B5F19381 - ca SUCCESS chất lượng kém thay cho 271D1FAF (mục 6.3); cũng là demo scenario 2"
   - case_id: case-017
     call_id: 311A9B6A-0D30-4C30-9E01-9A42E4EF11E6
     files:

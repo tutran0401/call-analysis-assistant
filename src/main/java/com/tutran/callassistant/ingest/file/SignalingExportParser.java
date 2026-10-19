@@ -1,5 +1,6 @@
 package com.tutran.callassistant.ingest.file;
 
+import com.tutran.callassistant.analysis.SignalingCommands;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutran.callassistant.domain.event.CanonicalEvent;
@@ -69,11 +70,12 @@ public class SignalingExportParser implements LogParser {
 
         List<CanonicalEvent> events = new ArrayList<>();
         List<String> warnings = new ArrayList<>();
+        String truncation = SignalingExportFormat.truncation(root);
         int index = 0;
         for (JsonNode eventNode : eventsNode) {
             index++;
             try {
-                events.add(toEvent(SignalingExportFormat.normalize(eventNode), callId, path, index));
+                events.add(toEvent(SignalingExportFormat.normalize(eventNode), callId, path, index, truncation));
             } catch (RuntimeException e) {
                 warnings.add("Skipped malformed signaling event #" + index + " in " + path
                         + " - " + e.getMessage());
@@ -97,7 +99,8 @@ public class SignalingExportParser implements LogParser {
         return SignalingExportFormat.callId(root, fallback);
     }
 
-    private CanonicalEvent toEvent(JsonNode eventNode, String callId, Path path, int sequenceNumber) {
+    private CanonicalEvent toEvent(JsonNode eventNode, String callId, Path path, int sequenceNumber,
+                                   String truncation) {
         String rawTimestamp = eventNode.path(TIMESTAMP_FIELD).asText(null);
         if (rawTimestamp == null) {
             throw new IllegalArgumentException("missing " + TIMESTAMP_FIELD);
@@ -120,9 +123,16 @@ public class SignalingExportParser implements LogParser {
                 TimestampConfidence.EXACT,
                 sequenceNumber,
                 cmd != null ? cmd : DEFAULT_EVENT_TYPE,
-                flattenAttributes(eventNode),
+                withTruncation(flattenAttributes(eventNode), truncation),
                 eventNode.toString()
         );
+    }
+
+    private static Map<String, String> withTruncation(Map<String, String> attributes, String truncation) {
+        if (truncation != null) {
+            attributes.put(SignalingCommands.EXPORT_TRUNCATED_ATTRIBUTE, truncation);
+        }
+        return attributes;
     }
 
     private Map<String, String> flattenAttributes(JsonNode eventNode) {

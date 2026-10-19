@@ -41,4 +41,11 @@ public final class SignalingCommands {
 
     private SignalingCommands() {
     }
+
+    /**
+     * Thuộc tính gắn vào MỌI event signaling của một bản export bị cắt bớt ({@code "truncated": true}), giá trị
+     * {@code "<returned>/<total_matching>"}. Gắn vào event (không chỉ là cảnh báo lúc parse) để thông tin còn sống
+     * qua Elasticsearch và tới được "Giới hạn dữ liệu" / độ tin cậy (peer evaluation, 2026-10-20).
+     */
+    public static final String EXPORT_TRUNCATED_ATTRIBUTE = "exportTruncated";
 }

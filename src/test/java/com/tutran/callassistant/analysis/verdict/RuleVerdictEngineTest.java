@@ -195,6 +195,20 @@ class RuleVerdictEngineTest {
         assertThat(result.qualityFlag()).isFalse();
     }
 
+    /** Peer evaluation issue 3: export bị cắt bớt là dữ liệu thiếu - nêu ra và không được HIGH. */
+    @Test
+    void truncatedSignalingExportIsADataLimitationAndCapsConfidence() {
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS), SampleCalls.SUCCESS_FULL_LOGS);
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+        assertThat(result.dataLimitations()).anyMatch(l -> l.contains("cắt bớt") && l.contains("200/201"));
+        assertThat(new com.tutran.callassistant.report.confidence.EvidenceBasedConfidencePolicy().assess(result).level())
+                .isEqualTo(com.tutran.callassistant.domain.report.ConfidenceLevel.MEDIUM);
+    }
+
     @Test
     void packetLossFlagUsesTheWholeCallAndCitesTheStatsLine() {
         CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(

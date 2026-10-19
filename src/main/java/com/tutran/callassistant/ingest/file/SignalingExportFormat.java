@@ -33,6 +33,14 @@ public final class SignalingExportFormat {
         return logs.isArray() ? logs : MissingNode.getInstance();
     }
 
+    /** {@code "<returned>/<total_matching>"} khi bản export ghi {@code "truncated": true}, ngược lại {@code null}. */
+    public static String truncation(JsonNode root) {
+        if (!root.path("truncated").asBoolean(false)) {
+            return null;
+        }
+        return root.path("returned").asText("?") + "/" + root.path("total_matching").asText("?");
+    }
+
     /** Call-ID ghi trong file ({@code callId} hoặc {@code call_id}), không có thì {@code fallback}. */
     public static String callId(JsonNode root, String fallback) {
         String callId = root.path("callId").asText(null);

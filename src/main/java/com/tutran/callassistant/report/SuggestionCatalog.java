@@ -75,6 +75,8 @@ public class SuggestionCatalog {
                 out.add("Bổ sung " + file + " để " + ("endcall".equals(missing.group(2))
                         ? "có call summary (MOS, packet loss) và client state timeline của "
                         : "kiểm tra sự kiện ICE / TURN / PeerConnection của ") + missing.group(1) + ".");
+            } else if (limitation.toLowerCase(Locale.ROOT).contains("cắt bớt")) {
+                out.add("Xuất lại signaling đầy đủ của cuộc gọi (bản hiện có bị cắt bớt) rồi import lại.");
             } else if (limitation.toLowerCase(Locale.ROOT).contains("signaling")) {
                 out.add("Kiểm tra Call-ID và việc đã import signaling của cuộc gọi vào Elasticsearch local.");
             }

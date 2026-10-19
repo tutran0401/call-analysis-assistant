@@ -28,6 +28,8 @@ class SignalingExportParserTest {
 
         assertThat(result.events()).hasSize(200);
         assertThat(result.warnings()).anyMatch(w -> w.contains("truncated"));
+        // Cờ cắt bớt đi theo từng event để sống qua Elasticsearch và tới được "Giới hạn dữ liệu".
+        assertThat(result.events()).allSatisfy(e -> assertThat(e.attribute("exportTruncated")).isEqualTo("200/201"));
         assertThat(result.events()).allSatisfy(e -> {
             assertThat(e.leg()).isEqualTo(Leg.SERVER);
             assertThat(e.source()).isEqualTo(EventSource.SIGNALING);

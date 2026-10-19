@@ -3,6 +3,7 @@ package com.tutran.callassistant.ingest.es;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import com.tutran.callassistant.analysis.SignalingCommands;
 import com.tutran.callassistant.application.CallReference;
 import com.tutran.callassistant.application.port.out.SignalingEventSource;
 import com.tutran.callassistant.application.port.out.SignalingFetchError;
@@ -145,6 +146,7 @@ public class ElasticsearchSignalingSource implements SignalingEventSource {
         putIfPresent(attributes, "countryCode", doc.countryCode());
         // Text tự do của server (chỉ có ở export dạng mới) - cần cho phép đếm "No sessions found".
         putIfPresent(attributes, "message", doc.message());
+        putIfPresent(attributes, SignalingCommands.EXPORT_TRUNCATED_ATTRIBUTE, doc.exportTruncated());
         if (doc.latencyMs() != null) {
             attributes.put("latencyMs", String.valueOf(doc.latencyMs()));
         }

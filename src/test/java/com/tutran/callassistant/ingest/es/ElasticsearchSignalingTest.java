@@ -88,7 +88,7 @@ class ElasticsearchSignalingTest {
             List<Hit<SignalingEventDoc>> hits = IntStream.range(from, to)
                     .mapToObj(i -> Hit.<SignalingEventDoc>of(h -> h.index("signaling").id("doc-" + i).source(
                             new SignalingEventDoc(CALL_ID, "2026-01-01T00:00:00Z", "PING", null, null, null, null,
-                                    null, null, null, null, null, null, "{}"))))
+                                    null, null, null, null, null, null, "{}", null))))
                     .toList();
             return SearchResponse.<SignalingEventDoc>of(r -> r.took(1).timedOut(false)
                     .shards(sh -> sh.total(1).successful(1).failed(0))

@@ -51,7 +51,9 @@ class CallAnalysisPipelineTest {
 
         assertThat(outcome.report().callId()).isEqualTo(SampleCalls.SUCCESS_FULL_LOGS);
         assertThat(outcome.report().verdict()).isEqualTo("SUCCESS");
-        assertThat(outcome.report().confidenceLevel()).isEqualTo("HIGH");
+        // Export signaling của cuộc gọi này bị cắt bớt (200/201): dữ liệu thiếu một phần -> MEDIUM (mục 7.2).
+        assertThat(outcome.report().confidenceLevel()).isEqualTo("MEDIUM");
+        assertThat(outcome.report().dataLimitations()).anyMatch(l -> l.contains("cắt bớt"));
         assertThat(outcome.report().evidence()).isNotEmpty();
         assertThat(outcome.report().metrics()).isNotEmpty();
         // Guard nằm trong pipeline, nên report sai schema sẽ hiện thành ghi chú ngay ở đây.

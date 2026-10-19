@@ -62,7 +62,9 @@ class RuleBasedReportAssemblerTest {
         Report report = reportFor(SampleCalls.success(callId), callId);
 
         assertThat(report.issueCategory()).isEqualTo("NONE");
-        assertThat(report.suggestions()).isEmpty();
+        // Không có đề xuất xử lý sự cố; chỉ còn đề xuất bổ sung dữ liệu cho phần thiếu (export bị cắt bớt).
+        assertThat(report.suggestions()).containsExactly(
+                "Xuất lại signaling đầy đủ của cuộc gọi (bản hiện có bị cắt bớt) rồi import lại.");
     }
 
     @Test

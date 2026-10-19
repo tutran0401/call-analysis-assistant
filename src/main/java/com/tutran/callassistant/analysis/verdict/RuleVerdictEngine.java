@@ -57,7 +57,7 @@ public class RuleVerdictEngine implements VerdictEngine {
         FailureCauseClassifier causeClassifier =
                 new FailureCauseClassifier(new TurnFailureDetector(), iceFailureDetector);
         return new RuleVerdictEngine(
-                List.of(new MissingEndCallLogDetector()),
+                List.of(new MissingEndCallLogDetector(), new TruncatedSignalingDetector()),
                 List.of(new MissingSignalingDataRule(),
                         new ExplicitTerminationRule(causeClassifier),
                         new MissingClientLogsRule(),

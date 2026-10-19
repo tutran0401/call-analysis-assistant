@@ -79,6 +79,7 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
                 .properties("countryCode", Property.of(p -> p.keyword(k -> k)))
                 .properties("latencyMs", Property.of(p -> p.integer(i -> i)))
                 .properties("message", Property.of(p -> p.text(t -> t)))
+                .properties("exportTruncated", Property.of(p -> p.keyword(k -> k)))
                 .properties("rawEvent", Property.of(p -> p.text(t -> t))));
     }
 
@@ -104,12 +105,13 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
         }
 
         List<IndexedDocument> documents = new ArrayList<>();
+        String truncation = SignalingExportFormat.truncation(root);
         for (JsonNode event : events) {
             String timestamp = event.path("@timestamp").asText(null);
             if (timestamp == null) {
                 continue;
             }
-            SignalingEventDoc doc = toDocument(callId, timestamp, SignalingExportFormat.normalize(event));
+            SignalingEventDoc doc = toDocument(callId, timestamp, SignalingExportFormat.normalize(event), truncation);
             documents.add(new IndexedDocument(deterministicId(callId, doc), doc));
         }
         if (documents.isEmpty()) {
@@ -135,7 +137,7 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
         return documents.size();
     }
 
-    private SignalingEventDoc toDocument(String callId, String timestamp, JsonNode event) {
+    private SignalingEventDoc toDocument(String callId, String timestamp, JsonNode event, String truncation) {
         return new SignalingEventDoc(
                 callId,
                 timestamp,
@@ -150,7 +152,8 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
                 textOrNull(event, "countryCode"),
                 event.hasNonNull("latencyMs") ? event.get("latencyMs").asInt() : null,
                 textOrNull(event, "message"),
-                event.toString());
+                event.toString(),
+                truncation);
     }
 
     private String textOrNull(JsonNode node, String field) {
