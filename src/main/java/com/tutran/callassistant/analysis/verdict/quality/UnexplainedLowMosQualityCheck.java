@@ -36,7 +36,9 @@ public class UnexplainedLowMosQualityCheck implements QualityCheck {
             if (quality.mos().fallsBelow(thresholds.mos())) {
                 return Optional.of(new QualityIssue(IssueCategory.UNKNOWN,
                         leg + " MOS " + quality.mos().value() + " is below " + thresholds.mos()
-                                + " but no specific network metric explains it"));
+                                + " but no specific network metric explains it", leg,
+                        "Periodic stats của " + leg + ": MOS thấp nhất " + quality.mos().value()
+                                + " dưới ngưỡng " + thresholds.mos()));
             }
         }
         return Optional.empty();

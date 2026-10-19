@@ -33,10 +33,14 @@ public class DelayJitterQualityCheck implements QualityCheck {
             if (quality == null) {
                 continue;
             }
-            if (quality.jitterMs().exceeds(thresholds.jitterMs())
-                    || quality.rttMs().exceeds(thresholds.rttMs())) {
+            // Trung bình cả cuộc, không phải mẫu cao nhất: một khoảng đo xấu không làm cả cuộc chất lượng kém.
+            if (quality.meanJitterMs().exceeds(thresholds.jitterMs())
+                    || quality.meanRttMs().exceeds(thresholds.rttMs())) {
                 return Optional.of(new QualityIssue(IssueCategory.NETWORK_DELAY_JITTER,
-                        leg + " jitter/RTT exceeds warning thresholds"));
+                        leg + " mean jitter/RTT exceeds warning thresholds", leg,
+                        "Periodic stats của " + leg + ": jitter trung bình " + quality.meanJitterMs().display()
+                                + ", RTT trung bình " + quality.meanRttMs().display() + " (ngưỡng " + thresholds.jitterMs()
+                                + " ms / " + thresholds.rttMs() + " ms)"));
             }
         }
         return Optional.empty();

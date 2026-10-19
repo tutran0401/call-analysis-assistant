@@ -22,7 +22,7 @@ SCENARIOS = [
      "files": ["caller_endcall.log", "callee_endcall.log", "caller_webrtc.log", "callee_webrtc.log"],
      "questions": ["Phân tích cuộc gọi này giúp mình"]},
     {"id": 2, "name": "Chất lượng kém", "expected": "SUCCESS + cờ chất lượng, NETWORK_PACKET_LOSS",
-     "call": "271D1FAF", "files": "*",
+     "call": "B5F19381", "files": "*",
      "questions": ["Vì sao bên nhận nghe bị rè?"]},
     {"id": 3, "name": "Lỗi thiết lập", "expected": "FAIL, SIGNALING_FAILURE",
      "call": "1B009D42", "files": ["caller_endcall.log", "caller_webrtc.log"],

@@ -22,7 +22,7 @@ và `.txt` (report theo mẫu 4.5). Khi demo trực tiếp trên Web UI, kéo th
 | # | Scenario | Cuộc gọi | File đính kèm | Câu hỏi | Kỳ vọng (spec) |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Bình thường | `DE7DD314` | 4 file | "Phân tích cuộc gọi này giúp mình" | `SUCCESS`, không cờ |
-| 2 | Chất lượng kém | `271D1FAF` | 4 file | "Vì sao bên nhận nghe bị rè?" | `SUCCESS` + cờ, `NETWORK_PACKET_LOSS` |
+| 2 | Chất lượng kém | `B5F19381` (new_dataset; mất gói cả cuộc 8,48 %) | 4 file | "Vì sao bên nhận nghe bị rè?" | `SUCCESS` + cờ, `NETWORK_PACKET_LOSS` |
 | 3 | Lỗi thiết lập | `1B009D42` | `caller_endcall.log`, `caller_webrtc.log` | "Vì sao cuộc gọi này không kết nối được?" | `FAIL`, `SIGNALING_FAILURE` |
 | 4 | Lỗi media | `2D9057AA` | `callee_endcall.log`, `callee_webrtc.log` | "Có lỗi kết nối media không?" | `FAIL`, `ICE_FAILURE` |
 | 5 | Thiếu dữ liệu | `DE7DD314` | chỉ `caller_webrtc.log` | "Phân tích cuộc gọi này giúp mình" | `UNKNOWN`, nêu rõ file thiếu - **xem ghi chú** |

@@ -47,11 +47,13 @@ public class IssueCategoryRegistry {
                         IssueCategory.NETWORK_PACKET_LOSS,
                         "Cuộc gọi kết nối được và giữ được kết nối, nhưng chất lượng audio/video giảm vì "
                                 + "gói tin bị mất trên đường truyền - không phải lỗi thiết lập kết nối.",
-                        List.of("audio.packetLostPercent cao", "MOS thấp"),
+                        List.of("Mất gói cả cuộc cao (audio.packetsLost / packetsReceived)", "MOS thấp"),
                         List.of("End-call log: call summary / periodic stats "
                                 + "(audio.packetLostPercent, audio.audioMos)"),
-                        "audio.packetLostPercent > " + thresholds.packetLossPercent() + "% HOẶC audio.audioMos < "
-                                + thresholds.mos() + " ở một trong hai bên",
+                        "mất gói CẢ CUỘC (audio.packetsLost / (packetsLost + packetsReceived)) > "
+                                + thresholds.packetLossPercent() + "% ở một trong hai bên; log không có bộ đếm cộng dồn "
+                                + "thì dùng mẫu audio.packetLostPercent cao nhất. (MOS < " + thresholds.mos()
+                                + " mà mất gói không vượt ngưỡng: vẫn gắn cờ nhưng category UNKNOWN)",
                         "NETWORK_DELAY_JITTER - mất gói cao và jitter/RTT cao thường đi cùng nhau; nếu log "
                                 + "thiếu jitter/RTT thì không phân định được cái nào là nguyên nhân chính"
                 ),
@@ -61,8 +63,9 @@ public class IssueCategoryRegistry {
                                 + "jitter mạng, chứ không phải do mất gói.",
                         List.of("audio.jitter cao", "transport.currentRttMs cao"),
                         List.of("End-call log: periodic stats (audio.jitter, transport.currentRttMs)"),
-                        "audio.jitter > " + thresholds.jitterMs() + "ms HOẶC transport.currentRttMs > "
-                                + thresholds.rttMs() + "ms",
+                        "jitter TRUNG BÌNH (audio.jitter) > " + thresholds.jitterMs() + "ms HOẶC RTT TRUNG BÌNH "
+                                + "(transport.currentRttMs) > " + thresholds.rttMs() + "ms ở một bên, tính trên các mẫu "
+                                + "periodic stats có media (mẫu cao nhất chỉ để đối chiếu)",
                         "NETWORK_PACKET_LOSS - field RTT/jitter không phải lúc nào cũng có trong log "
                                 + "(tuỳ thiết bị/phiên bản); khi thiếu thì không tách được khỏi mất gói, và "
                                 + "report phải nói rõ điều đó thay vì đoán"

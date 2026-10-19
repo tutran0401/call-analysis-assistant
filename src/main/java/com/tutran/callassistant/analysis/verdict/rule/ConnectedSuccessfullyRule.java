@@ -41,6 +41,8 @@ public class ConnectedSuccessfullyRule implements VerdictRule {
                     "Cuộc gọi thiết lập được và kết thúc bình thường, không phát hiện vấn đề chất lượng."));
         }
         IssueCategory category = issue.get().category();
+        // Mục 3.3: cờ chất lượng phải trace được về dòng log - ghi dòng periodic stats cuối của bên bị ảnh hưởng.
+        context.recordQualityEvidence(issue.get());
         return Optional.of(context.success(true, category,
                 "Cuộc gọi thiết lập được và kết thúc bình thường, nhưng chất lượng bị giảm ("
                         + category + ")."));

@@ -168,6 +168,18 @@ trị đó xuất hiện. "mọi dòng" nghĩa là mọi dòng có media đều 
 | --- | --- | --- | --- | --- | --- | --- |
 | for_test/271D1FAF | caller | 80/80 | 4.10477 (170) | 11.3208 % (108) | 115 ms (170) | 0.022 s = 22 ms (98) |
 | for_test/271D1FAF | callee | 80/80 | 4.34143 (97) | 7.54717 % (119) | 82 ms (166) | 0.012 s = 12 ms (159) |
+
+**Cập nhật 2026-10-20 (peer evaluation):** các cột trên là **mẫu cao nhất**, nay chỉ còn để đối chiếu. Ngưỡng chất
+lượng dùng giá trị **cả cuộc**: mất gói = `audio.packetsLost / (packetsLost + packetsReceived)` ở mẫu có tổng gói lớn
+nhất (bộ đếm cộng dồn); RTT / jitter = trung bình các mẫu có media. Tính tay trên chính log:
+
+| Cuộc | Bên | Mất gói đỉnh | **Mất gói cả cuộc** | Cờ |
+| --- | --- | --- | --- | --- |
+| for_test/271D1FAF | caller / callee | 11.32 % / 7.55 % | **1.83 % / 0.52 %** | không |
+| new_dataset/06BCA48C | caller | 38.57 % | **0.36 %** | không |
+| new_dataset/4FD495C1 | caller | 18.0 % | **1.39 %** | không |
+| new_dataset/FE4E4BDC | callee | 100 % | **4.65 %** | không theo mất gói; RTT trung bình caller 692.6 ms → `NETWORK_DELAY_JITTER` |
+| new_dataset/B5F19381 | caller | 49.5 % | **8.48 %** | `NETWORK_PACKET_LOSS` |
 | success/DE7DD314 | caller | 359/359 | 4.41438 (595) | 2.04082 % (274) | 107 ms (209) | 0.02 s = 20 ms (158) |
 | success/DE7DD314 | callee | 359/359 | 4.4013 (568) | 2.0 % (455) | 152 ms (569) | 0.022 s = 22 ms (215) |
 | success/EE129C8F | caller | 36/36 | 4.40913 (101) | 0 % (mọi dòng) | 134 ms (101) | 0.02 s = 20 ms (142) |

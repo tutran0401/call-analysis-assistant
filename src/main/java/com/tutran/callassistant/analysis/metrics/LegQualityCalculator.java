@@ -41,6 +41,9 @@ public class LegQualityCalculator {
      */
     private static final double JITTER_SECONDS_TO_MS = 1000.0;
     private static final String FIELD_BYTES_RECEIVED = "audio.bytesReceived";
+    /** Bộ đếm CỘNG DỒN từ đầu stream (W3C RTCInboundRtpStreamStats) - căn cứ tính mất gói cả cuộc. */
+    private static final String FIELD_PACKETS_LOST = "audio.packetsLost";
+    private static final String FIELD_PACKETS_RECEIVED = "audio.packetsReceived";
 
     public LegQualityMetrics calculate(CallTimeline timeline, Leg leg) {
         List<CanonicalEvent> periodicStats = timeline.forSourceAndLeg(EventSource.END_CALL, leg).stream()
@@ -60,7 +63,10 @@ public class LegQualityCalculator {
                     MetricResult.notAvailable("%", MetricSources.END_CALL, reason),
                     MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
                     MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
-                    webrtcKeyEvents(timeline, leg));
+                    webrtcKeyEvents(timeline, leg),
+                    MetricResult.notAvailable("%", MetricSources.END_CALL, reason),
+                    MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
+                    MetricResult.notAvailable("ms", MetricSources.END_CALL, reason));
         }
 
         List<CanonicalEvent> withMedia = periodicStats.stream().filter(this::hasReceivedMedia).toList();
@@ -72,7 +78,10 @@ public class LegQualityCalculator {
                     MetricResult.notAvailable("%", MetricSources.END_CALL, reason),
                     MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
                     MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
-                    webrtcKeyEvents(timeline, leg));
+                    webrtcKeyEvents(timeline, leg),
+                    MetricResult.notAvailable("%", MetricSources.END_CALL, reason),
+                    MetricResult.notAvailable("ms", MetricSources.END_CALL, reason),
+                    MetricResult.notAvailable("ms", MetricSources.END_CALL, reason));
         }
 
         return new LegQualityMetrics(
@@ -80,7 +89,66 @@ public class LegQualityCalculator {
                 worstOf(withMedia, FIELD_PACKET_LOSS, "%", Worst.HIGHEST, 1.0),
                 worstOf(withMedia, FIELD_RTT, "ms", Worst.HIGHEST, 1.0),
                 worstOf(withMedia, FIELD_JITTER, "ms", Worst.HIGHEST, JITTER_SECONDS_TO_MS),
-                webrtcKeyEvents(timeline, leg));
+                webrtcKeyEvents(timeline, leg),
+                wholeCallPacketLoss(withMedia),
+                meanOf(withMedia, FIELD_RTT, 1.0),
+                meanOf(withMedia, FIELD_JITTER, JITTER_SECONDS_TO_MS));
+    }
+
+    /**
+     * Trung bình trên các mẫu có media - giá trị cho ngưỡng trễ / jitter. Một mẫu RTT 710 ms giữa cuộc không làm cả
+     * cuộc "trễ cao"; cùng lý do với mất gói cả cuộc (peer evaluation 2026-10-20).
+     */
+    MetricResult<Double> meanOf(List<CanonicalEvent> samples, String attribute, double scale) {
+        List<Double> values = samples.stream().map(s -> number(s.attribute(attribute)))
+                .filter(v -> v != null && v >= 0).toList();
+        if (values.isEmpty()) {
+            return MetricResult.notAvailable("ms", MetricSources.END_CALL, "log này không có field " + attribute);
+        }
+        double mean = values.stream().mapToDouble(Double::doubleValue).average().orElseThrow() * scale;
+        return MetricResult.of(Math.round(mean * 10.0) / 10.0, "ms", MetricSources.END_CALL);
+    }
+
+    /**
+     * Mất gói của <b>cả cuộc gọi</b>: {@code packetsLost / (packetsLost + packetsReceived)} ở mẫu có tổng số gói lớn
+     * nhất (hai bộ đếm cộng dồn từ đầu stream; lấy mẫu lớn nhất thay cho mẫu cuối để chịu được bộ đếm bị reset khi
+     * stream khởi tạo lại).
+     *
+     * <p>{@code audio.packetLostPercent} chỉ là tỉ lệ trong <i>khoảng</i> giữa hai lần đo: một khoảng ngắn mất 38 %
+     * không có nghĩa cả cuộc kém. Trên data, {@code 06BCA48C} đỉnh 38,6 % nhưng cả cuộc 0,36 %;
+     * {@code 271D1FAF} đỉnh 11,3 %, cả cuộc 1,83 % (peer evaluation, 2026-10-20).
+     */
+    MetricResult<Double> wholeCallPacketLoss(List<CanonicalEvent> samples) {
+        double bestTotal = -1;
+        double bestLost = 0;
+        for (CanonicalEvent sample : samples) {
+            Double lost = number(sample.attribute(FIELD_PACKETS_LOST));
+            Double received = number(sample.attribute(FIELD_PACKETS_RECEIVED));
+            if (lost == null || received == null || lost < 0 || received < 0) {
+                continue;
+            }
+            double total = lost + received;
+            if (total > bestTotal) {
+                bestTotal = total;
+                bestLost = lost;
+            }
+        }
+        if (bestTotal <= 0) {
+            return MetricResult.notAvailable("%", MetricSources.END_CALL,
+                    "log không có bộ đếm cộng dồn " + FIELD_PACKETS_LOST + " / " + FIELD_PACKETS_RECEIVED);
+        }
+        return MetricResult.of(Math.round(bestLost / bestTotal * 100.0 * 100.0) / 100.0, "%", MetricSources.END_CALL);
+    }
+
+    private static Double number(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        try {
+            return Double.parseDouble(raw);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     /**

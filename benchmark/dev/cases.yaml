@@ -278,11 +278,11 @@ cases:
       - "Vì sao bên nhận nghe bị rè?"
       - "Chất lượng âm thanh cuộc gọi này thế nào?"
     expected_verdict: SUCCESS
-    expected_quality_flag: true
-    expected_issue_category: NETWORK_PACKET_LOSS
+    expected_quality_flag: false
+    expected_issue_category: NONE
     split: dev
-    label_source: "verdict+category=hand-verified-against-raw-logs (docs/sample-run-report.md 1.1); no mentor label"
-    notes: "for_test/271D1FAF"
+    label_source: "verdict=hand-verified-against-raw-logs; quality flag/category relabelled 2026-10-20 after the peer evaluation: whole-call packet loss 1.83 % (caller) / 0.52 % (callee) from the cumulative counters, below 5 %; the old label used the 11.32 % peak of one stats interval. No mentor label"
+    notes: "for_test/271D1FAF - mất gói đỉnh 11,32 % một khoảng đo, cả cuộc 1,83 %"
   - case_id: case-017
     call_id: 311A9B6A-0D30-4C30-9E01-9A42E4EF11E6
     files:

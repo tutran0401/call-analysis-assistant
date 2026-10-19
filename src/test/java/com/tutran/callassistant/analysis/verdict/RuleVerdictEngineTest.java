@@ -183,14 +183,30 @@ class RuleVerdictEngineTest {
     }
 
     @Test
-    void shortAudioGapsMidCallAreAQualityIssueNotADroppedCall() {
+    void shortAudioGapsMidCallAreNotADroppedCall() {
         CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
                 SampleCalls.newDataset(SampleCalls.NEW_SHORT_GAPS_NOT_DROPPED), SampleCalls.NEW_SHORT_GAPS_NOT_DROPPED);
 
         RuleVerdictResult result = evaluate(timeline);
 
         assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
+        // Mẫu packet loss cao nhất 38.6 % nhưng mất gói cả cuộc chỉ 0.36 %, RTT / jitter trung bình bình thường:
+        // không gắn cờ (trước peer evaluation, cờ bật theo mẫu đỉnh).
+        assertThat(result.qualityFlag()).isFalse();
+    }
+
+    @Test
+    void packetLossFlagUsesTheWholeCallAndCitesTheStatsLine() {
+        CallTimeline timeline = SampleCalls.timelineWithAllClientLogs(
+                SampleCalls.newDataset("B5F19381-9733-8C14-F148-3DD427CFF29A"), "B5F19381-9733-8C14-F148-3DD427CFF29A");
+
+        RuleVerdictResult result = evaluate(timeline);
+
+        assertThat(result.verdict()).isEqualTo(Verdict.SUCCESS);
         assertThat(result.qualityFlag()).isTrue();
+        assertThat(result.issueCategory()).isEqualTo(IssueCategory.NETWORK_PACKET_LOSS);
+        // Mục 3.3: cờ chất lượng trace được về dòng periodic stats.
+        assertThat(result.evidence()).anySatisfy(e -> assertThat(e.description()).contains("mất gói cả cuộc 8.48%"));
     }
 
     @Test

@@ -46,8 +46,11 @@ public class MetricRowCatalog {
             }
             String label = leg.name().toLowerCase(Locale.ROOT);
             rows.add(plain("MOS thấp nhất (" + label + ")", quality.mos()));
-            rows.add(plain("Packet loss cao nhất (" + label + ")", quality.packetLossPercent()));
+            rows.add(plain("Packet loss cả cuộc (" + label + ")", quality.wholeCallPacketLossPercent()));
+            rows.add(plain("Packet loss mẫu cao nhất (" + label + ")", quality.packetLossPercent()));
+            rows.add(plain("RTT trung bình (" + label + ")", quality.meanRttMs()));
             rows.add(plain("RTT cao nhất (" + label + ")", quality.rttMs()));
+            rows.add(plain("Jitter trung bình (" + label + ")", quality.meanJitterMs()));
             rows.add(plain("Jitter cao nhất (" + label + ")", quality.jitterMs()));
             rows.add(plain("Sự kiện ICE/TURN (" + label + ")", quality.webrtcKeyEvents()));
         }

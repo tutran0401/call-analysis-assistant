@@ -31,6 +31,7 @@ public final class VerdictContext {
 
     /** Tên event của dòng call summary trong end-call log - nơi chứa client state timeline. */
     private static final String CALL_SUMMARY_EVENT = "CALL_SUMMARY";
+    private static final String PERIODIC_STATS_EVENT = "PERIODIC_STATS";
     private static final String CLIENT_STATUS_FIELD = "status";
     /** Trạng thái đích của client state timeline; chưa tới đây nghĩa là cuộc gọi chưa thật sự lên. */
     private static final String CONFIRMED_STATUS = "CONFIRMED";
@@ -106,6 +107,22 @@ public final class VerdictContext {
 
     public void noteDataLimitation(String limitation) {
         dataLimitations.add(limitation);
+    }
+
+    /**
+     * Ghi dòng periodic stats làm evidence cho cờ chất lượng: dòng cuối của bên bị ảnh hưởng (bộ đếm cộng dồn đầy đủ
+     * nhất). Vấn đề không gắn với bên nào, hoặc bên đó không có dòng stats, thì không ghi gì.
+     */
+    public void recordQualityEvidence(com.tutran.callassistant.domain.verdict.QualityIssue issue) {
+        if (issue.leg() == null) {
+            return;
+        }
+        List<CanonicalEvent> stats = timeline.forSourceAndLeg(EventSource.END_CALL, issue.leg()).stream()
+                .filter(e -> PERIODIC_STATS_EVENT.equals(e.eventType()))
+                .toList();
+        if (!stats.isEmpty()) {
+            recordEvidence(stats.get(stats.size() - 1), issue.description());
+        }
     }
 
     /** Ghi mốc "bắt đầu thiết lập cuộc gọi", nếu quan sát được. */
