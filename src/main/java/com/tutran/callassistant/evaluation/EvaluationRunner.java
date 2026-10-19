@@ -11,6 +11,8 @@ import com.tutran.callassistant.sanitize.SensitiveDataSanitizer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -33,6 +35,7 @@ public final class EvaluationRunner {
     private final CaseMaterializer materializer;
     private final SensitiveDataSanitizer detector;
     private final MetricsCalculator calculator = new MetricsCalculator();
+    private final RawValueOracle oracle = new RawValueOracle();
     private final ObjectMapper mapper = new ObjectMapper();
     private final int repeat;
     private final int maxQuestions;
@@ -66,20 +69,50 @@ public final class EvaluationRunner {
 
         int logLeakage;
         int rawMentions;
+        Independent independent = new Independent();
         try (LogCapture logs = new LogCapture()) {
             for (EvaluationCase c : cases) {
                 progress.accept("[" + c.caseId() + "] " + c.questions().size() + " câu hỏi");
-                runCase(c, records, rules, samples);
+                runCase(c, records, rules, samples, independent);
             }
             logLeakage = logs.leakedAfterSanitizing(allProbes, detector);
             rawMentions = logs.rawMentions(allProbes);
+            independent.logLeaks = logs.independentLeaks(independent.allValues, independent.examples);
+            independent.logRaw = logs.independentRawMentions(independent.allValues);
         }
         EvaluationMetrics metrics = calculator.compute(cases, records, rules, logLeakage);
-        return new EvaluationResult(recorder.modelName(), contextMode, repeat, cases, records, rules, metrics, samples, rawMentions);
+        return new EvaluationResult(recorder.modelName(), contextMode, repeat, cases, records, rules, metrics, samples,
+                rawMentions, independent.result());
+    }
+
+    /** Bộ đếm của phép đo độc lập ({@link RawValueOracle}) trong một lần chạy. */
+    private static final class Independent {
+        final Set<String> allValues = new LinkedHashSet<>();
+        final List<String> examples = new ArrayList<>();
+        Set<String> current = Set.of();
+        int inputLeaks;
+        int outputLeaks;
+        int logLeaks;
+        int logRaw;
+
+        void count(String target, String text, boolean input) {
+            List<String> found = RawValueOracle.foundIn(text, current);
+            if (input) {
+                inputLeaks += found.size();
+            } else {
+                outputLeaks += found.size();
+            }
+            found.forEach(v -> examples.add(target + ": " + RawValueOracle.describe(v)));
+        }
+
+        IndependentLeakage result() {
+            return new IndependentLeakage(allValues.size(), inputLeaks, outputLeaks, logLeaks, logRaw,
+                    examples.stream().distinct().limit(10).toList());
+        }
     }
 
     private void runCase(EvaluationCase c, List<RunRecord> records, Map<String, RuleBaseline> rules,
-                         Map<String, String> samples) {
+                         Map<String, String> samples, Independent independent) {
         List<UploadedFile> files;
         try {
             files = materializer.materialize(c);
@@ -89,6 +122,8 @@ public final class EvaluationRunner {
             progress.accept("  ! " + e.getMessage());
             return;
         }
+        independent.current = oracle.extract(files, c.callId());
+        independent.allValues.addAll(independent.current);
         if (!c.expectsOutOfScope()) {
             captureRuleBaseline(c, files, rules);
         }
@@ -96,7 +131,7 @@ public final class EvaluationRunner {
         for (int q = 0; q < questions; q++) {
             int runs = q < MetricsCalculator.CONSISTENCY_QUESTIONS ? repeat : 1;
             for (int run = 0; run < runs; run++) {
-                RunRecord record = execute(c, files, q, run, samples);
+                RunRecord record = execute(c, files, q, run, samples, independent);
                 records.add(record);
             }
         }
@@ -116,7 +151,7 @@ public final class EvaluationRunner {
     }
 
     private RunRecord execute(EvaluationCase c, List<UploadedFile> files, int q, int run,
-                              Map<String, String> samples) {
+                              Map<String, String> samples, Independent independent) {
         String question = c.questions().get(q);
         recorder.reset();
         long started = System.nanoTime();
@@ -125,6 +160,8 @@ public final class EvaluationRunner {
             long latency = (System.nanoTime() - started) / 1_000_000;
             String aiRequest = recorder.lastRequest();
             String output = outputText(response);
+            independent.count("AI request " + c.caseId(), aiRequest, true);
+            independent.count("response " + c.caseId(), output, false);
             Report report = response.report();
             if (q == 0 && run == 0 && response.renderedText() != null && !response.renderedText().isEmpty()) {
                 samples.put(c.caseId(), response.renderedText());

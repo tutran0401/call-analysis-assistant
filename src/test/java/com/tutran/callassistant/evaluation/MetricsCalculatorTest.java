@@ -21,8 +21,13 @@ class MetricsCalculatorTest {
 
     private static EvaluationCase testCase(String id, String verdict, Boolean quality, String category,
                                            String intent, List<String> sensitive) {
+        return testCase(id, verdict, quality, category, intent, sensitive, "verdict=mentor; category=mentor");
+    }
+
+    private static EvaluationCase testCase(String id, String verdict, Boolean quality, String category,
+                                           String intent, List<String> sensitive, String labelSource) {
         return new EvaluationCase(id, intent == null ? "CALL-" + id : null, List.of(), List.of("q1", "q2", "q3"),
-                intent, verdict, quality, category, List.of(), "dev", null, null, sensitive);
+                intent, verdict, quality, category, List.of(), "dev", labelSource, null, sensitive);
     }
 
     private static RunRecord record(String caseId, int question, int run, String verdict, String category,
@@ -119,6 +124,7 @@ class MetricsCalculatorTest {
         assertThat(m.ruleVerdictAccuracy()).isEqualTo(new Ratio(2, 3));
         // chỉ c2 (FAIL) và c3 (SUCCESS có cờ): c2 đúng 1/2, c3 1/1
         assertThat(m.issueCategoryAccuracy()).isEqualTo(new Ratio(2, 3));
+        assertThat(m.categoryVsProvisional()).isEqualTo(new Ratio(2, 3));
         assertThat(m.qualityFlagAccuracy()).isEqualTo(new Ratio(6, 6));
         // 8 record chạy xong; 7 đúng (1 record OOS bị phân loại nhầm là trong phạm vi)
         assertThat(m.intentAccuracy()).isEqualTo(new Ratio(7, 8));
@@ -158,6 +164,19 @@ class MetricsCalculatorTest {
         assertThat(m.avgAiTokens()).isEqualTo(3500.0);
         assertThat(calculator.compute(cases, List.of(record("c1", 0, 0, "SUCCESS", "NONE", 10)), Map.of(), 0)
                 .avgAiTokens()).isNull();
+    }
+
+    @Test
+    void categoryLabelsTakenFromTheRuleEngineAreNotCountedAsAccuracy() {
+        // Mentor review Sprint 2: nhãn category lấy từ output rule thì "100%" không đo được gì.
+        List<EvaluationCase> cases = List.of(testCase("c1", "FAIL", null, "TURN_FAILURE", null, List.of(),
+                "verdict=mentor-folder; category=rule-output-hand-verified"));
+
+        EvaluationMetrics m = calculator.compute(cases, List.of(record("c1", 0, 0, "FAIL", "TURN_FAILURE", 10)),
+                Map.of(), 0);
+
+        assertThat(m.issueCategoryAccuracy().measured()).isFalse();
+        assertThat(m.categoryVsProvisional()).isEqualTo(new Ratio(1, 1));
     }
 
     @Test

@@ -7,6 +7,11 @@
 #     trên tập này là 100% theo cách xây, chỉ có ý nghĩa để so AI với rule, không phải độ chính xác thật.
 #   * for_test/ không có nhãn mentor: verdict + category là kiểm tay.
 #   * expected_evidence bỏ trống: chưa có ground truth Evidence ID từ mentor.
+#   * Issue Category Accuracy CHỈ tính case có label_source chứa "category=mentor" (Mentor review Sprint 2).
+#     Nhãn tạm ở trên vẫn được dùng cho chỉ số "Category khớp nhãn tạm lấy từ rule" - không phải accuracy.
+#     Xin nhãn: benchmark/dev/category-labels-for-mentor.csv (gán mù, không kèm kết quả rule). Khi Mentor
+#     điền xong: chép mentor_issue_category vào expected_issue_category và đổi label_source thành
+#     "verdict=mentor-folder; category=mentor".
 #   * Các case var-* là biến thể file suy từ cuộc gọi gốc; label_source nói rõ nhãn đến từ đâu.
 # Tham chiếu file: <tên file> trong thư mục cuộc gọi, hoặc {from: <callId>/<tên file>, as: <tên đính kèm>}.
 

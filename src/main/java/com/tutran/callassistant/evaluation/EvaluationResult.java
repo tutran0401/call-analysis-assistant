@@ -10,6 +10,7 @@ import java.util.Map;
  * @param samples   caseId -> báo cáo đã render của câu hỏi đầu tiên, lần chạy đầu, để người đọc soi bằng mắt
  * @param contextMode cách dựng context đã dùng ({@code structured} hoặc {@code semi}) - biến số của T11
  * @param logProbeMentionsRaw số log event còn chứa giá trị nhạy cảm ở dạng gốc (trước bộ lọc) - chứng tỏ bộ lọc log thực sự được thử
+ * @param independentLeakage  phép đo rò rỉ không dựa vào Sanitizer ({@link RawValueOracle})
  */
 public record EvaluationResult(String model,
                                String contextMode,
@@ -19,5 +20,6 @@ public record EvaluationResult(String model,
                                Map<String, RuleBaseline> rules,
                                EvaluationMetrics metrics,
                                Map<String, String> samples,
-                               int logProbeMentionsRaw) {
+                               int logProbeMentionsRaw,
+                               IndependentLeakage independentLeakage) {
 }

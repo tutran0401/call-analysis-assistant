@@ -64,6 +64,27 @@ final class LogCapture implements AutoCloseable {
         return lines;
     }
 
+    /** Phép đo độc lập: số (giá trị gốc, dòng log đã lọc) khớp nguyên văn. */
+    int independentLeaks(java.util.Collection<String> rawValues, List<String> examples) {
+        int leaked = 0;
+        for (String line : sanitizedLines()) {
+            for (String value : RawValueOracle.foundIn(line, rawValues)) {
+                leaked++;
+                examples.add("log: " + RawValueOracle.describe(value));
+            }
+        }
+        return leaked;
+    }
+
+    /** Như {@link #independentLeaks} nhưng trên message gốc, trước bộ lọc. */
+    int independentRawMentions(java.util.Collection<String> rawValues) {
+        int mentions = 0;
+        for (ILoggingEvent event : new ArrayList<>(appender.list)) {
+            mentions += RawValueOracle.foundIn(event.getFormattedMessage(), rawValues).size();
+        }
+        return mentions;
+    }
+
     static int countProbes(String text, List<String> probes) {
         if (text == null) {
             return 0;

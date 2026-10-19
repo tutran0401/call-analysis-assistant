@@ -40,4 +40,12 @@ public record EvaluationCase(
     public boolean expectsOutOfScope() {
         return "OUT_OF_SCOPE".equals(expectedIntent);
     }
+
+    /**
+     * Nhãn issue category là ground truth thật (Mentor gắn) chứ không phải nhãn tạm lấy từ output của rule engine.
+     * Quy ước trong {@code cases.yaml}: {@code label_source} chứa {@code category=mentor}.
+     */
+    public boolean hasMentorCategoryLabel() {
+        return expectedIssueCategory != null && labelSource != null && labelSource.contains("category=mentor");
+    }
 }

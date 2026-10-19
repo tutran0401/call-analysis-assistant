@@ -37,7 +37,8 @@ public final class MetricsCalculator {
         return new EvaluationMetrics(
                 verdictAccuracy(okAnalysed, byId),
                 ruleVerdictAccuracy(cases, rules),
-                issueCategoryAccuracy(okAnalysed, byId),
+                issueCategoryAccuracy(okAnalysed, byId, true),
+                issueCategoryAccuracy(okAnalysed, byId, false),
                 qualityFlagAccuracy(okAnalysed, byId),
                 intentAccuracy(records, byId),
                 consistencyCases(okAnalysed),
@@ -83,15 +84,22 @@ public final class MetricsCalculator {
         return new Ratio(hit, total);
     }
 
-    /** Theo spec chỉ tính case {@code FAIL} và {@code SUCCESS} có cờ chất lượng, và phải có nhãn category. */
-    private Ratio issueCategoryAccuracy(List<RunRecord> records, Map<String, EvaluationCase> byId) {
+    /**
+     * Theo spec chỉ tính case {@code FAIL} và {@code SUCCESS} có cờ chất lượng, và phải có nhãn category.
+     *
+     * @param mentorLabelsOnly {@code true}: chỉ nhãn Mentor (Issue Category Accuracy thật); {@code false}: mọi nhãn,
+     *                         kể cả nhãn tạm lấy từ rule (Mentor review Sprint 2: con số này không đo được accuracy)
+     */
+    private Ratio issueCategoryAccuracy(List<RunRecord> records, Map<String, EvaluationCase> byId,
+                                        boolean mentorLabelsOnly) {
         int total = 0;
         int hit = 0;
         for (RunRecord r : records) {
             EvaluationCase c = byId.get(r.caseId());
             boolean relevant = "FAIL".equals(c.expectedVerdict())
                     || ("SUCCESS".equals(c.expectedVerdict()) && Boolean.TRUE.equals(c.expectedQualityFlag()));
-            if (relevant && c.expectedIssueCategory() != null) {
+            boolean labelled = mentorLabelsOnly ? c.hasMentorCategoryLabel() : c.expectedIssueCategory() != null;
+            if (relevant && labelled) {
                 total++;
                 hit += c.expectedIssueCategory().equals(r.issueCategory()) ? 1 : 0;
             }

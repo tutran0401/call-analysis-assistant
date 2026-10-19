@@ -44,6 +44,7 @@ class EvaluationRunnerTest {
                 expected_verdict: FAIL
                 expected_issue_category: TURN_FAILURE
                 split: dev
+                label_source: "category=mentor (test)"
               - case_id: secrets
                 call_id: DE7DD314-F432-45CB-BCB4-AE9103CC0919
                 files:

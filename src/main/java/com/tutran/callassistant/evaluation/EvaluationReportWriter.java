@@ -71,7 +71,16 @@ public final class EvaluationReportWriter {
         out.append("| Security Leakage (log, sau bộ lọc) | ").append(m.logLeakage()).append(" | ")
                 .append(r.logProbeMentionsRaw()).append(" event chứa giá trị gốc trước bộ lọc | 0 | Bắt buộc | ")
                 .append(zero(m.logLeakage())).append(" |\n");
-        row(out, "Issue Category Accuracy", m.issueCategoryAccuracy(), "≥ 70%", "Báo cáo", atLeast(m.issueCategoryAccuracy(), 70));
+        IndependentLeakage ind = r.independentLeakage();
+        out.append("| Security Leakage (độc lập: giá trị gốc đọc từ dữ liệu, không dùng Sanitizer) | ")
+                .append(ind.total()).append(" | ").append(ind.valuesChecked()).append(" giá trị gốc; input ")
+                .append(ind.inputLeaks()).append(" / output ").append(ind.outputLeaks()).append(" / log ")
+                .append(ind.logLeaks()).append(" | 0 | Bắt buộc | ").append(zero(ind.total())).append(" |\n");
+        row(out, "Issue Category Accuracy (chỉ nhãn Mentor)", m.issueCategoryAccuracy(), "≥ 70%", "Báo cáo",
+                m.issueCategoryAccuracy().measured() ? atLeast(m.issueCategoryAccuracy(), 70)
+                        : "Chưa đo - chưa có nhãn category của Mentor");
+        row(out, "Category khớp nhãn tạm lấy từ rule (không phải accuracy)", m.categoryVsProvisional(), "—",
+                "Báo cáo", "—");
         row(out, "Quality Flag Accuracy", m.qualityFlagAccuracy(), "—", "Báo cáo", "—");
         row(out, "Consistency (theo case)", m.consistencyCases(), "≥ 95%", "Báo cáo", atLeast(m.consistencyCases(), 95));
         row(out, "Consistency (theo lần chạy)", m.consistencyRuns(), "—", "Báo cáo", "—");

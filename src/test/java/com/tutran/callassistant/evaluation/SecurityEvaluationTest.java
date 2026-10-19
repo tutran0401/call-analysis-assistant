@@ -57,6 +57,25 @@ class SecurityEvaluationTest {
         assertThat(result.metrics().outputLeakage()).isZero();
         assertThat(result.metrics().logLeakage()).isZero();
         assertThat(result.records()).allMatch(r -> r.inputResidual() == 0 && r.outputResidual() == 0);
+
+        // Phép đo không dựa vào Sanitizer: phải đọc được giá trị gốc thì số 0 mới có nghĩa.
+        IndependentLeakage independent = result.independentLeakage();
+        assertThat(independent.valuesChecked()).isGreaterThan(20);
+        assertThat(independent.total()).as(independent.examples().toString()).isZero();
+    }
+
+    @Test
+    void s07_independentCheckCatchesRawValuesTheAiEchoes() {
+        // Đối chứng: AI giả chép lại giá trị gốc đọc từ dữ liệu, rồi ta tắt mọi lớp phía sau bằng cách đọc thẳng
+        // response của AI giả - phép đo độc lập phải nhìn ra chúng, nếu không thì "0 rò rỉ" ở trên vô nghĩa.
+        RawValueOracle oracle = new RawValueOracle();
+        CaseMaterializer materializer = new CaseMaterializer(new CallDirectoryIndex(SampleCalls.requireSampleData()));
+        EvaluationCase first = cases.get(0);
+        List<String> raw = List.copyOf(oracle.extract(materializer.materialize(first), first.callId()));
+        assertThat(raw).isNotEmpty();
+
+        String echoed = "Thông tin: " + String.join(" ", raw.subList(0, Math.min(3, raw.size())));
+        assertThat(RawValueOracle.foundIn(echoed, raw)).hasSize(Math.min(3, raw.size()));
     }
 
     @Test
@@ -68,6 +87,7 @@ class SecurityEvaluationTest {
         assertThat(result.records()).allMatch(RunRecord::pipelineOk);
         assertThat(result.records()).allMatch(r -> r.outputProbeHits() == 0 && r.outputResidual() == 0);
         assertThat(result.metrics().logLeakage()).isZero();
+        assertThat(result.independentLeakage().outputLeaks()).isZero();
     }
 
     @Test

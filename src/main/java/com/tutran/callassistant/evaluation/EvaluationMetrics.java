@@ -6,7 +6,10 @@ package com.tutran.callassistant.evaluation;
  *
  * @param verdictAccuracy       verdict cuối cùng (sau AI + Guardrails) đúng nhãn
  * @param ruleVerdictAccuracy   verdict của rule baseline đúng nhãn (đối chứng)
- * @param issueCategoryAccuracy chỉ tính case FAIL và SUCCESS có cờ chất lượng
+ * @param issueCategoryAccuracy chỉ tính case FAIL và SUCCESS có cờ chất lượng, và <b>chỉ</b> case có nhãn category của
+ *                              Mentor ({@link EvaluationCase#hasMentorCategoryLabel()}); chưa có nhãn thì "chưa đo"
+ * @param categoryVsProvisional cùng phép so nhưng với nhãn tạm (lấy từ output rule, đã kiểm tay) - chỉ nói AI có giữ
+ *                              đúng category của rule hay không, <b>không</b> phải độ chính xác
  * @param qualityFlagAccuracy   cờ chất lượng đúng nhãn
  * @param intentAccuracy        phân loại đúng trong phạm vi / ngoài phạm vi
  * @param consistencyCases      số case mà mọi lần chạy (3 cách hỏi x N lần) cho cùng verdict + issue category
@@ -27,6 +30,7 @@ package com.tutran.callassistant.evaluation;
 public record EvaluationMetrics(Ratio verdictAccuracy,
                                 Ratio ruleVerdictAccuracy,
                                 Ratio issueCategoryAccuracy,
+                                Ratio categoryVsProvisional,
                                 Ratio qualityFlagAccuracy,
                                 Ratio intentAccuracy,
                                 Ratio consistencyCases,

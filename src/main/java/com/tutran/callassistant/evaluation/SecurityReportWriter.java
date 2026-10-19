@@ -83,7 +83,24 @@ public final class SecurityReportWriter {
                 .append(" |\n");
         md.append("\nSự kiện log chứa giá trị gốc <i>trước</i> bộ lọc: ").append(result.logProbeMentionsRaw())
                 .append(" (khác 0 nghĩa là bộ lọc log thực sự đã được thử).\n\n");
-        return input == 0 && output == 0 && log == 0;
+
+        IndependentLeakage ind = result.independentLeakage();
+        md.append("**Phép đo độc lập** (không dùng bộ dò của Sanitizer): đọc ").append(ind.valuesChecked())
+                .append(" giá trị nhạy cảm gốc từ chính các file của case (cột theo schema `#Hn`, cây JSON, SDP, ")
+                .append("`Cand[...]`, theo `docs/sensitive-data-inventory.md`), rồi tìm nguyên văn ở đầu ra.\n\n");
+        md.append("| Đích | Số lần giá trị gốc xuất hiện | Kết quả |\n| --- | --- | --- |\n");
+        md.append("| AI request | ").append(ind.inputLeaks()).append(" | ").append(verdict(ind.inputLeaks())).append(" |\n");
+        md.append("| Report / response | ").append(ind.outputLeaks()).append(" | ").append(verdict(ind.outputLeaks()))
+                .append(" |\n");
+        md.append("| Application log, text + JSON | ").append(ind.logLeaks()).append(" | ")
+                .append(verdict(ind.logLeaks())).append(" |\n");
+        md.append("\nGiá trị gốc có trong log <i>trước</i> bộ lọc: ").append(ind.logRawMentions()).append(".\n");
+        if (!ind.examples().isEmpty()) {
+            md.append("\nGiá trị đã lọt (chỉ ghi 2 ký tự đầu + độ dài): ")
+                    .append(String.join("; ", ind.examples())).append("\n");
+        }
+        md.append('\n');
+        return input == 0 && output == 0 && log == 0 && ind.total() == 0;
     }
 
     private static String code(EvaluationCase c) {
