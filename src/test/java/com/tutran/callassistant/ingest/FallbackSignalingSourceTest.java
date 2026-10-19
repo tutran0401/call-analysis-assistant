@@ -5,6 +5,7 @@ import com.tutran.callassistant.application.port.out.SignalingEventSource;
 import com.tutran.callassistant.domain.event.NormalizedEvents;
 import com.tutran.callassistant.testsupport.Events;
 import com.tutran.callassistant.testsupport.SampleCalls;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -16,7 +17,12 @@ class FallbackSignalingSourceTest {
 
     private static final String REASON = "nothing indexed for %s; using the local file";
     private static final CallReference CALL =
-            CallReference.ofDirectory(SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS));
+            CallReference.ofDirectory(SampleCalls.successPath(SampleCalls.SUCCESS_FULL_LOGS));
+
+    @BeforeAll
+    static void requireSampleData() {
+        SampleCalls.requireSampleData();
+    }
 
     private static SignalingEventSource returning(NormalizedEvents events) {
         return call -> events;

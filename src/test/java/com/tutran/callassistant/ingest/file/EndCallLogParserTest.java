@@ -16,14 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EndCallLogParserTest {
 
     private static final String CALL_ID = SampleCalls.SUCCESS_FULL_LOGS;
-    private static final Path SAMPLE_FILE =
-            SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS).resolve("caller_endcall.log");
+    /** Method chứ không phải field static: thiếu sample-data thì chỉ test cần nó bị bỏ qua. */
+    private static Path sampleFile() {
+        return SampleCalls.success(SampleCalls.SUCCESS_FULL_LOGS).resolve("caller_endcall.log");
+    }
 
     private final EndCallLogParser parser = new EndCallLogParser(new EndCallSchemaClassifier());
 
     @Test
     void parsesRealSampleFileWithoutWarnings() {
-        NormalizedEvents result = parser.parse(LogFile.of(SAMPLE_FILE, CALL_ID));
+        NormalizedEvents result = parser.parse(LogFile.of(sampleFile(), CALL_ID));
 
         assertThat(result.warnings()).isEmpty();
         assertThat(result.events()).hasSize(599);
@@ -31,7 +33,7 @@ class EndCallLogParserTest {
 
     @Test
     void infersLegFromCallSummaryRoleField() {
-        NormalizedEvents result = parser.parse(LogFile.of(SAMPLE_FILE, CALL_ID));
+        NormalizedEvents result = parser.parse(LogFile.of(sampleFile(), CALL_ID));
 
         assertThat(result.events()).isNotEmpty();
         assertThat(result.events()).allSatisfy(e -> assertThat(e.leg()).isEqualTo(Leg.CALLER));
@@ -39,7 +41,7 @@ class EndCallLogParserTest {
 
     @Test
     void mapsCallSummaryRowFieldsByHeaderSchema() {
-        NormalizedEvents result = parser.parse(LogFile.of(SAMPLE_FILE, CALL_ID));
+        NormalizedEvents result = parser.parse(LogFile.of(sampleFile(), CALL_ID));
 
         CanonicalEvent callSummary = result.events().stream()
                 .filter(e -> "CALL_SUMMARY".equals(e.eventType()))

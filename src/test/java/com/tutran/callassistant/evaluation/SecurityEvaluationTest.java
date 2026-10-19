@@ -1,5 +1,6 @@
 package com.tutran.callassistant.evaluation;
 
+import com.tutran.callassistant.testsupport.SampleCalls;
 import com.tutran.callassistant.ai.FakeAiProvider;
 import com.tutran.callassistant.ai.NoAiProvider;
 import com.tutran.callassistant.application.ChatAnalysisService;
@@ -29,7 +30,7 @@ class SecurityEvaluationTest {
     private final List<EvaluationCase> cases = new CaseLoader().load(CASES);
 
     private EvaluationResult run(AiProvider provider) {
-        CallDirectoryIndex index = new CallDirectoryIndex(DATA);
+        CallDirectoryIndex index = new CallDirectoryIndex(SampleCalls.requireSampleData());
         ChatAnalysisService base = ChatServices.create(new NoAiProvider("unused"), 5000,
                 new TreeSignalingSource(index, LocalFileSignalingSource.withDefaults()));
         RecordingAiProvider recorder = new RecordingAiProvider(provider);

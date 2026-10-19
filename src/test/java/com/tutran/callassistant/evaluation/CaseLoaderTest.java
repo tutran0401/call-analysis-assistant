@@ -1,5 +1,6 @@
 package com.tutran.callassistant.evaluation;
 
+import com.tutran.callassistant.testsupport.SampleCalls;
 import com.tutran.callassistant.application.validation.UploadedFile;
 import com.tutran.callassistant.ingest.file.CallDirectoryIndex;
 import org.junit.jupiter.api.Test;
@@ -149,7 +150,7 @@ class CaseLoaderTest {
         assertThat(analysed).anyMatch(c -> !c.sensitiveValues().isEmpty());
         assertThat(analysed).filteredOn(c -> c.caseId().startsWith("var-")).hasSizeGreaterThanOrEqualTo(5);
 
-        CaseMaterializer materializer = new CaseMaterializer(new CallDirectoryIndex(Path.of("sample-data")));
+        CaseMaterializer materializer = new CaseMaterializer(new CallDirectoryIndex(SampleCalls.requireSampleData()));
         for (EvaluationCase c : cases) {
             assertThat(materializer.materialize(c)).as(c.caseId()).hasSize(c.files().size());
         }

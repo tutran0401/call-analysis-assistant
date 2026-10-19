@@ -1,5 +1,6 @@
 package com.tutran.callassistant.evaluation;
 
+import com.tutran.callassistant.testsupport.SampleCalls;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutran.callassistant.ai.FakeAiProvider;
@@ -62,7 +63,7 @@ class EvaluationRunnerTest {
             """;
 
     private ChatAnalysisService baseService() {
-        CallDirectoryIndex index = new CallDirectoryIndex(DATA);
+        CallDirectoryIndex index = new CallDirectoryIndex(SampleCalls.requireSampleData());
         return ChatServices.create(new NoAiProvider("unused"), 5000,
                 new TreeSignalingSource(index, LocalFileSignalingSource.withDefaults()));
     }

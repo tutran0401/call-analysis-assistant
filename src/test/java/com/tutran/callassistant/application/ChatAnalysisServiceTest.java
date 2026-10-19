@@ -28,6 +28,7 @@ import com.tutran.callassistant.sanitize.OutputSanitizer;
 import com.tutran.callassistant.sanitize.Pseudonymizer;
 import com.tutran.callassistant.sanitize.SensitiveDataSanitizer;
 import com.tutran.callassistant.testsupport.SampleCalls;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,7 +51,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChatAnalysisServiceTest {
 
     private static final String CALL = SampleCalls.SUCCESS_FULL_LOGS;
-    private static final Path DIR = SampleCalls.success(CALL);
+    private static final Path DIR = SampleCalls.successPath(CALL);
+
+    @BeforeAll
+    static void requireSampleData() {
+        SampleCalls.requireSampleData();
+    }
 
     private final Pseudonymizer pseudonymizer = new Pseudonymizer("test-salt");
     private final SensitiveDataSanitizer engine = new SensitiveDataSanitizer(pseudonymizer);

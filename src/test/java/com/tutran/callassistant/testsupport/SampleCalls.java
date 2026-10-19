@@ -13,6 +13,7 @@ import com.tutran.callassistant.ingest.file.EndCallLogParser;
 import com.tutran.callassistant.ingest.file.EndCallSchemaClassifier;
 import com.tutran.callassistant.ingest.file.LogFile;
 import com.tutran.callassistant.ingest.file.SignalingExportParser;
+import org.junit.jupiter.api.Assumptions;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,21 +97,46 @@ public final class SampleCalls {
     private SampleCalls() {
     }
 
-    public static Path success(String callId) {
+    /**
+     * {@code sample-data/} là dữ liệu của mentor, cố tình không có trong git (có thể chứa dữ liệu thật). Bản clone
+     * không có nó thì test cần dữ liệu được <b>bỏ qua kèm lý do</b> thay vì lỗi hàng loạt không rõ vì sao. Cách đặt
+     * dữ liệu: {@code docs/runbook.md} mục "Dữ liệu mẫu".
+     */
+    public static Path sampleData(String relative) {
+        requireSampleData();
+        Path path = SAMPLE_DATA.resolve(relative);
+        Assumptions.assumeTrue(Files.exists(path), () -> "Thiếu dữ liệu mẫu " + path
+                + " (sample-data/ không nằm trong git) - bỏ qua. Xem docs/runbook.md mục \"Dữ liệu mẫu\".");
+        return path;
+    }
+
+    /** Như {@link #sampleData}, cho test chỉ cần thư mục gốc (dùng ở {@code @BeforeAll} hoặc đầu helper). */
+    public static Path requireSampleData() {
+        Assumptions.assumeTrue(Files.isDirectory(SAMPLE_DATA), () -> "Thiếu thư mục " + SAMPLE_DATA.toAbsolutePath()
+                + " (sample-data/ không nằm trong git) - bỏ qua. Xem docs/runbook.md mục \"Dữ liệu mẫu\".");
+        return SAMPLE_DATA;
+    }
+
+    /** Đường dẫn không kiểm tra, cho field {@code static}: assumption lúc nạp class sẽ thành lỗi chứ không phải skip. */
+    public static Path successPath(String callId) {
         return SAMPLE_DATA.resolve("success").resolve(callId);
     }
 
+    public static Path success(String callId) {
+        return sampleData("success/" + callId);
+    }
+
     public static Path fail(String callId) {
-        return SAMPLE_DATA.resolve("fail").resolve(callId);
+        return sampleData("fail/" + callId);
     }
 
     public static Path forTest(String callId) {
-        return SAMPLE_DATA.resolve("for_test").resolve(callId);
+        return sampleData("for_test/" + callId);
     }
 
     /** Thư mục của new_dataset đặt tên chữ thường. */
     public static Path newDataset(String callId) {
-        return SAMPLE_DATA.resolve("new_dataset").resolve(callId.toLowerCase(java.util.Locale.ROOT));
+        return sampleData("new_dataset/" + callId.toLowerCase(java.util.Locale.ROOT));
     }
 
     public static TimelineBuilder timelineBuilder() {

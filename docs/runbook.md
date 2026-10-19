@@ -19,8 +19,10 @@ thì có ghi chú.
 | Docker Desktop | 4.x, engine 28 | Elasticsearch + Kibana; cần khoảng 4-6 GB RAM trống |
 | curl | bất kỳ | kiểm tra nhanh API |
 
-**Data mẫu không nằm trong git** (`sample-data/` bị ignore vì có thể chứa dữ liệu nhạy cảm). Đặt data Mentor cung
-cấp vào:
+### Dữ liệu mẫu
+
+**Data mẫu không nằm trong git** (`sample-data/` bị ignore vì có thể chứa dữ liệu nhạy cảm). Xin bộ data từ Mentor
+(gói zip gửi riêng, không qua repo), giải nén ở thư mục gốc repo sao cho có đúng cấu trúc:
 
 ```
 sample-data/
@@ -30,7 +32,15 @@ sample-data/
   new_dataset/<Call-ID>/...      (tuỳ chọn)
 ```
 
-Test backend (`mvn test`) và benchmark đọc thẳng các thư mục này.
+Test backend (`mvn test`) và benchmark đọc thẳng các thư mục này. Kiểm nhanh đã đặt đúng chỗ:
+
+```bash
+ls sample-data/success/DE7DD314-F432-45CB-BCB4-AE9103CC0919/signaling.json
+```
+
+Thiếu data thì `mvn test` **không fail**: các test cần data được bỏ qua (Skipped) kèm lý do "Thiếu dữ liệu mẫu ...
+xem docs/runbook.md mục Dữ liệu mẫu"; các test còn lại (dùng event dựng sẵn trong code) vẫn chạy. Bản clone sạch
+đã kiểm: 304 test chạy, 81 bỏ qua, 0 lỗi. Có đủ data: 330 test, 0 bỏ qua.
 
 ## 2. Dựng Elasticsearch + Kibana
 
@@ -126,7 +136,8 @@ mvn test                              # backend; test tích hợp ES tự bỏ q
 cd web && npm install && npm test     # Web UI
 ```
 
-Test cần `sample-data/` (mục 1). Test bảo mật S01-S08 (`SecurityEvaluationTest`) chạy lại toàn bộ bộ case bảo
+Test cần `sample-data/` (mục 1 "Dữ liệu mẫu"); thiếu thì chúng được bỏ qua kèm lý do chứ không fail. Kiểm số
+`Skipped` ở cuối output: khác 0 nghĩa là data chưa đặt đủ. Test bảo mật S01-S08 (`SecurityEvaluationTest`) chạy lại toàn bộ bộ case bảo
 mật ở mỗi lần `mvn test`.
 
 ## 7. Benchmark (Evaluation Runner)
@@ -201,7 +212,9 @@ PowerShell không có `sh`: chạy lệnh `curl` bên trong `kibana/import-dashb
 | Upload báo "vượt giới hạn kích thước (10 MB)" | File > 10 MB | Cắt log quanh thời điểm cuộc gọi |
 | Chỉ đính kèm WebRTC log và bị báo thiếu Call-ID | WebRTC log không chứa Call-ID | Điền ô Call-ID trên UI |
 | `mvn package` báo không ghi được jar | Jar đang được một tiến trình java khác dùng (ví dụ `evaluate` đang chạy) | Chờ tiến trình đó xong hoặc dừng nó |
-| `mvn test` lỗi "sample-data not found" | Chưa đặt data mẫu | Mục 1 |
+| `mvn test` có nhiều test `Skipped` với lý do "Thiếu dữ liệu mẫu" | Chưa đặt data mẫu | Mục 1 "Dữ liệu mẫu" |
+| `ElasticsearchPipelineIntegrationTest` fail, verdict `UNKNOWN` thay vì `FAIL` | ES chạy nhưng chưa import (ví dụ volume bị xoá) | Mục 3 |
+| "Giới hạn dữ liệu" ghi "nhiều sự kiện signaling hơn trần đọc một lần" | Một Call-ID có hơn 10.000 sự kiện trong ES (`ES_TRUNCATED`); chỉ phần đầu được phân tích | Kiểm Call-ID có bị trùng giữa nhiều cuộc gọi không; nếu thật sự dài, phân tích theo khoảng thời gian |
 | `import` in `Could not list success` và `Done: 0 calls` | Truyền tên thư mục thay vì đường dẫn | Dùng `sample-data/success`, không phải `success` |
 | Cần tìm log của một request lỗi | — | Lấy `requestId` trên UI, rồi `grep req-xxxxxxxx` trong log console hoặc `logs/app.jsonl` |
 

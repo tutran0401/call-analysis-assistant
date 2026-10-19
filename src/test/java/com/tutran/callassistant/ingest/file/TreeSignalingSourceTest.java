@@ -40,7 +40,7 @@ class TreeSignalingSourceTest {
     @Test
     void readsRealSignalingFromTheSampleTreeRegardlessOfTheUploadDirectory(@TempDir Path uploadDir) {
         String callId = SampleCalls.SUCCESS_FULL_LOGS;
-        TreeSignalingSource source = new TreeSignalingSource(new CallDirectoryIndex(Path.of("sample-data")),
+        TreeSignalingSource source = new TreeSignalingSource(new CallDirectoryIndex(SampleCalls.requireSampleData()),
                 LocalFileSignalingSource.withDefaults());
 
         var events = source.fetch(new CallReference(callId, uploadDir));
