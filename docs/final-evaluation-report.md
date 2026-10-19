@@ -103,12 +103,24 @@ giữ đúng category của rule.
 | --- | --- | --- |
 | **Peer Evaluation (T7): đã làm (2026-10-20)** | — | `docs/peer-evaluation-report.md`: Runbook của bạn còn lại dựng lại được hoàn toàn; 2 issue có tái hiện; 3 điểm thiết kế học được. Hai issue đó có khả năng cũng có ở sản phẩm này (xem "Thiết kế / dữ liệu") |
 | **Kết quả `held-out` chưa có** | Mentor chạy cuối sprint | Mục 4 để trống |
-| **Runbook chưa được người khác chạy thử** | Phụ thuộc Peer Evaluation | Đã tự chạy các lệnh chính của Runbook (import, evaluate, security-eval, batch, import dashboard, web + demo) trên máy phát triển, chưa thử trên máy mới; lúc chạy đã phát hiện và sửa lệnh `import` sai trong README cũ |
+| **Runbook: đã được người khác chạy thử (2026-10-19)** | — | Bạn còn lại dựng và chạy lại được toàn bộ theo Runbook, tái hiện đúng mọi metric `dev` (báo cáo của bạn ấy, nhận 2026-10-19). Ba chỗ vướng (JDK > 21, `mvn package` khi ES rỗng, cổng 8080) đã sửa ngày 2026-10-20 |
 | **Nhãn issue category và evidence ID chưa phải ground truth của Mentor** | Mentor chưa cung cấp | Accuracy category chỉ là đối chiếu với rule; `expected_evidence` để trống |
 | **Scenario 5 ("chỉ một file" → `UNKNOWN`) chưa thống nhất** | Data có nhãn của Mentor (`5E0800AE`, một file, `SUCCESS`) mâu thuẫn với scenario 5 | Đính kèm đúng một WebRTC log không kèm Call-ID → `UNKNOWN` (đúng kỳ vọng). Có Call-ID và signaling → `SUCCESS`, độ tin cậy `MEDIUM`, nêu đủ file thiếu. Chờ Mentor |
 | **AI tự đánh giá category / cờ chất lượng còn yếu** | AI không biết ngưỡng chất lượng (đưa ngưỡng vào sẽ đụng G05); khoảng 55% khớp rule khi không thấy baseline | Cấu hình chạy thật giữ `ruleBaseline`; category trong report luôn của rule; lệch thì độ tin cậy LOW |
 | **Chất lượng lời văn AI chưa được chấm** | Metric 6.5 không đo; cần rubric hoặc người chấm | Lời văn bị Guardrails kiểm số liệu và evidence; phần "Căn cứ kết luận" do code viết nên không phụ thuộc AI |
 | **Chỉ số "Nếu kịp" ở 4.3 chưa đưa vào report** (khoảng trống PAIR_PING, latency API nội bộ, WARN/ERROR theo service, ISP/ASN theo leg) | Ưu tiên Core và hardening | Không ảnh hưởng mức tối thiểu |
+
+### Issue từ Peer Evaluation của bạn còn lại (nhận 2026-10-19)
+
+| # | Issue | Xử lý |
+| --- | --- | --- |
+| 1 | "No sessions found" ra `0` thay vì `N/A` với export dạng gọn | **Đã sửa**: chỉ đếm `message` của signaling (mục 4.3); không có thì `N/A` kèm lý do |
+| 2 | Cờ mất gói bật theo mẫu đỉnh của một khoảng đo; cờ không có evidence | **Đã sửa**: ngưỡng dùng mất gói cả cuộc (bộ đếm cộng dồn), RTT / jitter trung bình; cờ ghi dòng periodic stats làm evidence. `271D1FAF` hết cờ (cả cuộc 1,83 %); ca chất lượng kém của `dev` và demo scenario 2 chuyển sang `B5F19381` (8,48 %) |
+| 3 | Export signaling bị cắt bớt nhưng report HIGH, "Giới hạn dữ liệu: Không có" | **Đã sửa**: cờ cắt bớt gắn vào từng event (cả đường ES), thành giới hạn dữ liệu, độ tin cậy tối đa MEDIUM |
+| R1-R3 | Runbook: JDK > 21; `mvn package` hỏng khi ES rỗng; cổng 8080 ghi cứng | **Đã sửa**: Runbook ghi JDK 17-21 và thứ tự build → import → test; test ES tự bỏ qua khi chưa import; proxy Vite đọc `BACKEND_URL` |
+| 4 | Evidence WebRTC mang mốc giờ suy ra, không có số dòng gốc | **Chưa sửa** (Known Limitation): cần thêm số dòng vào Report Schema, Web UI và renderer - để sau khi chốt schema với Mentor. Tạm thời: mốc giờ WebRTC là giá trị **neo theo đồng hồ** signaling, tìm dòng gốc bằng mô tả sự kiện (ví dụ `IceConnectionState checking => failed`) |
+| 5 | Lượt chạy chỉ rule (`batch`, baseline của `evaluate`) bị ghi `AI_UNAVAILABLE`, làm lệch biểu đồ fallback | **Chưa sửa** (Known Limitation): không ảnh hưởng report; trên Kibana lọc `channel: web` để xem fallback thật |
+| Quan sát | `rawEvent` trong `call-signaling-events` giữ nguyên IP client (419 document) | **Chưa sửa**: mục 6.2 chưa rõ "dữ liệu ghi vào ES local" gồm cả signaling nạp vào hay chỉ kết quả phân tích; đang hỏi Mentor. Index chỉ nằm trên máy cá nhân, bind `127.0.0.1` |
 
 ### Thiết kế / dữ liệu
 

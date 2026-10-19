@@ -1,6 +1,7 @@
 package com.tutran.callassistant.web;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import com.tutran.callassistant.ingest.es.ElasticsearchProperties;
 import com.tutran.callassistant.testsupport.SampleCalls;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +51,17 @@ class ElasticsearchPipelineIntegrationTest {
             up = false;
         }
         Assumptions.assumeTrue(up, "Elasticsearch không chạy ở localhost:9200 - bỏ qua integration test ES");
+        // ES bật nhưng chưa import (đúng thứ tự Runbook: bật ES -> build -> import) thì cũng bỏ qua có lý do,
+        // thay vì đỏ "expected FAIL but was UNKNOWN" và làm `mvn package` không ra jar (peer evaluation R2).
+        long indexed;
+        try {
+            indexed = elasticsearch.count(c -> c.index(ElasticsearchProperties.defaults().signalingIndex())
+                    .query(q -> q.term(t -> t.field("callId").value(SampleCalls.FAIL_CANCELLED_NO_CLIENT_LOGS)))).count();
+        } catch (Exception e) {
+            indexed = 0;
+        }
+        Assumptions.assumeTrue(indexed > 0,
+                "Elasticsearch chưa có signaling của data mẫu (chưa chạy import) - bỏ qua integration test ES");
     }
 
     private MockMultipartFile file(String name, Path path) throws Exception {

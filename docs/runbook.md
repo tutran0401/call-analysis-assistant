@@ -13,7 +13,7 @@ thì có ghi chú.
 
 | Thành phần | Phiên bản đã kiểm | Ghi chú |
 | --- | --- | --- |
-| JDK | 17+ | `java -version` |
+| JDK | **17 - 21** (đã kiểm 17 và 21) | `java -version`. JDK mới hơn (ví dụ 26) build được nhưng test Mockito lỗi "cannot mock this class" (Mockito / Byte Buddy của Spring Boot 3.3 chưa hỗ trợ) - dùng JDK 21 |
 | Maven | 3.9+ | `mvn -v` |
 | Node.js + npm | Node 18+ | chỉ cần cho Web UI |
 | Docker Desktop | 4.x, engine 28 | Elasticsearch + Kibana; cần khoảng 4-6 GB RAM trống |
@@ -57,10 +57,16 @@ curl -s http://localhost:9200/_cluster/health        # chờ tới khi có "stat
 ## 3. Build và import signaling
 
 ```bash
-mvn clean package                    # build + chạy toàn bộ test; thêm -DskipTests nếu chỉ cần jar
+mvn clean package -DskipTests        # 1. build jar trước - ES lúc này còn rỗng
 java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar import sample-data/success sample-data/fail sample-data/for_test sample-data/new_dataset
-curl -s "http://localhost:9200/call-signaling-events/_count"
+curl -s "http://localhost:9200/call-signaling-events/_count"   # 2. import xong mới có dữ liệu
+mvn test                             # 3. chạy test sau khi import (test tích hợp ES cần dữ liệu đã import)
 ```
+
+Thứ tự này có lý do: test tích hợp Elasticsearch cần signaling đã import. Nếu chạy `mvn clean package` (kèm test)
+khi ES đang bật mà chưa import, test đó tự **bỏ qua** kèm lý do, nhưng bản code trước 2026-10-20 thì đỏ và không ra
+jar. Index tạo từ bản code trước 2026-10-20 cần import lại một lần để có trường `exportTruncated` (bản export bị cắt
+bớt hiện trong "Giới hạn dữ liệu").
 
 `import` nhận một hoặc nhiều thư mục gốc (đường dẫn tính từ thư mục đang đứng), đọc mọi `signaling.json` (cả hai dạng export của Mentor) và index
 vào `call-signaling-events`. Chạy lại an toàn: ID document cố định nên không nhân đôi dữ liệu.
@@ -100,6 +106,9 @@ java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar --spring.profiles.ac
 # Terminal 2 - frontend
 cd web && npm install && npm run dev       # mở http://localhost:5173
 ```
+
+Cổng 8080 bận ("Port 8080 was already in use"): chạy backend với `--server.port=8090` và báo cho proxy của Vite biết:
+`BACKEND_URL=http://127.0.0.1:8090 npm run dev` (PowerShell: `$env:BACKEND_URL="http://127.0.0.1:8090"; npm run dev`).
 
 Trên UI: gõ câu hỏi tiếng Việt, kéo thả `*_endcall.log` / `*_webrtc.log`, bấm **Phân tích**. Banner đầu trang báo
 trước nếu AI chưa cấu hình hoặc ES chưa chạy.
@@ -211,6 +220,8 @@ PowerShell không có `sh`: chạy lệnh `curl` bên trong `kibana/import-dashb
 | Câu hỏi tiếng Việt gửi bằng curl bị coi là "ngoài phạm vi" | `curl.exe` trên Windows đổi codepage, mất dấu | Gửi câu hỏi từ file UTF-8: `-F "message=<q.txt"` |
 | Upload báo "vượt giới hạn kích thước (10 MB)" | File > 10 MB | Cắt log quanh thời điểm cuộc gọi |
 | Chỉ đính kèm WebRTC log và bị báo thiếu Call-ID | WebRTC log không chứa Call-ID | Điền ô Call-ID trên UI |
+| Backend báo "Port 8080 was already in use" | Một dịch vụ khác đang giữ cổng 8080 | `--server.port=8090` cho backend và `BACKEND_URL=http://127.0.0.1:8090` cho `npm run dev` (mục 5) |
+| Test lỗi "Mockito cannot mock this class ... Java: 26" | Maven chạy bằng JDK mới hơn 21 | Đặt `JAVA_HOME` về JDK 21 (mục 1) |
 | `mvn package` báo không ghi được jar | Jar đang được một tiến trình java khác dùng (ví dụ `evaluate` đang chạy) | Chờ tiến trình đó xong hoặc dừng nó |
 | `mvn test` có nhiều test `Skipped` với lý do "Thiếu dữ liệu mẫu" | Chưa đặt data mẫu | Mục 1 "Dữ liệu mẫu" |
 | `ElasticsearchPipelineIntegrationTest` fail, verdict `UNKNOWN` thay vì `FAIL` | ES chạy nhưng chưa import (ví dụ volume bị xoá) | Mục 3 |
