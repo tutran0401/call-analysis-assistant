@@ -57,6 +57,21 @@ class RawValueOracleTest {
     }
 
     @Test
+    void callIdsAreKeptApartBecauseTheUserMaySeeThemButTheAiMayNot() {
+        String foreign = "271D1FAF-26D4-4150-AC3F-9204505BD84B";
+        String own = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
+        String endCall = """
+                #H1\t#ts\t#tag\tappUserId\tcallId
+                1\t1\tinfo\tUTGMJUPAY7W\t%s
+                log turnLoggingId=%s
+                """.formatted(foreign, foreign);
+        List<UploadedFile> files = List.of(file("callee_endcall.log", endCall));
+
+        assertThat(oracle.extract(files, own)).containsExactly("UTGMJUPAY7W");
+        assertThat(oracle.extractCallIds(files, own)).contains(foreign, foreign.toLowerCase(), own);
+    }
+
+    @Test
     void matchesOnlyStandaloneOccurrences() {
         List<String> values = List.of("14.238.152.70", "dTDZ", "USER42");
 

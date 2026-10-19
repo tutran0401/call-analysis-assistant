@@ -52,6 +52,32 @@ class AiContextBuilderTest {
     }
 
     @Test
+    void callIdsInLimitationTextNeverReachTheAi() {
+        // Tìm ra bởi phép đo rò rỉ độc lập: câu "Giới hạn dữ liệu" của file lạ chứa nguyên văn hai Call-ID.
+        String foreign = "271d1faf-26d4-4150-ac3f-9204505bd84b";
+        var report = TestReports.successWithPacketLoss();
+        var withForeignFile = report.withDataLimitations(List.of("Bỏ qua file callee_endcall.log: thuộc Call-ID "
+                + foreign.toUpperCase() + ", khác Call-ID " + report.callId() + "."), report.suggestions());
+
+        for (AiContextBuilder b : List.of(builder, new AiContextBuilder(IssueCategoryRegistry.withDefaults(), "semi"))) {
+            String ctx = b.build(new ParsedRequest(Intent.ANALYZE_CALL, Set.of(), null), timelineOf(1),
+                    withForeignFile).toString();
+
+            assertThat(ctx).doesNotContainIgnoringCase(foreign).contains(AiContextBuilder.OTHER_CALL);
+        }
+    }
+
+    @Test
+    void maskingDistinguishesThisCallFromOthers() {
+        String own = "DE7DD314-F432-45CB-BCB4-AE9103CC0919";
+        String text = "No sessions found for Call-ID: " + own + " (file of 0A6C2821-0A19-49F4-9C05-8F8BCEACD64F)";
+
+        assertThat(AiContextBuilder.maskCallIds(text, own))
+                .isEqualTo("No sessions found for Call-ID: <CALL_ID> (file of <CALL_ID_KHAC>)");
+        assertThat(AiContextBuilder.maskCallIds("version 0.3.24, EV001", own)).isEqualTo("version 0.3.24, EV001");
+    }
+
+    @Test
     void timelineHasNoTimestampsAndCollapsesRepeatedEvents() {
         JsonNode timeline = build(timelineOf(15)).get("timeline");
 

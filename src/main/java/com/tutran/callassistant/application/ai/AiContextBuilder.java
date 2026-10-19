@@ -1,5 +1,6 @@
 package com.tutran.callassistant.application.ai;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Dựng "minimum necessary context" cho AI (PROJECT_SPEC.md mục 3.3): chỉ timeline rút gọn, evidence,
@@ -37,6 +40,11 @@ import java.util.Objects;
 public class AiContextBuilder {
 
     static final int MAX_TIMELINE_ENTRIES = 80;
+    /** Call-ID dạng UUID (8-4-4-4-12 hex), viết hoa hay thường. */
+    private static final Pattern CALL_ID = Pattern.compile(
+            "(?i)(?<![0-9a-f])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?![0-9a-f])");
+    static final String THIS_CALL = "<CALL_ID>";
+    static final String OTHER_CALL = "<CALL_ID_KHAC>";
 
     /** Cách đưa evidence / chỉ số cho AI. */
     public enum Mode { STRUCTURED, SEMI }
@@ -83,9 +91,55 @@ public class AiContextBuilder {
         return mode;
     }
 
-    /** @param ruleReport report rule-based đã assemble - nguồn duy nhất của verdict baseline, evidence và chỉ số */
+    /**
+     * @param ruleReport report rule-based đã assemble - nguồn duy nhất của verdict baseline, evidence và chỉ số
+     */
     public ObjectNode build(ParsedRequest request, CallTimeline timeline, Report ruleReport) {
         Objects.requireNonNull(ruleReport, "ruleReport");
+        ObjectNode root = assemble(request, timeline, ruleReport);
+        maskCallIds(root, ruleReport.callId());
+        return root;
+    }
+
+    /**
+     * AI không cần Call-ID để phân tích, nhưng nó vẫn lọt vào qua văn bản: "Giới hạn dữ liệu" ("file X thuộc Call-ID
+     * ..., khác Call-ID ...") và mô tả evidence từ message của server ("No sessions found for Call-ID: ..."). Phép đo
+     * rò rỉ độc lập (Mentor review Sprint 2) bắt được điều này; Sanitizer thì không, vì Call-ID không nằm trong
+     * inventory nhạy cảm. Thay ở cửa ra cuối nên mọi đường (cả hai context mode) đều được che. Nhãn không chứa chữ số
+     * để Guardrails G05 không coi là số liệu lạ.
+     */
+    static void maskCallIds(JsonNode node, String ownCallId) {
+        if (node instanceof ObjectNode object) {
+            object.fields().forEachRemaining(e -> {
+                if (e.getValue().isTextual()) {
+                    object.put(e.getKey(), maskCallIds(e.getValue().asText(), ownCallId));
+                } else {
+                    maskCallIds(e.getValue(), ownCallId);
+                }
+            });
+        } else if (node instanceof ArrayNode array) {
+            for (int i = 0; i < array.size(); i++) {
+                if (array.get(i).isTextual()) {
+                    array.set(i, JsonNodeFactory.instance.textNode(maskCallIds(array.get(i).asText(), ownCallId)));
+                } else {
+                    maskCallIds(array.get(i), ownCallId);
+                }
+            }
+        }
+    }
+
+    static String maskCallIds(String text, String ownCallId) {
+        Matcher matcher = CALL_ID.matcher(text);
+        StringBuilder out = new StringBuilder();
+        while (matcher.find()) {
+            String replacement = matcher.group().equalsIgnoreCase(ownCallId) ? THIS_CALL : OTHER_CALL;
+            matcher.appendReplacement(out, Matcher.quoteReplacement(replacement));
+        }
+        matcher.appendTail(out);
+        return out.toString();
+    }
+
+    private ObjectNode assemble(ParsedRequest request, CallTimeline timeline, Report ruleReport) {
         JsonNodeFactory f = JsonNodeFactory.instance;
         ObjectNode root = f.objectNode();
         root.put("intent", request.intent().name());

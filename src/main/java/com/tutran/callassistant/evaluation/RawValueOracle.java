@@ -25,8 +25,9 @@ import java.util.Set;
  * {@code docs/sensitive-data-inventory.md}. Lớp này không dò giá trị theo mẫu (regex) và không gọi gì trong gói
  * {@code sanitize}.
  *
- * <p>Không tính: Call-ID (người dùng tự đưa vào, report phải hiện nó), giá trị client đã tự che ({@code *},
- * {@code .x}), IP loopback / 0.0.0.0, giá trị ngắn hơn {@value #MIN_LENGTH} ký tự.
+ * <p>Call-ID tách riêng ({@link #extractCallIds}): được phép hiện cho người dùng (họ tự đưa vào, report phải hiện
+ * nó) nhưng không được tới AI. Không tính: giá trị client đã tự che ({@code *}, {@code .x}), IP loopback / 0.0.0.0,
+ * giá trị ngắn hơn {@value #MIN_LENGTH} ký tự.
  */
 public final class RawValueOracle {
 
@@ -43,7 +44,48 @@ public final class RawValueOracle {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    /** Mọi giá trị nhạy cảm gốc có trong các file của một case. */
+    /** Call-ID của case và mọi Call-ID ghi trong file (field {@code callId} / {@code call_id}), so không phân biệt hoa thường. */
+    public Set<String> extractCallIds(List<UploadedFile> files, String callId) {
+        Set<String> ids = new LinkedHashSet<>();
+        if (callId != null) {
+            ids.add(callId);
+        }
+        for (UploadedFile file : files) {
+            String text = new String(file.content(), StandardCharsets.UTF_8);
+            for (String key : List.of("\"callId\":\"", "\"callId\": \"", "\"call_id\":\"", "\"call_id\": \"")) {
+                collectAfter(text, key, ids, false);
+            }
+            for (String line : text.split("\n")) {
+                String[] cells = line.split("\t");
+                if (cells.length > 4 && !line.startsWith("#H") && looksLikeCallId(cells[4].strip())) {
+                    ids.add(cells[4].strip());
+                }
+            }
+        }
+        Set<String> upper = new LinkedHashSet<>();
+        ids.stream().filter(RawValueOracle::looksLikeCallId).forEach(id -> {
+            upper.add(id.toUpperCase(Locale.ROOT));
+            upper.add(id.toLowerCase(Locale.ROOT));
+        });
+        return upper;
+    }
+
+    /** UUID 8-4-4-4-12 hex, kiểm bằng tay. */
+    static boolean looksLikeCallId(String value) {
+        if (value.length() != 36) {
+            return false;
+        }
+        for (int i = 0; i < 36; i++) {
+            char c = value.charAt(i);
+            boolean dash = i == 8 || i == 13 || i == 18 || i == 23;
+            if (dash ? c != '-' : Character.digit(c, 16) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Mọi giá trị nhạy cảm gốc có trong các file của một case (không gồm Call-ID). */
     public Set<String> extract(List<UploadedFile> files, String callId) {
         Set<String> values = new LinkedHashSet<>();
         for (UploadedFile file : files) {
@@ -54,7 +96,7 @@ public final class RawValueOracle {
                 readLines(text, values);
             }
         }
-        values.removeIf(v -> !worthChecking(v, callId));
+        values.removeIf(v -> !worthChecking(v, callId) || looksLikeCallId(v));
         return values;
     }
 

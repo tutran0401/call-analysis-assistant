@@ -90,13 +90,15 @@ public final class EvaluationRunner {
         final Set<String> allValues = new LinkedHashSet<>();
         final List<String> examples = new ArrayList<>();
         Set<String> current = Set.of();
+        /** Sensitive values cộng Call-ID: Call-ID được hiện cho người dùng nhưng không được tới AI. */
+        Set<String> currentForAi = Set.of();
         int inputLeaks;
         int outputLeaks;
         int logLeaks;
         int logRaw;
 
         void count(String target, String text, boolean input) {
-            List<String> found = RawValueOracle.foundIn(text, current);
+            List<String> found = RawValueOracle.foundIn(text, input ? currentForAi : current);
             if (input) {
                 inputLeaks += found.size();
             } else {
@@ -123,6 +125,9 @@ public final class EvaluationRunner {
             return;
         }
         independent.current = oracle.extract(files, c.callId());
+        Set<String> forAi = new LinkedHashSet<>(independent.current);
+        forAi.addAll(oracle.extractCallIds(files, c.callId()));
+        independent.currentForAi = forAi;
         independent.allValues.addAll(independent.current);
         if (!c.expectsOutOfScope()) {
             captureRuleBaseline(c, files, rules);
