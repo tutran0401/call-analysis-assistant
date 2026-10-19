@@ -289,13 +289,13 @@ public class ChatAnalysisService {
      * "Giới hạn dữ liệu", thay vì chỉ một câu "không có signaling" khiến người dùng tưởng Call-ID sai.
      */
     private static List<String> withSignalingFetchError(List<String> limitations, CallAnalysisDetail detail) {
-        if (!detail.timeline().forSource(EventSource.SIGNALING).isEmpty()) {
-            return limitations;
-        }
+        // Lỗi "không lấy được" chỉ đáng nêu khi signaling rỗng (nguồn dự phòng có thể đã bù); bị cắt thì luôn nêu.
+        boolean signalingEmpty = detail.timeline().forSource(EventSource.SIGNALING).isEmpty();
         List<String> merged = new ArrayList<>(limitations);
         detail.processingWarnings().stream()
                 .map(SignalingFetchError::fromWarning)
                 .flatMap(Optional::stream)
+                .filter(error -> error.partial() || signalingEmpty)
                 .map(SignalingFetchError::limitation)
                 .distinct()
                 .forEach(merged::add);

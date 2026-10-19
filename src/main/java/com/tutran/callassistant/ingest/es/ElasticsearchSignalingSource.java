@@ -34,8 +34,14 @@ import java.util.Map;
 @Component
 public class ElasticsearchSignalingSource implements SignalingEventSource {
 
-    /** Số sự kiện tối đa lấy về cho một cuộc gọi; export mẫu của mentor nhỏ hơn nhiều mức này. */
-    private static final int MAX_EVENTS_PER_CALL = 1000;
+    /** Số sự kiện lấy về mỗi trang. */
+    static final int PAGE_SIZE = 1000;
+    /**
+     * Trần số sự kiện cho một cuộc gọi, bằng {@code index.max_result_window} mặc định của Elasticsearch (phân trang
+     * bằng {@code from} không vượt được mức này). Vượt trần thì report nêu rõ trong "Giới hạn dữ liệu"
+     * ({@link SignalingFetchError#ES_TRUNCATED}) thay vì cắt im lặng như bản Sprint 1.
+     */
+    static final int MAX_EVENTS_PER_CALL = 10_000;
     private static final String TIMESTAMP_FIELD = "timestamp";
     private static final String CALL_ID_FIELD = "callId";
     /** Một lần thử lại có kiểm soát, chỉ cho lỗi kết nối (Sprint 3 T8). */
@@ -77,20 +83,40 @@ public class ElasticsearchSignalingSource implements SignalingEventSource {
     }
 
     private NormalizedEvents search(String indexName, CallReference call) throws IOException {
-        SearchResponse<SignalingEventDoc> response = client.search(search -> search
-                        .index(indexName)
-                        .size(MAX_EVENTS_PER_CALL)
-                        .sort(sort -> sort.field(field -> field.field(TIMESTAMP_FIELD).order(SortOrder.Asc)))
-                        .query(query -> query.term(term -> term.field(CALL_ID_FIELD).value(call.callId()))),
-                SignalingEventDoc.class);
-
         List<CanonicalEvent> events = new ArrayList<>();
+        long total = 0;
         long sequenceNumber = 0;
-        for (var hit : response.hits().hits()) {
-            SignalingEventDoc doc = hit.source();
-            if (doc != null) {
-                events.add(toCanonicalEvent(doc, ++sequenceNumber));
+        for (int from = 0; from < MAX_EVENTS_PER_CALL; from += PAGE_SIZE) {
+            int offset = from;
+            SearchResponse<SignalingEventDoc> response = client.search(search -> search
+                            .index(indexName)
+                            .from(offset)
+                            .size(Math.min(PAGE_SIZE, MAX_EVENTS_PER_CALL - offset))
+                            .trackTotalHits(track -> track.enabled(true))
+                            // _doc phá thế hoà timestamp để các trang không chồng lấn / bỏ sót nhau.
+                            .sort(sort -> sort.field(field -> field.field(TIMESTAMP_FIELD).order(SortOrder.Asc)))
+                            .sort(sort -> sort.field(field -> field.field("_doc").order(SortOrder.Asc)))
+                            .query(query -> query.term(term -> term.field(CALL_ID_FIELD).value(call.callId()))),
+                    SignalingEventDoc.class);
+            var hits = response.hits();
+            if (hits.total() != null) {
+                total = hits.total().value();
             }
+            for (var hit : hits.hits()) {
+                SignalingEventDoc doc = hit.source();
+                if (doc != null) {
+                    events.add(toCanonicalEvent(doc, ++sequenceNumber));
+                }
+            }
+            if (hits.hits().size() < PAGE_SIZE || offset + PAGE_SIZE >= total) {
+                break;
+            }
+        }
+        if (total > MAX_EVENTS_PER_CALL) {
+            log.warn("es_query index={} truncated hits_total={} read={}", indexName, total, events.size());
+            return NormalizedEvents.of(events).withExtraWarnings(List.of(SignalingFetchError.ES_TRUNCATED.name()
+                    + ": callId=" + call.callId() + " has " + total + " signaling events in Elasticsearch; only the first "
+                    + MAX_EVENTS_PER_CALL + " (by timestamp) were analysed"));
         }
         return NormalizedEvents.of(events);
     }

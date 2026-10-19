@@ -3,8 +3,15 @@ package com.tutran.callassistant.ingest.es;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.TotalHitsRelation;
+import co.elastic.clients.util.ObjectBuilder;
 import com.tutran.callassistant.application.CallReference;
+import com.tutran.callassistant.application.port.out.SignalingFetchError;
 import com.tutran.callassistant.domain.event.NormalizedEvents;
+import com.tutran.callassistant.testsupport.SampleCalls;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +23,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -45,7 +53,53 @@ class ElasticsearchSignalingTest {
     }
 
     @Test
+    void sourcePagesThroughEveryEventInsteadOfStoppingAtOnePage() throws IOException {
+        int total = ElasticsearchSignalingSource.PAGE_SIZE * 2 + 5;
+
+        NormalizedEvents result = new ElasticsearchSignalingSource(clientHolding(total), properties)
+                .fetch(new CallReference(CALL_ID, Path.of(".")));
+
+        assertThat(result.events()).hasSize(total);
+        assertThat(result.warnings()).isEmpty();
+    }
+
+    @Test
+    void sourceWarnsInsteadOfTruncatingSilentlyAboveTheCap() throws IOException {
+        int total = ElasticsearchSignalingSource.MAX_EVENTS_PER_CALL + 1;
+
+        NormalizedEvents result = new ElasticsearchSignalingSource(clientHolding(total), properties)
+                .fetch(new CallReference(CALL_ID, Path.of(".")));
+
+        assertThat(result.events()).hasSize(ElasticsearchSignalingSource.MAX_EVENTS_PER_CALL);
+        assertThat(result.warnings()).singleElement()
+                .satisfies(w -> assertThat(SignalingFetchError.fromWarning(w)).contains(SignalingFetchError.ES_TRUNCATED))
+                .asString().contains(String.valueOf(total));
+    }
+
+    /** Client giả chứa {@code total} sự kiện của {@link #CALL_ID}; trả đúng trang theo from/size của request. */
+    @SuppressWarnings("unchecked")
+    private static ElasticsearchClient clientHolding(int total) throws IOException {
+        ElasticsearchClient client = mock(ElasticsearchClient.class);
+        when(client.search(any(Function.class), any(Class.class))).thenAnswer(invocation -> {
+            Function<SearchRequest.Builder, ObjectBuilder<SearchRequest>> fn = invocation.getArgument(0);
+            SearchRequest request = fn.apply(new SearchRequest.Builder()).build();
+            int from = request.from() == null ? 0 : request.from();
+            int to = Math.min(total, from + request.size());
+            List<Hit<SignalingEventDoc>> hits = IntStream.range(from, to)
+                    .mapToObj(i -> Hit.<SignalingEventDoc>of(h -> h.index("signaling").id("doc-" + i).source(
+                            new SignalingEventDoc(CALL_ID, "2026-01-01T00:00:00Z", "PING", null, null, null, null,
+                                    null, null, null, null, null, null, "{}"))))
+                    .toList();
+            return SearchResponse.<SignalingEventDoc>of(r -> r.took(1).timedOut(false)
+                    .shards(sh -> sh.total(1).successful(1).failed(0))
+                    .hits(h -> h.total(t -> t.value(total).relation(TotalHitsRelation.Eq)).hits(hits)));
+        });
+        return client;
+    }
+
+    @Test
     void archiveGeneratesSameDocumentIdsWhenImportingTheSameFileTwice() throws IOException {
+        SampleCalls.requireSampleData();
         List<List<String>> idsPerRun = new ArrayList<>();
         for (int run = 0; run < 2; run++) {
             ElasticsearchClient client = mock(ElasticsearchClient.class);
@@ -66,6 +120,7 @@ class ElasticsearchSignalingTest {
 
     @Test
     void archiveFailsLoudlyWhenBulkReportsErrors() throws IOException {
+        SampleCalls.requireSampleData();
         ElasticsearchClient client = mock(ElasticsearchClient.class);
         BulkResponse response = mock(BulkResponse.class);
         when(response.errors()).thenReturn(true);

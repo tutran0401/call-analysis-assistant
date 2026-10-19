@@ -12,10 +12,12 @@ import java.util.Optional;
  *       nhân đôi thời gian chờ của người dùng.</li>
  *   <li>{@code ES_INDEX_MISSING}: ES chạy nhưng chưa import signaling.</li>
  *   <li>{@code ES_ERROR}: lỗi khác do ES trả về hoặc lỗi không dự kiến.</li>
+ *   <li>{@code ES_TRUNCATED}: đọc được, nhưng cuộc gọi có nhiều sự kiện hơn trần đọc một lần nên chỉ phân tích phần
+ *       đầu. Khác các mã trên: signaling không rỗng, chỉ thiếu phần cuối.</li>
  * </ul>
  */
 public enum SignalingFetchError {
-    ES_UNAVAILABLE, ES_TIMEOUT, ES_INDEX_MISSING, ES_ERROR;
+    ES_UNAVAILABLE, ES_TIMEOUT, ES_INDEX_MISSING, ES_ERROR, ES_TRUNCATED;
 
     private static final String CODE_PREFIX = "ES_";
 
@@ -34,6 +36,11 @@ public enum SignalingFetchError {
         return Optional.empty();
     }
 
+    /** Có lấy được signaling nhưng không đủ (khác các mã còn lại: không lấy được gì). */
+    public boolean partial() {
+        return this == ES_TRUNCATED;
+    }
+
     public boolean retryable() {
         return this == ES_UNAVAILABLE;
     }
@@ -48,6 +55,8 @@ public enum SignalingFetchError {
             case ES_INDEX_MISSING -> "Elasticsearch chưa có index signaling (chưa chạy import) nên không lấy được "
                     + "signaling.";
             case ES_ERROR -> "Truy vấn signaling từ Elasticsearch bị lỗi nên không lấy được signaling.";
+            case ES_TRUNCATED -> "Cuộc gọi có nhiều sự kiện signaling hơn trần đọc một lần từ Elasticsearch nên chỉ "
+                    + "phân tích phần đầu (theo thời gian); diễn biến cuối cuộc gọi có thể bị thiếu.";
         };
     }
 }
