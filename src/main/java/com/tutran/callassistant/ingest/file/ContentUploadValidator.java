@@ -31,7 +31,7 @@ import java.util.Set;
  * <p>Quy ước về Call-ID: nếu người dùng ghi Call-ID trong câu hỏi thì đó là Call-ID mong đợi; nếu
  * không, lấy Call-ID xuất hiện nhiều nhất trong nội dung các file (hoà thì lấy file đầu tiên). File
  * nào mang Call-ID khác bị loại - trộn log của hai cuộc gọi sẽ cho kết luận sai mà nhìn vẫn hợp lý.
- * WebRTC log không chứa Call-ID nên không kiểm chứng được và luôn được nhận theo loại.
+ * WebRTC không chứa Call-ID: chỉ nhận khi upload không có bằng chứng trộn nhiều cuộc gọi.
  *
  * <p>Thiếu end-call log <i>không</i> báo ở đây: {@code MissingEndCallLogDetector} đã báo ở tầng
  * verdict, báo lại sẽ lặp trong report. Chỉ webrtc log thiếu mới chưa có ai báo.
@@ -71,6 +71,8 @@ public class ContentUploadValidator implements UploadValidator {
         }
 
         String expected = chooseCallId(requestedCallId, candidates);
+        boolean mixedCalls = expected != null && candidates.stream().anyMatch(c ->
+                c.callId != null && !c.callId.equalsIgnoreCase(expected));
         List<Candidate> accepted = new ArrayList<>();
         for (Candidate candidate : candidates) {
             if (candidate.type == LogFileType.SIGNALING_EXPORT) {
@@ -78,6 +80,9 @@ public class ContentUploadValidator implements UploadValidator {
             } else if (expected != null && candidate.callId != null && !candidate.callId.equalsIgnoreCase(expected)) {
                 reject(candidate, "thuộc Call-ID " + candidate.callId + ", khác Call-ID " + expected
                         + " của cuộc gọi đang phân tích", rejected);
+            } else if (mixedCalls && candidate.callId == null) {
+                reject(candidate, "không xác minh được Call-ID khi lượt tải lên có log của cuộc gọi khác; "
+                        + "hãy tải lại log của đúng một cuộc gọi", rejected);
             } else {
                 accepted.add(candidate);
             }

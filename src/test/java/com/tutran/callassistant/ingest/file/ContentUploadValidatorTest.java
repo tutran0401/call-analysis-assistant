@@ -83,6 +83,19 @@ class ContentUploadValidatorTest {
     }
 
     @Test
+    void mixedCallUploadQuarantinesUnverifiableWebRtcFiles() {
+        try (ValidatedUpload result = validator.validate(List.of(
+                endCall("caller_endcall.log", CALL_A),
+                endCall("callee_endcall.log", CALL_B),
+                webRtc("callee_webrtc.log")), CALL_A)) {
+            assertThat(result.accepted()).containsExactly("caller_endcall.log");
+            assertThat(result.rejected()).extracting(r -> r.name())
+                    .containsExactlyInAnyOrder("callee_endcall.log", "callee_webrtc.log");
+            assertThat(result.limitations()).anyMatch(l -> l.contains("không xác minh được Call-ID"));
+        }
+    }
+
+    @Test
     void callIdWrittenInTheQuestionOverridesMajority() {
         try (ValidatedUpload result = validator.validate(List.of(
                 endCall("a_endcall.log", CALL_A), endCall("b_endcall.log", CALL_A)), CALL_B)) {
