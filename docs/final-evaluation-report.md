@@ -5,6 +5,14 @@ Tài liệu bàn giao số 3 (PROJECT_SPEC.md mục 7.4). Nội dung: accuracy, 
 
 - **Sản phẩm:** AI Call Analysis Assistant, Trần Anh Tú
 - **Ngày đo:** 2026-10-14
+- **Lưu ý thay đổi 2026-10-20:** Guardrails hiện yêu cầu AI viện dẫn chỉ số bằng mã `{{M001}}` để code điền đúng
+  tên/giá trị/đơn vị; phép tính mất gói cộng các đoạn bộ đếm sau reset; benchmark `dev` có nhãn intent theo từng
+  câu hỏi. Các con số lịch sử bên dưới được đo trước thay đổi này và **chưa đại diện cho bản code hiện tại**.
+  Đã chạy kiểm tra nhanh với AI thật (`reports/review-openai-after-fixes/`, một câu/case, 30 request): verdict
+  27/28, metric 28/28, intent 30/30, pipeline 30/30, claim sai tới report 0/25; 3/28 lượt phân tích fallback vì
+  AI chép số thời gian WebRTC trực tiếp. Đã siết prompt và kiểm lại riêng ba case. Lượt này **không đo consistency
+  giữa cách hỏi/lần chạy**; cần chạy lại đầy đủ `--repeat 5` trước khi thay các số lịch sử bên dưới. Held-out vẫn
+  chờ Mentor.
 - **Cấu hình đo:** OpenAI `gpt-4o-mini` thật, context `structured`, có `ruleBaseline` (cấu hình chạy thật);
   `--repeat 5`; signaling từ `sample-data/`
 - **Kết quả gốc:** `reports/eval-s3-v2-with-baseline/` (không commit). Các lượt so sánh khác:

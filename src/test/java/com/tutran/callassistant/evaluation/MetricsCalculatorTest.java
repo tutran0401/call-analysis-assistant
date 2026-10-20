@@ -27,7 +27,9 @@ class MetricsCalculatorTest {
     private static EvaluationCase testCase(String id, String verdict, Boolean quality, String category,
                                            String intent, List<String> sensitive, String labelSource) {
         return new EvaluationCase(id, intent == null ? "CALL-" + id : null, List.of(), List.of("q1", "q2", "q3"),
-                intent, verdict, quality, category, List.of(), "dev", labelSource, null, sensitive);
+                intent, verdict, quality, category, List.of(), "dev", labelSource, null, sensitive,
+                List.of(intent == null ? "ANALYZE_CALL" : intent, intent == null ? "ANALYZE_CALL" : intent,
+                        intent == null ? "ANALYZE_CALL" : intent));
     }
 
     private static RunRecord record(String caseId, int question, int run, String verdict, String category,
@@ -167,6 +169,16 @@ class MetricsCalculatorTest {
     }
 
     @Test
+    void intentAccuracyRequiresTheSpecificIntentWhenLabelled() {
+        EvaluationCase focused = new EvaluationCase("focus", "CALL-focus", List.of(), List.of("Why no audio?"),
+                null, "SUCCESS", false, "NONE", List.of(), "dev", "manual", null, List.of(),
+                List.of("ANALYZE_WITH_FOCUS"));
+        EvaluationMetrics result = calculator.compute(List.of(focused),
+                List.of(record("focus", 0, 0, "SUCCESS", "NONE", 10)), Map.of(), 0);
+        assertThat(result.intentAccuracy()).isEqualTo(new Ratio(0, 1));
+    }
+
+    @Test
     void categoryLabelsTakenFromTheRuleEngineAreNotCountedAsAccuracy() {
         // Mentor review Sprint 2: nhãn category lấy từ output rule thì "100%" không đo được gì.
         List<EvaluationCase> cases = List.of(testCase("c1", "FAIL", null, "TURN_FAILURE", null, List.of(),
@@ -196,7 +208,7 @@ class MetricsCalculatorTest {
     @Test
     void deliveredReportsAreRecheckedForInventedNumbersAndEvidenceIds() {
         List<EvaluationCase> cases = List.of(testCase("c1", "SUCCESS", false, "NONE", null, List.of()));
-        Report clean = withAnalysis("Packet loss 9.8% (EV002), MOS 2.9.");
+        Report clean = withAnalysis("Theo EV002, ⟦Packet loss (callee): 9.8%⟧ và ⟦MOS (callee): 2.9⟧.");
         Report inventedNumber = withAnalysis("Packet loss 77.7% (EV002).");
         Report inventedEvidence = withAnalysis("Theo EV009 thì mất gói 9.8%.");
         List<RunRecord> records = List.of(

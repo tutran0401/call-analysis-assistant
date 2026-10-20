@@ -71,6 +71,12 @@ bớt hiện trong "Giới hạn dữ liệu").
 `import` nhận một hoặc nhiều thư mục gốc (đường dẫn tính từ thư mục đang đứng), đọc mọi `signaling.json` (cả hai dạng export của Mentor) và index
 vào `call-signaling-events`. Chạy lại an toàn: ID document cố định nên không nhân đôi dữ liệu.
 
+**Sau thay đổi sanitizer 2026-10-20:** nạp lại toàn bộ các thư mục signaling đã từng import. Lệnh `import` giữ
+document ID cũ và ghi đè mỗi document bằng bản đã mask/pseudonymize, kể cả `rawEvent`. Nếu index còn dữ liệu từ
+những export không còn trên đĩa, các document đó không được ghi đè; cần kiểm tra chúng riêng trước khi dùng index
+cho đánh giá bảo mật. `appUserId` và `csid` được giả danh ổn định trong một lần chạy ứng dụng. Nếu cần giữ cùng
+định danh qua các lần import, đặt `CALL_ANALYSIS_PSEUDONYM_SALT` cố định như mục 4.
+
 ## 4. Cấu hình AI
 
 ```bash
@@ -160,14 +166,16 @@ java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar evaluate \
 ```
 
 Kết quả: `reports/eval-dev/summary.md` (metric mục 6.5, bảng AI vs Rule vs Ground truth, các lần chạy sai),
-`results.json`, `samples/<case>.md`. Một lần chạy đầy đủ `dev` (29 case, khoảng 460 request) với `gpt-4o-mini` mất
+`results.json`, `samples/<case>.md`. Một lần chạy đầy đủ `dev` (30 case, khoảng 470 request) với `gpt-4o-mini` mất
 khoảng 20-30 phút và khoảng 1,6 triệu token.
 
 ### Mentor chạy tập `held-out`
 
 1. Viết file case theo đúng định dạng mục 6.3 (xem `benchmark/dev/cases.yaml` làm mẫu; khoá `cases:` hoặc một
-   danh sách). Field tuỳ chọn: `expected_intent: OUT_OF_SCOPE`, `files` dạng `{from, as, append}`,
-   `sensitive_values`, `label_source`.
+   danh sách). Để đo Intent Accuracy theo đủ ba intent, thêm `expected_intents` cùng số phần tử với `questions`,
+   mỗi phần tử là `ANALYZE_CALL`, `ANALYZE_WITH_FOCUS` hoặc `OUT_OF_SCOPE`. Case ngoài phạm vi có thể dùng
+   `expected_intent: OUT_OF_SCOPE` cho mọi câu hỏi. Thiếu nhãn intent thì chỉ số này không có mẫu đo.
+   Field tuỳ chọn khác: `files` dạng `{from, as, append}`, `sensitive_values`, `label_source`.
 2. Đặt log của các cuộc gọi held-out dưới một thư mục, mỗi cuộc gọi một thư mục con tên là Call-ID (có
    `signaling.json`).
 3. Chạy:

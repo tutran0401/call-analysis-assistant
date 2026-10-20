@@ -22,6 +22,7 @@ public final class CaseLoader {
 
     private static final Set<String> VERDICTS = Set.of("SUCCESS", "FAIL", "UNKNOWN");
     private static final Set<String> SPLITS = Set.of("dev", "held-out");
+    private static final Set<String> INTENTS = Set.of("ANALYZE_CALL", "ANALYZE_WITH_FOCUS", "OUT_OF_SCOPE");
 
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
             .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
@@ -67,6 +68,17 @@ public final class CaseLoader {
         }
         if (c.questions().isEmpty()) {
             throw new IllegalArgumentException("Case " + id + " has no questions");
+        }
+        if (c.expectedIntent() != null && !INTENTS.contains(c.expectedIntent())) {
+            throw new IllegalArgumentException("Case " + id + ": invalid expected_intent");
+        }
+        if (!c.expectedIntents().isEmpty() && (c.expectedIntents().size() != c.questions().size()
+                || !c.expectedIntents().stream().allMatch(INTENTS::contains))) {
+            throw new IllegalArgumentException("Case " + id + ": expected_intents must label every question with a valid intent");
+        }
+        if (!c.expectedIntents().isEmpty() && c.expectedIntents().contains("OUT_OF_SCOPE")
+                && !c.expectsOutOfScope()) {
+            throw new IllegalArgumentException("Case " + id + ": split OUT_OF_SCOPE questions into a separate case");
         }
         if (!c.expectsOutOfScope() && (c.callId() == null || c.callId().isBlank())) {
             throw new IllegalArgumentException("Case " + id + " needs call_id (only OUT_OF_SCOPE cases may omit it)");

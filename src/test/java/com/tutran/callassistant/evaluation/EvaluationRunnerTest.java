@@ -93,7 +93,7 @@ class EvaluationRunnerTest {
         assertThat(m.verdictAccuracy()).isEqualTo(new Ratio(18, 18));
         assertThat(m.ruleVerdictAccuracy()).isEqualTo(new Ratio(3, 3));
         assertThat(m.issueCategoryAccuracy()).isEqualTo(new Ratio(6, 6));
-        assertThat(m.intentAccuracy()).isEqualTo(new Ratio(24, 24));
+        assertThat(m.intentAccuracy()).isEqualTo(new Ratio(6, 6));
         assertThat(m.consistencyCases()).isEqualTo(new Ratio(3, 3));
         assertThat(m.metricCorrectness()).isEqualTo(new Ratio(18, 18));
         assertThat(m.templateCompliance()).isEqualTo(new Ratio(18, 18));

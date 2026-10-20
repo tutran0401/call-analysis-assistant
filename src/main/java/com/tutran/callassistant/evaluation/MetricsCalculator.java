@@ -31,7 +31,8 @@ public final class MetricsCalculator {
                                      Map<String, RuleBaseline> rules, int logLeakage) {
         Map<String, EvaluationCase> byId = new HashMap<>();
         cases.forEach(c -> byId.put(c.caseId(), c));
-        List<RunRecord> analysed = records.stream().filter(r -> !byId.get(r.caseId()).expectsOutOfScope()).toList();
+        List<RunRecord> analysed = records.stream().filter(r ->
+                !"OUT_OF_SCOPE".equals(byId.get(r.caseId()).expectedIntentAt(r.questionIndex()))).toList();
         List<RunRecord> okAnalysed = analysed.stream().filter(RunRecord::pipelineOk).toList();
 
         return new EvaluationMetrics(
@@ -128,10 +129,10 @@ public final class MetricsCalculator {
             if (!r.pipelineOk()) {
                 continue;
             }
+            String expected = byId.get(r.caseId()).expectedIntentAt(r.questionIndex());
+            if (expected == null) continue;
             total++;
-            boolean expectOutOfScope = byId.get(r.caseId()).expectsOutOfScope();
-            boolean gotOutOfScope = "OUT_OF_SCOPE".equals(r.intent());
-            hit += expectOutOfScope == gotOutOfScope ? 1 : 0;
+            hit += expected.equals(r.intent()) ? 1 : 0;
         }
         return new Ratio(hit, total);
     }

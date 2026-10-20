@@ -144,7 +144,8 @@ public final class EvaluationReportWriter {
                     && !c.expectedIssueCategory().equals(rec.issueCategory())) {
                 lines.add("| " + rec.caseId() + " | " + rec.questionIndex() + " | category " + rec.issueCategory()
                         + " (kỳ vọng " + c.expectedIssueCategory() + ") | " + String.valueOf(rec.fallbackReason()) + " |");
-            } else if (c.expectsOutOfScope() != "OUT_OF_SCOPE".equals(rec.intent())) {
+            } else if (c.expectedIntentAt(rec.questionIndex()) != null
+                    && !c.expectedIntentAt(rec.questionIndex()).equals(rec.intent())) {
                 lines.add("| " + rec.caseId() + " | " + rec.questionIndex() + " | intent " + rec.intent() + " | |");
             }
         }

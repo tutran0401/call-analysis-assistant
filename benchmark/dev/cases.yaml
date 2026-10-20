@@ -25,6 +25,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -41,6 +46,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -59,6 +69,12 @@ cases:
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -76,6 +92,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -94,6 +115,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -113,6 +139,12 @@ cases:
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -129,6 +161,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
       - "Cuộc gọi này kết thúc bình thường chứ?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -145,6 +182,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao cuộc gọi không kết nối được?"
       - "Vì sao bên nhận không đổ chuông?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: SIGNALING_FAILURE
@@ -162,6 +204,12 @@ cases:
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: ICE_FAILURE
@@ -178,6 +226,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -193,6 +246,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -210,6 +268,12 @@ cases:
       - "Vì sao cuộc gọi không kết nối được?"
       - "Vì sao bên nhận không đổ chuông?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: SIGNALING_FAILURE
@@ -225,6 +289,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -241,6 +310,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -259,6 +333,12 @@ cases:
       - "Vì sao cuộc gọi không kết nối được?"
       - "Vì sao bên nhận không đổ chuông?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: SIGNALING_FAILURE
@@ -277,6 +357,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao bên nhận nghe bị rè?"
       - "Chất lượng âm thanh cuộc gọi này thế nào?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -294,6 +379,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Vì sao bên gọi nghe tiếng bị rè và ngắt quãng?"
       - "Chất lượng âm thanh cuộc gọi này có ổn không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: true
     expected_issue_category: NETWORK_PACKET_LOSS
@@ -310,6 +399,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao cuộc gọi không kết nối được?"
       - "Vì sao bên nhận không đổ chuông?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: SIGNALING_FAILURE
@@ -327,6 +421,12 @@ cases:
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -342,6 +442,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao cuộc gọi không kết nối được?"
       - "Vì sao bên nhận không đổ chuông?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: SIGNALING_FAILURE
@@ -357,6 +462,11 @@ cases:
       - "Cuộc gọi này có lỗi gì không?"
       - "Vì sao hai bên không nghe được nhau?"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: TURN_FAILURE
@@ -372,6 +482,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Chất lượng cuộc gọi này có ổn không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -386,6 +500,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Cuộc gọi này có ổn không?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_CALL
     expected_verdict: UNKNOWN
     split: dev
     label_source: "spec section 10 scenario 5 ('chỉ đính kèm một file' -> UNKNOWN); OPEN QUESTION whether rule baseline agrees"
@@ -397,6 +515,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Cuộc gọi này kết thúc thế nào?"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
     expected_verdict: UNKNOWN
     split: dev
     label_source: "spec 3.3: không đủ dữ liệu phải trả UNKNOWN (không đính kèm log client nào)"
@@ -414,6 +536,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_CALL
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -432,6 +558,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_CALL
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -446,6 +576,10 @@ cases:
       - "Vì sao hai bên không nghe được nhau?"
       - "Phân tích cuộc gọi này giúp mình"
       - "Có lỗi kết nối media không?"
+    expected_intents:
+      - ANALYZE_WITH_FOCUS
+      - ANALYZE_CALL
+      - ANALYZE_WITH_FOCUS
     expected_verdict: FAIL
     expected_quality_flag: false
     expected_issue_category: ICE_FAILURE
@@ -467,6 +601,10 @@ cases:
       - "Phân tích cuộc gọi này giúp mình"
       - "Cuộc gọi này có lỗi gì không?"
       - "Kiểm tra giúp mình log cuộc gọi này"
+    expected_intents:
+      - ANALYZE_CALL
+      - ANALYZE_CALL
+      - ANALYZE_CALL
     expected_verdict: SUCCESS
     expected_quality_flag: false
     expected_issue_category: NONE
@@ -485,6 +623,10 @@ cases:
       - "Viết giúp mình một email xin nghỉ phép"
       - "Hôm nay thời tiết Hà Nội thế nào?"
       - "Dịch câu 'good morning' sang tiếng Việt"
+    expected_intents:
+      - OUT_OF_SCOPE
+      - OUT_OF_SCOPE
+      - OUT_OF_SCOPE
     expected_intent: OUT_OF_SCOPE
     split: dev
     label_source: "spec mục 4.4"
@@ -495,6 +637,10 @@ cases:
       - "Kể cho mình một câu chuyện cười"
       - "Giá vàng hôm nay là bao nhiêu?"
       - "Bạn là ai vậy?"
+    expected_intents:
+      - OUT_OF_SCOPE
+      - OUT_OF_SCOPE
+      - OUT_OF_SCOPE
     expected_intent: OUT_OF_SCOPE
     split: dev
     label_source: "spec mục 4.4"

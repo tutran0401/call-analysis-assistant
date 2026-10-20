@@ -27,7 +27,8 @@ public record EvaluationCase(
         String split,
         String labelSource,
         String notes,
-        List<String> sensitiveValues
+        List<String> sensitiveValues,
+        List<String> expectedIntents
 ) {
 
     public EvaluationCase {
@@ -35,10 +36,25 @@ public record EvaluationCase(
         questions = questions == null ? List.of() : List.copyOf(questions);
         expectedEvidence = expectedEvidence == null ? List.of() : List.copyOf(expectedEvidence);
         sensitiveValues = sensitiveValues == null ? List.of() : List.copyOf(sensitiveValues);
+        expectedIntents = expectedIntents == null ? List.of() : List.copyOf(expectedIntents);
+    }
+
+    /** Backward compatible case-level label; null means unlabelled, never an inferred correct intent. */
+    public EvaluationCase(String caseId, String callId, List<FileRef> files, List<String> questions,
+                          String expectedIntent, String expectedVerdict, Boolean expectedQualityFlag,
+                          String expectedIssueCategory, List<String> expectedEvidence, String split,
+                          String labelSource, String notes, List<String> sensitiveValues) {
+        this(caseId, callId, files, questions, expectedIntent, expectedVerdict, expectedQualityFlag,
+                expectedIssueCategory, expectedEvidence, split, labelSource, notes, sensitiveValues, List.of());
+    }
+
+    public String expectedIntentAt(int questionIndex) {
+        return expectedIntents.isEmpty() ? expectedIntent : expectedIntents.get(questionIndex);
     }
 
     public boolean expectsOutOfScope() {
-        return "OUT_OF_SCOPE".equals(expectedIntent);
+        return expectedIntents.isEmpty() ? "OUT_OF_SCOPE".equals(expectedIntent)
+                : expectedIntents.stream().allMatch("OUT_OF_SCOPE"::equals);
     }
 
     /**
