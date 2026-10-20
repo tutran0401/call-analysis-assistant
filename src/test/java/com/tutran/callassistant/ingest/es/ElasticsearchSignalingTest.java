@@ -108,7 +108,9 @@ class ElasticsearchSignalingTest {
             ArgumentCaptor<BulkRequest> captor = ArgumentCaptor.forClass(BulkRequest.class);
             when(client.bulk(captor.capture())).thenReturn(response);
 
-            int indexed = new ElasticsearchSignalingArchive(client, properties).index(EXPORT);
+            int indexed = new ElasticsearchSignalingArchive(client, properties,
+                new com.tutran.callassistant.sanitize.SensitiveDataSanitizer(
+                        new com.tutran.callassistant.sanitize.Pseudonymizer("test-salt"))).index(EXPORT);
 
             List<String> ids = captor.getValue().operations().stream()
                     .map(op -> op.index().id()).toList();
@@ -127,7 +129,9 @@ class ElasticsearchSignalingTest {
         when(response.items()).thenReturn(List.of());
         when(client.bulk(any(BulkRequest.class))).thenReturn(response);
 
-        assertThatThrownBy(() -> new ElasticsearchSignalingArchive(client, properties).index(EXPORT))
+        assertThatThrownBy(() -> new ElasticsearchSignalingArchive(client, properties,
+                new com.tutran.callassistant.sanitize.SensitiveDataSanitizer(
+                        new com.tutran.callassistant.sanitize.Pseudonymizer("test-salt"))).index(EXPORT))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("Bulk import had errors");
     }
@@ -148,7 +152,9 @@ class ElasticsearchSignalingTest {
         ArgumentCaptor<BulkRequest> captor = ArgumentCaptor.forClass(BulkRequest.class);
         when(client.bulk(captor.capture())).thenReturn(response);
 
-        assertThat(new ElasticsearchSignalingArchive(client, properties).index(export)).isEqualTo(1);
+        assertThat(new ElasticsearchSignalingArchive(client, properties,
+                new com.tutran.callassistant.sanitize.SensitiveDataSanitizer(
+                        new com.tutran.callassistant.sanitize.Pseudonymizer("test-salt"))).index(export)).isEqualTo(1);
 
         SignalingEventDoc doc = (SignalingEventDoc) captor.getValue().operations().get(0).index().document();
         assertThat(doc.callId()).isEqualTo("NEW-1");
@@ -164,7 +170,36 @@ class ElasticsearchSignalingTest {
         Files.writeString(empty, "{\"callId\":\"X\",\"events\":[]}");
         ElasticsearchClient client = mock(ElasticsearchClient.class);
 
-        assertThat(new ElasticsearchSignalingArchive(client, properties).index(empty)).isZero();
+        assertThat(new ElasticsearchSignalingArchive(client, properties,
+                new com.tutran.callassistant.sanitize.SensitiveDataSanitizer(
+                        new com.tutran.callassistant.sanitize.Pseudonymizer("test-salt"))).index(empty)).isZero();
         Mockito.verifyNoInteractions(client);
+    }
+
+    @Test
+    void archiveSanitizesIdentifiersAndRawEventBeforeIndexing(@TempDir Path dir) throws IOException {
+        Path export = dir.resolve("signaling.json");
+        Files.writeString(export, """
+                {"callId":"CALL-1","events":[{"@timestamp":"2026-10-13T07:50:17Z",
+                  "cmd":"BYE","csid":"session-secret-123","appUserId":"person-123",
+                  "clientIp":"113.161.45.67","authorization":"Bearer confidential-token-123",
+                  "message":"No sessions found for Call-ID: CALL-1"}]}
+                """);
+        ElasticsearchClient client = mock(ElasticsearchClient.class);
+        BulkResponse response = mock(BulkResponse.class);
+        when(response.errors()).thenReturn(false);
+        ArgumentCaptor<BulkRequest> captor = ArgumentCaptor.forClass(BulkRequest.class);
+        when(client.bulk(captor.capture())).thenReturn(response);
+
+        var archive = new ElasticsearchSignalingArchive(client, properties,
+                new com.tutran.callassistant.sanitize.SensitiveDataSanitizer(
+                        new com.tutran.callassistant.sanitize.Pseudonymizer("test-salt")));
+        archive.index(export);
+        SignalingEventDoc doc = (SignalingEventDoc) captor.getValue().operations().get(0).index().document();
+        assertThat(doc.appUserId()).startsWith("USER_").doesNotContain("person-123");
+        assertThat(doc.csid()).startsWith("SESSION_").doesNotContain("session-secret-123");
+        assertThat(doc.rawEvent()).doesNotContain("person-123", "session-secret-123",
+                "113.161.45.67", "confidential-token-123");
+        assertThat(doc.message()).contains("No sessions found");
     }
 }

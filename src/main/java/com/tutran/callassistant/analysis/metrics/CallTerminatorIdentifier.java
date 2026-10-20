@@ -7,6 +7,8 @@ import com.tutran.callassistant.domain.event.Leg;
 import com.tutran.callassistant.domain.metrics.CallMetrics;
 import com.tutran.callassistant.domain.metrics.MetricResult;
 import com.tutran.callassistant.domain.timeline.CallTimeline;
+import com.tutran.callassistant.sanitize.Pseudonymizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +27,18 @@ import java.util.Optional;
 @Component
 public class CallTerminatorIdentifier {
 
+    private final Pseudonymizer pseudonymizer;
+
+    @Autowired
+    public CallTerminatorIdentifier(Pseudonymizer pseudonymizer) {
+        this.pseudonymizer = pseudonymizer;
+    }
+
+    /** Local test/file adapter that still compares raw values directly. */
+    public CallTerminatorIdentifier() {
+        this(new Pseudonymizer(""));
+    }
+
     private static final String APP_USER_ID = "appUserId";
     private static final String CALL_SUMMARY = "CALL_SUMMARY";
     /** Các lệnh chỉ callee gửi - phản hồi cho INVITE của caller. */
@@ -42,12 +56,18 @@ public class CallTerminatorIdentifier {
                     "lệnh BYE không có appUserId để xác định bên gửi");
         }
         for (Leg leg : CallMetrics.QUALITY_LEGS) {
-            if (byeAppUserId.equals(identityOf(timeline, leg))) {
+            if (matchesIdentity(byeAppUserId, identityOf(timeline, leg))) {
                 return MetricResult.of(leg, "", MetricSources.SIGNALING);
             }
         }
         return MetricResult.notAvailable("", MetricSources.SIGNALING,
                 "appUserId của bên gửi BYE không khớp caller (INIT_CALL) hay callee (TRYING/RINGING/OK)");
+    }
+
+    private boolean matchesIdentity(String byeId, String candidate) {
+        if (candidate == null) return false;
+        return byeId.equals(candidate) || (byeId.matches("USER_[0-9a-f]{6}")
+                && byeId.equals(pseudonymizer.pseudonym("USER", candidate)));
     }
 
     private String identityOf(CallTimeline timeline, Leg leg) {

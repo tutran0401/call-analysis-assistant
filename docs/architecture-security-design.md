@@ -151,6 +151,8 @@ Chi tiết từng field quan sát được trong data mẫu: `docs/sensitive-dat
 3. **Application log**: converter `%san` / `%sanEx` cho console, `SanitizingJsonLayout` cho log JSON. Log AI call chỉ
    có field được phép (mục 6.2), không log raw AI request/response.
 4. **Chỉ mục kết quả ES**: chỉ field tóm tắt, Call-ID dạng pseudonym, không có văn bản tự do.
+5. **Chỉ mục signaling ES**: sanitize từng sự kiện trước khi index, gồm cả `rawEvent`; ID document vẫn tính từ
+   bản gốc để lần import mới ghi đè document cũ. `appUserId`/`csid` dùng HMAC ổn định trong một lần chạy.
 
 Kiểm chứng: `docs/security-evaluation-report.md` (S01-S08, 0 leakage ở cả 3 lượt, kể cả khi AI cố tình rò rỉ).
 
@@ -202,19 +204,20 @@ Chi tiết: `docs/prompt-strategy.md`. Nguồn: `src/main/resources/ai/prompts/a
   accuracy như nhau).
 - **Output**: JSON schema strict: `verdict, qualityFlag, issueCategory, confidenceLevel, summary, evidenceIds,
   analysis, suggestions`.
-- **Quy tắc prompt**: chỉ dựa vào input; evidence ID chỉ lấy từ danh sách; số liệu chép nguyên văn từ metrics /
-  evidence; thiếu dữ liệu thì `UNKNOWN`; ưu tiên khía cạnh `focus`; phân tích trả lời 4 câu hỏi; tối đa 4 đề xuất;
+- **Quy tắc prompt**: chỉ dựa vào input; evidence ID chỉ lấy từ danh sách; số liệu được viện dẫn qua token
+  `{{M001}}` rồi code chèn cả tên/giá trị/đơn vị; thiếu dữ liệu thì `UNKNOWN`; ưu tiên khía cạnh `focus`;
+  phân tích trả lời 4 câu hỏi; tối đa 4 đề xuất;
   không nhắc định danh.
 - **Tham số**: `gpt-4o-mini`, temperature 0, seed cố định, `response_format: json_schema strict`.
 - **Không tin prompt**: mọi quy tắc trên được Guardrails kiểm lại bằng code:
 
 | Mã | Kiểm | Khi vi phạm |
 | --- | --- | --- |
-| G01 | `evidenceIds` phải tồn tại | REJECT → fallback |
+| G01 | `evidenceIds` và các ID viết trong lời văn phải tồn tại | REJECT → fallback |
 | G02 | JSON đúng schema, đủ field, không field lạ, không quá lớn | REJECT |
 | G03 | verdict / issueCategory / confidence thuộc enum | REJECT |
 | G04 | verdict / category / cờ chất lượng của AI khác rule | ACCEPT_WITH_FLAGS: verdict `UNKNOWN`, độ tin cậy LOW |
-| G05 | Mọi con số trong lời văn phải có trong chỉ số / evidence | REJECT |
+| G05 | Chỉ nhận token metric hợp lệ, từ chối số viết trực tiếp trong lời văn | REJECT |
 
 ## 8. API
 

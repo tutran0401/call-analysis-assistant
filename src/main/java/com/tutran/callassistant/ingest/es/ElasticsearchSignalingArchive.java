@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutran.callassistant.application.port.out.SignalingEventArchive;
 import com.tutran.callassistant.ingest.file.SignalingExportFormat;
+import com.tutran.callassistant.sanitize.SensitiveDataSanitizer;
+import com.tutran.callassistant.sanitize.SanitizationSummary;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -39,11 +41,14 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
 
     private final ElasticsearchClient client;
     private final ElasticsearchProperties properties;
+    private final SensitiveDataSanitizer sanitizer;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ElasticsearchSignalingArchive(ElasticsearchClient client, ElasticsearchProperties properties) {
+    public ElasticsearchSignalingArchive(ElasticsearchClient client, ElasticsearchProperties properties,
+                                         SensitiveDataSanitizer sanitizer) {
         this.client = client;
         this.properties = properties;
+        this.sanitizer = sanitizer;
     }
 
     @Override
@@ -111,8 +116,12 @@ public class ElasticsearchSignalingArchive implements SignalingEventArchive {
             if (timestamp == null) {
                 continue;
             }
-            SignalingEventDoc doc = toDocument(callId, timestamp, SignalingExportFormat.normalize(event), truncation);
-            documents.add(new IndexedDocument(deterministicId(callId, doc), doc));
+            JsonNode normalized = SignalingExportFormat.normalize(event);
+            // Derive the existing document ID BEFORE sanitizing so reimport overwrites legacy raw documents.
+            String id = deterministicId(callId, toDocument(callId, timestamp, normalized, truncation));
+            JsonNode safe = sanitizer.sanitizeJson(normalized, new SanitizationSummary());
+            SignalingEventDoc doc = toDocument(callId, timestamp, safe, truncation);
+            documents.add(new IndexedDocument(id, doc));
         }
         if (documents.isEmpty()) {
             return 0;

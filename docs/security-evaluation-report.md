@@ -1,5 +1,14 @@
 # Security Evaluation Report (Sprint 3 T6)
 
+> Bản sửa 2026-10-20 sanitize cả signaling trước khi ghi vào Elasticsearch, bao gồm `rawEvent`.
+> Các số liệu bên dưới là phép đo trước bản sửa. Cần import lại toàn bộ signaling theo Runbook và đo lại
+> index hiện hành; document cũ không có file nguồn sẽ chưa được ghi đè.
+
+> Đã chạy lại S01–S08 với AI giả (`reports/review-security-after-fixes/`): 0 rò rỉ input, output và log;
+> phép dò độc lập kiểm 36 giá trị gốc. Đã nạp lại 27 cuộc gọi vào ES local (1.812 sự kiện, số document không đổi)
+> và quét toàn index: 0 `rawEvent` còn IPv4/email/JWT/bearer token dạng gốc, 0 `appUserId`/`csid`/`requestId`
+> chưa giả danh theo các mẫu kiểm tra. Kết quả AI thật của lần đo lịch sử nằm ở phần dưới.
+
 > Ngày chạy: 2026-10-14. Lệnh: `security-eval --data-root sample-data` (bộ case `benchmark/security/cases.yaml`),
 > AI thật `gpt-4o-mini` ở lượt 1. Kết quả gốc: `reports/security-s3/summary.md` (không commit, `reports/` nằm trong
 > `.gitignore`). Mọi giá trị nhạy cảm trong bộ case là **tổng hợp**, không phải dữ liệu thật.
