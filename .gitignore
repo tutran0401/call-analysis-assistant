@@ -23,3 +23,6 @@ logs/
 
 # Output của demo/run_demo.py
 demo/out/
+
+# Output demo (chứa Call-ID và đường dẫn máy thật từ data mẫu)
+all-demo.txt
