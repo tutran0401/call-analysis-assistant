@@ -12,7 +12,14 @@ public class AiProviderException extends RuntimeException {
         /** Provider không dùng được: chưa cấu hình, hết hạn mức, 5xx, không kết nối được. */
         UNAVAILABLE,
         /** Provider trả lời nhưng nội dung không dùng được (không phải JSON, bị từ chối, bị cắt cụt). */
-        INVALID_RESPONSE
+        INVALID_RESPONSE,
+        /** Chưa cấu hình AI (provider none / thiếu API key) - người dùng nhận report rule-based. */
+        NOT_CONFIGURED,
+        /**
+         * Lượt chạy CHỈ rule theo thiết kế (batch không --with-ai, rule baseline của evaluate / security-eval):
+         * không phải sự cố, nên không được tính chung với fallback thật trên dashboard (peer evaluation issue 5).
+         */
+        RULE_ONLY
     }
 
     private final Kind kind;

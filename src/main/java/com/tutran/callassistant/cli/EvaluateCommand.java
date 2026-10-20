@@ -96,7 +96,7 @@ public class EvaluateCommand implements CliCommand {
                 : service.withPipeline(pipeline.withSignalingSources(treeResolver(index, localFile)));
         RecordingAiProvider recorder = new RecordingAiProvider(aiProvider);
         ChatAnalysisService aiService = base.withAiProvider(recorder);
-        ChatAnalysisService ruleService = base.withAiProvider(new NoAiProvider("rule baseline"));
+        ChatAnalysisService ruleService = base.withAiProvider(NoAiProvider.ruleOnly("rule baseline"));
 
         if ("none".equals(aiProvider.modelName())) {
             console.line("CẢNH BÁO: chưa có AI provider (call-analysis.ai.provider=none) - chỉ đo được rule-based.");

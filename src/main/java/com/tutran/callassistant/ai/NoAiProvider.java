@@ -12,9 +12,21 @@ import com.tutran.callassistant.application.port.out.AiProvider;
 public class NoAiProvider implements AiProvider {
 
     private final String reason;
+    private final AiProviderException.Kind kind;
 
+    /** AI chưa được cấu hình ({@code NOT_CONFIGURED}). */
     public NoAiProvider(String reason) {
+        this(reason, AiProviderException.Kind.NOT_CONFIGURED);
+    }
+
+    private NoAiProvider(String reason, AiProviderException.Kind kind) {
         this.reason = reason;
+        this.kind = kind;
+    }
+
+    /** Chạy chỉ rule theo thiết kế ({@code RULE_ONLY}), không phải AI hỏng hay thiếu cấu hình. */
+    public static NoAiProvider ruleOnly(String purpose) {
+        return new NoAiProvider(purpose, AiProviderException.Kind.RULE_ONLY);
     }
 
     @Override
@@ -24,6 +36,6 @@ public class NoAiProvider implements AiProvider {
 
     @Override
     public AiResult analyze(AiPrompt prompt) {
-        throw new AiProviderException(AiProviderException.Kind.UNAVAILABLE, reason);
+        throw new AiProviderException(kind, reason);
     }
 }

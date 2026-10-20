@@ -218,10 +218,20 @@ class ChatAnalysisServiceTest {
                 new ChatRequest("Phân tích giúp mình", logsOf(DIR)));
 
         assertThat(response.degraded()).isTrue();
-        assertThat(response.fallbackReason()).isEqualTo("AI_UNAVAILABLE");
+        // Chưa cấu hình AI có mã riêng, không lẫn với lỗi kết nối AI thật (peer evaluation issue 5).
+        assertThat(response.fallbackReason()).isEqualTo("AI_NOT_CONFIGURED");
         assertThat(response.report().verdict()).isEqualTo("SUCCESS");
         assertThat(response.report().degraded()).isTrue();
         assertThat(response.report().dataLimitations()).contains(AnalysisReportComposer.DEGRADED_NOTE);
+    }
+
+    @Test
+    void ruleOnlyRunsByDesignAreNotRecordedAsAnAiFailure() throws IOException {
+        ChatResponse response = service(NoAiProvider.ruleOnly("rule-only (batch)")).handle(
+                new ChatRequest("Phân tích giúp mình", logsOf(DIR)));
+
+        assertThat(response.fallbackReason()).isEqualTo("RULE_ONLY");
+        assertThat(response.report().verdict()).isEqualTo("SUCCESS");
     }
 
     @Test

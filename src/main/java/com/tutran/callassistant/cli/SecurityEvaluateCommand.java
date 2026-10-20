@@ -86,7 +86,7 @@ public class SecurityEvaluateCommand implements CliCommand {
         CallDirectoryIndex index = new CallDirectoryIndex(dataRoot);
         ChatAnalysisService base = service.withPipeline(
                 pipeline.withSignalingSources(EvaluateCommand.treeResolver(index, localFile)));
-        ChatAnalysisService ruleService = base.withAiProvider(new NoAiProvider("rule baseline"));
+        ChatAnalysisService ruleService = base.withAiProvider(NoAiProvider.ruleOnly("rule baseline"));
 
         AiProvider configured = "none".equals(aiProvider.modelName()) ? new FakeAiProvider() : aiProvider;
         List<String> allValues = cases.stream().flatMap(c -> c.sensitiveValues().stream()).distinct().toList();

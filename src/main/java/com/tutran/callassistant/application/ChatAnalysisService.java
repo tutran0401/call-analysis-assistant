@@ -215,7 +215,9 @@ public class ChatAnalysisService {
             return new AiAttempt(composer.fromAi(rule, decision), null, result.totalTokens(), decision.flags());
         } catch (AiProviderException e) {
             warnings.add("AI: " + e.getMessage());
-            return fallback(requestId, callRef, aiProvider.modelName(), started, "AI_" + e.kind().name(), null);
+            // RULE_ONLY là chế độ chạy chứ không phải lỗi AI, nên không mang tiền tố AI_ (dashboard lọc riêng).
+            String reason = e.kind() == AiProviderException.Kind.RULE_ONLY ? "RULE_ONLY" : "AI_" + e.kind().name();
+            return fallback(requestId, callRef, aiProvider.modelName(), started, reason, null);
         } catch (RuntimeException e) {
             // Lỗi không lường trước ở tầng AI không được giết request.
             warnings.add("AI: lỗi không dự kiến (" + e.getClass().getSimpleName() + ")");

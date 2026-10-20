@@ -75,6 +75,9 @@ class FakeAiProviderTest {
                 .extracting(e -> ((AiProviderException) e).kind()).isEqualTo(AiProviderException.Kind.TIMEOUT);
         assertThatThrownBy(() -> new NoAiProvider("no key").analyze(prompt()))
                 .isInstanceOf(AiProviderException.class)
-                .extracting(e -> ((AiProviderException) e).kind()).isEqualTo(AiProviderException.Kind.UNAVAILABLE);
+                .extracting(e -> ((AiProviderException) e).kind()).isEqualTo(AiProviderException.Kind.NOT_CONFIGURED);
+        assertThatThrownBy(() -> NoAiProvider.ruleOnly("batch").analyze(prompt()))
+                .isInstanceOf(AiProviderException.class)
+                .extracting(e -> ((AiProviderException) e).kind()).isEqualTo(AiProviderException.Kind.RULE_ONLY);
     }
 }

@@ -3,6 +3,7 @@
 const FALLBACK_MESSAGES: Record<string, string> = {
   AI_TIMEOUT: 'AI phản hồi quá lâu',
   AI_UNAVAILABLE: 'Không kết nối được dịch vụ AI',
+  AI_NOT_CONFIGURED: 'Chưa cấu hình AI (thiếu API key)',
   AI_INVALID_RESPONSE: 'AI trả lời sai định dạng',
   AI_ERROR: 'Lỗi không dự kiến khi gọi AI',
   GUARDRAIL_REJECTED: 'Câu trả lời của AI không qua được bước kiểm tra (Guardrails)',

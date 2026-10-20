@@ -82,7 +82,7 @@ public class BatchCommand implements CliCommand {
         int limit = Options.intOf(options, "limit", 500);
         Path outDir = Path.of(options.getOrDefault("out", "reports/batch-" + LocalDateTime.now().format(STAMP)));
         boolean withAi = options.containsKey("with-ai");
-        AiProvider provider = withAi ? aiProvider : new NoAiProvider("rule-only (batch)");
+        AiProvider provider = withAi ? aiProvider : NoAiProvider.ruleOnly("rule-only (batch)");
         ChatAnalysisService batch = service.withAiProvider(provider).withResultArchive(results, "batch");
 
         List<String> callIds;
