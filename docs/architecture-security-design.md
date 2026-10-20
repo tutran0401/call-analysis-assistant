@@ -236,7 +236,7 @@ Phản hồi 200 (`ChatResponse`):
   "report": { "...": "Report v3, null khi OUT_OF_SCOPE" },
   "message": "câu từ chối cố định khi OUT_OF_SCOPE, ngược lại null",
   "degraded": false,
-  "fallbackReason": "AI_TIMEOUT | AI_UNAVAILABLE | AI_INVALID_RESPONSE | AI_ERROR | GUARDRAIL_REJECTED | INPUT_NOT_SANITIZED | OUTPUT_SCHEMA_INVALID | null",
+  "fallbackReason": "AI_TIMEOUT | AI_UNAVAILABLE | AI_INVALID_RESPONSE | AI_NOT_CONFIGURED | AI_ERROR | GUARDRAIL_REJECTED | INPUT_NOT_SANITIZED | OUTPUT_SCHEMA_INVALID | RULE_ONLY | null",
   "warnings": ["ghi chú xử lý đã sanitize"],
   "renderedText": "report dạng văn bản theo mẫu 4.5",
   "aiTokens": 3400

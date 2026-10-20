@@ -218,6 +218,7 @@ PowerShell không có `sh`: chạy lệnh `curl` bên trong `kibana/import-dashb
 | "Giới hạn dữ liệu" ghi "Không kết nối được Elasticsearch" / "phản hồi quá chậm" | ES tắt / treo (`ES_UNAVAILABLE` / `ES_TIMEOUT` trong log) | Khởi động lại ES rồi hỏi lại; trong lúc ES tắt, report vẫn trả ra (thường là `UNKNOWN`) chứ không lỗi 500 |
 | UI hiện "AI phản hồi quá lâu — đây là kết quả rule-based" | AI timeout (`AI_TIMEOUT`) | Thử lại; kiểm mạng; có thể tăng `call-analysis.ai.timeout-ms` |
 | UI hiện "Không kết nối được dịch vụ AI" | Sai key, hết quota, mất mạng (`AI_UNAVAILABLE`) | Kiểm `OPENAI_API_KEY` trong `.env`; xem dòng `ai_call` trong log |
+| UI hiện "Chưa cấu hình AI" | `CALL_ANALYSIS_AI_PROVIDER` không phải `openai` hoặc thiếu key (`AI_NOT_CONFIGURED`) | Mục 4. `RULE_ONLY` trong log / Kibana là lượt `batch` hoặc rule baseline chạy chỉ rule theo thiết kế, không phải lỗi |
 | `/api/health` báo `ai.configured: false` | Thiếu `CALL_ANALYSIS_AI_PROVIDER=openai` hoặc thiếu key | Mục 4 |
 | Câu hỏi tiếng Việt gửi bằng curl bị coi là "ngoài phạm vi" | `curl.exe` trên Windows đổi codepage, mất dấu | Gửi câu hỏi từ file UTF-8: `-F "message=<q.txt"` |
 | Upload báo "vượt giới hạn kích thước (10 MB)" | File > 10 MB | Cắt log quanh thời điểm cuộc gọi |
