@@ -29,6 +29,7 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- Sprint 2: Chat API cho Web UI (profile web, chỉ bind 127.0.0.1). Lý do / license: docs/architecture-security-design.md mục 10 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -39,6 +40,7 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
+        <!-- Sprint 2: đọc benchmark/*/cases.yaml (evaluation/CaseLoader). Lý do / license: docs/architecture-security-design.md mục 10 -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>

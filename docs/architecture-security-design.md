@@ -279,3 +279,26 @@ File: `src/main/resources/schema/report-schema-v3.json`. Record: `domain/report/
 | `degraded` | boolean | code | |
 
 Thay đổi so với v2: thêm `confidenceReasons` và `explanation`.
+
+## 10. Dependency
+
+Mỗi dependency trực tiếp ghi lý do, phiên bản thực tế, license và phương án đã cân nhắc. Phiên bản Java do BOM của
+Spring Boot 3.3.5 quản lý (không tự ghim), trừ hai thư viện ngoài BOM ghi rõ trong `pom.xml`. Thêm dependency mới
+phải bổ sung một dòng vào bảng này trong cùng commit.
+
+| Dependency | Phiên bản | Phạm vi | License | Dùng ở đâu, vì sao | Đã cân nhắc |
+| --- | --- | --- | --- | --- | --- |
+| `spring-boot-starter` | 3.3.5 | compile | Apache-2.0 | Khung ứng dụng, cấu hình, logging (logback) | — |
+| `spring-boot-starter-web` (**mới ở Sprint 2**) | 3.3.5 | compile | Apache-2.0 | Chat API `POST /api/chat`, `GET /api/health` cho Web UI (profile `web`), kéo theo Tomcat nhúng, chỉ bind `127.0.0.1`; đồng thời cung cấp `RestClient` mà adapter OpenAI dùng (không thêm SDK OpenAI) | `com.sun.net.httpserver` của JDK: phải tự viết multipart, giới hạn upload, xử lý lỗi; SDK OpenAI chính thức: thêm phụ thuộc chỉ để gọi một endpoint |
+| `jackson-datatype-jsr310` | 2.17.2 | compile | Apache-2.0 | (De)serialize `Instant` trong event / report | — |
+| `jackson-dataformat-yaml` (**mới ở Sprint 2**) | 2.17.2 | compile | Apache-2.0 | Đọc bộ case benchmark `benchmark/*/cases.yaml` (`evaluation/CaseLoader`); cùng họ Jackson đã có nên không thêm cách parse thứ hai | SnakeYAML trực tiếp (thêm một API khác Jackson); viết case bằng JSON (khó đọc, khó ghi chú cho Mentor) |
+| `elasticsearch-java` | 8.15.0 | compile | Apache-2.0 | Query / import signaling vào ES local, lưu kết quả cho Kibana; khớp phiên bản ES 8.15 trong `docker-compose.yml` | REST client tự viết |
+| `json-schema-validator` (networknt) | 1.4.0 | compile | Apache-2.0 | Kiểm report theo `report-schema-v3.json` (Guardrails, `ReportGuard`) | — |
+| `spring-boot-starter-test` | 3.3.5 | test | Apache-2.0 / EPL-2.0 (JUnit) | JUnit 5, Mockito, MockMvc | — |
+| `assertj-core` | 3.25.3 | test | Apache-2.0 | Assertion trong test | — |
+
+Web UI (`web/package.json`): runtime chỉ có `react`, `react-dom` (MIT). Còn lại là devDependency (Vite, Vitest,
+Testing Library, jsdom, TypeScript; đều MIT hoặc Apache-2.0), không đi vào bản build chạy trên trình duyệt.
+
+Không dependency nào gửi dữ liệu ra ngoài máy, trừ lời gọi OpenAI (qua `RestClient` của Spring, không thêm SDK) và
+lời gọi đó chỉ mang context đã qua Input Sanitizer (mục 4).
