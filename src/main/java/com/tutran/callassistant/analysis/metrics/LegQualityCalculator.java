@@ -111,33 +111,43 @@ public class LegQualityCalculator {
 
     /**
      * Mất gói của <b>cả cuộc gọi</b>: {@code packetsLost / (packetsLost + packetsReceived)} ở mẫu có tổng số gói lớn
-     * nhất (hai bộ đếm cộng dồn từ đầu stream; lấy mẫu lớn nhất thay cho mẫu cuối để chịu được bộ đếm bị reset khi
-     * stream khởi tạo lại).
+     * cuối mỗi đoạn bộ đếm. Khi bộ đếm giảm, cộng đoạn trước rồi bắt đầu đoạn mới; không bỏ qua stream sau reset.
+     * Các mẫu được sắp theo thời gian; thiếu định danh stream nên các stream đồng thời cần được tách ở nguồn.
      *
      * <p>{@code audio.packetLostPercent} chỉ là tỉ lệ trong <i>khoảng</i> giữa hai lần đo: một khoảng ngắn mất 38 %
      * không có nghĩa cả cuộc kém. Trên data, {@code 06BCA48C} đỉnh 38,6 % nhưng cả cuộc 0,36 %;
      * {@code 271D1FAF} đỉnh 11,3 %, cả cuộc 1,83 % (peer evaluation, 2026-10-20).
      */
     MetricResult<Double> wholeCallPacketLoss(List<CanonicalEvent> samples) {
-        double bestTotal = -1;
-        double bestLost = 0;
-        for (CanonicalEvent sample : samples) {
+        double completedLost = 0;
+        double completedReceived = 0;
+        double previousLost = 0;
+        double previousReceived = 0;
+        List<CanonicalEvent> ordered = samples.stream().sorted(java.util.Comparator
+                .comparing(CanonicalEvent::timestamp, java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder()))
+                .thenComparingLong(CanonicalEvent::sequenceNumber)).toList();
+        for (CanonicalEvent sample : ordered) {
             Double lost = number(sample.attribute(FIELD_PACKETS_LOST));
             Double received = number(sample.attribute(FIELD_PACKETS_RECEIVED));
-            if (lost == null || received == null || lost < 0 || received < 0) {
+            if (lost == null || received == null || !Double.isFinite(lost) || !Double.isFinite(received)
+                    || lost < 0 || received < 0) {
                 continue;
             }
-            double total = lost + received;
-            if (total > bestTotal) {
-                bestTotal = total;
-                bestLost = lost;
+            // packetsLost can decrease when late packets arrive; a received-counter decrease marks reset.
+            if (received < previousReceived) {
+                completedLost += previousLost;
+                completedReceived += previousReceived;
             }
+            previousLost = lost;
+            previousReceived = received;
         }
-        if (bestTotal <= 0) {
+        double totalLost = completedLost + previousLost;
+        double total = totalLost + completedReceived + previousReceived;
+        if (total <= 0) {
             return MetricResult.notAvailable("%", MetricSources.END_CALL,
                     "log không có bộ đếm cộng dồn " + FIELD_PACKETS_LOST + " / " + FIELD_PACKETS_RECEIVED);
         }
-        return MetricResult.of(Math.round(bestLost / bestTotal * 100.0 * 100.0) / 100.0, "%", MetricSources.END_CALL);
+        return MetricResult.of(Math.round(totalLost / total * 100.0 * 100.0) / 100.0, "%", MetricSources.END_CALL);
     }
 
     private static Double number(String raw) {

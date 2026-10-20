@@ -41,7 +41,15 @@ class LegQualityCalculatorTest {
                 stats(1, Map.of("audio.packetsLost", "100", "audio.packetsReceived", "900")),
                 stats(2, Map.of("audio.packetsLost", "0", "audio.packetsReceived", "50")));
 
-        assertThat(calculator.wholeCallPacketLoss(samples).value()).isEqualTo(10.0);
+        assertThat(calculator.wholeCallPacketLoss(samples).value()).isEqualTo(9.52);
+    }
+
+    @Test
+    void lossAfterCounterResetIsIncludedInWholeCallRate() {
+        List<CanonicalEvent> samples = List.of(
+                stats(1, Map.of("audio.packetsLost", "0", "audio.packetsReceived", "1000")),
+                stats(2, Map.of("audio.packetsLost", "90", "audio.packetsReceived", "10")));
+        assertThat(calculator.wholeCallPacketLoss(samples).value()).isEqualTo(8.18);
     }
 
     @Test
