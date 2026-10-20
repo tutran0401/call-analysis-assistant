@@ -15,6 +15,28 @@
 **Đạt** cả 3 lượt, 7 case × 15 giá trị nhạy cảm đã chèn. Trong lúc làm, bộ case này đã **tìm ra và sửa một lỗ
 thật** (xem "Lỗi tìm được").
 
+### Phép đo độc lập với Sanitizer (thêm 2026-10-20, theo nhận xét của Mentor sau Sprint 2)
+
+Mentor nhận xét: phép đo ở bảng trên dùng chính bộ dò của Sanitizer cộng vài giá trị mồi, nên "0 rò rỉ" chưa được
+chứng minh độc lập. Một giá trị Sanitizer không nhận ra thì phép đo đó cũng không nhận ra.
+
+Phép đo mới (`evaluation/RawValueOracle`) đi theo hướng ngược lại. Nó **đọc giá trị gốc từ chính file dữ liệu** của
+case theo cấu trúc file, không theo mẫu văn bản: cột theo schema `#Hn` của end-call log, cây JSON của signaling
+export và các ô JSON, dòng SDP (`a=ice-ufrag`, `a=ice-pwd`, `a=fingerprint`), khối `Cand[...]` của WebRTC log. Danh
+sách field lấy từ `docs/sensitive-data-inventory.md`. Sau đó nó tìm **nguyên văn** từng giá trị ở ba đích. Lớp này
+không gọi gì trong gói `sanitize`. Call-ID được xét riêng: được phép hiện cho người dùng (report phải hiện nó), không
+được tới AI.
+
+| Lần chạy | Giá trị gốc đọc được | AI request | Report / response | Log | Kết quả |
+| --- | --- | --- | --- | --- | --- |
+| `dev` (29 case, AI thật), trước khi sửa | 164 | **3** | **3** | 0 | Không đạt - tìm ra lỗ Call-ID (dưới) |
+| `dev` (29 case, AI thật), sau khi sửa | 151 | 0 | 0 | 0 | **Đạt** |
+| `security-eval` S01-S08, cả 3 lượt | 36 | 0 | 0 | 0 | **Đạt** |
+
+Số giá trị giảm từ 164 xuống 151 vì Call-ID được tách khỏi danh sách chung (chỉ còn tính ở đích AI request).
+Kết quả gốc: `reports/eval-dev-independent-leak/`, `reports/eval-dev-callid-masked/`,
+`reports/security-20261020-034215/` (không commit, `reports/` nằm trong `.gitignore`).
+
 ## Cách đo
 
 `security-eval` chạy từng case qua **đúng pipeline của Web UI** (`ChatAnalysisService`: File Validator → rule →
@@ -65,6 +87,15 @@ biên), kèm test hồi quy `InputSanitizerTest.s08_phoneAndIpGluedToUnderscoreA
 Bài học: các unit test S01-S08 của Sprint 2 đều xanh vì chúng chỉ dùng giá trị có khoảng trắng hoặc `=` ở hai bên.
 Lỗ này chỉ lộ ra khi đưa giá trị vào **đúng chỗ dữ liệu thật đi qua** (tên file → thông báo validator).
 
+**Call-ID tới AI qua câu "Giới hạn dữ liệu" (tìm bằng phép đo độc lập, 2026-10-20).** Case `var-foreign-call-file`
+đính kèm nhầm một file của cuộc gọi khác. Câu giới hạn "Bỏ qua file ...: thuộc Call-ID X, khác Call-ID Y" được gửi
+nguyên văn sang AI, tức là AI nhận cả hai Call-ID. Thiết kế thì không bao giờ đưa Call-ID vào context như một
+field, nên lỗ chỉ tồn tại trong văn bản tự do. Phép đo cũ không thấy vì Call-ID không nằm trong inventory nhạy cảm
+của Sanitizer. Đã sửa: `AiContextBuilder` thay mọi Call-ID dạng UUID trong chuỗi gửi đi bằng `<CALL_ID>` /
+`<CALL_ID_KHAC>` (không có chữ số nên không ảnh hưởng G05), ở cả hai context mode. Cách này che luôn Call-ID trong
+mô tả evidence lấy từ message của server ("No sessions found for Call-ID: ..."). Test hồi quy:
+`AiContextBuilderTest.callIdsInLimitationTextNeverReachTheAi`.
+
 ## Guardrails và File Validation (chạy lại trước khi nộp, mục 7.1)
 
 Toàn bộ chạy trong `mvn test` (327 test backend, xanh ngày 2026-10-14, có Elasticsearch chạy):
@@ -86,7 +117,9 @@ Toàn bộ chạy trong `mvn test` (327 test backend, xanh ngày 2026-10-14, có
 
 - **Sanitizer dựa trên mẫu đã biết** (regex + tên field). Một định dạng bí mật chưa có trong inventory sẽ lọt.
   Giảm thiểu bằng thiết kế: AI không nhận log gốc, không nhận câu hỏi gốc, và một context còn sót dù một giá trị
-  thì không được gửi đi (`INPUT_NOT_SANITIZED`).
+  thì không được gửi đi (`INPUT_NOT_SANITIZED`). Phép đo độc lập kiểm lại từ phía dữ liệu gốc, nhưng nó cũng chỉ
+  biết các field có trong inventory: một loại bí mật mà cả inventory lẫn Sanitizer đều chưa biết thì cả hai cùng
+  bỏ sót.
 - **Số điện thoại chỉ nhận dạng VN** (`0…`, `84…`, `+84…`).
 - Trong `security-eval`, cột "sự kiện log chứa giá trị gốc trước bộ lọc" bằng 0: pipeline không tự ghi giá trị nhạy
   cảm vào log (nó chỉ log field tóm tắt). Bộ lọc log vì thế được chứng minh bằng unit test (`OutputSanitizerTest` S08,

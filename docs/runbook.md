@@ -187,7 +187,9 @@ java -jar target/call-analysis-assistant-0.1.0-SNAPSHOT.jar security-eval --data
 ```
 
 Ba lượt: AI đang cấu hình; AI giả cố tình trả lại mọi giá trị nhạy cảm; AI giả rò giá trị vượt qua được
-Guardrails. Diễn giải: `docs/security-evaluation-report.md`.
+Guardrails. Mỗi lượt có thêm **phép đo độc lập** (đọc giá trị gốc từ file dữ liệu, không dùng Sanitizer); lệnh
+`evaluate` cũng in phép đo này thành một dòng riêng trong bảng metric. Kết luận PASS chỉ khi cả hai phép đo bằng 0.
+Diễn giải: `docs/security-evaluation-report.md`.
 
 ## 9. Batch analysis và Kibana
 

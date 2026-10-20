@@ -108,7 +108,25 @@ Final Demo (spec mục 10), chạy trên app thật 2026-10-14:
 | S3-7 | Lưu kết quả, batch, Kibana |
 | S3-8 | Tài liệu bàn giao, demo, báo cáo sprint |
 
+## Xử lý nhận xét của Mentor sau Sprint 2 (2026-10-20)
+
+| Nhận xét | Đã làm | Commit |
+| --- | --- | --- |
+| Đo Security Leakage dùng chính bộ dò của Sanitizer | Phép đo độc lập `RawValueOracle` (đọc giá trị gốc từ file dữ liệu theo cấu trúc file). Lượt `dev` đầu tiên tìm ra Call-ID lọt vào AI qua câu "Giới hạn dữ liệu"; đã sửa, chạy lại 0 / 0 / 0 | R4, R5 |
+| Issue Category "100%" so với nhãn lấy từ rule | Accuracy chỉ tính nhãn Mentor (hiện "chưa đo"); số cũ đổi tên "khớp nhãn tạm"; file xin nhãn mù `benchmark/dev/category-labels-for-mentor.csv` | R4 |
+| UI không hiện cờ "cần kiểm tra"; cắt file thứ 9 im lặng | `ChatResponse.reviewFlags` + banner "Cần kiểm tra thủ công"; UI nêu tên file không được đính kèm | R3 |
+| Clone sạch lỗi 80/269 test, không báo lý do | Test cần `sample-data/` được bỏ qua kèm lý do (clone sạch: 0 lỗi); Runbook mục "Dữ liệu mẫu" | R2 |
+| Đọc ES cắt im lặng ở 1000 sự kiện | Đọc theo trang tới 10.000; vượt thì "Giới hạn dữ liệu" nêu `ES_TRUNCATED` | R1 |
+| Chưa quay demo 6 kịch bản trên trình duyệt | Đã chạy cả 6 trên Web UI (2026-10-20), đều đúng spec; GIF từng kịch bản | — |
+| Peer Evaluation (Plan 7.3) | Đã làm (`docs/peer-evaluation-report.md`), các issue tìm được đã sửa (Peer fix 1-4) | T7, Peer fix |
+| Repo public, `sample-data/` còn trong lịch sử git | **Chưa xong**: lệnh viết lại lịch sử cần chạy tay (xem dưới) | — |
+| Kịch bản 5 chưa cho `UNKNOWN` | Giữ nguyên, chờ Mentor (mâu thuẫn với nhãn `SUCCESS` của case-001) | — |
+
 ## Chưa làm / cần đầu vào
+
+- **Xoá `sample-data/` khỏi lịch sử git:** repo đang public và ba commit cũ vẫn chứa data mẫu của Mentor. Cần viết
+  lại lịch sử (`git filter-branch --index-filter 'git rm -r -q --cached --ignore-unmatch sample-data' -- main`) rồi
+  `git push --force-with-lease`; việc này chạy tay, không tự động.
 
 - **Peer Evaluation (T7):** đã làm 2026-10-20 trên repo `hason0510/call-analysis-assistant`. Hai issue tìm được
   (WebRTC log của cuộc gọi khác, log có BOM / UTF-16) nhiều khả năng cũng có ở sản phẩm này; đã ghi vào Known

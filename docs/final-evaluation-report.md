@@ -32,7 +32,9 @@ Tài liệu bàn giao số 3 (PROJECT_SPEC.md mục 7.4). Nội dung: accuracy, 
 | Verdict Accuracy - rule baseline | 96.3% (26/27) | 96.3% (26/27) | — | đối chứng |
 | Metric Correctness | 100% | **100% (431/431)** | 100% | Bắt buộc |
 | Security Leakage input / output / log | 0 / 0 / 0 | **0 / 0 / 0** | 0 | Bắt buộc |
-| Issue Category Accuracy | 100% (227/227) | **100% (227/227)** | ≥ 70% | Báo cáo |
+| Security Leakage, đo độc lập với Sanitizer (2026-10-20, xem dưới) | — | **0 / 0 / 0** (151 giá trị gốc) | 0 | Bắt buộc |
+| Issue Category Accuracy (chỉ nhãn Mentor, từ 2026-10-20) | 100% (227/227)\* | **chưa đo** - chưa có nhãn Mentor | ≥ 70% | Báo cáo |
+| Category khớp nhãn tạm lấy từ rule (không phải accuracy) | — | 100% (59/59, lượt 2026-10-20) | — | Báo cáo |
 | Consistency (case: 3 cách hỏi × 5 lần) | 100% (27/27) | **100% (27/27)** | ≥ 95% | Báo cáo |
 | Template Compliance | 100% | **100%** | 100% | Báo cáo |
 | Intent Accuracy (gồm OUT_OF_SCOPE) | 100% (461/461) | **100% (461/461)** | ≥ 90% | Báo cáo |
@@ -42,6 +44,17 @@ Tài liệu bàn giao số 3 (PROJECT_SPEC.md mục 7.4). Nội dung: accuracy, 
 | Tỉ lệ fallback (degraded) | 2.1% | **0%** | — | Báo cáo |
 | Latency P50 / P95 (end-to-end, máy cá nhân) | 2532 / 3123 ms | **2948 / 4608 ms** | — | Báo cáo |
 | Token AI trung bình / lần gọi | 3437 | **4055** | — | Báo cáo |
+
+\* Con số 100% trước đây so với nhãn category **lấy từ output của rule engine** (đã kiểm tay), nên không đo được
+gì về độ chính xác (Mentor nhận xét sau Sprint 2). Từ 2026-10-20 Issue Category Accuracy chỉ tính case có nhãn
+`category=mentor`; con số cũ được báo riêng dưới tên "khớp nhãn tạm". Nhãn đã xin Mentor (gán mù, không kèm kết quả
+rule): `benchmark/dev/category-labels-for-mentor.csv`.
+
+**Đo rò rỉ độc lập** (`evaluation/RawValueOracle`): đọc giá trị nhạy cảm gốc từ file dữ liệu theo cấu trúc file
+(không dùng Sanitizer), rồi tìm nguyên văn ở AI request, response và log. Lượt `dev` đầu tiên (2026-10-20, AI thật,
+`--repeat 1`) ra **6 lần lọt** (3 vào AI request, 3 vào response). Cả 6 đều là Call-ID nằm trong câu "Giới hạn dữ
+liệu" của case `var-foreign-call-file`. Đã sửa ở `AiContextBuilder`; lượt chạy lại: 0 / 0 / 0, verdict 97.2%
+(104/107), fallback 0%. Chi tiết: `docs/security-evaluation-report.md`.
 
 Tất cả metric "Báo cáo" đều đạt target. Token tăng 18% so với Sprint 2 (prompt có định nghĩa verdict, taxonomy kèm
 `requiredEvidence`). Latency P95 tăng theo.
@@ -104,7 +117,7 @@ giữ đúng category của rule.
 | **Peer Evaluation (T7): đã làm (2026-10-20)** | — | `docs/peer-evaluation-report.md`: Runbook của bạn còn lại dựng lại được hoàn toàn; 2 issue có tái hiện; 3 điểm thiết kế học được. Hai issue đó có khả năng cũng có ở sản phẩm này (xem "Thiết kế / dữ liệu") |
 | **Kết quả `held-out` chưa có** | Mentor chạy cuối sprint | Mục 4 để trống |
 | **Runbook: đã được người khác chạy thử (2026-10-19)** | — | Bạn còn lại dựng và chạy lại được toàn bộ theo Runbook, tái hiện đúng mọi metric `dev` (báo cáo của bạn ấy, nhận 2026-10-19). Ba chỗ vướng (JDK > 21, `mvn package` khi ES rỗng, cổng 8080) đã sửa ngày 2026-10-20 |
-| **Nhãn issue category và evidence ID chưa phải ground truth của Mentor** | Mentor chưa cung cấp | Accuracy category chỉ là đối chiếu với rule; `expected_evidence` để trống |
+| **Nhãn issue category và evidence ID chưa phải ground truth của Mentor** | Mentor chưa cung cấp | Issue Category Accuracy hiện "chưa đo" (chỉ tính nhãn Mentor). Đã gửi file xin nhãn `benchmark/dev/category-labels-for-mentor.csv` (20 cuộc gọi); `expected_evidence` để trống |
 | **Scenario 5 ("chỉ một file" → `UNKNOWN`) chưa thống nhất** | Data có nhãn của Mentor (`5E0800AE`, một file, `SUCCESS`) mâu thuẫn với scenario 5 | Đính kèm đúng một WebRTC log không kèm Call-ID → `UNKNOWN` (đúng kỳ vọng). Có Call-ID và signaling → `SUCCESS`, độ tin cậy `MEDIUM`, nêu đủ file thiếu. Chờ Mentor |
 | **AI tự đánh giá category / cờ chất lượng còn yếu** | AI không biết ngưỡng chất lượng (đưa ngưỡng vào sẽ đụng G05); khoảng 55% khớp rule khi không thấy baseline | Cấu hình chạy thật giữ `ruleBaseline`; category trong report luôn của rule; lệch thì độ tin cậy LOW |
 | **Chất lượng lời văn AI chưa được chấm** | Metric 6.5 không đo; cần rubric hoặc người chấm | Lời văn bị Guardrails kiểm số liệu và evidence; phần "Căn cứ kết luận" do code viết nên không phụ thuộc AI |
