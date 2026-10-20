@@ -1,6 +1,7 @@
 package com.tutran.callassistant.application;
 
 import com.tutran.callassistant.application.guardrail.AiAnalysis;
+import com.tutran.callassistant.application.guardrail.MetricReferences;
 import com.tutran.callassistant.application.guardrail.GuardDecision;
 import com.tutran.callassistant.domain.report.ConfidenceLevel;
 import com.tutran.callassistant.domain.report.EvidenceItem;
@@ -99,11 +100,11 @@ public class AnalysisReportComposer {
         String summary = conflict
                 ? "Kết luận rule-based (" + rule.verdict() + ") và AI (" + ai.verdict()
                 + ") mâu thuẫn nên cuộc gọi được đánh dấu UNKNOWN, cần kiểm tra thủ công."
-                : (ai.summary().isBlank() ? rule.summary() : ai.summary());
-        String analysis = conflict ? "" : ai.analysis();
+                : (ai.summary().isBlank() ? rule.summary() : MetricReferences.expand(ai.summary(), rule));
+        String analysis = conflict ? "" : MetricReferences.expand(ai.analysis(), rule);
 
         // Bộ đề xuất chuẩn luôn đứng trước; đề xuất của AI chỉ được nối thêm (T2).
-        List<String> suggestions = conflict ? rule.suggestions() : merge(rule.suggestions(), nonBlank(ai.suggestions()));
+        List<String> suggestions = conflict ? rule.suggestions() : merge(rule.suggestions(), nonBlank(ai.suggestions()).stream().map(text -> MetricReferences.expand(text, rule)).toList());
         List<String> explanation = new ArrayList<>(rule.explanation());
         if (conflict) {
             explanation.add("AI đề xuất " + ai.verdict() + ", khác kết luận rule " + rule.verdict()

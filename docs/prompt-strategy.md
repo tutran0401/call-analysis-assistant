@@ -8,8 +8,8 @@ Tài liệu cho phần AI Analysis Engine: AI nhận gì, được phép làm g�
 
 1. **AI không thấy log gốc.** Input là JSON đã chuẩn hoá: intent/focus, kết luận rule (`ruleBaseline`),
    evidence (có ID), chỉ số đã tính, giới hạn dữ liệu, timeline rút gọn, taxonomy.
-2. **AI không được tạo dữ kiện.** Evidence ID chỉ lấy từ danh sách được cấp; số liệu chỉ lấy nguyên văn từ
-   chỉ số/evidence. Prompt nói rõ, **và** Guardrails kiểm lại bằng code - không tin prompt.
+2. **AI không được tạo dữ kiện.** Evidence ID chỉ lấy từ danh sách được cấp. Khi cần số liệu, AI viện dẫn
+   `{{M001}}` từ bảng metrics; code thay bằng cả tên, giá trị và đơn vị sau khi kiểm tra. Không cho AI tự viết số.
 3. **Không đủ dữ liệu thì nói thẳng.** Evidence thiếu hoặc mâu thuẫn → `verdict = UNKNOWN`; phần thiếu phải
    nêu rõ ảnh hưởng thế nào.
 4. **Một câu trả lời, một schema.** Structured output với `strict: true`; mọi field bắt buộc, không field lạ.
@@ -22,15 +22,19 @@ Tài liệu cho phần AI Analysis Engine: AI nhận gì, được phép làm g�
   "focus": ["AUDIO_QUALITY"],
   "ruleBaseline": {"verdict": "...", "qualityFlag": false, "issueCategory": "...", "confidenceLevel": "...", "summary": "..."},
   "evidence":  [{"id": "EV001", "source": "...", "time": "...", "description": "..."}],
-  "metrics":   [{"name": "...", "value": "...", "source": "..."}],
+  "metrics":   [{"ref": "{{M001}}", "name": "...", "value": "...", "source": "..."}],
   "dataLimitations": ["..."],
   "timeline":  [{"leg": "CALLER", "source": "SIGNALING", "event": "INIT_CALL"}],
   "taxonomy":  [{"category": "...", "definition": "...", "symptoms": ["..."], "knownAmbiguity": "..."}]
 }
 ```
 
-- Timeline bỏ sự kiện lặp liên tiếp, cắt tối đa 80 mục, **không có mốc giờ** - mọi con số AI được nhắc đã
-  nằm trong `metrics` và `evidence`, nên kiểm "số liệu ngoài bộ chỉ số" (G05) là phép so tập hợp đơn giản.
+- Timeline bỏ sự kiện lặp liên tiếp, cắt tối đa 80 mục, **không có mốc giờ**. Mỗi chỉ số có một `ref`
+  (`{{M001}}`, `{{M002}}`...), cùng tên, giá trị và nguồn. G05 chỉ nhận token có thật; code chèn cả tên lẫn
+  giá trị/đơn vị để AI không thể lấy số thời lượng gán sang packet loss.
+- Mô tả evidence và tóm tắt rule gửi AI chỉ giữ ý nghĩa sự kiện; con số trong mô tả và mốc giờ được che khỏi
+  context. Report vẫn giữ nguyên evidence có số và mốc gốc để người đọc truy xuất. Cách này ngăn AI chép số
+  request TURN từ evidence vào lời văn khi không có chỉ số tương ứng.
 - **Không** gửi: câu hỏi gốc, `rawLine`, `attributes` của event.
 - Toàn bộ JSON đi qua `InputSanitizer`; còn dù chỉ một giá trị nhạy cảm thì **không gửi** (fallback).
 
@@ -61,20 +65,14 @@ tính từ độ mạnh evidence, dữ liệu thiếu và kết quả đối chi
 | --- | --- | --- |
 | G02 | Không phải JSON / sai schema / thiếu field / field lạ | REJECT → fallback |
 | G03 | `verdict`, `issueCategory`, `confidenceLevel` ngoài taxonomy | REJECT → fallback |
-| G01 | `evidenceIds` không tồn tại; hoặc kết luận không-UNKNOWN mà không dẫn evidence nào | REJECT → fallback |
-| G05 | Số trong summary/analysis/suggestions không có trong metrics/evidence | REJECT → fallback |
+| G01 | `evidenceIds` hoặc evidence ID trong lời văn không tồn tại; hoặc kết luận không-UNKNOWN mà không dẫn evidence nào | REJECT → fallback |
+| G05 | Token metric không tồn tại hoặc số viết trực tiếp trong summary/analysis/suggestions | REJECT → fallback |
 | G04 | Verdict AI ≠ verdict rule | Verdict `UNKNOWN`, độ tin cậy `LOW`, lời văn AI bị bỏ, kèm cờ |
 | G04 | Cùng verdict nhưng khác category / cờ chất lượng | Giữ giá trị của rule, độ tin cậy `LOW`, kèm cờ |
 
-**Dung sai G05:** số nguyên một chữ số đứng một mình ("2 bên", "1 lần") không bị tính là số liệu; mọi số thập
-phân, số từ hai chữ số, hay số kèm đơn vị (`%`, `ms`, `s`, giây, gói, lần) đều phải có trong dữ liệu đầu vào.
-Định dạng được chuẩn hoá (`6.20` = `6.2`, `2,9` = `2.9`).
-
-**Làm tròn trung thực được chấp nhận** (bài học từ lần chạy OpenAI thật đầu tiên): `gpt-4o-mini` thường viết
-"MOS 4.4" khi chỉ số là `4.40337`. Bản G05 đầu bắt khớp chuỗi tuyệt đối nên loại khoảng 40% report hoàn toàn đúng,
-chỉ vì làm tròn. Giờ một số được chấp nhận nếu nó là bản làm tròn của một giá trị có thật: ít chữ số thập phân hơn
-nguồn và lệch không quá nửa đơn vị ở chữ số cuối của nó (4.4 ~ 4.40337 hợp lệ; 4.5 hay 11.4 so với 11.3208 thì không).
-Số bịa hoàn toàn vẫn bị bắt. Prompt cũng nói rõ quy tắc này. Sau sửa, 12/12 lần chạy liên tiếp cùng một case đều được chấp nhận.
+G05 áp dụng cả số đếm một chữ số và timestamp viết trong lời văn. AI cần viết số đếm bằng chữ, còn thời điểm
+thì dẫn evidence ID. Cách kiểm cũ cho phép dùng nhầm một số ở timestamp hoặc chỉ số khác; phép làm tròn tự do
+cũng đã bỏ. Bộ đánh giá report kiểm lại trên cụm tên + giá trị + đơn vị do code sinh.
 
 ## Request Parser (T4)
 

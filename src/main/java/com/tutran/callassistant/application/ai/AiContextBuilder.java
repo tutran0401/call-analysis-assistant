@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tutran.callassistant.analysis.verdict.IssueCategoryRegistry;
+import com.tutran.callassistant.application.guardrail.MetricReferences;
 import com.tutran.callassistant.application.request.ParsedRequest;
 import com.tutran.callassistant.domain.event.CanonicalEvent;
 import com.tutran.callassistant.domain.report.Report;
@@ -43,6 +44,7 @@ public class AiContextBuilder {
     /** Call-ID dạng UUID (8-4-4-4-12 hex), viết hoa hay thường. */
     private static final Pattern CALL_ID = Pattern.compile(
             "(?i)(?<![0-9a-f])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?![0-9a-f])");
+    private static final Pattern EVIDENCE_OR_NUMBER = Pattern.compile("\\bEV\\d+\\b|\\d+(?:[.,]\\d+)?");
     static final String THIS_CALL = "<CALL_ID>";
     static final String OTHER_CALL = "<CALL_ID_KHAC>";
 
@@ -152,7 +154,7 @@ public class AiContextBuilder {
             baseline.put("qualityFlag", ruleReport.qualityFlag());
             baseline.put("issueCategory", ruleReport.issueCategory());
             baseline.put("confidenceLevel", ruleReport.confidenceLevel());
-            baseline.put("summary", ruleReport.summary());
+            baseline.put("summary", minimizeNumericDetails(ruleReport.summary()));
         }
 
         if (mode == Mode.SEMI) {
@@ -162,12 +164,15 @@ public class AiContextBuilder {
 
         ArrayNode evidence = root.putArray("evidence");
         ruleReport.evidence().forEach(e -> evidence.addObject()
-                .put("id", e.id()).put("source", e.source()).put("time", e.timestamp())
-                .put("description", e.description()));
+                .put("id", e.id()).put("source", e.source()).put("time", "xem evidence trong report")
+                .put("description", minimizeNumericDetails(e.description())));
 
         ArrayNode metrics = root.putArray("metrics");
-        ruleReport.metrics().forEach(m -> metrics.addObject()
-                .put("name", m.name()).put("value", m.value()).put("source", m.source()));
+        for (int i = 0; i < ruleReport.metrics().size(); i++) {
+            var m = ruleReport.metrics().get(i);
+            metrics.addObject().put("ref", MetricReferences.token(i))
+                    .put("name", m.name()).put("value", m.value()).put("source", m.source());
+        }
 
         ArrayNode limitations = root.putArray("dataLimitations");
         ruleReport.dataLimitations().forEach(limitations::add);
@@ -226,12 +231,15 @@ public class AiContextBuilder {
         if (report.evidence().isEmpty()) {
             line(text, "(không có)");
         }
-        report.evidence().forEach(e -> line(text, "[" + e.id() + "][" + e.source() + " " + e.timestamp() + "] "
-                + e.description()));
+        report.evidence().forEach(e -> line(text, "[" + e.id() + "][" + e.source() + "] "
+                + minimizeNumericDetails(e.description())));
 
         line(text, "");
         line(text, "Chỉ số:");
-        report.metrics().forEach(m -> line(text, "- " + m.name() + ": " + m.value() + " (" + m.source() + ")"));
+        for (int i = 0; i < report.metrics().size(); i++) {
+            var m = report.metrics().get(i);
+            line(text, "- " + MetricReferences.token(i) + " " + m.name() + ": " + m.value() + " (" + m.source() + ")");
+        }
 
         line(text, "");
         line(text, "Giới hạn dữ liệu:");
@@ -256,5 +264,17 @@ public class AiContextBuilder {
 
     private static void line(StringBuilder text, String value) {
         text.append(value).append('\n');
+    }
+
+    /** Keep numerical facts in code-owned evidence/metrics; AI sees only the qualitative event and evidence ID. */
+    static String minimizeNumericDetails(String value) {
+        Matcher matcher = EVIDENCE_OR_NUMBER.matcher(value);
+        StringBuilder result = new StringBuilder();
+        while (matcher.find()) {
+            matcher.appendReplacement(result, Matcher.quoteReplacement(
+                    matcher.group().startsWith("EV") ? matcher.group() : "[giá trị trong evidence]"));
+        }
+        matcher.appendTail(result);
+        return result.toString();
     }
 }

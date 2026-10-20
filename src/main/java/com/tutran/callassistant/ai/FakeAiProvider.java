@@ -80,7 +80,7 @@ public class FakeAiProvider implements AiProvider {
         out.put("qualityFlag", baseline.path("qualityFlag").asBoolean(false));
         out.put("issueCategory", baseline.path("issueCategory").asText("UNKNOWN"));
         out.put("confidenceLevel", baseline.path("confidenceLevel").asText("LOW"));
-        out.put("summary", baseline.path("summary").asText(""));
+        out.put("summary", "Kết luận theo evidence và rule baseline: " + verdict + ".");
 
         ArrayNode ids = out.putArray("evidenceIds");
         context.path("evidence").forEach(e -> ids.add(e.path("id").asText()));

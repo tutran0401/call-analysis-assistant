@@ -45,7 +45,10 @@ class AiContextBuilderTest {
         assertThat(ctx.at("/ruleBaseline/verdict").asText()).isEqualTo("SUCCESS");
         assertThat(ctx.get("evidence")).hasSize(3);
         assertThat(ctx.at("/evidence/1/id").asText()).isEqualTo("EV002");
+        assertThat(ctx.at("/evidence/1/description").asText()).doesNotContain("9.8");
+        assertThat(ctx.at("/evidence/1/time").asText()).doesNotContain("10:00");
         assertThat(ctx.get("metrics")).hasSize(5);
+        assertThat(ctx.at("/metrics/3/ref").asText()).isEqualTo("{{M004}}");
         assertThat(ctx.get("dataLimitations")).hasSize(1);
         assertThat(ctx.get("taxonomy").size()).isGreaterThanOrEqualTo(6);
         assertThat(ctx.at("/taxonomy/0/definition").asText()).isNotBlank();
@@ -111,9 +114,15 @@ class AiContextBuilderTest {
         assertThat(ctx.has("taxonomy")).isFalse();
         assertThat(ctx.at("/ruleBaseline/verdict").asText()).isEqualTo("SUCCESS");
         String narrative = ctx.get("narrative").asText();
-        assertThat(narrative).contains("[EV002][callee_endcall.log 10:00:41.000] Packet loss phía callee = 9.8%")
-                .contains("MOS (callee): 2.9 (End Call)").contains("Thiếu callee_webrtc.log")
+        assertThat(narrative).contains("[EV002][callee_endcall.log] Packet loss phía callee = [giá trị trong evidence]%")
+                .contains("{{M003}} MOS (callee): 2.9 (End Call)").contains("Thiếu callee_webrtc.log")
                 .contains("NETWORK_PACKET_LOSS:").contains("INVITE");
+    }
+
+    @Test
+    void numericDetailsInTurnEvidenceAreKeptOutOfAiContext() {
+        assertThat(AiContextBuilder.minimizeNumericDetails("Đã gửi 40 request, xem EV003"))
+                .isEqualTo("Đã gửi [giá trị trong evidence] request, xem EV003");
     }
 
     @Test

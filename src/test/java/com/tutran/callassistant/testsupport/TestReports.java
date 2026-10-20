@@ -37,7 +37,7 @@ public final class TestReports {
                  "confidenceLevel":"MEDIUM",
                  "summary":"Cuộc gọi thành công nhưng callee bị mất gói.",
                  "evidenceIds":["EV002","EV001"],
-                 "analysis":"Cuộc gọi kết nối bình thường (EV001). Packet loss phía callee 9.8% (EV002) cùng MOS 2.9 cho thấy chất lượng media kém.",
+                 "analysis":"Cuộc gọi kết nối bình thường (EV001). {{M004}} (EV002) cùng {{M003}} cho thấy chất lượng media kém.",
                  "suggestions":["Kiểm tra mạng phía callee."]}""";
     }
 }
