@@ -117,8 +117,9 @@ Final Demo (spec mục 10), chạy trên app thật 2026-10-14:
 | UI không hiện cờ "cần kiểm tra"; cắt file thứ 9 im lặng | `ChatResponse.reviewFlags` + banner "Cần kiểm tra thủ công"; UI nêu tên file không được đính kèm | R3 |
 | Clone sạch lỗi 80/269 test, không báo lý do | Test cần `sample-data/` được bỏ qua kèm lý do (clone sạch: 0 lỗi); Runbook mục "Dữ liệu mẫu" | R2 |
 | Đọc ES cắt im lặng ở 1000 sự kiện | Đọc theo trang tới 10.000; vượt thì "Giới hạn dữ liệu" nêu `ES_TRUNCATED` | R1 |
-| Chưa quay demo 6 kịch bản trên trình duyệt | Đã chạy cả 6 trên Web UI (2026-10-20), đều đúng spec; GIF từng kịch bản | — |
+| Chưa quay demo 6 kịch bản trên trình duyệt | Đã chạy cả 6 trên Web UI (2026-10-20), đều đúng spec; ảnh chụp từng kịch bản ở `demo/out/screenshots-2026-10-20/` (không commit) | — |
 | Peer Evaluation (Plan 7.3) | Đã làm (`docs/peer-evaluation-report.md`), các issue tìm được đã sửa (Peer fix 1-4) | T7, Peer fix |
+| Hai dependency mới chưa ghi chú | Bảng mọi dependency trực tiếp (lý do, phiên bản, license, phương án đã cân nhắc): `docs/architecture-security-design.md` mục 10 | R7 |
 | Repo public, `sample-data/` còn trong lịch sử git | **Chưa xong**: lệnh viết lại lịch sử cần chạy tay (xem dưới) | — |
 | Kịch bản 5 chưa cho `UNKNOWN` | Giữ nguyên, chờ Mentor (mâu thuẫn với nhãn `SUCCESS` của case-001) | — |
 
